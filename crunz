@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Crunz
+|--------------------------------------------------------------------------
+|
+| This file is part of Crunz package
+| (c) Reza M. Lavaryan <mrl.8081@gmail.com>
+| For the full copyright and license information, please view the LICENSE
+| This file that was distributed with this source code.
+|
+*/
+
+use Crunz\Console\CommandKernel;
+
+foreach ([__DIR__ . '/../autoload.php', __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php', __DIR__ . '/../../vendor/autoload.php'] as $file) {
+    if (file_exists($file)) {
+       define('AUTOLOAD_PHP_FILE', $file);
+       break;
+    }
+}
+
+if (!defined('AUTOLOAD_PHP_FILE')) {
+     fwrite(STDERR,
+        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+        'wget http://getcomposer.org/composer.phar' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
+    );
+
+    die(1);
+}
+
+require AUTOLOAD_PHP_FILE;
+
+putenv('CRUNZ_HOME=' . rtrim(getcwd(), '/'));
+
+$kernel = new CommandKernel('Crunz Command Line Interface', 'v0.2.1');
+$kernel->handle();
