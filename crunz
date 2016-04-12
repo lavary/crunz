@@ -33,7 +33,6 @@ if (!defined('AUTOLOAD_PHP_FILE')) {
 }
 
 require AUTOLOAD_PHP_FILE;
-
 putenv('CRUNZ_HOME=' . rtrim(getcwd(), '/'));
 
 $kernel = new CommandKernel('Crunz Command Line Interface', 'v1.0');
