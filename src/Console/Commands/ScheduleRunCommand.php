@@ -67,6 +67,11 @@ class ScheduleRunCommand extends Command
         $src             = array_get($this->arguments, 'source');
         $task_files      = $this->collectFiles($src); 
     
+        if (!count($task_files)) {
+            $output->writeln('<comment>No task found!</comment>');
+            exit();
+        }
+
         foreach ($task_files as $key => $taskFile) {
                         
             $schedule = require $taskFile->getRealPath();            
@@ -75,6 +80,12 @@ class ScheduleRunCommand extends Command
             } 
 
             $events = $schedule->dueEvents(new Invoker());
+            
+            if (!count($events)) {
+                $output->writeln('<comment>No task is due!</comment>');
+                exit();
+            }
+            
             foreach ($events as $event) {
                 
                 echo '[', date('Y-m-d H:i:s'), '] Running scheduled command: ', $event->getSummaryForDisplay(), PHP_EOL;

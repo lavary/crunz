@@ -90,7 +90,7 @@ class TaskGeneratorCommand extends Command
     
           
         $helper          = $this->getHelper('question');
-        $question        = new Question('Where do you want to save the file? ');
+        $question        = new Question('<question>Where do you want to save the file? (Press enter for the current directory)</question> ');
         $output_path     = $helper->ask($input, $output, $question);
 
         $output_path     = !is_null($output_path) ? $output_path : getenv('CRUNZ_HOME') . $this->defaults['output'];

@@ -68,8 +68,12 @@ class ScheduleListCommand extends Command
         
         $task_files      = $this->collectFiles($src); 
     
-        $table = new Table($output);
-            
+        if (!count($task_files)) {
+            $output->writeln('<comment>No task found!</comment>');
+            exit();
+        }
+
+        $table = new Table($output);   
         $table->setHeaders(['#', 'Task', 'Expression', 'Command to Run']);
 
         foreach ($task_files as $key => $taskFile) {

@@ -36,5 +36,5 @@ require AUTOLOAD_PHP_FILE;
 
 putenv('CRUNZ_HOME=' . rtrim(getcwd(), '/'));
 
-$kernel = new CommandKernel('Crunz Command Line Interface', 'v0.2.1');
+$kernel = new CommandKernel('Crunz Command Line Interface', 'v1.0');
 $kernel->handle();
