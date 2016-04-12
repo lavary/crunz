@@ -20,23 +20,27 @@ composer require lavary\crunz
 
 ## Starting the Scheduler
 
-After the package is installed, a PHP CLI script named `crunz` is symlinked to the `vendor/bin` directory. You may create a symlink of this file in `/usr/bin` directory, to have access to it from anywhere.
+After the package is installed, a PHP CLI script named `crunz` is symlinked to the `vendor/bin` directory.
 
 This is the only cron job you need to install at server level. It runs every minute and delegates the responsibility to the scheduler service. Crunz evaluates the tasks and run those which are due.
 
-The server-level cron job could be like so:
+The server-level cron job could be like this:
 
 ```bash
-* * * * * path/to/project/vendor/bin/crunz schedule:run  >> /dev/null 2>&1
+* * * * * vendor/bin/crunz schedule:run  >> /dev/null 2>&1
 ``` 
 
 ## Usage
 
-To create a task, you need to create a file with a name ending with `Tasks.php`, for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. By default the source directory is `Tasks/` directory within your project's root directory. 
+To create a task, you need to create a file ending with `Tasks.php`, for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. By default the source directory is `tasks/` directory within your current working directory (the directory you're calling command `crunz`)
 
-You can change the default path by using `source` option, when running `schedule:run`.
+You pass your desired path by passing it as the first argument when running `schedule:run`:
 
-Here's an example of a basic task file with one task:
+```bash
+vendor/bin/crunz schedule:run /path/to/tasks
+```
+
+Here's an example of a basic task file with one task defined:
 
 ```php
 <?php
@@ -64,15 +68,10 @@ return $schedule;
 > **Important:** Please note that you need to return the `Schedule` instance at the end of each task file.
 
 
-To run the tasks, you need to make sure Crunz is aware of the tasks' location. As noted earlier, Crunz assumes all the task files reside in `Tasks` directory within your project's root directory.
+To run the tasks, you need to make sure Crunz is aware of the tasks' location. As noted earlier, Crunz assumes all the task files reside in `tasks` directory within the current working directory.
 
 The scheduler scans the respective directory recursively, collects all the task files ending with `Tasks.php`, and registers them the with `Schedule` class.
  
- If you need to keep your task files in another location other than the default location, you may define the source path using the `--source` option - when installing the master cron:
- 
- ```bash
- +* * * * * path/to/project/vendor/bin/crunz schedule:run --source=/path/to/the/Tasks/directory  >> /dev/null 2>&1
-```
 
 Here's another example:
 
@@ -104,25 +103,18 @@ To create a task named `GeneralTasks.php` which runs every five minutes on weekd
 ```bash
 path/to/project/vendor/bin/crunz make:task General --frequency=everyFiveMinutes --constraint=weekdays
 ```
-
-Crunz creates the file in `Tasks/` directory within your project's root directory.
-
-You can also specify the output destination, using `output` option:
-
-```bash
-path/to/project/vendor/bin/crunz make:task general --frequency=everyFiveMinutes --constraint=weekdays --output="path/to/Tasks/directory"
-```
+When you run the above command, Crunz will ask about the destination for the output file. By default it's the current working directory (the directory you're calling command `crunz`). However, you can specifiy your desired output.
 
 Use `--help` option to see the list of all available arguments and options along with their default values:
 
 ```bash
-path/to/project/vendor/bin/crunz --help
+vendor/bin/crunz --help
 ```
 
 To see the list of registered tasks, you can use the `schedule:list` command as below:
 
 ```bash
-path/to/project/vendor/bin/crunz schedule:list
+vendor/bin/crunz schedule:list
 
 +---+---------------+-------------+-------------------------+
 | # | Task          | Expression  | Command to Run          |
