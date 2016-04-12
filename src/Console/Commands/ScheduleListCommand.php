@@ -106,6 +106,10 @@ class ScheduleListCommand extends Command
     */
     public static function collectFiles($source)
     {    
+        if(!file_exists($source)) {
+            return [];
+        }
+        
         $finder   = new Finder();
         $iterator = $finder->files()
                   ->name('*Tasks.php')
