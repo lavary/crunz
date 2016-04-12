@@ -1,6 +1,6 @@
 # Crunz
 
-Create a cron job once and for all, manage the rest right from the code.
+Install a cron job once and for all, manage the rest right from the code.
 
 
 ![Version](http://img.shields.io/badge/Version-v1.0-ff69b4.svg?style=flat-square)
