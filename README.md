@@ -5,7 +5,6 @@ Install a cron job once and for all, manage the rest right from the code.
 
 ![Version](http://img.shields.io/badge/Version-v1.0-ff69b4.svg?style=flat-square)
 ![Build](http://img.shields.io/travis/lavary/crunz.svg?style=flat-square)
-[![Build Status](https://travis-ci.org/lavary/crunz.svg?branch=master)](https://travis-ci.org/lavary/crunz)
 
 Crunz is a framework-agnostic package to schedule periodic tasks (cron jobs) in PHP using a fluent API.
 
