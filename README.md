@@ -393,14 +393,14 @@ The callback function must return `TRUE` for the task to be skipped.
 
 ## Prevent Task Overlaps
 
-By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use `withoutOverlapping()` method to avoid task overlaps.
+By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use `preventOverlapping()` method to avoid task overlaps.
 
 ```php
 <?php
 
 // ...
 
-$schedule->run('./backup.sh')->withoutOverlapping();
+$schedule->run('./backup.sh')->preventOverlapping();
 
 // ...
 
