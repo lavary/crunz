@@ -15,7 +15,7 @@ Crunz is wirtten in PHP but it can execute console commands, shell scripts or PH
 To install the package, run the following command:
 
 ```bash
-composer require lavary\crunz
+composer require lavary/crunz
 ```
 
 ## Starting the Scheduler
