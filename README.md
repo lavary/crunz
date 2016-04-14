@@ -8,7 +8,7 @@ Install a cron job once and for all, manage the rest right from the code.
 
 Crunz is a framework-agnostic package to schedule periodic tasks (cron jobs) in PHP using a fluent API.
 
-Crunz is wirtten in PHP but it can execute console commands, shell scripts or PHP CLI scripts.
+Crunz is wirtten in PHP, but it can execute console commands, shell scripts or PHP CLI scripts.
 
 ## Installation
 
