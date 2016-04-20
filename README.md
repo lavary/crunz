@@ -20,21 +20,20 @@ composer require lavary/crunz
 
 ## Starting the Scheduler
 
-After the package is installed, a PHP CLI script named `crunz` is symlinked to the `vendor/bin` directory.
 
-This is the only cron job you need to install at server level. It runs every minute and delegates the responsibility to the scheduler service. Crunz evaluates the tasks and run those which are due.
-
-The server-level cron job could be like this:
+This is the only cron job you need to install at server level:
 
 ```bash
-* * * * * vendor/bin/crunz schedule:run  >> /dev/null 2>&1
+* * * * * /path/to/vendor/bin/crunz schedule:run  >> /dev/null 2>&1
 ``` 
 
 ## Usage
 
-To create a task, you need to create a file ending with `Tasks.php`, for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. By default the source directory is `tasks/` directory within your current working directory (the directory you're calling command `crunz`)
+To create a task, you need to create a file ending with `Tasks.php`, for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
 
-You pass your desired path by passing it as the first argument when running `schedule:run`:
+By default the source directory is `tasks/` directory within your current working directory (the directory you're calling command `crunz`)
+
+You can pass your desired path by passing it as the first argument when running `schedule:run`:
 
 ```bash
 vendor/bin/crunz schedule:run /path/to/tasks
@@ -68,11 +67,6 @@ return $schedule;
 > **Important:** Please note that you need to return the `Schedule` instance at the end of each task file.
 
 
-To run the tasks, you need to make sure Crunz is aware of the tasks' location. As noted earlier, Crunz assumes all the task files reside in `tasks` directory within the current working directory.
-
-The scheduler scans the respective directory recursively, collects all the task files ending with `Tasks.php`, and registers them the with `Schedule` class.
- 
-
 Here's another example:
 
 ```php
@@ -103,7 +97,7 @@ To create a task named `GeneralTasks.php` which runs every five minutes on weekd
 ```bash
 path/to/project/vendor/bin/crunz make:task General --frequency=everyFiveMinutes --constraint=weekdays
 ```
-When you run the above command, Crunz will ask about the destination for the output file. By default it's the current working directory (the directory you're calling command `crunz`). However, you can specifiy your desired output.
+
 
 Use `--help` option to see the list of all available arguments and options along with their default values:
 
@@ -157,7 +151,7 @@ every[CamelCaseWordNumber]Minute(s)|Hour(s)|Day(s)|Month(s)|Week(s)
 
 ```
 
-Based on the above expression, you can set the frequency using the proper method. For example, all the following methods are valid:
+For example, all the following methods are valid:
 
 * `everyThirtyFiveHours`
 * `everyFiveMonths`
@@ -170,7 +164,6 @@ Based on the above expression, you can set the frequency using the proper method
 * `everyOneThousandAndEightHundredFiftyFiveMinutes`
 * ...
 
-Based on the explained pattern, you can create any combination to set your desired frequency. Sky is the limit!
 
 Alternatively, you may use `every()` method (with proper arguments) to achieve the same result:
 
@@ -407,8 +400,6 @@ $schedule->run('./backup.sh')->preventOverlapping();
 return $schedule;
 
 ```
-
-Crunz keeps the PID of the last running instance of the tasks in seprate file (one file per task), and checks if the process is still running. If it's not, it will run a new instance when it's time.
 
 
 ## Handling Output
