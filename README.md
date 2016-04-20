@@ -119,7 +119,7 @@ vendor/bin/crunz schedule:list
 
 This is useful to see if your tasks has been setup as you expect.
 
-## Scheduling Frequency and Constraints
+## Frequencies and Constraints
 
 You can use a wide variety of scheduling frequencies according to your use case:
 
@@ -384,7 +384,7 @@ return $schedule;
 
 The callback function must return `TRUE` for the task to be skipped.
 
-## Prevent Task Overlaps
+## Overlaps
 
 By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use `preventOverlapping()` method to avoid task overlaps.
 
