@@ -117,7 +117,7 @@ vendor/bin/crunz schedule:list
 +---+---------------+-------------+-------------------------+
 ```
 
-This is useful to see, if your tasks has been setup as you expect.
+This is useful to see if your tasks has been setup as you expect.
 
 ## Scheduling Frequency and Constraints
 
