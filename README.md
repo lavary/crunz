@@ -411,7 +411,7 @@ You can save the task output to a file:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->sendOutputTo('/var/log/backups.log');
 
 // ...
@@ -427,7 +427,7 @@ or append it:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->appendOutputTo('/var/log/backups.log');
 
 // ...
@@ -467,7 +467,7 @@ It is possible to call a set of callbacks before and after the command is run:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->before(function() {
             // Initialization phase
          })
@@ -492,7 +492,7 @@ To ping a url before and after a task is run:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->beforePing('uri-to-ping-before')
          ->thenPing('uri-to-ping-after');
 // ...
