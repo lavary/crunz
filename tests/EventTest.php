@@ -5,7 +5,7 @@ use Crunz\Invoker;
 use Carbon\Carbon;
 
 class EventTest extends PHPUnit_Framework_TestCase {
-    
+
     /**
      * The default configuration timezone.
      *
@@ -35,7 +35,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
 
         $e = new Event('php bar');
         $this->assertEquals('0 */12 * * * *',  $e->everyTwelveHours()->getExpression());
-        
+
         $e = new Event('php foo');
         $this->assertEquals('*/35 * * * * *',  $e->everyThirtyFiveMinutes()->getExpression());
 
@@ -44,7 +44,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
 
         $e = new Event('php foo');
         $e->everyFiftyMinutes()->mondays();
-        
+
         $this->assertEquals('*/50 * * * 1 *', $e->getExpression());
         $this->assertFalse($e->isDue(new Invoker()));
 
@@ -95,14 +95,14 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('45 13 * * * *', $e->at('13:45')->getExpression());
 
         $e = new Event('php bar');
-        
+
         $e->minute([12, 24, 35])
           ->hour('1-5', 4, 8)
           ->dayOfMonth(1, 6, 12, 19, 25)
           ->month('1-8')
           ->dayOfWeek('mon,wed,thu');
 
-        $this->assertEquals('12,24,35 1-5,4,8 1,6,12,19,25 1-8 mon,wed,thu *', $e->getExpression()); 
+        $this->assertEquals('12,24,35 1-5,4,8 1,6,12,19,25 1-8 mon,wed,thu *', $e->getExpression());
 
         $e = new Event('php foo');
         $this->assertEquals('45 13 * * * *', $e->cron('45 13 * * * *')->getExpression());
@@ -147,10 +147,10 @@ class EventTest extends PHPUnit_Framework_TestCase {
 
     public function testOutputs()
     {
-        $e = new Event('php -i');        
+        $e = new Event('php -i');
         $this->assertEquals('php -i >> /dev/null 2>&1 &', $e->appendOutputTo('/dev/null')->buildCommand());
 
-        $e = new Event('php -i');        
+        $e = new Event('php -i');
         $this->assertEquals('php -i > /dev/null 2>&1 &', $e->sendOutputTo('/dev/null')->buildCommand());
     }
 
@@ -168,11 +168,11 @@ class EventTest extends PHPUnit_Framework_TestCase {
 
         $e = new Event('php foo');
         $this->assertTrue($e->sundays()->isDue(new Invoker()));
-        
+
         $e = new Event('php bar');
         $this->assertEquals('0 19 * * 6 *', $e->saturdays()->at('19:00')->timezone('EST')->getExpression());
         $this->assertTrue($e->isDue(new Invoker()));
-             
+
     }
 
     public function testName()
