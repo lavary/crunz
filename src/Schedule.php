@@ -43,7 +43,7 @@ class Schedule
      *
      * @param  string  $command
      * @param  array  $parameters
-     * @return \Illuminate\Console\Scheduling\Event
+     * @return \Crunz\Event
      */
     public function exec($command, array $parameters = [])
     {
