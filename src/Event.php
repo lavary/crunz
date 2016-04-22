@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use LogicException;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
-use Illuminate\Contracts\Mail\Mailer;
 use Symfony\Component\Process\Process;
 
 class Event
