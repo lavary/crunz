@@ -3,40 +3,43 @@
 Install a cron job once and for all, manage the rest right from the code.
 
 
-![Version](http://img.shields.io/badge/Version-v1.0-ff69b4.svg?style=flat-square)
+![Version](http://img.shields.io/packagist/v/lavary/crunz.svg?style=flat-square)
 ![Build](http://img.shields.io/travis/lavary/crunz.svg?style=flat-square)
 
 Crunz is a framework-agnostic package to schedule periodic tasks (cron jobs) in PHP using a fluent API.
 
-Crunz is wirtten in PHP but it can execute console commands, shell scripts or PHP CLI scripts.
+Crunz is wirtten in PHP, but it can execute console commands, shell scripts or PHP CLI scripts.
 
 ## Installation
 
 To install the package, run the following command:
 
 ```bash
-composer require lavary\crunz
+composer require lavary/crunz
 ```
 
 ## Starting the Scheduler
 
-After the package is installed, a PHP CLI script named `crunz` is symlinked to the `vendor/bin` directory. You may create a symlink of this file in `/usr/bin` directory, to have access to it from anywhere.
 
-This is the only cron job you need to install at server level. It runs every minute and delegates the responsibility to the scheduler service. Crunz evaluates the tasks and run those which are due.
-
-The server-level cron job could be like so:
+This is the only cron job you need to install at server level:
 
 ```bash
-* * * * * path/to/project/vendor/bin/crunz schedule:run  >> /dev/null 2>&1
+* * * * * /path/to/vendor/bin/crunz schedule:run  >> /dev/null 2>&1
 ``` 
 
 ## Usage
 
-To create a task, you need to create a file with a name ending with `Tasks.php`, for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. By default the source directory is `Tasks/` directory within your project's root directory. 
+To create a task, you need to create a file ending with `Tasks.php`, for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
 
-You can change the default path by using `source` option, when running `schedule:run`.
+By default the source directory is `tasks/` directory within your current working directory (the directory you're calling command `crunz`)
 
-Here's an example of a basic task file with one task:
+You can pass your desired path by passing it as the first argument when running `schedule:run`:
+
+```bash
+vendor/bin/crunz schedule:run /path/to/tasks
+```
+
+Here's an example of a basic task file with one task defined:
 
 ```php
 <?php
@@ -63,16 +66,6 @@ return $schedule;
 
 > **Important:** Please note that you need to return the `Schedule` instance at the end of each task file.
 
-
-To run the tasks, you need to make sure Crunz is aware of the tasks' location. As noted earlier, Crunz assumes all the task files reside in `Tasks` directory within your project's root directory.
-
-The scheduler scans the respective directory recursively, collects all the task files ending with `Tasks.php`, and registers them the with `Schedule` class.
- 
- If you need to keep your task files in another location other than the default location, you may define the source path using the `--source` option - when installing the master cron:
- 
- ```bash
- +* * * * * path/to/project/vendor/bin/crunz schedule:run --source=/path/to/the/Tasks/directory  >> /dev/null 2>&1
-```
 
 Here's another example:
 
@@ -105,24 +98,17 @@ To create a task named `GeneralTasks.php` which runs every five minutes on weekd
 path/to/project/vendor/bin/crunz make:task General --frequency=everyFiveMinutes --constraint=weekdays
 ```
 
-Crunz creates the file in `Tasks/` directory within your project's root directory.
-
-You can also specify the output destination, using `output` option:
-
-```bash
-path/to/project/vendor/bin/crunz make:task general --frequency=everyFiveMinutes --constraint=weekdays --output="path/to/Tasks/directory"
-```
 
 Use `--help` option to see the list of all available arguments and options along with their default values:
 
 ```bash
-path/to/project/vendor/bin/crunz --help
+vendor/bin/crunz --help
 ```
 
 To see the list of registered tasks, you can use the `schedule:list` command as below:
 
 ```bash
-path/to/project/vendor/bin/crunz schedule:list
+vendor/bin/crunz schedule:list
 
 +---+---------------+-------------+-------------------------+
 | # | Task          | Expression  | Command to Run          |
@@ -131,9 +117,9 @@ path/to/project/vendor/bin/crunz schedule:list
 +---+---------------+-------------+-------------------------+
 ```
 
-This is useful to see, if your tasks has been setup as you expect.
+This is useful to see if your tasks has been setup as you expect.
 
-## Scheduling Frequency and Constraints
+## Frequencies and Constraints
 
 You can use a wide variety of scheduling frequencies according to your use case:
 
@@ -165,7 +151,7 @@ every[CamelCaseWordNumber]Minute(s)|Hour(s)|Day(s)|Month(s)|Week(s)
 
 ```
 
-Based on the above expression, you can set the frequency using the proper method. For example, all the following methods are valid:
+For example, all the following methods are valid:
 
 * `everyThirtyFiveHours`
 * `everyFiveMonths`
@@ -178,7 +164,6 @@ Based on the above expression, you can set the frequency using the proper method
 * `everyOneThousandAndEightHundredFiftyFiveMinutes`
 * ...
 
-Based on the explained pattern, you can create any combination to set your desired frequency. Sky is the limit!
 
 Alternatively, you may use `every()` method (with proper arguments) to achieve the same result:
 
@@ -399,24 +384,22 @@ return $schedule;
 
 The callback function must return `TRUE` for the task to be skipped.
 
-## Prevent Task Overlaps
+## Overlaps
 
-By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use `withoutOverlapping()` method to avoid task overlaps.
+By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use `preventOverlapping()` method to avoid task overlaps.
 
 ```php
 <?php
 
 // ...
 
-$schedule->run('./backup.sh')->withoutOverlapping();
+$schedule->run('./backup.sh')->preventOverlapping();
 
 // ...
 
 return $schedule;
 
 ```
-
-Crunz keeps the PID of the last running instance of the tasks in seprate file (one file per task), and checks if the process is still running. If it's not, it will run a new instance when it's time.
 
 
 ## Handling Output
@@ -428,7 +411,7 @@ You can save the task output to a file:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->sendOutputTo('/var/log/backups.log');
 
 // ...
@@ -444,7 +427,7 @@ or append it:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->appendOutputTo('/var/log/backups.log');
 
 // ...
@@ -484,7 +467,7 @@ It is possible to call a set of callbacks before and after the command is run:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->before(function() {
             // Initialization phase
          })
@@ -509,7 +492,7 @@ To ping a url before and after a task is run:
 
 // ...
 
-$shcedule->run('./back.sh')
+$schedule->run('./back.sh')
          ->beforePing('uri-to-ping-before')
          ->thenPing('uri-to-ping-after');
 // ...
