@@ -100,7 +100,7 @@ class Event
      *
      * @var string
      */
-    protected $currentWorkingDirectory = null;
+    protected $cwd = null;
 
     /**
      * Position of cron fields
@@ -147,11 +147,17 @@ class Event
       */
     public function run(Invoker $invoker)
     {
+        if (count($this->beforeCallbacks)) {
+            $this->callBeforeCallbacks($invoker);
+        }
 
-        if (count($this->afterCallbacks) > 0 || count($this->beforeCallbacks) > 0) {
-            $this->runCommandInForeground($invoker);
-        } else {
-            $this->runCommandInBackground();
+        (new Process(
+            trim($this->buildCommand(), '& ')
+        ))->run();
+
+
+        if (count($this->afterCallbacks)) {
+            $this->callAfterCallbacks($invoker);
         }
     }
 
@@ -163,55 +169,9 @@ class Event
      */
     public function in($directory)
     {
-        $this->currentWorkingDirectory = $directory;
+        $this->cwd = $directory;
 
         return $this;
-    }
-
-    /**
-     * Change current working directory
-     *
-     * @param  string $directory
-     * @return \Crunz\Event
-     */
-    protected function changeWorkingDirectory($directory = null)
-    {
-        if (is_null($directory)) {
-            return chdir(getenv('CRUNZ_HOME'));
-        }
-
-        if (file_exists($directory)) {
-            chdir($directory);
-        }
-    }
-
-    /**
-     * Run the command in the background using exec.
-     *
-     * @return void
-     */
-    protected function runCommandInBackground()
-    {
-        $this->changeWorkingDirectory($this->currentWorkingDirectory);
-
-        exec($this->buildCommand());
-    }
-
-    /**
-     * Run the command in the foreground.
-     *
-     * @param  \Crunz\Invoker $invoker
-     * @return void
-     */
-    protected function runCommandInForeground(Invoker $invoker)
-    {
-        $this->callBeforeCallbacks($invoker);
-
-        (new Process(
-            trim($this->buildCommand(), '& ')
-        ))->run();
-
-        $this->callAfterCallbacks($invoker);
     }
 
     /**
@@ -247,10 +207,30 @@ class Event
      */
     public function buildCommand()
     {
+        // Change the current working directory if needed.
+        if (!is_null($this->cwd)) {
+            $this->command = 'cd ' .  $this->cwd . '; ' . $this->command;
+        }
+
         $redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
         $command  = $this->command . $redirect . $this->output . ' 2>&1 &';
 
         return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
+    }
+
+    /**
+    * Check if another instance of the event is still running
+    *
+    * @return boolean
+    */
+    public function islocked()
+    {
+        $lock_file = $this->lockFilePath();
+        
+        $pid       = file_exists($lock_file) ? trim(file_get_contents($lock_file)) : null;
+
+        return (!is_null($pid) && posix_getsid($pid)) ? true : false;
+   
     }
 
     /**
@@ -261,21 +241,6 @@ class Event
     protected function lockFilePath()
     {
         return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->expression . $this->command);
-    }
-
-    /**
-    * Check if another instance of the event is still running
-    *
-    * @return boolean
-    */
-    public function islocked()
-    {
-        $lockfile = $this->lockFilePath();
-        
-        $pid      = file_exists($lockfile) ? trim(file_get_contents($lockfile)) : null;
-
-        return (!is_null($pid) && posix_getsid($pid)) ? true : false;
-   
     }
 
     /**
