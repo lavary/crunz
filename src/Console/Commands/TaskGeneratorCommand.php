@@ -63,12 +63,12 @@ class TaskGeneratorCommand extends Command
 
                 new InputArgument('taskfile',         InputArgument::REQUIRED,   'The task file name'),               
                 
-                new InputOption('frequency',    'f',  InputOption::VALUE_OPTIONAL,   'The task\'s frequency',   array_get($this->defaults, 'frequency')),
-                new InputOption('constraint',   'c',  InputOption::VALUE_OPTIONAL,   'The task\'s constraint',  array_get($this->defaults, 'constraint')),
-                new InputOption('in',           'i',  InputOption::VALUE_OPTIONAL,   'The command\'s path',     array_get($this->defaults, 'in')),
-                new InputOption('run',          'r',  InputOption::VALUE_OPTIONAL,   'The task\'s command',     array_get($this->defaults, 'run')),
-                new InputOption('description',  'd',  InputOption::VALUE_OPTIONAL,   'The task\'s description', array_get($this->defaults, 'description')),
-                new InputOption('type',         't',  InputOption::VALUE_OPTIONAL,   'The task type',           array_get($this->defaults, 'type')),
+                new InputOption('frequency',    'f',  InputOption::VALUE_OPTIONAL,   'The task\'s frequency',   $this->defaults['frequency']),
+                new InputOption('constraint',   'c',  InputOption::VALUE_OPTIONAL,   'The task\'s constraint',  $this->defaults['constraint']),
+                new InputOption('in',           'i',  InputOption::VALUE_OPTIONAL,   'The command\'s path',     $this->defaults['in']),
+                new InputOption('run',          'r',  InputOption::VALUE_OPTIONAL,   'The task\'s command',     $this->defaults['run']),
+                new InputOption('description',  'd',  InputOption::VALUE_OPTIONAL,   'The task\'s description', $this->defaults['description']),
+                new InputOption('type',         't',  InputOption::VALUE_OPTIONAL,   'The task type',           $this->defaults['type']),
 
             ])
             ->setHelp('This command makes a task stub for you to work on.');
@@ -86,9 +86,9 @@ class TaskGeneratorCommand extends Command
     {
         $this->arguments = $input->getArguments();        
         $this->options   = $input->getOptions();  
+
         $this->stub      = $this->getStub();
-    
-          
+       
         $helper          = $this->getHelper('question');
         $question        = new Question('<question>Where do you want to save the file? (Press enter for the current directory)</question> ');
         $output_path     = $helper->ask($input, $output, $question);
@@ -129,7 +129,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function outputFile()
     {
-       return preg_replace('/Tasks|\.php$/', '', array_get($this->arguments, 'taskfile')) . 'Tasks.php';
+       return preg_replace('/Tasks|\.php$/', '', $this->arguments['taskfile']) . 'Tasks.php';
     }
 
     /**
@@ -149,7 +149,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function type()
     {
-        return array_get($this->options, 'type');
+        return $this->options['type'];
     }
 
 
@@ -160,7 +160,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function replaceFrequency()
     {
-        $this->stub = str_replace('DummyFrequency', rtrim(array_get($this->options, 'frequency'), '()'), $this->stub);
+        $this->stub = str_replace('DummyFrequency', rtrim($this->options['frequency'], '()'), $this->stub);
         return $this;
     }
 
@@ -171,7 +171,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function replaceConstraint()
     {
-        $this->stub = str_replace('DummyConstraint', rtrim(array_get($this->options, 'constraint'), '()'), $this->stub);
+        $this->stub = str_replace('DummyConstraint', rtrim($this->options['constraint'], '()'), $this->stub);
         return $this;
     }
 
@@ -182,7 +182,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function replaceCommand()
     {
-        $this->stub = str_replace('DummyCommand', array_get($this->options, 'run'), $this->stub);
+        $this->stub = str_replace('DummyCommand', $this->options['run'], $this->stub);
         return $this;
     }
 
@@ -193,7 +193,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function replacePath()
     {
-        $this->stub = str_replace('DummyPath', array_get($this->options, 'in'), $this->stub);
+        $this->stub = str_replace('DummyPath', $this->options['in'], $this->stub);
         return $this;
     }
 
@@ -204,7 +204,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function replaceDescription()
     {
-        $this->stub = str_replace('DummyDescription', array_get($this->options, 'description'), $this->stub);
+        $this->stub = str_replace('DummyDescription', $this->options['description'], $this->stub);
         return $this;
     }
     

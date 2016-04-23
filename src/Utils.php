@@ -20,6 +20,19 @@ class Utils
     }
 
     /**
+     * Get a subset of the items from the given array
+     * From Illuminate/support helper functions
+     *
+     * @param  array  $array
+     * @param  array|string  $keys
+     * @return array
+     */
+    public static function arrayOnly($array, $keys)
+    {
+        return array_intersect_key($array, array_flip((array) $keys));
+    }
+
+    /**
      * Converts words to numbers
      *
      * @param  string $text

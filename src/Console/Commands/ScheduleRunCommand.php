@@ -64,7 +64,7 @@ class ScheduleRunCommand extends Command
     {        
         $this->arguments = $input->getArguments();
         $this->options   = $input->getOptions();
-        $src             = array_get($this->arguments, 'source');
+        $src             = $this->arguments['source'];
         $task_files      = $this->collectFiles($src); 
     
         if (!count($task_files)) {

@@ -64,7 +64,7 @@ class ScheduleListCommand extends Command
     {        
         $this->options   = $input->getOptions();
         $this->arguments = $input->getArguments();
-        $src             = array_get($this->arguments, 'source');
+        $src             = $this->arguments['source'];
         
         $task_files      = $this->collectFiles($src); 
     

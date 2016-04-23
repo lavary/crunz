@@ -63,10 +63,10 @@ class Schedule
      * @return string
      */
     protected function compileParameters(array $parameters)
-    {
-        return collect($parameters)->map(function ($value, $key) {
+    {    
+        return implode(' ', array_map(function($value, $key) {
             return is_numeric($key) ? $value : $key . '=' . (is_numeric($value) ? $value : ProcessUtils::escapeArgument($value));
-        })->implode(' ');
+        }, $parameters, array_keys($parameters)));
     }
 
     /**

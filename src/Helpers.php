@@ -25,3 +25,18 @@ if (!function_exists('word2number')) {
         return Utils::wordToNumber($text); 
     }
 }
+
+
+if (!function_exists('array_only')) {
+    /**
+     * Get a subset of the items from the given array
+     * From Illuminate/support helper functions
+     *
+     * @param  array  $array
+     * @param  array|string  $keys
+     * @return array
+     */
+    function array_only($array, $keys) {
+        return Utils::arrayOnly($array, $keys);
+    }
+}
