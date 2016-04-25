@@ -12,7 +12,7 @@ Crunz is written in PHP, but it can execute console commands, shell scripts or P
 
 ## Installation
 
-To install the package, run the following command:
+You can use composer:
 
 ```bash
 composer require lavary/crunz
