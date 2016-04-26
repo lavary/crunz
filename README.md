@@ -24,7 +24,7 @@ composer require lavary/crunz
 This is the only cron job you need to install at server level:
 
 ```bash
-* * * * * /path/to/vendor/bin/crunz schedule:run  >> /dev/null 2>&1
+* * * * * /vendor/bin/crunz schedule:run  >> /dev/null 2>&1
 ``` 
 
 ## Usage
