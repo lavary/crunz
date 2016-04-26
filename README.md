@@ -8,11 +8,11 @@ Install a cron job once and for all, manage the rest right from the code.
 
 Crunz is a framework-agnostic package to schedule periodic tasks (cron jobs) in PHP using a fluent API.
 
-Crunz is wirtten in PHP, but it can execute console commands, shell scripts or PHP CLI scripts.
+Crunz is written in PHP, but it can execute console commands, shell scripts or PHP CLI scripts.
 
 ## Installation
 
-To install the package, run the following command:
+You can use composer:
 
 ```bash
 composer require lavary/crunz
@@ -24,12 +24,12 @@ composer require lavary/crunz
 This is the only cron job you need to install at server level:
 
 ```bash
-* * * * * /path/to/vendor/bin/crunz schedule:run  >> /dev/null 2>&1
+* * * * * /vendor/bin/crunz schedule:run  >> /dev/null 2>&1
 ``` 
 
 ## Usage
 
-To create a task, you need to create a file ending with `Tasks.php`, for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
+To create a task, you need to create a file, ending with `Tasks.php`. for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
 
 By default the source directory is `tasks/` directory within your current working directory (the directory you're calling command `crunz`)
 
@@ -301,7 +301,7 @@ $schedule->run('./backup.sh')
 // ...
 ```
 
-> **Note** The time format can be in any format readble by `strtotime`.
+> **Note** The time format can be in any format readable by `strtotime`.
 
 ## Wake Up and Sleep Time 
 
@@ -340,7 +340,7 @@ $schedule->run('./backup.sh')
 
 ```
 
-> **Note** The time format can be in any format readble by `strtotime`.
+> **Note** The time format can be in any format readable by `strtotime`.
 
 ## Schedule Under Certain Conditions
 
