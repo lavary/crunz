@@ -75,7 +75,8 @@ class ScheduleListCommand extends Command
 
         $table = new Table($output);   
         $table->setHeaders(['#', 'Task', 'Expression', 'Command to Run']);
-
+        $row = 0;
+        
         foreach ($task_files as $key => $taskFile) {
                         
             $schedule = require $taskFile->getRealPath();            
@@ -83,10 +84,11 @@ class ScheduleListCommand extends Command
                 continue;
             } 
             
-            foreach ($schedule->events() as $key => $event) {
+            $events = $schedule->events();
+            foreach ($events as $event) {
               
               $table->addRow([
-                $key + 1,
+                ++$row,
                 $event->description,
                 $event->getExpression(),
                 $event->command,
