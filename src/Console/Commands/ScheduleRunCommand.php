@@ -72,6 +72,8 @@ class ScheduleRunCommand extends Command
             exit();
         }
 
+        $startEvent = false;
+
         foreach ($task_files as $key => $taskFile) {
                         
             $schedule = require $taskFile->getRealPath();            
@@ -82,8 +84,7 @@ class ScheduleRunCommand extends Command
             $events = $schedule->dueEvents(new Invoker());
             
             if (!count($events)) {
-                $output->writeln('<comment>No task is due!</comment>');
-                exit();
+                continue;
             }
             
             foreach ($events as $event) {
@@ -94,7 +95,12 @@ class ScheduleRunCommand extends Command
                 
                 $event->run(new Invoker());
             }
-        } 
+
+            $startEvent = true;
+        }
+        if (!$startEvent) {
+            $output->writeln('<comment>No task is due!</comment>');
+        }
     }
  
     /**
