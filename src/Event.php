@@ -213,9 +213,14 @@ class Event
         }
 
         $redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
-        $command  = $this->command . $redirect . $this->output . ' 2>&1 &';
-
-        return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
+        $command  = $this->command . $redirect . $this->output;
+        if (! stristr(strtolower(PHP_OS), 'bsd')) {
+            $command .= ' 2>&1 &';
+            return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
+        } else {
+            $command .= ' &';
+            return $this->user ? 'su -m ' . $this->user . ' -c "' . $command . '"' : $command;
+        }
     }
 
     /**

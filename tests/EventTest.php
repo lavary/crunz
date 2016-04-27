@@ -159,7 +159,12 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $e = new Event('php -i');
 
         $defaultOutput = (DIRECTORY_SEPARATOR == '\\') ? 'NUL' : '/dev/null';
-        $this->assertSame("php -i > {$defaultOutput} 2>&1 &", $e->buildCommand());
+        if (! stristr(strtolower(PHP_OS), 'bsd')) {
+            $this->assertSame("php -i > {$defaultOutput} 2>&1 &", $e->buildCommand());
+        } else {
+            $this->assertSame("php -i > {$defaultOutput} &", $e->buildCommand());
+        }
+
     }
 
     public function testIsDue()
