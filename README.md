@@ -151,19 +151,21 @@ every[CamelCaseWordNumber]Minute(s)|Hour(s)|Day(s)|Month(s)|Week(s)
 
 ```
 
-For example, all the following methods are valid:
+Usage:
 
-* `everyThirtyFiveHours`
-* `everyFiveMonths`
-* `everyOneMinute`
-* `everyMinute`
-* `everyThirtySevenMinutes`
-* `everyEightyThreeWeeks`
-* `everyFiftyHours`
-* `everyTwoHundredDays`
-* `everyOneThousandAndEightHundredFiftyFiveMinutes`
-* ...
+```php
+<?php
 
+// ...
+
+$schedule->run('./deploy.sh')
+         ->in('/home')
+         ->everyThirtySevenMinutes();
+         
+// ...
+
+return $schedule;
+```
 
 Alternatively, you may use `every()` method (with proper arguments) to achieve the same result:
 
