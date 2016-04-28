@@ -90,7 +90,7 @@ return $schedule;
 
 ## Generating Task Files Using the Task Generator
 
-You can use the `crunz` command-line utility, to generate a task file. You can edit the file later if you need.
+You can use the `crunz` command-line utility, to generate a task file and edit the file later if you need.
 
 To create a task named `GeneralTasks.php` which runs every five minutes on weekdays, we run the following command:
 
