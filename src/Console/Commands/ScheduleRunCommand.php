@@ -72,7 +72,7 @@ class ScheduleRunCommand extends Command
             exit();
         }
 
-        $startEvent = false;
+        $running_events = [];
 
         foreach ($task_files as $key => $taskFile) {
                         
@@ -82,24 +82,33 @@ class ScheduleRunCommand extends Command
             } 
 
             $events = $schedule->dueEvents(new Invoker());
-            
-            if (!count($events)) {
-                continue;
-            }
-            
             foreach ($events as $event) {
                 
                 echo '[', date('Y-m-d H:i:s'), '] Running scheduled command: ', $event->getSummaryForDisplay(), PHP_EOL;
                 echo $event->buildCommand(), PHP_EOL;
                 echo '---', PHP_EOL;
                 
-                $event->run(new Invoker());
+                // Running pre-execution hooks and the event itself
+                $running_events[] = $event->callBeforeCallbacks(new Invoker())
+                                          ->run(new Invoker());
             }
-
-            $startEvent = true;
         }
-        if (!$startEvent) {
+
+        if (!count($running_events)) {
             $output->writeln('<comment>No task is due!</comment>');
+            exit();
+        }
+
+        // Running the post-execution hooks
+        while (count($running_events)) {
+            foreach ($running_events as $key => $event) {
+                if ($event->process->isRunning()) {
+                    continue;
+                }
+
+                $event->callAfterCallbacks(new Invoker());
+                unset($running_events[$key]);
+            }
         }
     }
  

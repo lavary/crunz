@@ -19,6 +19,13 @@ class Event
     public $command;
 
     /**
+     * Process that runs the event
+     *
+     * @var Symfony\Component\Process\Process
+     */
+    public $process;
+
+    /**
      * The cron expression representing the event's frequency.
      *
      * @var string
@@ -147,18 +154,24 @@ class Event
       */
     public function run(Invoker $invoker)
     {
-        if (count($this->beforeCallbacks)) {
-            $this->callBeforeCallbacks($invoker);
+        // Starting the process asynchronously
+        $this->process = new Process(trim($this->buildCommand(), '& '));
+        $this->process->start();
+
+        // Lock the process if preventOverlapping is set to True
+        if ($this->preventOverlapping) {
+            file_put_contents($this->lockFilePath(), $this->process->getPid());
+
+            // Delete the file when the task is completed
+            $this->after(function() {
+                $lock_file = $this->lockFilePath();
+                if (file_exists($lock_file)) {
+                    unlink($lock_file);
+                }
+            });
         }
 
-        (new Process(
-            trim($this->buildCommand(), '& ')
-        ))->run();
-
-
-        if (count($this->afterCallbacks)) {
-            $this->callAfterCallbacks($invoker);
-        }
+        return $this;
     }
 
      /**
@@ -180,11 +193,13 @@ class Event
      * @param  \Crunz\Invoker $invoker
      * @return void
      */
-    protected function callBeforeCallbacks(Invoker $invoker)
+    public function callBeforeCallbacks(Invoker $invoker)
     {
         foreach ($this->beforeCallbacks as $callback) {
             $invoker->call($callback);
         }
+
+        return $this;
     }
 
     /**
@@ -193,11 +208,13 @@ class Event
      * @param  \Crunz\Invoker $invoker
      * @return void
      */
-    protected function callAfterCallbacks(Invoker $invoker)
+    public function callAfterCallbacks(Invoker $invoker)
     {
         foreach ($this->afterCallbacks as $callback) {
             $invoker->call($callback);
         }
+
+        return $this;
     }
 
     /**
@@ -213,6 +230,7 @@ class Event
         }
 
         $redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
+
         $command  = $this->command . $redirect . $this->output;
         if (! stristr(strtolower(PHP_OS), 'bsd')) {
             $command .= ' 2>&1 &';
@@ -228,7 +246,7 @@ class Event
     *
     * @return boolean
     */
-    public function islocked()
+    public function isLocked()
     {
         $lock_file = $this->lockFilePath();
         
