@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Finder\Finder;
+use Crunz\TaskfileFinder;
 
 use Crunz\Schedule;
 
@@ -66,7 +66,7 @@ class ScheduleListCommand extends Command
         $this->arguments = $input->getArguments();
         $src             = $this->arguments['source'];
         
-        $task_files      = $this->collectFiles($src); 
+        $task_files      = TaskfileFinder::collectFiles($src); 
     
         if (!count($task_files)) {
             $output->writeln('<comment>No task found!</comment>');
@@ -98,26 +98,6 @@ class ScheduleListCommand extends Command
         }
 
         $table->render(); 
-    }
- 
-    /**
-    * Collect all task files
-    *
-    * @param  string $source
-    * @return Iterator
-    */
-    public static function collectFiles($source)
-    {    
-        if(!file_exists($source)) {
-            return [];
-        }
-        
-        $finder   = new Finder();
-        $iterator = $finder->files()
-                  ->name('*Tasks.php')
-                  ->in($source);
-        
-        return $iterator;
     }
   
 }

@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Finder\Finder;
+use Crunz\TaskfileFinder;
 
 use Crunz\Schedule;
 use Crunz\Invoker;
@@ -47,7 +47,9 @@ class ScheduleRunCommand extends Command
         $this->setName('schedule:run')
              ->setDescription('Start the scheduler')
              ->setDefinition([
-                new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', getenv('CRUNZ_HOME') . $this->defaults['src']), 
+                new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', getenv('CRUNZ_HOME') . $this->defaults['src']),
+				new InputOption('task', '-t', InputOption::VALUE_OPTIONAL, 'The task to run from the list.', null), 
+				new InputOption('force', '-f', InputOption::VALUE_NONE, 'The command will run instantly.', null), 
             ])
              ->setHelp('This command starts the scheduler.');
      } 
@@ -65,13 +67,14 @@ class ScheduleRunCommand extends Command
         $this->arguments = $input->getArguments();
         $this->options   = $input->getOptions();
         $src             = $this->arguments['source'];
-        $task_files      = $this->collectFiles($src); 
-    
+        $task_files      = TaskfileFinder::collectFiles($src); 
+		$task			 = $this->options['task']; 
+				    
         if (!count($task_files)) {
             $output->writeln('<comment>No task found!</comment>');
             exit();
         }
-
+		
         $running_events = [];
         
         foreach ($task_files as $key => $taskFile) {
@@ -81,19 +84,19 @@ class ScheduleRunCommand extends Command
                 continue;
             } 
 
-            $events = $schedule->dueEvents(new Invoker());                        
-            foreach ($events as $event) {
-                
+            $events = $schedule->dueEvents(new Invoker());   
+		foreach ($events as $event) {
+				
                 echo '[', date('Y-m-d H:i:s'), '] Running scheduled command: ', $event->getSummaryForDisplay(), PHP_EOL;
                 echo $event->buildCommand(), PHP_EOL;
                 echo '---', PHP_EOL;
                 
                 // Running pre-execution hooks and the event itself
                 $running_events[] = $event->callBeforeCallbacks(new Invoker())
-                                          ->run(new Invoker());                
-            }
+                                          ->run(new Invoker());   
+		}
         }
-
+		
         if (!count($running_events)) {
             $output->writeln('<comment>No task is due!</comment>');
             exit();
@@ -110,26 +113,6 @@ class ScheduleRunCommand extends Command
                 unset($running_events[$key]);
             }
         }
-    }
- 
-    /**
-    * Collect all task files
-    *
-    * @param  string $source
-    * @return Iterator
-    */
-    public static function collectFiles($source)
-    {    
-        if(!file_exists($source)) {
-            return [];
-        }
-        
-        $finder   = new Finder();
-        $iterator = $finder->files()
-                  ->name('*Tasks.php')
-                  ->in($source);
-        
-        return $iterator;
     }
   
 }
