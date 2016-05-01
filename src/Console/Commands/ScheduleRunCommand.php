@@ -74,11 +74,11 @@ class ScheduleRunCommand extends Command
 		$this->options = $input->getOptions();
 		$src = $this->arguments['source'];
 		$task_files = TaskfileFinder::collectFiles($src);
-		$requsted_task = $this->options['task'];
+		$requested_task_number = $this->options['task'];
 		$force = (bool) $this->options['force'];
 		$this->output = $output;
 
-		$events = $this->getEvents($task_files, $requsted_task, $force);
+		$events = $this->getEvents($task_files, $requested_task_number, $force);
 		$this->runEvents($events);
 	}
 
@@ -86,12 +86,12 @@ class ScheduleRunCommand extends Command
 	 * Gets all the events
 	 *
 	 * @param $task_files
-	 * @param $requsted_task If this is set the method only return the requested task
-	 * @param $force If true, this method returns all events otherwise it only returns due events
+	 * @param $requested_task_number If this is set the method only returns the requested task
+	 * @param $force If set to true, this method returns all events, if false it only returns events which are due
 	 *
 	 * @return array Returns all the events as requested
 	 */
-	protected function getEvents($task_files, $requsted_task, $force)
+	protected function getEvents($task_files, $requested_task_number, $force)
 	{
 		if (!count($task_files))
 		{
@@ -105,13 +105,19 @@ class ScheduleRunCommand extends Command
 			{
 				continue;
 			}
-
-			$events = $schedule->events();
-			$dueEvents = $schedule->dueEvents(new Invoker());
+			$eventsTemp = $schedule->events();
+			foreach ($eventsTemp as $event) {
+				$events[] = $event;
+			}
+			$dueEventsTemp = $schedule->dueEvents(new Invoker());
+			foreach ($dueEventsTemp as $dueEvent) {
+				$dueEvents[] = $dueEvent;
+			}
 		}
-		if ($requsted_task !== null)
+		
+		if ($requested_task_number !== null)
 		{
-			return $this->getTask($events, $dueEvents, $requsted_task, $force);
+			return $this->getTask($events, $dueEvents, $requested_task_number, $force);
 		}
 		else
 		{
@@ -163,23 +169,27 @@ class ScheduleRunCommand extends Command
 	 *
 	 * @param $events  All available events
 	 * @param $dueEvents  All due events
-	 * @param $requested_task The number of requested task, as it is listed using schedule:list
+	 * @param $requested_task_number The requested task, as it is defined using schedule:list
 	 *
 	 * @return array Returns the requested event, exit with error message otherwise
 	 */
-	protected function getTask($events, $dueEvents, $requsted_task, $force)
+	protected function getTask($events, $dueEvents, $requested_task_number, $force)
 	{
-		if (empty($events[$requsted_task - 1]))
+		// The schdeule:list command displays the tasks starting with 1, and the events array is 0 based, 
+		// so we need to substract 1 from the requested task number  
+		$requested_task_key = $requested_task_number - 1;
+		
+		if (empty($events[$requested_task_key]))
 		{
 			$this->outputComment('The requested task does not exists.');
 		}
-		elseif (!empty($events[$requsted_task - 1]) && empty($dueEvents[$requsted_task - 1]) && !$force)
+		elseif (!empty($events[$requested_task_key]) && empty($dueEvents[$requested_task_key]) && !$force)
 		{
 			$this->outputComment('The requested task exists but it is not due.');
 		}
 		else
 		{
-			return [$events[$requsted_task - 1]];
+			return [$events[$requested_task_key]];
 		}
 	}
 
