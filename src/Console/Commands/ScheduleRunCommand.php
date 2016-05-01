@@ -45,6 +45,13 @@ class ScheduleRunCommand extends Command
 	protected $output;
 
 	/**
+	 * Output Message
+	 *
+	 * @var $output_message
+	 */
+	protected $output_message;
+
+	/**
 	 * Configures the current command
 	 *
 	 */
@@ -79,7 +86,14 @@ class ScheduleRunCommand extends Command
 		$this->output = $output;
 
 		$events = $this->getEvents($task_files, $requested_task_number, $force);
-		$this->runEvents($events);
+		if (!empty($events))
+		{
+			$this->runEvents($events);
+		}
+		else
+		{
+			$this->outputComment($this->output_message);
+		}
 	}
 
 	/**
@@ -95,8 +109,11 @@ class ScheduleRunCommand extends Command
 	{
 		if (!count($task_files))
 		{
-			$this->outputComment('No task found!');
+			$this->output_message = 'No task found!';
 		}
+
+		$events = array();
+		$dueEvents = array();
 
 		foreach ($task_files as $taskFile) {
 
@@ -105,6 +122,7 @@ class ScheduleRunCommand extends Command
 			{
 				continue;
 			}
+
 			$eventsTemp = $schedule->events();
 			foreach ($eventsTemp as $event) {
 				$events[] = $event;
@@ -114,13 +132,18 @@ class ScheduleRunCommand extends Command
 				$dueEvents[] = $dueEvent;
 			}
 		}
-		
+
 		if ($requested_task_number !== null)
 		{
-			return $this->getTask($events, $dueEvents, $requested_task_number, $force);
+			return $this->getTask($events, $requested_task_number, $force);
 		}
 		else
 		{
+			if (empty($events) OR (empty($dueEvents) && !$force)) 
+			{
+				$this->output_message = 'No task is due.';
+				return array();
+			}
 			return ($force) ? $events : $dueEvents;
 		}
 	}
@@ -135,10 +158,12 @@ class ScheduleRunCommand extends Command
 	{
 		$running_events = [];
 		foreach ($events as $event) {
+			$msg = '';
+			$msg .= '[' . date('Y-m-d H:i:s') . '] Running scheduled command: ' . $event->getSummaryForDisplay() . PHP_EOL;
+			$msg .= $event->buildCommand() . PHP_EOL;
+			$msg .= '---' . PHP_EOL;
 
-			echo '[', date('Y-m-d H:i:s'), '] Running scheduled command: ', $event->getSummaryForDisplay(), PHP_EOL;
-			echo $event->buildCommand(), PHP_EOL;
-			echo '---', PHP_EOL;
+			$this->outputComment($msg);
 
 			// Running pre-execution hooks and the event itself
 			$running_events[] = $event->callBeforeCallbacks(new Invoker())
@@ -168,27 +193,29 @@ class ScheduleRunCommand extends Command
 	 * Gets the requested task
 	 *
 	 * @param $events  All available events
-	 * @param $dueEvents  All due events
 	 * @param $requested_task_number The requested task, as it is defined using schedule:list
-	 *
+	 * @param $force 
 	 * @return array Returns the requested event, exit with error message otherwise
 	 */
-	protected function getTask($events, $dueEvents, $requested_task_number, $force)
+	protected function getTask($events, $requested_task_number, $force)
 	{
 		// The schdeule:list command displays the tasks starting with 1, and the events array is 0 based, 
 		// so we need to substract 1 from the requested task number  
 		$requested_task_key = $requested_task_number - 1;
-		
+
 		if (empty($events[$requested_task_key]))
 		{
-			$this->outputComment('The requested task does not exists.');
-		}
-		elseif (!empty($events[$requested_task_key]) && empty($dueEvents[$requested_task_key]) && !$force)
-		{
-			$this->outputComment('The requested task exists but it is not due.');
+			$this->output_message = 'The requested task does not exists.';
+			return array();
 		}
 		else
 		{
+			$isTaskDue = (bool) $events[$requested_task_key]->isDue(new Invoker());
+			if (!$isTaskDue && !$force)
+			{
+				$this->outputComment('The requested task exists but it is not due.');
+				return array();
+			}
 			return [$events[$requested_task_key]];
 		}
 	}
@@ -199,7 +226,6 @@ class ScheduleRunCommand extends Command
 		{
 			$this->output->writeln("<comment>$comment</comment>");
 		}
-		exit();
 	}
 
 }
