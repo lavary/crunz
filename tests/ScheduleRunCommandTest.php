@@ -46,7 +46,7 @@ class ScheduleRunCommandTest extends PHPUnit_Framework_TestCase
 	public function testScheduleRunCommandOutputTaskExist()
 	{
 		$dw = (int) date( "w", time());
-		$assertmsg = ($dw===0) ? "Test task" : 'No task is due';
+		$assertmsg = ($dw===0) ? "Test task" : 'The requested task exists but it is not due.';
 		$this->executeCommand(false, 1, $assertmsg);
 	}
 
