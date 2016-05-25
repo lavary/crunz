@@ -1,4 +1,4 @@
-#!/usr/bin/env php
+#!/usr/local/bin/php
 <?php
 
 /*
@@ -14,6 +14,7 @@
 */
 
 use Crunz\Console\CommandKernel;
+use Crunz\Configuration;
 
 foreach ([__DIR__ . '/../autoload.php', __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php', __DIR__ . '/../../vendor/autoload.php'] as $file) {
     if (file_exists($file)) {
@@ -33,7 +34,6 @@ if (!defined('AUTOLOAD_PHP_FILE')) {
 }
 
 require AUTOLOAD_PHP_FILE;
-putenv('CRUNZ_HOME=' . rtrim(getcwd(), '/'));
 
-$kernel = new CommandKernel('Crunz Command Line Interface', 'v1.0');
-$kernel->handle();
+$kernel      = (new CommandKernel('Crunz Command Line Interface', 'v1.2.0'))
+                ->handle();

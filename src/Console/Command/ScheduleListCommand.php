@@ -1,8 +1,7 @@
 <?php
 
-namespace Crunz\Console\Commands;
+namespace Crunz\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,46 +10,24 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Finder\Finder;
 
 use Crunz\Schedule;
+use Crunz\Configuration;
 
 class ScheduleListCommand extends Command
 {
     /**
-     * Command arguments
-     *
-     * @var array
-     */
-    protected $arguments;
-
-    /**
-     * Command options
-     *
-     * @var array
-     */
-    protected $options;
-
-    /**
-     * Default option values
-     *
-     * @var array
-     */
-    protected $defaults = [
-
-        'src' => '/tasks',
-    ];
-
-    /**
      * Configures the current command
      *
      */
-     protected function configure()
-     {
-        $this->setName('schedule:list')
-             ->setDescription('Display the list of scheduled tasks')
-             ->setDefinition([
-                new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', getenv('CRUNZ_HOME') . $this->defaults['src']), 
-            ])
-             ->setHelp('This command displays the scheduled tasks in tabular format.');
-     } 
+    protected function configure()
+    {
+       $this->setName('schedule:list')
+            ->setDescription('Display the list of scheduled tasks')
+            ->setDefinition([
+               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', $this->config('tasks_path')), 
+           ])
+           ->setConfiguration(Configuration::getInstance())
+           ->setHelp('This command displays the scheduled tasks in tabular format.');
+    } 
    
     /**
      * Executes the current command
@@ -66,7 +43,7 @@ class ScheduleListCommand extends Command
         $this->arguments = $input->getArguments();
         $src             = $this->arguments['source'];
         
-        $task_files      = $this->collectFiles($src); 
+        $task_files      = $this->collectTasksFiles($src); 
     
         if (!count($task_files)) {
             $output->writeln('<comment>No task found!</comment>');
@@ -101,12 +78,12 @@ class ScheduleListCommand extends Command
     }
  
     /**
-    * Collect all task files
-    *
-    * @param  string $source
-    * @return Iterator
-    */
-    public static function collectFiles($source)
+     * Collect all task files
+     *
+     * @param  string $source
+     * @return Iterator
+     */
+    public static function collectTaskFiles($source)
     {    
         if(!file_exists($source)) {
             return [];

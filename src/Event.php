@@ -72,7 +72,7 @@ class Event
      *
      * @var string
      */
-    public $output = '/dev/null';
+    protected $output = '/dev/null';
 
     /**
      * Indicates whether output should be appended.
@@ -229,18 +229,18 @@ class Event
             $this->command = 'cd ' .  $this->cwd . '; ' . $this->command;
         }
 
-        $redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
+        //$redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
         
-        $command  = $this->command . $redirect . $this->output . ' 2>&1 &';
+        $command  = $this->command;
                 
         return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
     }
 
     /**
-    * Check if another instance of the event is still running
-    *
-    * @return boolean
-    */
+     * Check if another instance of the event is still running
+     *
+     * @return boolean
+     */
     public function isLocked()
     {
         $lock_file = $this->lockFilePath();
@@ -421,18 +421,18 @@ class Event
         });
      }
 
-     /**
+    /**
      * Check if event should be off
      *
      * @param  string  $datetime
      * @return boolean
      */
-     public function to($datetime)
-     {          
+    public function to($datetime)
+    {          
         return $this->skip(function() use ($datetime) {
             return $this->past($datetime);
         });
-     }
+    }
 
     /**
      * Check if time hasn't arrived
@@ -440,10 +440,10 @@ class Event
      * @param  string  $time
      * @return boolean
      */
-     protected function notYet($datetime)
-     {  
+    protected function notYet($datetime)
+    {  
         return time() < strtotime($datetime);
-     }
+    }
 
     /**
      * Check if the time has passed
@@ -451,10 +451,10 @@ class Event
      * @param  string $time
      * @return boolean
      */
-     protected function past($datetime)
-     {
-        return time() > strtotime($datetime);
-     }
+    protected function past($datetime)
+    {
+       return time() > strtotime($datetime);
+    }
 
     /**
      * Schedule the event to run twice daily.
@@ -776,6 +776,39 @@ class Event
     {
         return $this->sendOutputTo($location, true);
     }
+
+    /**
+     * Log output to a file
+     *
+     * @param  string   $data
+     * @param  string   $output
+     * @param  boolean  $append
+     * @return $this
+     */
+    public function logOutput($data, $output = null, $append = true)
+    { 
+        if ($output == '/dev/null' || is_null($output)) {
+            return;
+        }
+
+        $flag = $append ? FILE_APPEND : 0;
+        file_put_contents($output, $data, $flag);
+
+        return $this;
+    }
+
+    /**
+     * Log event's output to the specified output file
+     *
+     * @param  string  $data
+     * @return $this
+     */
+    public function logEventOutput($data)
+    {
+        $this->logOutput($data, $this->output, $this->shouldAppendOutput);
+
+        return $this;
+    }
     
     /**
      * Register a callback to ping a given URL before the job runs.
@@ -922,11 +955,11 @@ class Event
     }
 
     /**
-    * Mask a cron expression
-    *
-    * @param  string $unit
-    * @return string
-    */
+     * Mask a cron expression
+     *
+     * @param  string $unit
+     * @return string
+     */
     protected function applyMask($unit) 
     {
         $cron = explode(' ', $this->expression);
@@ -939,12 +972,12 @@ class Event
     }
 
     /**
-    * Handling dynamic frequency methods
-    *
-    * @param  string $methodName
-    * @param  array  $params
-    * @return $this
-    */
+     * Handling dynamic frequency methods
+     *
+     * @param  string $methodName
+     * @param  array  $params
+     * @return $this
+     */
     public function __call($methodName, $params)
     {
         preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);

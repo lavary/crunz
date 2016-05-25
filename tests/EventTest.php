@@ -145,21 +145,11 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($e->cron('* * * * * *')->skip(function() { return true; })->isDue(new Invoker()));
     }
 
-    public function testOutputs()
-    {
-        $e = new Event('php -i');
-        $this->assertEquals('php -i >> /dev/null 2>&1 &', $e->appendOutputTo('/dev/null')->buildCommand());
-
-        $e = new Event('php -i');
-        $this->assertEquals('php -i > /dev/null 2>&1 &', $e->sendOutputTo('/dev/null')->buildCommand());
-    }
-
     public function testBuildCommand()
     {
         $e = new Event('php -i');
 
-        $defaultOutput = (DIRECTORY_SEPARATOR == '\\') ? 'NUL' : '/dev/null';
-        $this->assertSame("php -i > {$defaultOutput} 2>&1 &", $e->buildCommand());
+        $this->assertSame("php -i", $e->buildCommand());
     }
 
     public function testIsDue()

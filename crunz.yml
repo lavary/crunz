@@ -1,0 +1,7 @@
+# Configuration settings
+
+source:          ./tasks
+log_errors:      true
+errors_log_file: /Users/lavary/www/sites/Crunz/error.log
+log_output:      true
+output_log_file: /Users/lavary/www/sites/Crunz/output.log

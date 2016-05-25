@@ -1,8 +1,7 @@
 <?php
 
-namespace Crunz\Console\Commands;
+namespace Crunz\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,6 +9,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
+
+use Crunz\Configuration;
 
 class TaskGeneratorCommand extends Command
 {
@@ -20,20 +21,6 @@ class TaskGeneratorCommand extends Command
      * @var string
      */
     protected $stub;
-
-    /**
-     * Command arguments
-     *
-     * @var array
-     */
-    protected $arguments;
-
-    /**
-     * Command options
-     *
-     * @var array
-     */
-    protected $options;
 
     /**
      * Default option values
@@ -48,15 +35,14 @@ class TaskGeneratorCommand extends Command
         'run'         => 'command/to/execute',
         'description' => 'Task description',
         'type'        => 'basic',
-        'output'      => '/tasks',
     ];
 
     /**
      * Configures the current command
      *
      */
-     protected function configure()
-     {
+    protected function configure()
+    {
         $this->setName('make:task')
              ->setDescription('Generate a task stub')
              ->setDefinition([
@@ -71,10 +57,11 @@ class TaskGeneratorCommand extends Command
                 new InputOption('type',         't',  InputOption::VALUE_OPTIONAL,   'The task type',           $this->defaults['type']),
 
             ])
+            ->setConfiguration(Configuration::getInstance())
             ->setHelp('This command makes a task stub for you to work on.');
-     } 
+    } 
 
-     /**
+    /**
      * Executes the current command
      *
      * @param use Symfony\Component\Console\Input\InputInterface $input
@@ -93,8 +80,7 @@ class TaskGeneratorCommand extends Command
         $question        = new Question('<question>Where do you want to save the file? (Press enter for the current directory)</question> ');
         $output_path     = $helper->ask($input, $output, $question);
 
-        $output_path     = !is_null($output_path) ? $output_path : getenv('CRUNZ_HOME') . $this->defaults['output'];
-        
+        $output_path     = !is_null($output_path) ? $output_path : $this->config('tasks_path');
         if (!file_exists($output_path)) {
             mkdir($output_path, 0744, true);
         }
@@ -117,7 +103,7 @@ class TaskGeneratorCommand extends Command
               
         } 
 
-        $output->writeln('There was a problem when generating the file. Please check your command.');
+        $output->writeln('<comment>There was a problem when generating the file. Please check your command.</comment>');
         exit();
 
     }  

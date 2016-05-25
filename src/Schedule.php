@@ -20,10 +20,10 @@ class Schedule
      * @param  array  $parameters
      * @return \Crunz\Event
      */
-     public function run($command, array $parameters = array())
-     {   
-        return $this->command($command, $parameters);
-     }    
+    public function run($command, array $parameters = array())
+    {   
+       return $this->command($command, $parameters);
+    }    
 
     /**
      * Add a new command event to the schedule.
@@ -79,7 +79,7 @@ class Schedule
         return $this->events;
     }
 
-     /**
+    /**
      * Get all of the events on the schedule that are due.
      *
      * @param  \Crunz\Invoker $invoker
