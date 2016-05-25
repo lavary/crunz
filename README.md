@@ -29,7 +29,7 @@ This is the only cron job you need to install at server level:
 
 ## Usage
 
-To create a task, you need to create a file, ending with `Tasks.php`. for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
+To create a task, you need to create a PHP file, ending with `Tasks.php`. for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
 
 By default the source directory is `tasks/` directory within your current working directory (the directory you're calling command `crunz`)
 
@@ -151,19 +151,21 @@ every[CamelCaseWordNumber]Minute(s)|Hour(s)|Day(s)|Month(s)|Week(s)
 
 ```
 
-For example, all the following methods are valid:
+Usage:
 
-* `everyThirtyFiveHours`
-* `everyFiveMonths`
-* `everyOneMinute`
-* `everyMinute`
-* `everyThirtySevenMinutes`
-* `everyEightyThreeWeeks`
-* `everyFiftyHours`
-* `everyTwoHundredDays`
-* `everyOneThousandAndEightHundredFiftyFiveMinutes`
-* ...
+```php
+<?php
 
+// ...
+
+$schedule->run('./deploy.sh')
+         ->in('/home')
+         ->everyThirtySevenMinutes();
+         
+// ...
+
+return $schedule;
+```
 
 Alternatively, you may use `every()` method (with proper arguments) to achieve the same result:
 
