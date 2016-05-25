@@ -44,7 +44,7 @@ class ConfigGeneratorCommand extends Command
         $src = __DIR__ . '/../../../crunz.yml';  
         if (copy($src, $filename)) {
                 
-            $output->writeln('<info>The configuration file was generated successfully</info>');
+            $output->writeln('<info>The configuration file was generated successfully.</info>');
             exit();             
         } 
 

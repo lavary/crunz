@@ -41,9 +41,9 @@ class ScheduleListCommand extends Command
     {        
         $this->options   = $input->getOptions();
         $this->arguments = $input->getArguments();
-        $src             = $this->arguments['source'];
+        $src             = !is_null($this->arguments['source']) ? $this->arguments['source'] : $this->config('source');
         
-        $task_files      = $this->collectTasksFiles($src); 
+        $task_files      = $this->collectTaskFiles($src); 
     
         if (!count($task_files)) {
             $output->writeln('<comment>No task found!</comment>');

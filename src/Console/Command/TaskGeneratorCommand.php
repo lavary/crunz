@@ -80,7 +80,7 @@ class TaskGeneratorCommand extends Command
         $question        = new Question('<question>Where do you want to save the file? (Press enter for the current directory)</question> ');
         $output_path     = $helper->ask($input, $output, $question);
 
-        $output_path     = !is_null($output_path) ? $output_path : $this->config('tasks_path');
+        $output_path     = !is_null($output_path) ? $output_path : $this->config('source');
         if (!file_exists($output_path)) {
             mkdir($output_path, 0744, true);
         }
