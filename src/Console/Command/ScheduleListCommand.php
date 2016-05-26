@@ -83,7 +83,7 @@ class ScheduleListCommand extends Command
      * @param  string $source
      * @return Iterator
      */
-    public static function collectTaskFiles($source)
+    public function collectTaskFiles($source)
     {    
         if(!file_exists($source)) {
             return [];
