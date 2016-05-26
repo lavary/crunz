@@ -18,8 +18,15 @@ You can use composer:
 composer require lavary/crunz
 ```
 
-## Starting the Scheduler
+To modify the configurations, you need to make a copy of the configuration file by running the following command:
 
+```
+crunz publish:config
+```
+
+This will create a copy of the configuration file in the current working directory (the directory you're running this command).
+
+## Starting the Scheduler
 
 This is the only cron job you need to install at server level:
 
