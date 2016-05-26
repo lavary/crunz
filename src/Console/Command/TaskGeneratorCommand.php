@@ -193,6 +193,5 @@ class TaskGeneratorCommand extends Command
         $this->stub = str_replace('DummyDescription', $this->options['description'], $this->stub);
         return $this;
     }
-    
-      
+        
 }

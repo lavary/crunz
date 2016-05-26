@@ -75,6 +75,7 @@ class ScheduleRunCommand extends Command
                 }
                                 
                 $log = date('Y-m-d H:i:s') . ' [Performed: ' . $event->getSummaryForDisplay() . '] by running ' . $event->buildCommand() . PHP_EOL;                
+                
                 if ($event->process->isSuccessful()) {
                     
                     // Running post-execution hooks
@@ -121,7 +122,6 @@ class ScheduleRunCommand extends Command
 
             $events = $schedule->dueEvents(new Invoker());                        
             
-
             foreach ($events as $event) {
                 
                 // Running pre-execution hooks and the event itself

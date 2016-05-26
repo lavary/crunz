@@ -17,6 +17,7 @@ class CommandKernel extends SymfonyApplication
         \Crunz\Console\Command\ScheduleRunCommand::class,
         \Crunz\Console\Command\ScheduleListCommand::class,
         \Crunz\Console\Command\TaskGeneratorCommand::class,
+        \Crunz\Console\Command\ConfigGeneratorCommand::class,
     ];
 
     /**

@@ -50,7 +50,6 @@ class ConfigGeneratorCommand extends Command
 
         $output->writeln('<comment>There was a problem when generating the file.</comment>');
         exit();
-
     }  
 
 }
