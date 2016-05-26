@@ -91,7 +91,7 @@ class ScheduleListCommand extends Command
         
         $finder   = new Finder();
         $iterator = $finder->files()
-                  ->name('*Tasks.php')
+                  ->name('*' . $this->config('suffix'))
                   ->in($source);
         
         return $iterator;

@@ -21,7 +21,7 @@ class ConfigurationDefinition implements ConfigurationInterface {
                     ->info('path to the tasks directory' . PHP_EOL)
                 ->end()
                 
-                ->scalarNode('tasks_suffix')
+                ->scalarNode('suffix')
                     ->defaultValue('Tasks.php')
                     ->info('The suffix for filenames' .    PHP_EOL)
                 ->end()

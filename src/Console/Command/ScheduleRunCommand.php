@@ -155,7 +155,7 @@ class ScheduleRunCommand extends Command
         
         $finder   = new Finder();
         $iterator = $finder->files()
-                  ->name('*' . $this->config('tasks_suffix'))
+                  ->name('*' . $this->config('suffix'))
                   ->in($source);
         
         return $iterator;
