@@ -111,7 +111,7 @@ class ScheduleRunCommand extends Command
      *
      * @param  array $task_files
      */
-    public function runTasks(Array $task_files = [])
+    public function runTasks($task_files = [])
     {
         foreach ($task_files as $key => $taskFile) {
                         
