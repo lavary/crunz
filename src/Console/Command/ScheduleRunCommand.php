@@ -28,12 +28,12 @@ class ScheduleRunCommand extends Command
     protected function configure()
     {
        $this->setName('schedule:run')
-            ->setDescription('Start the scheduler')
+            ->setDescription('Start the event runner.')
             ->setDefinition([
                new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', $this->config('tasks_path')), 
            ])
            ->setConfiguration(Configuration::getInstance())
-           ->setHelp('This command starts the scheduler.');
+           ->setHelp('This command starts the Crunz event runner.');
     }
    
     /**
@@ -86,7 +86,7 @@ class ScheduleRunCommand extends Command
                     
                     if ($this->config('log_output')) {                          
                         $event->logOutput($output, $this->config('output_log_file'), true);
-                    } else if ($event->output != 'dev/null') {
+                    } else if ($event->output != '/dev/null') {
                         $event->logEventOutput($output);  
                     }
                     

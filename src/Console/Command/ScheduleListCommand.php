@@ -21,12 +21,12 @@ class ScheduleListCommand extends Command
     protected function configure()
     {
        $this->setName('schedule:list')
-            ->setDescription('Display the list of scheduled tasks')
+            ->setDescription('Display the list of scheduled tasks.')
             ->setDefinition([
                new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', $this->config('tasks_path')), 
            ])
            ->setConfiguration(Configuration::getInstance())
-           ->setHelp('This command displays the scheduled tasks in tabular format.');
+           ->setHelp('This command displays the scheduled tasks in a tabular format.');
     } 
    
     /**

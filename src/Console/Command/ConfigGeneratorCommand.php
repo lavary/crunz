@@ -20,7 +20,7 @@ class ConfigGeneratorCommand extends Command
     protected function configure()
     {
        $this->setName('publish:config')
-            ->setDescription('Generate a config file within your project\'s root directory')
+            ->setDescription('Generate a config file within your project\'s root directory.')
             ->setHelp('This generates a config file in YML format within the project\'s root directory.');
     } 
 

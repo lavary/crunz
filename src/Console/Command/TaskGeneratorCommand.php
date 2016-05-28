@@ -44,7 +44,7 @@ class TaskGeneratorCommand extends Command
     protected function configure()
     {
         $this->setName('make:task')
-             ->setDescription('Generate a task stub')
+             ->setDescription('Generate a task file skeleton.')
              ->setDefinition([
 
                 new InputArgument('taskfile',         InputArgument::REQUIRED,   'The task file name'),               
@@ -58,7 +58,7 @@ class TaskGeneratorCommand extends Command
 
             ])
             ->setConfiguration(Configuration::getInstance())
-            ->setHelp('This command makes a task stub for you to work on.');
+            ->setHelp('This command makes a task file skeleton.');
     } 
 
     /**
