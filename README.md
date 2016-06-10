@@ -18,8 +18,15 @@ You can use composer:
 composer require lavary/crunz
 ```
 
-## Starting the Scheduler
+To modify the configurations, you need to make a copy of the configuration file by running the following command:
 
+```
+crunz publish:config
+```
+
+This will create a copy of the configuration file in the current working directory (the directory you're running this command).
+
+## Starting the Scheduler
 
 This is the only cron job you need to install at server level:
 
@@ -29,7 +36,7 @@ This is the only cron job you need to install at server level:
 
 ## Usage
 
-To create a task, you need to create a file, ending with `Tasks.php`. for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
+To create a task, you need to create a PHP file, ending with `Tasks.php`. for instance `GeneralTasks.php`. You can create as many tasks files as you need. You can put all the tasks in one file, or across different files and directories based on their usage. 
 
 By default the source directory is `tasks/` directory within your current working directory (the directory you're calling command `crunz`)
 

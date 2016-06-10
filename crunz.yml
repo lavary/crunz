@@ -1,0 +1,8 @@
+# Configuration settings
+
+source:          ./tasks
+suffix:          Tasks.php
+log_errors:      false
+errors_log_file: /dev/null
+log_output:      false
+output_log_file: /dev/null
