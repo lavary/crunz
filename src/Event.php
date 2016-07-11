@@ -245,7 +245,7 @@ class Event
     {
         $lock_file = $this->lockFilePath();
         
-        $pid       = file_exists($lock_file) ? trim(file_get_contents($lock_file)) : null;
+        $pid       = file_exists($lock_file) ? (int)trim(file_get_contents($lock_file)) : null;
 
         return (!is_null($pid) && posix_getsid($pid)) ? true : false;
    
