@@ -926,6 +926,7 @@ class Event
             return $this;
         }
         
+        $value = $value == 1 ? '*' : '*/' . $value;
         return $this->spliceIntoPosition($this->fieldsPosition[$unit], $value)
                     ->applyMask($unit);
     }
@@ -986,22 +987,13 @@ class Event
             throw new \BadMethodCallException();
         }
 
-        $unit = strtolower($matches[2]);
+        $amount = !empty($matches[1]) ? word2number(split_camel($matches[1])) : 1;
         
-        if (!empty($matches[1]) && strtolower($matches[1]) != 'one') {                        
-            
-            $num = word2number(split_camel($matches[1]));
-            
-            if (!$num) {            
-                throw new \BadMethodCallException();
-            }
+        if (!$amount) {
+            throw new \BadMethodCallException();
+        }
 
-            return $this->every($unit, '*/' . $num); 
-
-        } else {           
-            return $this->every($unit, '*');
-        }  
-
+        return $this->every(strtolower($matches[2]), $amount);
     }
 
 }
