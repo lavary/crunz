@@ -395,7 +395,7 @@ class Event
         $segments = explode(':', $time);
 
         return $this->spliceIntoPosition(2, (int) $segments[0])
-                    ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
+                    ->spliceIntoPosition(1, count($segments) > 1 ? (int) $segments[1] : '0');
     }
 
     /**
