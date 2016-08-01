@@ -229,11 +229,16 @@ class Event
             $this->command = 'cd ' .  $this->cwd . '; ' . $this->command;
         }
 
-        //$redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
-        
-        $command  = $this->command;
-                
-        return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
+        $redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
+
+        $command  = $this->command . $redirect . $this->output;
+        if (! stristr(strtolower(PHP_OS), 'bsd')) {
+            $command .= ' 2>&1 &';
+            return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
+        } else {
+            $command .= ' &';
+            return $this->user ? 'su -m ' . $this->user . ' -c "' . $command . '"' : $command;
+        }
     }
 
     /**
@@ -428,7 +433,7 @@ class Event
      * @return boolean
      */
     public function to($datetime)
-    {          
+    {
         return $this->skip(function() use ($datetime) {
             return $this->past($datetime);
         });
@@ -441,7 +446,7 @@ class Event
      * @return boolean
      */
     protected function notYet($datetime)
-    {  
+    {
         return time() < strtotime($datetime);
     }
 
@@ -786,7 +791,7 @@ class Event
      * @return $this
      */
     public function logOutput($data, $output = null, $append = true)
-    { 
+    {
         if ($output == '/dev/null' || is_null($output)) {
             return;
         }
@@ -809,7 +814,7 @@ class Event
 
         return $this;
     }
-    
+
     /**
      * Register a callback to ping a given URL before the job runs.
      *
