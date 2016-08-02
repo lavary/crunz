@@ -7,13 +7,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
-
 use Crunz\Schedule;
 use Crunz\Invoker;
-use Crunz\Configuration;
+use Crunz\EventRunner;
+use Crunz\Configuration\Configurable;
 
 class ScheduleRunCommand extends Command
 {
+    use Configurable;
+
     /**
      * Running tasks
      *
@@ -27,12 +29,12 @@ class ScheduleRunCommand extends Command
      */
     protected function configure()
     {
+       $this->configurable();
        $this->setName('schedule:run')
-            ->setDescription('Start the event runner.')
+            ->setDescription('Starts the event runner.')
             ->setDefinition([
-               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', $this->config('tasks_path')), 
+               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory for collecting the task files.', generate_path($this->config('source'))), 
            ])
-           ->setConfiguration(Configuration::getInstance())
            ->setHelp('This command starts the Crunz event runner.');
     }
    
@@ -48,106 +50,49 @@ class ScheduleRunCommand extends Command
     {        
         $this->arguments = $input->getArguments();
         $this->options   = $input->getOptions();        
-        
-        $src             = !is_null($this->arguments['source']) ? $this->arguments['source'] : $this->config('source');
-        $task_files      = $this->collectTaskFiles($src); 
+        $files           = $this->collectFiles($this->arguments['source']); 
     
-        if (!count($task_files)) {
-            $output->writeln('<comment>No task found!</comment>');
+        if (!count($files)) {
+            $output->writeln('<comment>No task found! Please check your source path.</comment>');
             exit();
         }
+                       
+        // List of schedules
+        $schedules = [];
         
-        $this->runTasks($task_files);
-
-        if (!count($this->runningEvents)) {
-            $output->writeln('<comment>No task is due!</comment>');
-            exit();
-        }
-
-        // Managing the running tasks
-        while (count($this->runningEvents)) {
+        foreach ($files as $file) {
             
-            foreach ($this->runningEvents as $key => $event) {
-                
-                // If the process is still running then skip
-                if ($event->process->isRunning()) {
-                    continue;
-                }
-                                
-                $log = date('Y-m-d H:i:s') . ' [Performed: ' . $event->getSummaryForDisplay() . '] by running ' . $event->buildCommand() . PHP_EOL;                
-                
-                if ($event->process->isSuccessful()) {
-                    
-                    // Running post-execution hooks
-                    $event->callAfterCallbacks(new Invoker());
-                    
-                    // Logging the output based on the defined configuration
-                    $output = $log . PHP_EOL . $event->process->getOutput();          
-                    
-                    if ($this->config('log_output')) {                          
-                        $event->logOutput($output, $this->config('output_log_file'), true);
-                    } else if ($event->output != '/dev/null') {
-                        $event->logEventOutput($output);  
-                    }
-                    
-                // Logging the errors if log_error is set in the configuration file
-                } else {
-                    
-                    if ($this->config('log_errors')) {
-                        $err_msg = date('Y-m-d H:i:s') . '  [Error in ' . $event->getSummaryForDisplay() . ']: "' . $event->process->getErrorOutput() . '" while running ' . $event->buildCommand() . PHP_EOL;                    
-                        error_log($err_msg, 3, $this->config('errors_log_file'));
-                    }
-
-                }
-                
-                echo $log;
-                unset($this->runningEvents[$key]);
-            }
-        }
-    }
- 
-    /**
-     * Run the tasks
-     *
-     * @param  array $task_files
-     */
-    public function runTasks($task_files = [])
-    {
-        foreach ($task_files as $key => $taskFile) {
-                        
-            $schedule = require $taskFile->getRealPath();            
+            $schedule = require $file->getRealPath();           
             if (!$schedule instanceof Schedule) {
                 continue;
-            } 
+            }
 
-            $events = $schedule->dueEvents(new Invoker());                        
+            // We keep the events which are due and dismiss the rest.
+            $schedule->events($schedule->dueEvents());            
             
-            foreach ($events as $event) {
-                
-                // Running pre-execution hooks and the event itself
-                $this->runningEvents[] = $event->callBeforeCallbacks(new Invoker())
-                                          ->run(new Invoker());                
+            if (count($schedule->events())) {
+                $schedules[] = $schedule;
             }
         }
-    }
 
-    /**
-     * Return all the running tasks
-     *
-     * @return Array
-     */
-    public function runningTasks()
-    {
-        return $this->runningTasks;
+        if (!count($schedules)) {
+            $output->writeln('<comment>No event is due!</comment>');
+            exit();
+        }
+
+        // Running the events
+        (new EventRunner())
+        ->handle($schedules);
     }
 
     /**
      * Collect all task files
      *
      * @param  string $source
+     *
      * @return Iterator
      */
-    public function collectTaskFiles($source)
+    protected function collectFiles($source)
     {    
         if(!file_exists($source)) {
             return [];
@@ -160,5 +105,5 @@ class ScheduleRunCommand extends Command
         
         return $iterator;
     }
-  
+     
 }

@@ -12,7 +12,6 @@ use Symfony\Component\Finder\Finder;
 
 class ConfigGeneratorCommand extends Command
 {
-
     /**
      * Configures the current command
      *
@@ -20,7 +19,7 @@ class ConfigGeneratorCommand extends Command
     protected function configure()
     {
        $this->setName('publish:config')
-            ->setDescription('Generate a config file within your project\'s root directory.')
+            ->setDescription('Generates a config file within the project\'s root directory.')
             ->setHelp('This generates a config file in YML format within the project\'s root directory.');
     } 
 
@@ -34,7 +33,7 @@ class ConfigGeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {              
-        $filename = 'crunz.yml';
+        $filename = get_base() . '/crunz.yml';
 
         if (file_exists($filename)) {
             $output->writeln('<comment>The configuration file already exists.</comment>');

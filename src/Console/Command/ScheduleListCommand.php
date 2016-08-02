@@ -8,24 +8,25 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Finder\Finder;
-
 use Crunz\Schedule;
-use Crunz\Configuration;
+use Crunz\Configuration\Configurable;
 
 class ScheduleListCommand extends Command
 {
+    use Configurable;
+
     /**
      * Configures the current command
      *
      */
     protected function configure()
     {
+       $this->configurable();
        $this->setName('schedule:list')
-            ->setDescription('Display the list of scheduled tasks.')
+            ->setDescription('Displays the list of scheduled tasks.')
             ->setDefinition([
-               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory to collect the tasks.', $this->config('tasks_path')), 
+               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory for collecting the tasks.', generate_path($this->config('source'))), 
            ])
-           ->setConfiguration(Configuration::getInstance())
            ->setHelp('This command displays the scheduled tasks in a tabular format.');
     } 
    
@@ -41,9 +42,7 @@ class ScheduleListCommand extends Command
     {        
         $this->options   = $input->getOptions();
         $this->arguments = $input->getArguments();
-        $src             = !is_null($this->arguments['source']) ? $this->arguments['source'] : $this->config('source');
-        
-        $task_files      = $this->collectTaskFiles($src); 
+        $task_files      = $this->collectTaskFiles($this->arguments['source']); 
     
         if (!count($task_files)) {
             $output->writeln('<comment>No task found!</comment>');
@@ -55,12 +54,12 @@ class ScheduleListCommand extends Command
         $row = 0;
         
         foreach ($task_files as $key => $taskFile) {
-                        
+            
             $schedule = require $taskFile->getRealPath();            
             if (!$schedule instanceof Schedule) {
                 continue;
             } 
-            
+
             $events = $schedule->events();
             foreach ($events as $event) {
               
@@ -68,7 +67,7 @@ class ScheduleListCommand extends Command
                 ++$row,
                 $event->description,
                 $event->getExpression(),
-                $event->command,
+                ($event->isClosure()) ? 'object(Closure)' : $event->command,
               ]); 
 
             }
@@ -81,6 +80,7 @@ class ScheduleListCommand extends Command
      * Collect all task files
      *
      * @param  string $source
+     *
      * @return Iterator
      */
     public function collectTaskFiles($source)
@@ -88,7 +88,7 @@ class ScheduleListCommand extends Command
         if(!file_exists($source)) {
             return [];
         }
-        
+
         $finder   = new Finder();
         $iterator = $finder->files()
                   ->name('*' . $this->config('suffix'))

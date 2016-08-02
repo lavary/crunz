@@ -9,11 +9,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
-
-use Crunz\Configuration;
+use Crunz\Configuration\Configurable;
 
 class TaskGeneratorCommand extends Command
 {
+    use Configurable;
 
     /**
      * Stub content
@@ -43,8 +43,9 @@ class TaskGeneratorCommand extends Command
      */
     protected function configure()
     {
+        $this->configurable();
         $this->setName('make:task')
-             ->setDescription('Generate a task file skeleton.')
+             ->setDescription('Generates a task file with one task.')
              ->setDefinition([
 
                 new InputArgument('taskfile',         InputArgument::REQUIRED,   'The task file name'),               
@@ -57,7 +58,6 @@ class TaskGeneratorCommand extends Command
                 new InputOption('type',         't',  InputOption::VALUE_OPTIONAL,   'The task type',           $this->defaults['type']),
 
             ])
-            ->setConfiguration(Configuration::getInstance())
             ->setHelp('This command makes a task file skeleton.');
     } 
 
@@ -73,18 +73,8 @@ class TaskGeneratorCommand extends Command
     {
         $this->arguments = $input->getArguments();        
         $this->options   = $input->getOptions();  
-
         $this->stub      = $this->getStub();
        
-        $helper          = $this->getHelper('question');
-        $question        = new Question('<question>Where do you want to save the file? (Press enter for the current directory)</question> ');
-        $output_path     = $helper->ask($input, $output, $question);
-
-        $output_path     = !is_null($output_path) ? $output_path : $this->config('source');
-        if (!file_exists($output_path)) {
-            mkdir($output_path, 0744, true);
-        }
-
         if ($this->stub) {
 
             $this->replaceFrequency()
@@ -92,22 +82,58 @@ class TaskGeneratorCommand extends Command
                  ->replaceCommand()
                  ->replacePath()
                  ->replaceDescription();
-
-            if (file_put_contents($output_path . '/' . $this->outputFile(), $this->stub)) {
-                
-               $output->writeln('<info>The task file generated successfully</info>');
-
-            }
-
-            exit();
-              
         } 
 
-        $output->writeln('<comment>There was a problem when generating the file. Please check your command.</comment>');
+        if ($this->save()) {
+            $output->writeln('<info>The task file generated successfully</info>');
+        } else {
+            $output->writeln('<comment>There was a problem when generating the file. Please check your command.</comment>');
+        }
         exit();
+    }
 
+    /**
+     * Save the generate task skeleton into a file
+     *
+     * @return boolean
+     */
+    protected function save()
+    {
+        return file_put_contents($this->outputPath() . '/' . $this->outputFile(), $this->stub);               
     }  
 
+    /**
+     * Ask a question
+     *
+     * @param  string $quetion
+     *
+     * @return string
+     */
+    protected function ask($question)
+    {
+        $helper   = $this->getHelper('question');
+        $question = new Question("<question>{$question}</question>");
+        
+        return $helper->ask($input, $output, $question);
+    }
+
+    /**
+     * Return the output path
+     *
+     * @return string
+     */
+    protected function outputPath()
+    {
+        $destination = $this->ask('Where do you want to save the file? (Press enter for the current directory)');       
+        $output_path = !is_null($destination) ? $destination : generate_path($this->config('source'));
+        
+        if (!file_exists($output_path)) {
+            mkdir($output_path, 0744, true);
+        }
+
+        return $output_path;
+    }
+    
     /**
      * Populate the output filename
      *
@@ -115,7 +141,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function outputFile()
     {
-       return preg_replace('/Tasks|\.php$/', '', $this->arguments['taskfile']) . 'Tasks.php';
+       return preg_replace('/Tasks|\.php$/', '', $this->arguments['taskfile']) . $this->config('suffix');
     }
 
     /**
@@ -125,7 +151,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function getStub()
     {
-        return file_get_contents(__DIR__ . '/../../Stubs/' . ucfirst($this->type() . '.php'));
+        return file_get_contents(__DIR__ . '/../../Stubs/' . ucfirst($this->type() . 'Task.php'));
     }
 
     /**
@@ -192,6 +218,5 @@ class TaskGeneratorCommand extends Command
     {
         $this->stub = str_replace('DummyDescription', $this->options['description'], $this->stub);
         return $this;
-    }
-        
+    }  
 }
