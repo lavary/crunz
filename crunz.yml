@@ -1,8 +1,38 @@
-# Configuration settings
+# Crunz Configuration Settings
 
-source:          ./tasks
-suffix:          Tasks.php
-log_errors:      false
+# This option defines where the task files and
+# directories reside.
+# The path is relative to the project's root directory,
+# where the Crunz is installed (Trailing slashes will be stripped off).
+source: tasks
+
+# The suffix option is meant to target the task files inside the ":source" directory.
+# Crunz will collect the files suffixed with this value.
+# Please note if you change this value, you need
+# to make sure all the existing tasks files are renamed accordingly.
+suffix: Tasks.php
+
+# By default the errors are not logged by Crunz
+# You may set the value to true for logging the errors
+log_errors: false
+
+# This is where we log the errors occured during event runs
+# You need to make sure you have the required permission to write to this file though.
 errors_log_file: /dev/null
-log_output:      false
+
+# By default the output is not logged as they are redirected to the
+# null output.
+# Set this to true if you want to keep the outputs and activity logs in a file.
+log_output: false
+
+# This is the output and activity log file for all events
+# The events which have dedicated log file (defined with them), won't be
+# logged to this file though. Instead, they will be writing to their
+# determined log file
 output_log_file: /dev/null
+
+# This is the date format used in the log files
+# Feel free to change it to a format which works best for you.
+# You may use this page to compose your custom formats:
+# http://php.net/manual/en/datetime.formats.date.php
+log_date_format: Y-m-d H:i:s
