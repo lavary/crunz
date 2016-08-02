@@ -1,5 +1,4 @@
 <?php
-
 namespace Crunz;
 
 use Closure;
@@ -8,9 +7,12 @@ use LogicException;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Component\Process\Process;
+use Crunz\Configuration\Configurable;
 
 class Event
 {
+    use Configurable;
+
     /**
      * The command string.
      *
@@ -23,7 +25,7 @@ class Event
      *
      * @var Symfony\Component\Process\Process
      */
-    public $process;
+    protected $process;
 
     /**
      * The cron expression representing the event's frequency.
@@ -72,14 +74,14 @@ class Event
      *
      * @var string
      */
-    protected $output = '/dev/null';
+    public $output = '/dev/null';
 
     /**
      * Indicates whether output should be appended.
      *
      * @var bool
      */
-    protected $shouldAppendOutput = false;
+    public $shouldAppendOutput = false;
 
     /**
      * The array of callbacks to be run before the event is started.
@@ -107,7 +109,7 @@ class Event
      *
      * @var string
      */
-    protected $cwd = null;
+    protected $cwd;
 
     /**
      * Position of cron fields
@@ -128,14 +130,18 @@ class Event
      * Create a new event instance.
      *
      * @param  string  $command
+     *
      * @return void
      */
-    public function __construct($command)
+    public function __construct($id, $command)
     {
-        $this->command = $command;
-        $this->output = $this->getDefaultOutput();
-    }
+        $this->configurable();
 
+        $this->command = $command;
+        $this->id      = $id;
+        $this->output  = $this->getDefaultOutput();
+    }
+   
     /**
      * Get the default output depending on the OS.
      *
@@ -147,38 +153,11 @@ class Event
     }
 
     /**
-      * Run the given event.
-      *
-      * @param  \Crunz\Invoker  $invoker
-      * @return void
-      */
-    public function run(Invoker $invoker)
-    {
-        // Starting the process asynchronously
-        $this->process = new Process(trim($this->buildCommand(), '& '));
-        $this->process->start();
-
-        // Lock the process if preventOverlapping is set to True
-        if ($this->preventOverlapping) {
-            file_put_contents($this->lockFilePath(), $this->process->getPid());
-
-            // Delete the file when the task is completed
-            $this->after(function() {
-                $lock_file = $this->lockFilePath();
-                if (file_exists($lock_file)) {
-                    unlink($lock_file);
-                }
-            });
-        }
-
-        return $this;
-    }
-
-     /**
-     * Change current working directory
+     * Change the current working directory.
      *
      * @param  string $directory
-     * @return \Crunz\Event
+     *
+     * @return $this
      */
     public function in($directory)
     {
@@ -188,33 +167,23 @@ class Event
     }
 
     /**
-     * Call all of the "before" callbacks for the event.
+     * Determine if the event's output is sent to null.
      *
-     * @param  \Crunz\Invoker $invoker
-     * @return void
+     * @return boolean
      */
-    public function callBeforeCallbacks(Invoker $invoker)
+    public function nullOutput()
     {
-        foreach ($this->beforeCallbacks as $callback) {
-            $invoker->call($callback);
-        }
-
-        return $this;
+        return  $this->output == 'NUL' ||  $this->output == '/dev/null';
     }
 
     /**
-     * Call all of the "after" callbacks for the event.
+     * Determine whether the passed value is a closure ot not.
      *
-     * @param  \Crunz\Invoker $invoker
-     * @return void
+     * @return boolean
      */
-    public function callAfterCallbacks(Invoker $invoker)
+    public function isClosure()
     {
-        foreach ($this->afterCallbacks as $callback) {
-            $invoker->call($callback);
-        }
-
-        return $this;
+        return is_object($this->command) && ($this->command instanceof Closure);
     }
 
     /**
@@ -224,57 +193,25 @@ class Event
      */
     public function buildCommand()
     {
-        // Change the current working directory if needed.
-        if (!is_null($this->cwd)) {
-            $this->command = 'cd ' .  $this->cwd . '; ' . $this->command;
-        }
-
-        //$redirect = $this->shouldAppendOutput ? ' >> ' : ' > ';
+        $command = (!is_object($this->command)) ? $this->command : 'object(Closure)'; 
         
-        $command  = $this->command;
-                
         return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
     }
 
     /**
-     * Check if another instance of the event is still running
+     * Determine if the given event should run based on the Cron expression.
      *
      * @return boolean
      */
-    public function isLocked()
+    public function isDue()
     {
-        $lock_file = $this->lockFilePath();
-        
-        $pid       = file_exists($lock_file) ? (int)trim(file_get_contents($lock_file)) : null;
-
-        return (!is_null($pid) && posix_getsid($pid)) ? true : false;
-   
-    }
-
-    /**
-     * Get the lock file path for the task
-     *
-     * @return string
-     */
-    protected function lockFilePath()
-    {
-        return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->expression . $this->command);
-    }
-
-    /**
-     * Determine if the given event should run based on the Cron expression.
-     * @param  \Crunz\Caller $app
-     * @return bool
-     */
-    public function isDue(Invoker $invoker)
-    {
-        return $this->expressionPasses() && $this->filtersPass($invoker);
+        return $this->expressionPasses() && $this->filtersPass();
     }
 
     /**
      * Determine if the Cron expression passes.
      *
-     * @return bool
+     * @return boolean
      */
     protected function expressionPasses()
     {
@@ -291,11 +228,12 @@ class Event
     /**
      * Determine if the filters pass for the event.
      *
-     * @param  \Crunz\Invoker $invoker
-     * @return bool
+     * @return boolean
      */
-    public function filtersPass(Invoker $invoker)
+    public function filtersPass()
     {
+        $invoker = new Invoker();
+        
         foreach ($this->filters as $callback) {
             if (! $invoker->call($callback)) {
                 return false;
@@ -315,6 +253,7 @@ class Event
      * The Cron expression representing the event's frequency.
      *
      * @param  string  $expression
+     *
      * @return $this
      */
     public function cron($expression)
@@ -348,6 +287,7 @@ class Event
      * Schedule the event to run on a certain date
      *
      * @param  string  $date
+     *
      * @return $this
      */
     public function on($date)
@@ -377,6 +317,7 @@ class Event
      * Schedule the command at a given time.
      *
      * @param  string  $time
+     *
      * @return $this
      */
     public function at($time)
@@ -388,6 +329,7 @@ class Event
      * Schedule the event to run daily at a given time (10:00, 19:30, etc).
      *
      * @param  string  $time
+     *
      * @return $this
      */
     public function dailyAt($time)
@@ -412,7 +354,8 @@ class Event
     /**
      * Check if event should be on
      *
-     * @param  string  $datetime
+     * @param  string $datetime
+     *
      */
      public function from($datetime)
      { 
@@ -425,7 +368,7 @@ class Event
      * Check if event should be off
      *
      * @param  string  $datetime
-     * @return boolean
+     *
      */
     public function to($datetime)
     {          
@@ -438,6 +381,7 @@ class Event
      * Check if time hasn't arrived
      *
      * @param  string  $time
+     *
      * @return boolean
      */
     protected function notYet($datetime)
@@ -449,6 +393,7 @@ class Event
      * Check if the time has passed
      *
      * @param  string $time
+     *
      * @return boolean
      */
     protected function past($datetime)
@@ -461,6 +406,7 @@ class Event
      *
      * @param  int  $first
      * @param  int  $second
+     *
      * @return $this
      */
     public function twiceDaily($first = 1, $second = 13)
@@ -566,6 +512,7 @@ class Event
      *
      * @param  int  $day
      * @param  string  $time
+     *
      * @return $this
      */
     public function weeklyOn($day, $time = '0:0')
@@ -608,7 +555,8 @@ class Event
     /**
      * Set the days of the week the command should run on.
      *
-     * @param  array|mixed  $days
+     * @param  mixed  $days
+     *
      * @return $this
      */
     public function days($days)
@@ -622,6 +570,7 @@ class Event
      * Set hour for the cron job
      *
      * @param  mixed $value
+     *
      * @return $this
      */
     public function hour($value)
@@ -635,6 +584,7 @@ class Event
      * Set minute for the cron job
      *
      * @param  mixed $value
+     *
      * @return $this
      */
     public function minute($value)
@@ -648,6 +598,7 @@ class Event
      * Set hour for the cron job
      *
      * @param  mixed $value
+     *
      * @return $this
      */
     public function dayOfMonth($value)
@@ -661,6 +612,7 @@ class Event
      * Set hour for the cron job
      *
      * @param  mixed $value
+     *
      * @return $this
      */
     public function month($value)
@@ -674,6 +626,7 @@ class Event
      * Set hour for the cron job
      *
      * @param  mixed $value
+     *
      * @return $this
      */
     public function dayOfWeek($value)
@@ -687,6 +640,7 @@ class Event
      * Set the timezone the date should be evaluated on.
      *
      * @param  \DateTimeZone|string  $timezone
+     *
      * @return $this
      */
     public function timezone($timezone)
@@ -700,6 +654,7 @@ class Event
      * Set which user the command should run as.
      *
      * @param  string  $user
+     *
      * @return $this
      */
     public function user($user)
@@ -713,14 +668,24 @@ class Event
      * Do not allow the event to overlap each other.
      *
      * @param  string|int $safe_duration
+     *
      * @return $this
      */
     public function preventOverlapping()
     {
         $this->preventOverlapping = true;
 
-        return $this->skip(function () {
+        // Skip the event if it's locked (processing)
+        $this->skip(function () {
             return $this->isLocked();
+        });
+
+        // Delete the lock file when the event is completed
+        $this->after(function() {
+            $lockfile = $this->lockFile();
+            if (file_exists($lockfile)) {
+                unlink($lockfile);
+            }
         });
     }
 
@@ -728,6 +693,7 @@ class Event
      * Register a callback to further filter the schedule.
      *
      * @param  \Closure  $callback
+     *
      * @return $this
      */
     public function when(Closure $callback)
@@ -741,6 +707,7 @@ class Event
      * Register a callback to further filter the schedule.
      *
      * @param  \Closure  $callback
+     *
      * @return $this
      */
     public function skip(Closure $callback)
@@ -755,6 +722,7 @@ class Event
      *
      * @param  string  $location
      * @param  bool  $append
+     *
      * @return $this
      */
     public function sendOutputTo($location, $append = false)
@@ -770,6 +738,7 @@ class Event
      * Append the output of the command to a given location.
      *
      * @param  string  $location
+     *
      * @return $this
      */
     public function appendOutputTo($location)
@@ -778,42 +747,10 @@ class Event
     }
 
     /**
-     * Log output to a file
-     *
-     * @param  string   $data
-     * @param  string   $output
-     * @param  boolean  $append
-     * @return $this
-     */
-    public function logOutput($data, $output = null, $append = true)
-    { 
-        if ($output == '/dev/null' || is_null($output)) {
-            return;
-        }
-
-        $flag = $append ? FILE_APPEND : 0;
-        file_put_contents($output, $data, $flag);
-
-        return $this;
-    }
-
-    /**
-     * Log event's output to the specified output file
-     *
-     * @param  string  $data
-     * @return $this
-     */
-    public function logEventOutput($data)
-    {
-        $this->logOutput($data, $this->output, $this->shouldAppendOutput);
-
-        return $this;
-    }
-    
-    /**
      * Register a callback to ping a given URL before the job runs.
      *
      * @param  string  $url
+     *
      * @return $this
      */
     public function pingBefore($url)
@@ -827,9 +764,10 @@ class Event
      * Register a callback to be called before the operation.
      *
      * @param  \Closure  $callback
+     *
      * @return $this
      */
-    public function before(Closure $callback)
+    public function before(\Closure $callback)
     {
         $this->beforeCallbacks[] = $callback;
 
@@ -840,6 +778,7 @@ class Event
      * Register a callback to ping a given URL after the job runs.
      *
      * @param  string  $url
+     *
      * @return $this
      */
     public function thenPing($url)
@@ -853,6 +792,7 @@ class Event
      * Register a callback to be called after the operation.
      *
      * @param  \Closure  $callback
+     *
      * @return $this
      */
     public function after(Closure $callback)
@@ -864,6 +804,7 @@ class Event
      * Register a callback to be called after the operation.
      *
      * @param  \Closure  $callback
+     *
      * @return $this
      */
     public function then(Closure $callback)
@@ -877,6 +818,7 @@ class Event
      * Set the human-friendly description of the event.
      *
      * @param  string  $description
+     *
      * @return $this
      */
     public function name($description)
@@ -885,9 +827,33 @@ class Event
     }
 
     /**
+     * Set the event's process
+     *
+     * @param Symfony\Component\Process\Process $process
+     * 
+     * @return $this
+     */
+    public function setProcess(\Symfony\Component\Process\Process $process = null)
+    {
+        $this->process = $process;
+        return $this;
+    }
+
+    /**
+     * Return the event's process
+     *
+     * @return Symfony\Component\Process\Process $process
+     */
+    public function getProcess()
+    {
+        return $this->process;
+    }
+
+    /**
      * Set the human-friendly description of the event.
      *
      * @param  string  $description
+     *
      * @return $this
      */
     public function description($description)
@@ -902,6 +868,7 @@ class Event
      *
      * @param  int  $position
      * @param  string  $value
+     *
      * @return $this
      */
     protected function spliceIntoPosition($position, $value)
@@ -914,10 +881,11 @@ class Event
     }
 
     /**
-     * Set the frequency for the cron job
+     * Another way to the frequency of the cron job
      *
      * @param  string  $unit
      * @param  string  $value
+     *
      * @return $this
      */
     public function every($unit = null, $value = null)
@@ -956,20 +924,122 @@ class Event
     }
 
     /**
+     * Set the event's command
+     *
+     * @param  string $command
+     *
+     * @return $this
+     */
+    public function setCommand($command)
+    {
+        $this->command = $command;
+
+        return $this;
+    }
+
+    /**
+     * Return the event's command
+     *
+     * @return string
+     */
+    public function getCommand()
+    {
+        return $this->command;
+    }
+
+    /**
+     * Return the current working directory
+     *
+     * @return string
+     */
+    public function getWorkingDirectory()
+    {
+        return $this->cwd;
+    }
+
+    /**
+     * Return all registered before callbacks
+     *
+     * @return array
+     */
+    public function beforeCallbacks()
+    {
+        return $this->beforeCallbacks;
+    }
+
+    /**
+     * Return all registered after callbacks
+     *
+     * @return array
+     */
+    public function afterCallbacks()
+    {
+        return $this->afterCallbacks;
+    }
+
+    /**
      * Mask a cron expression
      *
      * @param  string $unit
+     *
      * @return string
      */
     protected function applyMask($unit) 
     {
         $cron = explode(' ', $this->expression);
         $mask = ['0', '0', '1', '1', '*', '*'];
-
         $fpos = $this->fieldsPosition[$unit] - 1;
+        
         array_splice($cron, 0, $fpos, array_slice($mask, 0, $fpos));
     
         return $this->cron(implode(' ', $cron));
+    }
+
+    /**
+     * Lock the event
+     *
+     * @param  \Crunz\Event $event
+     *
+     * @return string
+     */
+    protected function lock()
+    {
+        file_put_contents($this->lockFile(), $event->process->getPid());
+    }
+
+    /**
+     * Check if another instance of the event is still running
+     *
+     * @return boolean
+     */
+    public function isLocked()
+    {        
+        $pid = $this->lastPid();
+
+        return (!is_null($pid) && posix_getsid($pid)) ? true : false;
+    }
+
+    /**
+     * Get the last process Id of the event
+     *
+     * @return int
+     */
+    public function lastPid()
+    {        
+        $lock_file = $this->lockFile();
+
+        return file_exists($lock_file) ? (int)trim(file_get_contents($lock_file)) : null;
+   
+    }
+
+    /**
+     * Get the lock file path for the task
+     *
+     * @return string
+     */
+    protected function lockFile()
+    {
+        return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->id);
     }
 
     /**
@@ -977,6 +1047,7 @@ class Event
      *
      * @param  string $methodName
      * @param  array  $params
+     *
      * @return $this
      */
     public function __call($methodName, $params)
@@ -988,7 +1059,7 @@ class Event
         }
 
         $amount = !empty($matches[1]) ? word2number(split_camel($matches[1])) : 1;
-        
+
         if (!$amount) {
             throw new \BadMethodCallException();
         }

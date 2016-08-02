@@ -8,7 +8,9 @@
         "cron",
         "Task Scheduler",
         "PHP Task Scheduler",
-        "Laravel Task Scheduler"
+        "Job Scheduler",
+        "Job Manager",
+        "Event Runner"
     ],
     "homepage": "https://github.com/lavary/crunz",
     "license": "MIT",
@@ -31,7 +33,8 @@
         "symfony/process": "^3.0",
         "guzzlehttp/guzzle": "^6.1",
         "symfony/console": "^3.0",
-        "symfony/config": "^3.0"
+        "symfony/config": "^3.0",
+        "jeremeamia/superclosure": "^2.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8 || ^5.0"

@@ -14,52 +14,66 @@ class Schedule
     protected $events = [];
 
     /**
-     * An alias for the command() method
+     * The array of callbacks to be run before all the events are finished
      *
-     * @param  string $command
-     * @param  array  $parameters
-     * @return \Crunz\Event
+     * @var array
      */
-    public function run($command, array $parameters = array())
-    {   
-       return $this->command($command, $parameters);
-    }    
+    protected $beforeCallbacks = [];
 
     /**
-     * Add a new command event to the schedule.
+     * The array of callbacks to be run after all the event is finished.
      *
-     * @param  string  $command
-     * @param  array  $parameters
-     * @return \Crunz\Event
+     * @var array
      */
-    public function command($command, array $parameters = array())
-    {
-
-        return $this->exec($command, $parameters);
-    }
+    protected $afterCallbacks = [];
 
     /**
-     * Add a new command event to the schedule.
+     * The array of callbacks to call in case of an error.
+     * @var array
+     */
+    protected $errorCallbacks = [];
+
+    /**
+     * Add a new event to the schedule object.
      *
      * @param  string  $command
+     *
      * @param  array  $parameters
+     *
      * @return \Illuminate\Console\Scheduling\Event
      */
-    public function exec($command, array $parameters = [])
+    public function run($command, array $parameters = [])
     {
-        if (count($parameters)) {
+        if (is_string($command) && count($parameters)) {
             $command .= ' ' . $this->compileParameters($parameters);
         }
 
-        $this->events[] = $event = new Event($command);
+        $taskId = $this->id();
+        $this->events[$taskId] = $event = new Event($taskId, $command);
 
         return $event;
+    }
+
+    /**
+     * Generate a unique task id
+     *
+     * @return string
+     */
+    protected function id()
+    {
+        while (true) {
+            $id = uniqid();
+            if (!array_key_exists($id, $this->events)) {
+                return $id;
+            }
+        }
     }
 
     /**
      * Compile parameters for a command.
      *
      * @param  array  $parameters
+     *
      * @return string
      */
     protected function compileParameters(array $parameters)
@@ -70,26 +84,157 @@ class Schedule
     }
 
     /**
-     * Get all of the events on the schedule.
+     * Register a callback to ping a given URL before the job runs.
+     *
+     * @param  string  $url
+     *
+     * @return $this
+     */
+    public function pingBefore($url)
+    {
+        return $this->before(function () use ($url) {
+            (new HttpClient)->get($url);
+        });
+    }
+
+    /**
+     * Register a callback to ping a given URL after the job runs.
+     *
+     * @param  string  $url
+     *
+     * @return $this
+     */
+    public function thenPing($url)
+    {
+        return $this->then(function () use ($url) {
+            (new HttpClient)->get($url);
+        });
+    }
+
+    /**
+     * Register a callback to be called before the operation.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function before(\Closure $callback)
+    {
+        $this->beforeCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Register a callback to be called after the operation.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function after(\Closure $callback)
+    {
+        return $this->then($callback);
+    }
+
+    /**
+     * Register a callback to be called after the operation.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function then(\Closure $callback)
+    {
+        $this->afterCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Register a callback to call in case of an error
+     *
+     * @param  \Closure $callback
+     *
+     * @return $this
+     */
+    public function onError(\Closure $callback)
+    {
+        $this->errorCallbacks[] = $callback;
+
+        return $this;
+    }
+
+
+    /**
+     * Return all registered before callbacks
      *
      * @return array
      */
-    public function events()
+    public function beforeCallbacks()
     {
+        return $this->beforeCallbacks;
+    }
+
+    /**
+     * Return all registered after callbacks
+     *
+     * @return array
+     */
+    public function afterCallbacks()
+    {
+        return $this->afterCallbacks;
+    }
+
+    /**
+     * Return all registered error callbacks
+     *
+     * @return array
+     */
+    public function errorCallbacks()
+    {
+        return $this->errorCallbacks;
+    }
+
+    /**
+     * Get or set the events of the schedule object
+     *
+     * @param  array $events
+     *
+     * @return array
+     */
+    public function events(Array $events = null)
+    {
+        if (!is_null($events)) {
+            return $this->events = $events;
+        }
+        
         return $this->events;
     }
 
     /**
      * Get all of the events on the schedule that are due.
      *
-     * @param  \Crunz\Invoker $invoker
      * @return array
      */
-    public function dueEvents(Invoker $invoker)
-    {
-        
-        return array_filter($this->events, function ($event) use ($invoker) {
-            return $event->isDue($invoker);
+    public function dueEvents()
+    {   
+        return array_filter($this->events, function ($event) {
+            return $event->isDue();
         });
+    }
+
+    /**
+     * Dismiss an event after it is finished
+     *
+     * @param  int $key
+     *
+     * @return $this
+     */
+    public function dismissEvent($key)
+    {
+        unset($this->events[$key]);
+
+        return $this;
     }
 }

@@ -10,11 +10,12 @@ class Invoker
      *
      * @param  callable  $callback
      * @param  array     $parameters
+     *
      * @return mixed
      */
-    public function call($callback, array $parameters = [])
+    public function call($closure, array $parameters = [])
     {
-        return call_user_func_array($callback, $parameters);
+        return call_user_func_array($closure, $parameters);
     }
 
     
