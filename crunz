@@ -1,4 +1,4 @@
-#!/usr/local/bin/php
+#!/usr/bin/env php
 <?php
 
 /*
@@ -6,17 +6,23 @@
 | Crunz
 |--------------------------------------------------------------------------
 |
-| This file is part of Crunz package
+| This file is part of Crunz library.
 | (c) Reza M. Lavaryan <mrl.8081@gmail.com>
 | For the full copyright and license information, please view the LICENSE
-| This file that was distributed with this source code.
+| file that was distributed with this source code.
 |
 */
 
-use Crunz\Console\CommandKernel;
-use Crunz\Configuration;
-
-foreach ([__DIR__ . '/../autoload.php', __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php', __DIR__ . '/../../vendor/autoload.php'] as $file) {
+foreach ([        
+         
+        __DIR__ . '/../autoload.php',
+        __DIR__ . '/../../autoload.php',
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/vendor/autoload.php',
+        __DIR__ . '/../../vendor/autoload.php'
+         
+         ] as $file) {
+    
     if (file_exists($file)) {
        define('AUTOLOAD_PHP_FILE', $file);
        break;
@@ -29,11 +35,13 @@ if (!defined('AUTOLOAD_PHP_FILE')) {
         'wget http://getcomposer.org/composer.phar' . PHP_EOL .
         'php composer.phar install' . PHP_EOL
     );
-
     die(1);
 }
 
 require AUTOLOAD_PHP_FILE;
 
-$kernel      = (new CommandKernel('Crunz Command Line Interface', 'v1.2.0'))
-                ->handle();
+// Setting the root directory for this installation
+set_base(AUTOLOAD_PHP_FILE);
+
+$kernel = (new \Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.4.0'))
+        ->handle();
