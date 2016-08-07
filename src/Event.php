@@ -14,11 +14,18 @@ class Event
     use Configurable;
 
     /**
+     * The event's unique identifier
+     *
+     * @var string
+     */
+    protected $id;
+
+    /**
      * The command string.
      *
      * @var string
      */
-    public $command;
+    protected $command;
 
     /**
      * Process that runs the event
@@ -32,28 +39,28 @@ class Event
      *
      * @var string
      */
-    public $expression = '* * * * * *';
+    protected $expression = '* * * * * *';
 
     /**
      * The timezone the date should be evaluated on.
      *
      * @var \DateTimeZone|string
      */
-    public $timezone;
+    protected $timezone;
 
     /**
      * The user the command should run as.
      *
      * @var string
      */
-    public $user;
+    protected $user;
 
     /**
      * Indicates if the command should not overlap itself.
      *
      * @var bool
      */
-    public $preventOverlapping = false;
+    protected $preventOverlapping = false;
 
     /**
      * The array of filter callbacks.
@@ -70,20 +77,6 @@ class Event
     protected $rejects = [];
 
     /**
-     * The location that output should be sent to.
-     *
-     * @var string
-     */
-    public $output = '/dev/null';
-
-    /**
-     * Indicates whether output should be appended.
-     *
-     * @var bool
-     */
-    public $shouldAppendOutput = false;
-
-    /**
      * The array of callbacks to be run before the event is started.
      *
      * @var array
@@ -96,13 +89,6 @@ class Event
      * @var array
      */
     protected $afterCallbacks = [];
-
-    /**
-     * The human readable description of the event.
-     *
-     * @var string
-     */
-    public $description;
 
     /**
      * Current working directory
@@ -125,6 +111,34 @@ class Event
         'week'   => 5,
 
     ];
+
+    /**
+     * The location that output should be sent to.
+     *
+     * @var string
+     */
+    public $output = '/dev/null';
+
+    /**
+     * Indicates whether output should be appended.
+     *
+     * @var bool
+     */
+    public $shouldAppendOutput = false;
+
+    /**
+     * The human readable description of the event.
+     *
+     * @var string
+     */
+    public $description;
+
+    /**
+     * Event generated output
+     *
+     * @var string
+     */
+    public $outputStream;
 
     /**
      * Create a new event instance.
@@ -193,8 +207,14 @@ class Event
      */
     public function buildCommand()
     {
-        $command = (!is_object($this->command)) ? $this->command : 'object(Closure)'; 
-        
+        $command = '';
+
+        if ($this->cwd) {
+            $command .= 'cd ' . $this->cwd . ';';
+        }
+
+        $command .= ! is_object($this->command) ? $this->command : 'object'; 
+    
         return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
     }
 
@@ -890,13 +910,23 @@ class Event
      */
     public function every($unit = null, $value = null)
     {
-        if (!isset($this->fieldsPosition[$unit])) {
+        if (! isset($this->fieldsPosition[$unit])) {
             return $this;
         }
         
         $value = $value == 1 ? '*' : '*/' . $value;
         return $this->spliceIntoPosition($this->fieldsPosition[$unit], $value)
                     ->applyMask($unit);
+    }
+
+    /**
+     * Return the event's command
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -958,6 +988,16 @@ class Event
     }
 
     /**
+     * Return event's full output
+     *
+     * @return string
+     */
+    public function getOutputStream()
+    {
+        return $this->outputStream;
+    }
+
+    /**
      * Return all registered before callbacks
      *
      * @return array
@@ -1016,7 +1056,7 @@ class Event
     {        
         $pid = $this->lastPid();
 
-        return (!is_null($pid) && posix_getsid($pid)) ? true : false;
+        return (! is_null($pid) && posix_getsid($pid)) ? true : false;
     }
 
     /**
@@ -1054,13 +1094,13 @@ class Event
     {
         preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);
 
-        if (!count($matches) || $matches[1] == 'Zero') {            
+        if (! count($matches) || $matches[1] == 'Zero') {            
             throw new \BadMethodCallException();
         }
 
-        $amount = !empty($matches[1]) ? word2number(split_camel($matches[1])) : 1;
+        $amount = ! empty($matches[1]) ? word2number(split_camel($matches[1])) : 1;
 
-        if (!$amount) {
+        if (! $amount) {
             throw new \BadMethodCallException();
         }
 

@@ -30,6 +30,7 @@ class ScheduleRunCommand extends Command
     protected function configure()
     {
        $this->configurable();
+       
        $this->setName('schedule:run')
             ->setDescription('Starts the event runner.')
             ->setDefinition([

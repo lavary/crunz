@@ -26,10 +26,8 @@ class Utils
      *
      * @return string
      */
-    public static function setBaseDir($autoloader)
-    {
-        $base_dir = dirname(dirname($autoloader));
-        
+    public static function setBaseDir($base_dir)
+    {        
         putenv('CRUNZ_BASE_DIR=' . $base_dir);
     }
 
@@ -43,6 +41,17 @@ class Utils
         return getenv('CRUNZ_BASE_DIR');
     }
 
+    /**
+     * Get the root directory by the autoloader file
+     *
+     * @param  string $autoloader
+     * @return string
+     */
+    public static function getRoot($autoloader)
+    {
+        return dirname(dirname($autoloader));
+    }
+    
     /**
      * return absolute path for relative path
      *

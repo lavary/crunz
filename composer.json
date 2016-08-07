@@ -34,7 +34,9 @@
         "guzzlehttp/guzzle": "^6.1",
         "symfony/console": "^3.0",
         "symfony/config": "^3.0",
-        "jeremeamia/superclosure": "^2.2"
+        "jeremeamia/superclosure": "^2.2",
+        "monolog/monolog": "^1.21",
+        "swiftmailer/swiftmailer": "^5.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8 || ^5.0"

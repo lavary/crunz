@@ -4,7 +4,9 @@ namespace Crunz;
 
 use Symfony\Component\Process\Process;
 use SuperClosure\Serializer;
+use Crunz\Exception\CrunzException;
 use Crunz\Configuration\Configurable;
+use Crunz\Logger\LoggerFactory;
 
 class EventRunner {
 
@@ -32,6 +34,20 @@ class EventRunner {
     protected $serializer;
 
     /**
+     * The Logger
+     *
+     * @var \Crunz\Logger\Logger
+     */
+    protected $logger;
+
+    /**
+     * The Mailer
+     *
+     * @var \Crunz\Mailer
+     */
+    protected $mailer;
+
+    /**
      * Instantiate the event runner
      *
      */
@@ -39,11 +55,23 @@ class EventRunner {
     {
         $this->configurable();
 
-        // This is used for serializing closures
+        // Create an insance of the Logger 
+        $this->logger = LoggerFactory::makeOne([
+            
+            // Logging streams
+            'info'  => $this->config('output_log_file'),
+            'error' => $this->config('errors_log_file'),
+
+        ]);
+        
+        // Initializing the serializer
         $this->serializer = new Serializer();
         
-        // This is used for invoking a set of closures
+        // Initializing the invoker
         $this->invoker    = new Invoker();
+
+        // Initializing the invoker
+        $this->mailer     = new Mailer();
     }
 
     /**
@@ -79,7 +107,7 @@ class EventRunner {
     protected function start(Event $event)
     {
         // Running the before-callbacks
-        $this->invoke($event->beforeCallbacks());
+        $event->outputStream = ($this->invoke($event->beforeCallbacks()));
         
         if ($event->isClosure()) {
             $closure = $this->serializer->serialize($event->getCommand());
@@ -113,20 +141,19 @@ class EventRunner {
 
                     if ($proc->isSuccessful()) {
                         
-                        $this->invoke($event->afterCallbacks());                       
-                        
-                        if ($this->config('log_output')) {
-                            $this->logOutput($event);   
+                        $event->outputStream .= $proc->getOutput();
+                        $event->outputStream .= $this->invoke($event->afterCallbacks());                       
+
+                        if ($event->outputStream) {
+                            $this->handleOutput($event);
                         }
                     
                     } else {
                         
                         // Calling registered error callbacks with an instance of $event as argument
-                        $this->invoke($schedule->errorCallbacks(), [$event]);
+                        $this->invoke($schedule->errorCallbacks(), [$event]); 
                         
-                        if ($this->config('log_errors')) {
-                            $this->logError($event);
-                        }
+                        $this->handleError($event);
 
                     }
 
@@ -138,7 +165,7 @@ class EventRunner {
                 // If there's no event left for the Schedule instance,
                 // run the schedule's after-callbacks and remove
                 // the Schedule from list of active schedules.                                                                                                                           zzzwwscxqqqAAAQ11
-                if (!count($schedule->events())) {
+                if (! count($schedule->events())) {
                     $this->invoke($schedule->afterCallbacks());
                     unset($this->schedules[$scheduleKey]);
                 }
@@ -147,90 +174,114 @@ class EventRunner {
     }
 
     /**
-     * Return output log
+     * Invoke an array of callables
      *
-     * @param \Crunz\Event $event
+     * @param array $callbacks
+     * @param array $parameters
+     *
+     * @return string
      */
-    protected function logOutput(Event $event)
+    protected function invoke(array $callbacks = [], Array $parameters = [])
     {
-        $info = $this->logDate()
-              . ' [Performed: '
-              . $event->getSummaryForDisplay()
-              . '] by running "'
-              . $event->buildCommand()
-              . '" output: ' . $event->getProcess()->getOutput()
-              . PHP_EOL;
+       
+       $output = '';
+       foreach ($callbacks as $callback) {
+         $output .= $this->invoker->call($callback, $parameters);
+        }
 
-        $path = $this->config('output_log_file');
+        return $output;
+    }
 
-        if ($event->nullOutput()) {
-            $this->saveLog($info, $path);
+    /**
+     * Handle output
+     *
+     * @param \Crunz\Event
+     */
+    protected function handleOutput(Event $event)
+    {
+        if ($this->config('log_output')) {
+            $this->logger->info($this->formatEventOutput($event));
         } else {
-            $this->saveLog($info, $event->output, $event->shouldAppendOutput);
+            $this->display($event->getOutputStream());
+        }
+
+        // Email the output
+        if ($this->config('email_output')) {
+            $this->mailer->send(
+                'Crunz: output for event: ' . (($event->description) ? $event->description : $event->getId()),
+                $this->formatEventOutput($event)
+            );
         }
     }
 
     /**
-     * Return error log
+     * Handle errors
      *
      * @param \Crunz\Event $event
      */
-    protected function logError(Event $event)
+    protected function handleError(Event $event)
     {
-        $info = $this->logDate()
-              . ' [Error occured with: '
-              . $event->getSummaryForDisplay()
-              . '] ' 
-              . $event->getProcess()->getErrorOutput()
-              . ' while running "'
-              . $event->buildCommand()
-              . '"'
-              . PHP_EOL;
+        if ($this->config('log_errors')) {
+            $this->logger->error($this->formatEventError($event));
+        } else {
+            $this->display($event->getProcess()->getErrorOutput());
+        }
 
-        $this->saveLog($info, $this->config('errors_log_file'));        
+        // Send error as email as configured
+        if ($this->config('email_errors')) {
+            $this->mailer->send(
+                'Crunz: reporting error for event:' . (($event->description) ? $event->description : $event->getId()),
+                $this->formatEventError($event)
+            );
+        }
+
     }
 
     /**
-     * Save the log info in the respective log file
+     * Format the event output
      *
-     * @param string $data 
+     * @param  \Crunz\Event
+     *
+     * @return  string
+     */
+    protected function formatEventOutput(Event $event)
+    {
+        return $event->description
+               . '('
+               . $event->buildCommand()
+               . ')->'
+               . PHP_EOL
+               . $event->outputStream
+               . PHP_EOL;
+    }
+
+    /**
+     * Format the event error message
+     *
+     * @param  \Crunz\Event $event
+     *
+     * @return  string
+     */
+    protected function formatEventError(Event $event)
+    {
+        return $event->description
+               . '('
+               . $event->buildCommand()
+               . ')->'
+               . PHP_EOL
+               . $event->getProcess()->getErrorOutput()
+               . PHP_EOL;   
+    }
+
+    /**
+     * Display content
+     *
      * @param string $output
-     * @param $flag
      */
-    protected function saveLog($data, $output, $flag = FILE_APPEND)
+    protected function display($output)
     {
-        return file_put_contents($output, $data, $flag);  
+        print is_string($output) ? $output : '';
     }
 
-    /**
-     *
-     * @return string
-     */
-    protected function logDate()
-    {
-        return date($this->logDateFormat()); 
-    }
-
-    /**
-     * Return date format to be used in log files
-     *
-     * @param highlight_string(str)
-     */
-    protected function logDateFormat()
-    {
-        return $this->config('log_date_format');   
-    }
-
-    /**
-     * Invoke an array of callables
-     *
-     * @param array $callbacks
-     */
-    protected function invoke(array $callbacks = [], Array $parameters = [])
-    {
-       foreach ($callbacks as $callback) {
-         $this->invoker->call($callback, $parameters); 
-       } 
-    }
 
 }

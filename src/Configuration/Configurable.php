@@ -2,6 +2,8 @@
 
 namespace Crunz\Configuration;
 
+use Crunz\Configuration\ConfigurationFactory as ConfigFactory;
+
 trait Configurable {
 
     /**
@@ -17,7 +19,7 @@ trait Configurable {
      */
     protected function configurable()
     {
-        $this->config = Configuration::make();
+        $this->config = ConfigFactory::makeOne();
     }
 
     /**

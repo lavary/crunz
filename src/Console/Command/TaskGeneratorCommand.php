@@ -44,6 +44,7 @@ class TaskGeneratorCommand extends Command
     protected function configure()
     {
         $this->configurable();
+
         $this->setName('make:task')
              ->setDescription('Generates a task file with one task.')
              ->setDefinition([

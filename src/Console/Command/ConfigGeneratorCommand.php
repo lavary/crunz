@@ -33,7 +33,7 @@ class ConfigGeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {              
-        $filename = get_base() . '/crunz.yml';
+        $filename = getbase() . '/crunz.yml';
 
         if (file_exists($filename)) {
             $output->writeln('<comment>The configuration file already exists.</comment>');

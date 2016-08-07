@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use SuperClosure\Serializer;
 use Crunz\Invoker;
 use Crunz\Configuration\Configurable;
+use Crunz\Exception\CrunzException;
 
 class ClosureRunCommand extends Command
 {
@@ -21,6 +22,7 @@ class ClosureRunCommand extends Command
     protected function configure()
     {
        $this->configurable();
+
        $this->setName('closure:run')
             ->setDescription('Executes a closure as a process.')
             ->setDefinition([
@@ -41,9 +43,9 @@ class ClosureRunCommand extends Command
     {              
         $this->arguments = $input->getArguments();
         parse_str($this->arguments['closure'], $args);
-        
         $serializer = new Serializer();
-        (new Invoker())->call($serializer->unserialize($args[0]));
+        call_user_func_array($serializer->unserialize($args[0]), []);
+
     }  
 
 }

@@ -40,8 +40,14 @@ if (!defined('AUTOLOAD_PHP_FILE')) {
 
 require AUTOLOAD_PHP_FILE;
 
-// Setting the root directory for this installation
-set_base(AUTOLOAD_PHP_FILE);
+// Setting the base directory as an environment variable
+setbase(
+    getroot(AUTOLOAD_PHP_FILE)
+);
 
-$kernel = (new \Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.4.0'))
+// Setting the handler for catching/logging fatal and parse errors. 
+Crunz\ErrorHandler::getInstance()->set();
+
+
+$kernel = (new Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.4.0'))
         ->handle();

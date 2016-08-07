@@ -44,7 +44,7 @@ if (!function_exists('array_only')) {
     }
 }
 
-if (!function_exists('set_base')) {
+if (!function_exists('setbase')) {
     /**
      * Set the project's root directory
      *
@@ -52,18 +52,18 @@ if (!function_exists('set_base')) {
      *
      * @return string
      */
-    function set_base($dir) {
+    function setbase($dir) {
         return Utils::setBaseDir($dir);
     }
 }
 
-if (!function_exists('get_base')) {
+if (!function_exists('getbase')) {
     /**
      * Return the project's root directory
      *
      * @return string
      */
-    function get_base() {
+    function getbase() {
         return Utils::getBaseDir();
     }
 }
@@ -78,5 +78,18 @@ if (!function_exists('generate_path')) {
      */
     function generate_path($relative_path) {
         return Utils::generatePath($relative_path);
+    }
+}
+
+if (!function_exists('getroot')) {
+    /**
+     * Return absolute path for relative path
+     *
+     * @param  string $autoloader
+     *
+     * @return string
+     */
+    function getroot($autoloader) {
+        return Utils::getRoot($autoloader);
     }
 }
