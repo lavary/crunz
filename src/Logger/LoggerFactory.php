@@ -20,6 +20,10 @@ class LoggerFactory {
         // Adding stream for normal output
         foreach ($streams as $stream => $file) {
             
+            if (!$file) {
+                continue;
+            }
+
             $logger->addStream(   
                 $file,
                 $stream,

@@ -46,11 +46,6 @@ class Definition implements ConfigurationInterface {
                     ->info('Path to output logs' .                 PHP_EOL)
                 ->end()
 
-                ->scalarNode('log_date_format')
-                    ->defaultValue('Y-m-d H:i:s')
-                    ->info('Date format in log files' .            PHP_EOL)
-                ->end()
-
                 ->scalarNode('email_output')
                     ->defaultFalse()
                     ->info('Email the event\'s output'  .          PHP_EOL)
@@ -107,7 +102,7 @@ class Definition implements ConfigurationInterface {
                         ->end()
 
                         ->scalarNode('encryption')
-                        ->info('SMTP encryption' .                   PHP_EOL)
+                        ->info('SMTP encryption' .                 PHP_EOL)
                         ->end()
 
                     ->end()
