@@ -452,11 +452,10 @@ As a result, a copy of the configuration file will be created within our project
 # This option defines where the task files and
 # directories reside.
 # The path is relative to the project's root directory,
-# where the Crunz is installed (Trailing slashes will be stripped off).
+# where the Crunz is installed (Trailing slashes will be ignored).
 source: tasks
 
-# The suffix option is meant to target the task files inside the ":source" directory.
-# Crunz will collect the files suffixed with this value.
+# The suffix is meant to target the task files inside the ":source" directory.
 # Please note if you change this value, you need
 # to make sure all the existing tasks files are renamed accordingly.
 suffix: Tasks.php
@@ -465,29 +464,47 @@ suffix: Tasks.php
 # You may set the value to true for logging the errors
 log_errors: false
 
-# This is where we log the errors occured during event runs
+# This is the absolute path to the errors' log file
 # You need to make sure you have the required permission to write to this file though.
-errors_log_file: /dev/null
+errors_log_file:
 
 # By default the output is not logged as they are redirected to the
 # null output.
-# Set this to true if you want to keep the outputs and activity logs in a file.
+# Set this to true if you want to keep the outputs
 log_output: false
 
-# This is the output and activity log file for all events
-# The events which have dedicated log file (defined with them), won't be
-# logged to this file though. Instead, they will be writing to their
-# determined log file
-output_log_file: /dev/null
+# This is the absolute path to the global output log file
+# The events which have dedicated log files (defined with them), won't be
+# logged to this file though.
+output_log_file:
 
-# This is the date format used in the log files
-# Feel free to change it to a format which works best for you.
-# You may use this page to compose your custom formats:
-# http://php.net/manual/en/datetime.formats.date.php
-log_date_format: Y-m-d H:i:s
+# This option determines whether the output should be emailed or not.
+email_output: false
+
+# This option determines whether the error messages should be emailed or not.
+email_errors: false
+
+# Global Swift Mailer settings
+#
+mailer:
+    # Possible values: smtp, mail, and sendmail
+    transport: smtp
+    recipients:
+    sender_name:
+    sender_email:
+
+
+# SMTP settings
+#
+smtp:
+    host:
+    port:
+    username:
+    password:
+    encryption:
 ```
 
-As you can see there are a few options like `source` which is used to specify the source tasks directory. The other options are used for error/output logging purposes.
+As you can see there are a few options like `source` which is used to specify the source tasks directory. The other options are used for error/output logging/emailing purposes.
 
 Each time we run Crunz commands, it will look into the project's root directory to see if there's any user-modified configuration file. If the configuration file doesn't exists, it will use the one shipped with the package.
 
@@ -546,6 +563,8 @@ $schedule->run('/usr/bin/php email.php')
 
 Method `appendOutputTo()` **appends** the output to the specified file. To override the log file with new data after each run, we use `saveOutputTo()` method.
 
+It is also possible to send the errors as emails to a group of recipents by setting `email_output` and `mailer` settings in the configuration file.
+
 ## Error Handling
 
 Crunz makes error handling easy by logging and also allowing you add a set of callbacks in case of an error.
@@ -590,6 +609,8 @@ errors_log_file: /var/log/error.log
 ```
 
 As a result, if the execution of an event is unsuccessful for some reasons, the error message is appended to the specified error log file. Each entry provides useful information including the time it happened, the event description,  the executed command which caused the error, and the error message itself.
+
+It is also possible to send the errors as emails to a group of recipents by setting `email_error` and `mailer` settings in the configuration file.
 
 ## Pre-Process and Post-Process Hooks
 
