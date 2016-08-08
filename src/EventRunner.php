@@ -186,7 +186,8 @@ class EventRunner {
        
        $output = '';
        foreach ($callbacks as $callback) {
-         $output .= $this->invoker->call($callback, $parameters);
+         // Invoke the callback with buffering enabled
+         $output .= $this->invoker->call($callback, $parameters, true);
         }
 
         return $output;

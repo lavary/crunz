@@ -48,8 +48,7 @@ class Schedule
             $command .= ' ' . $this->compileParameters($parameters);
         }
 
-        $taskId = $this->id();
-        $this->events[$taskId] = $event = new Event($taskId, $command);
+        $this->events[] = $event = new Event($this->id(), $command);
 
         return $event;
     }

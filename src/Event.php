@@ -7,12 +7,9 @@ use LogicException;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Component\Process\Process;
-use Crunz\Configuration\Configurable;
 
 class Event
 {
-    use Configurable;
-
     /**
      * The event's unique identifier
      *
@@ -149,8 +146,6 @@ class Event
      */
     public function __construct($id, $command)
     {
-        $this->configurable();
-
         $this->command = $command;
         $this->id      = $id;
         $this->output  = $this->getDefaultOutput();
