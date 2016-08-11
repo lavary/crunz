@@ -72,6 +72,9 @@ class TaskGeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->input  = $input;
+        $this->output = $output;
+
         $this->arguments = $input->getArguments();        
         $this->options   = $input->getOptions();  
         $this->stub      = $this->getStub();
@@ -115,7 +118,7 @@ class TaskGeneratorCommand extends Command
         $helper   = $this->getHelper('question');
         $question = new Question("<question>{$question}</question>");
         
-        return $helper->ask($input, $output, $question);
+        return $helper->ask($this->input, $this->output, $question);
     }
 
     /**

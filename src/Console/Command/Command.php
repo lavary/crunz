@@ -19,5 +19,18 @@ class Command extends BaseCommand {
      * @var array
      */
     protected $options;
-    
+
+    /**
+     * Input object
+     *
+     * @var use Symfony\Component\Console\Input\InputInterface
+     */
+    protected $input;
+
+    /**
+     * output object
+     *
+     * @var use Symfony\Component\Console\Input\OutputInterface
+     */
+    protected $output;    
 }
