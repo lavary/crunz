@@ -75,7 +75,7 @@ class Configuration extends Singleton {
     {    
         $config_file = getenv('CRUNZ_BASE_DIR') . '/crunz.yml';
         
-        return file_exists($config_file) ? $config_file : __DIR__ . '/../crunz.yml';
+        return file_exists($config_file) ? $config_file : __DIR__ . '/../../crunz.yml';
     }
 
     /**
