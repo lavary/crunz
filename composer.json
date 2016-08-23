@@ -35,7 +35,7 @@
         "symfony/console": "^3.0",
         "symfony/config": "^3.0",
         "jeremeamia/superclosure": "^2.2",
-        "monolog/monolog": "^1.21",
+        "monolog/monolog": "1.19.0",
         "swiftmailer/swiftmailer": "^5.4"
     },
     "require-dev": {
