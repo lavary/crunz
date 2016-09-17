@@ -7,6 +7,8 @@ use LogicException;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Component\Process\Process;
+use SuperClosure\Serializer;
+
 
 class Event
 {
@@ -23,6 +25,14 @@ class Event
      * @var string
      */
     protected $command;
+
+
+    /**
+     * The command line string.
+     *
+     * @var string
+     */
+    protected $commandLine;
 
     /**
      * Process that runs the event
@@ -212,6 +222,27 @@ class Event
     
         return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
     }
+
+    /**
+     * Build the command line string.
+     *
+     * @return string
+     */
+
+    public function getCommandLine(){
+
+        if (!$this->commandLine) {
+            if ($this->isClosure()) {
+                $closure = (new Serializer())->serialize($this->getCommand());
+                $this->commandLine = __DIR__ . '/../crunz closure:run ' . http_build_query([$closure]);
+            } else {
+                $this->commandLine = trim($this->buildCommand(), '& ');
+            }
+        }
+
+        return $this->commandLine;
+    }
+
 
     /**
      * Determine if the given event should run based on the Cron expression.
@@ -851,6 +882,11 @@ class Event
     public function setProcess(\Symfony\Component\Process\Process $process = null)
     {
         $this->process = $process;
+
+        if ($this->preventOverlapping){
+            $this->lock();
+        }
+
         return $this;
     }
 
@@ -1039,7 +1075,7 @@ class Event
      */
     protected function lock()
     {
-        file_put_contents($this->lockFile(), $event->process->getPid());
+        file_put_contents($this->lockFile(), $this->process->getPid());
     }
 
     /**
@@ -1074,7 +1110,7 @@ class Event
      */
     protected function lockFile()
     {
-        return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->id);
+        return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->getCommandLine());
     }
 
     /**
