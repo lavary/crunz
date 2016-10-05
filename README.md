@@ -1,6 +1,6 @@
 # Crunz
 
-Install a cron job once and for all, manage the rest right from the code.
+Install a cron job once and for all, manage the rest from the code.
 
 ![Version](http://img.shields.io/packagist/v/lavary/crunz.svg?style=flat-square)
 ![Build](http://img.shields.io/travis/lavary/crunz.svg?style=flat-square)
@@ -11,7 +11,7 @@ Crunz is capable of executing console commands, shell scripts, PHP scripts, and 
 
 ## Installation
 
-To install it Crunz:
+To install it:
 
 ```bash
 composer require lavary/crunz
