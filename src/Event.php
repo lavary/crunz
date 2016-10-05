@@ -755,6 +755,8 @@ class Event
                 unlink($lockfile);
             }
         });
+
+        return $this;
     }
 
     /**
