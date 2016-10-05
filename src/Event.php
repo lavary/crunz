@@ -7,6 +7,7 @@ use LogicException;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Component\Process\Process;
+use SuperClosure\Serializer;
 
 class Event
 {
@@ -51,13 +52,6 @@ class Event
      * @var string
      */
     protected $user;
-
-    /**
-     * Indicates if the command should not overlap itself.
-     *
-     * @var bool
-     */
-    protected $preventOverlapping = false;
 
     /**
      * The array of filter callbacks.
@@ -108,6 +102,13 @@ class Event
         'week'   => 5,
 
     ];
+
+    /**
+     * Indicates if the command should not overlap itself.
+     *
+     * @var bool
+     */
+    public $preventOverlapping = false;
 
     /**
      * The location that output should be sent to.
@@ -186,6 +187,44 @@ class Event
     }
 
     /**
+     * Build the comand string.
+     *
+     * @return string
+     */
+    public function buildCommand()
+    {
+        $command = '';        
+        
+        if ($this->cwd) {           
+            if($this->user) {
+                $command .= $this->sudo();
+            }
+
+            $command .=  'cd ' . $this->cwd . '; ';
+        }
+    
+        if ($this->user) {
+           $this->sudo();
+        }
+        
+        $command .= $this->isClosure() ? $this->serializeClosure($this->command) : $this->command;
+
+        return trim($command, '& ');
+    }
+
+    /**
+     * Add sudo to the command 
+     *
+     * @param string $user
+     *
+     * @return string
+     */
+    protected function sudo($user)
+    {
+        return 'sudo -u' . $user . ' ';
+    }
+
+    /**
      * Determine whether the passed value is a closure ot not.
      *
      * @return boolean
@@ -196,21 +235,18 @@ class Event
     }
 
     /**
-     * Build the comand string.
+     * Convert closure to an executable command
+     *
+     * @param string $closure
      *
      * @return string
+     *
      */
-    public function buildCommand()
-    {
-        $command = '';
-
-        if ($this->cwd) {
-            $command .= 'cd ' . $this->cwd . ';';
-        }
-
-        $command .= ! is_object($this->command) ? $this->command : 'object'; 
-    
-        return $this->user ? 'sudo -u ' . $this->user . ' ' . $command : $command;
+    protected function serializeClosure($closure)
+    {    
+        $closure = (new Serializer())->serialize($closure);
+        
+        return __DIR__ . '/../crunz closure:run ' . http_build_query([$closure]);
     }
 
     /**
@@ -262,6 +298,23 @@ class Event
         }
 
         return true;
+    }
+
+    /**
+     * Start the event execution
+     *
+     * @return int
+     */
+    public function start()
+    {
+        $this->setProcess(new Process($this->buildCommand()));
+        $this->getProcess()->start();
+
+        if ($this->preventOverlapping) {
+            $this->lock();
+        }
+
+        return $this->getProcess()->getPid();
     }
 
     /**
@@ -939,6 +992,16 @@ class Event
     }
 
     /**
+     * Get the command for display
+     *
+     * @return string
+     */
+    public function getCommandForDisplay()
+    {
+        return $this->isClosure() ? 'object(Closure)' : $this->buildCommand();
+    }
+
+    /**
      * Get the Cron expression for the event.
      *
      * @return string
@@ -1039,7 +1102,7 @@ class Event
      */
     protected function lock()
     {
-        file_put_contents($this->lockFile(), $event->process->getPid());
+        file_put_contents($this->lockFile(), $this->process->getPid());
     }
 
     /**
@@ -1072,9 +1135,9 @@ class Event
      *
      * @return string
      */
-    protected function lockFile()
+    public function lockFile()
     {
-        return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->id);
+        return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->buildCommand());
     }
 
     /**

@@ -68,7 +68,7 @@ class ScheduleListCommand extends Command
                 ++$row,
                 $event->description,
                 $event->getExpression(),
-                ($event->isClosure()) ? 'object(Closure)' : $event->getCommand(),
+                $event->getCommandForDisplay(),
               ]); 
 
             }

@@ -2,8 +2,6 @@
 
 namespace Crunz;
 
-use Symfony\Component\Process\Process;
-use SuperClosure\Serializer;
 use Crunz\Exception\CrunzException;
 use Crunz\Configuration\Configurable;
 use Crunz\Logger\LoggerFactory;
@@ -25,13 +23,6 @@ class EventRunner {
      * @var \Crunz\Invoker
      */
     protected $invoker;
-
-    /**
-     * Instance of SuperClosure serializer
-     *
-     * @var \SuperClosure\Serializer
-     */
-    protected $serializer;
 
     /**
      * The Logger
@@ -63,9 +54,6 @@ class EventRunner {
             'error' => $this->config('errors_log_file'),
 
         ]);
-        
-        // Initializing the serializer
-        $this->serializer = new Serializer();
         
         // Initializing the invoker
         $this->invoker    = new Invoker();
@@ -109,15 +97,7 @@ class EventRunner {
         // Running the before-callbacks
         $event->outputStream = ($this->invoke($event->beforeCallbacks()));
         
-        if ($event->isClosure()) {
-            $closure = $this->serializer->serialize($event->getCommand());
-            $command = __DIR__ . '/../crunz closure:run ' . http_build_query([$closure]);
-        } else {
-            $command = trim($event->buildCommand(), '& ');
-        }
-
-        $event->setProcess(new Process($command));
-        $event->getProcess()->start();
+        $event->start();
     }
 
     /**
@@ -144,9 +124,7 @@ class EventRunner {
                         $event->outputStream .= $proc->getOutput();
                         $event->outputStream .= $this->invoke($event->afterCallbacks());                       
 
-                        if ($event->outputStream) {
-                            $this->handleOutput($event);
-                        }
+                        $this->handleOutput($event);
                     
                     } else {
                         
@@ -249,8 +227,8 @@ class EventRunner {
     {
         return $event->description
                . '('
-               . $event->buildCommand()
-               . ')->'
+               . $event->getCommandForDisplay()
+               . ') '
                . PHP_EOL
                . $event->outputStream
                . PHP_EOL;
@@ -267,8 +245,8 @@ class EventRunner {
     {
         return $event->description
                . '('
-               . $event->buildCommand()
-               . ')->'
+               . $event->getCommandForDisplay()
+               . ') '
                . PHP_EOL
                . $event->getProcess()->getErrorOutput()
                . PHP_EOL;   

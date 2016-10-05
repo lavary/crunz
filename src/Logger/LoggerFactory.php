@@ -7,7 +7,7 @@ use Crunz\Logger\Logger;
 use Crunz\Configuration\Configurable;
 
 class LoggerFactory {
-    
+
     /**
      * Create an instance of the Logger class
      *
@@ -18,7 +18,7 @@ class LoggerFactory {
         $logger = new Logger(new MonologLogger('crunz'));         
                 
         // Adding stream for normal output
-        foreach ($streams as $stream => $file) {
+        foreach ($streams as $stream => $file) {           
             
             if (!$file) {
                 continue;
@@ -29,6 +29,7 @@ class LoggerFactory {
                 $stream,
                 false
             );
+            
         }
 
         return $logger;

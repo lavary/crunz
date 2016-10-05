@@ -49,7 +49,7 @@ class Utils
      */
     public static function getRoot($autoloader)
     {
-        return dirname(dirname(dirname(dirname(dirname(dirname($autoloader))))));
+       return dirname($autoloader) . '/..';
     }
     
     /**

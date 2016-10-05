@@ -40,6 +40,7 @@ class Logger extends Singleton {
     /**
      * Initialize the logger instance 
      *
+     * @param \Monolog\Logger $logger
      */
     public function __construct(\Monolog\Logger $logger)
     {
@@ -51,10 +52,11 @@ class Logger extends Singleton {
     /**
      * Create a neaw stream handler
      *
-     * @param string $path
-     * @param int    $level
+     * @param string  $path
+     * @param int     $level
+     * @param Boolean $bubble
      *
-     * @param \Monolog\Handler\StreamHandler
+     * @return \Monolog\Handler\StreamHandler
      */
     public function addStream($path, $level, $bubble = true)
     {        
