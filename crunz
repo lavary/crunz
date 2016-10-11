@@ -13,19 +13,21 @@
 |
 */
 
-foreach ([        
-         
-        __DIR__ . '/../autoload.php',
-        __DIR__ . '/../../autoload.php',
-        __DIR__ . '/../vendor/autoload.php',
-        __DIR__ . '/vendor/autoload.php',
-        __DIR__ . '/../../vendor/autoload.php'
-         
+$dir=dirname($argv[0]);
+
+foreach ([
+
+         $dir . '/../autoload.php',
+         $dir . '/../../autoload.php',
+         $dir . '/../vendor/autoload.php',
+         $dir . '/vendor/autoload.php',
+         $dir . '/../../vendor/autoload.php'
+
          ] as $file) {
-    
+
     if (file_exists($file)) {
-       define('AUTOLOAD_PHP_FILE', $file);
-       break;
+        define('AUTOLOAD_PHP_FILE', $file);
+        break;
     }
 }
 
