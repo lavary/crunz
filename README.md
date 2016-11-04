@@ -32,7 +32,7 @@ use Crunz\Schedule;
 
 $schedule = new Schedule();
 $schedule->run('cp project project-bk')       
-         ->daily()
+         ->daily();
 
 return $schedule;
 ```
