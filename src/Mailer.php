@@ -45,7 +45,7 @@ class Mailer extends Singleton {
             break;
 
             case 'mail':
-            $transport = $this->getMailTranport();
+            $transport = $this->getMailTransport();
             break;
             
             default:
@@ -78,7 +78,7 @@ class Mailer extends Singleton {
      *
      * @return \Swift_SendmailTransport
      */
-    protected function getMailTrasport()
+    protected function getMailTransport()
     {
         return \Swift_MailTransport::newInstance();
     }
