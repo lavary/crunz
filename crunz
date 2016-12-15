@@ -13,6 +13,14 @@
 |
 */
 
+if (!ini_get('register_argc_argv')) {
+     fwrite(STDERR,
+        'register_argc_argv must be set to On in your php.ini for crunz to work!' . PHP_EOL .
+        ' register_argc_argv=On' . PHP_EOL
+    );
+    die(1);
+}
+
 foreach ([        
          
         __DIR__ . '/../autoload.php',
