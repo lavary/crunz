@@ -56,20 +56,28 @@ class ErrorHandler extends Singleton {
      */
     public function catchErrors($buffer)
     {
-        if (!is_null(error_get_last())) {                        
-            
-            $this->logger->error($buffer);
+        if (!is_null(($error_get_last = error_get_last()))) {
 
-            // Send error as email as configured
-            if ($this->config('email_errors')) {
-                $this->mailer->send(
-                    'Crunz: reporting PHP Fatal error',
-                    $buffer
-                );
+            // Ignore notice type errors
+            if ($error_get_last['type'] != E_NOTICE) {
+
+                // add the error data onto the buffer
+                print_r($error_get_last);
+                $buffer .= ob_get_contents();
+
+                $this->logger->error($buffer);
+
+                // Send error as email as configured
+                if ($this->config('email_errors')) {
+                    $this->mailer->send(
+                        'Crunz: reporting PHP Fatal error',
+                        $buffer
+                    );
+                }
             }
         }
 
-        return $buffer;       
+        return $buffer;
     }
 
 }
