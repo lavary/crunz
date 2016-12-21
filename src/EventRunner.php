@@ -94,6 +94,15 @@ class EventRunner {
      */
     protected function start(Event $event)
     {
+        // if sendOutputTo or appendOutputTo have been specified
+        if(!$event->nullOutput()){
+            $this->logger->addStream(
+                $event->output,
+                'info',
+                true // true allows the event to bubble to the master output log (if enabled)
+            );
+        }
+
         // Running the before-callbacks
         $event->outputStream = ($this->invoke($event->beforeCallbacks()));
         
@@ -178,7 +187,7 @@ class EventRunner {
      */
     protected function handleOutput(Event $event)
     {
-        if ($this->config('log_output')) {
+        if ($this->config('log_output') || !$event->nullOutput()) {
             $this->logger->info($this->formatEventOutput($event));
         } else {
             $this->display($event->getOutputStream());
