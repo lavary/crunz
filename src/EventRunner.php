@@ -95,7 +95,15 @@ class EventRunner {
     protected function start(Event $event)
     {
         // if sendOutputTo or appendOutputTo have been specified
-        if(!$event->nullOutput()){
+        if (!$event->nullOutput()) {
+            // if sendOutputTo then truncate the log file if it exists
+            if (!$event->shouldAppendOutput) {
+              $f = @fopen($event->output, "r+");
+              if ($f !== false) {
+                  ftruncate($f, 0);
+                  fclose($f);
+              }
+            }
             $this->logger->addStream(
                 $event->output,
                 'info',
