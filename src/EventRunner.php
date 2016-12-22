@@ -46,15 +46,15 @@ class EventRunner {
     {
         $this->configurable();
 
-        // Create an insance of the Logger 
+        // Create an insance of the Logger
         $this->logger = LoggerFactory::makeOne([
-            
+
             // Logging streams
             'info'  => $this->config('output_log_file'),
             'error' => $this->config('errors_log_file'),
 
         ]);
-        
+
         // Initializing the invoker
         $this->invoker    = new Invoker();
 
@@ -70,9 +70,9 @@ class EventRunner {
     public function handle(Array $schedules = [])
     {
         $this->schedules = $schedules;
-        
+
         foreach ($this->schedules as $schedule) {
-            
+
             // Running the before-callbacks of the current schedule
             $this->invoke($schedule->beforeCallbacks());
 
@@ -98,22 +98,24 @@ class EventRunner {
         if (!$event->nullOutput()) {
             // if sendOutputTo then truncate the log file if it exists
             if (!$event->shouldAppendOutput) {
-              $f = @fopen($event->output, "r+");
-              if ($f !== false) {
-                  ftruncate($f, 0);
-                  fclose($f);
-              }
+                $f = @fopen($event->output, "r+");
+                if ($f !== false) {
+                    ftruncate($f, 0);
+                    fclose($f);
+                }
             }
-            $this->logger->addStream(
-                $event->output,
-                'info',
-                true // true allows the event to bubble to the master output log (if enabled)
-            );
+            // Create an instance of the Logger specific to the event
+            $event->logger = LoggerFactory::makeOne([
+
+                // Logging streams
+                'info'  => $event->output,
+
+            ]);
         }
 
         // Running the before-callbacks
         $event->outputStream = ($this->invoke($event->beforeCallbacks()));
-        
+
         $event->start();
     }
 
@@ -125,9 +127,9 @@ class EventRunner {
     protected function ManageStartedEvents()
     {
        while ($this->schedules) {
-            
+
             foreach ($this->schedules as $scheduleKey => $schedule) {
-                
+
                 $events = $schedule->events();
                 foreach ($events as $eventKey => $event) {
 
@@ -137,17 +139,17 @@ class EventRunner {
                     }
 
                     if ($proc->isSuccessful()) {
-                        
+
                         $event->outputStream .= $proc->getOutput();
-                        $event->outputStream .= $this->invoke($event->afterCallbacks());                       
+                        $event->outputStream .= $this->invoke($event->afterCallbacks());
 
                         $this->handleOutput($event);
-                    
+
                     } else {
-                        
+
                         // Calling registered error callbacks with an instance of $event as argument
-                        $this->invoke($schedule->errorCallbacks(), [$event]); 
-                        
+                        $this->invoke($schedule->errorCallbacks(), [$event]);
+
                         $this->handleError($event);
 
                     }
@@ -165,7 +167,7 @@ class EventRunner {
                     unset($this->schedules[$scheduleKey]);
                 }
             }
-        } 
+        }
     }
 
     /**
@@ -178,7 +180,7 @@ class EventRunner {
      */
     protected function invoke(array $callbacks = [], Array $parameters = [])
     {
-       
+
        $output = '';
        foreach ($callbacks as $callback) {
          // Invoke the callback with buffering enabled
@@ -195,9 +197,16 @@ class EventRunner {
      */
     protected function handleOutput(Event $event)
     {
-        if ($this->config('log_output') || !$event->nullOutput()) {
+        $logged = false;
+        if ($this->config('log_output')) {
             $this->logger->info($this->formatEventOutput($event));
-        } else {
+            $logged = true;
+        }
+        if (!$event->nullOutput()) {
+            $event->logger->info($this->formatEventOutput($event));
+            $logged = true;
+        }
+        if (!$logged) {
             $this->display($event->getOutputStream());
         }
 
@@ -266,7 +275,7 @@ class EventRunner {
                . ') '
                . PHP_EOL
                . $event->getProcess()->getErrorOutput()
-               . PHP_EOL;   
+               . PHP_EOL;
     }
 
     /**
