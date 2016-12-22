@@ -139,6 +139,13 @@ class Event
     public $outputStream;
 
     /**
+     * Event personal logger instance
+     *
+     * @var string
+     */
+    public $logger;
+
+    /**
      * Create a new event instance.
      *
      * @param  string  $command
