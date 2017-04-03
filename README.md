@@ -513,7 +513,7 @@ Each time we run Crunz commands, it will look into the project's root directory 
 
 Crunz runs the scheduled events in parallel (in separate processes), so all the events which have the same frequency of execution, will run at the same time asynchronously. To achieve this, Crunz utilizes [symfony/Process](http://symfony.com/doc/current/components/process.html) library for running the tasks in sub-processes.
 
-If the execution of a task lasts until the next interval or even beyond that, we say that the same instances of a task are overlapping. In some cases, this is a not a problem, but they are times when these tasks are modifying database data or files, which might cause unexpected behaviors, or even data loss.
+If the execution of a task lasts until the next interval or even beyond that, we say that the same instances of a task are overlapping. In some cases, this is a not a problem, but there are times when these tasks are modifying database data or files, which might cause unexpected behaviors, or even data loss.
 
 To prevent critical tasks from overlapping each other, Crunz provides a locking mechanism through `preventOverlapping()` method, which, ensures no task runs if the previous instance is already running. 
 
