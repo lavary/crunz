@@ -179,6 +179,14 @@ class EventRunner {
     protected function handleOutput(Event $event)
     {
         if ($this->config('log_output')) {
+
+            if($event->output <> '/dev/null' && $event->output <> 'NUL'){
+                if($event->shouldAppendOutput){
+                    file_put_contents($event->output,$event->outputStream,FILE_APPEND);
+                }else{
+                    file_put_contents($event->output,$event->outputStream);
+                }
+            }
             $this->logger->info($this->formatEventOutput($event));
         } else {
             $this->display($event->getOutputStream());
