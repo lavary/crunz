@@ -197,17 +197,24 @@ class Event
         
         if ($this->cwd) {           
             if($this->user) {
-                $command .= $this->sudo();
+                $command .= $this->sudo($this->user);
             }
 
             $command .=  'cd ' . $this->cwd . '; ';
         }
     
         if ($this->user) {
-           $this->sudo();
+           $this->sudo($this->user);
         }
         
         $command .= $this->isClosure() ? $this->serializeClosure($this->command) : $this->command;
+        if($this->output){
+            if($this->shouldAppendOutput){
+                $command .= ' >> ' . $this->output;
+            }else{
+                $command .= ' > ' . $this->output;
+            }
+        }
 
         return trim($command, '& ');
     }
