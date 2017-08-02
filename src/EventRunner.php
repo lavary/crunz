@@ -209,7 +209,7 @@ class EventRunner {
         // Send error as email as configured
         if ($this->config('email_errors')) {
             $this->mailer->send(
-                'Crunz: reporting error for event:' . (($event->description) ? $event->description : $event->getId()),
+                'Crunz: reporting error for event: ' . (($event->description) ? $event->description : $event->getId()),
                 $this->formatEventError($event)
             );
         }
