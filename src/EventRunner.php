@@ -184,8 +184,8 @@ class EventRunner {
             $this->display($event->getOutputStream());
         }
 
-        // Email the output
-        if ($this->config('email_output')) {
+        // Email the output if there is one
+        if ($this->config('email_output') && !empty($event->outputStream)) {
             $this->mailer->send(
                 'Crunz: output for event: ' . (($event->description) ? $event->description : $event->getId()),
                 $this->formatEventOutput($event)
@@ -209,7 +209,7 @@ class EventRunner {
         // Send error as email as configured
         if ($this->config('email_errors')) {
             $this->mailer->send(
-                'Crunz: reporting error for event:' . (($event->description) ? $event->description : $event->getId()),
+                'Crunz: reporting error for event: ' . (($event->description) ? $event->description : $event->getId()),
                 $this->formatEventError($event)
             );
         }
