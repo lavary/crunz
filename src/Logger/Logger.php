@@ -73,7 +73,7 @@ class Logger extends Singleton {
      */
     protected function getDefaultFormatter()
     {
-        $allow_linebreaks = $this->config("log_allow_line_breaks");
+        $allow_linebreaks = $this->config('log_allow_line_breaks');
         return new LineFormatter(null, null, $allow_linebreaks, false);
     }
 
