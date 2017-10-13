@@ -29,6 +29,10 @@ log_output: false
 # logged to this file though.
 output_log_file:
 
+# By default line breaks in logs aren't allowed.
+# Set the value to true to allow them.
+log_allow_line_breaks: false
+
 # This option determines whether the output should be emailed or not.
 email_output: false
 
