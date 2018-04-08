@@ -22,7 +22,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
     public function setUp()
     {
         $this->id = uniqid();
-        
+
         $this->defaultTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
     }
@@ -127,11 +127,23 @@ class EventTest extends PHPUnit_Framework_TestCase {
      */
     public function testWeekdayMethods()
     {
+        $e = new Event($this->id, 'php qux');
+        $this->assertEquals('* * * * 2 *', $e->tuesdays()->getExpression());
+
+        $e = new Event($this->id, 'php flob');
+        $this->assertEquals('* * * * 3 *', $e->wednesdays()->getExpression());
+
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('* * * * 4 *', $e->thursdays()->getExpression());
 
         $e = new Event($this->id, 'php bar');
         $this->assertEquals('* * * * 5 *', $e->fridays()->getExpression());
+
+        $e = new Event($this->id, 'php baz');
+        $this->assertEquals('* * * * 1-5 *', $e->weekdays()->getExpression());
+
+        $e = new Event($this->id, 'php bla');
+        $this->assertEquals('30 1 * * 2 *', $e->weeklyOn('2','01:30')->getExpression());
     }
 
     public function testCronLifeTime()
