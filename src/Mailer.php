@@ -52,7 +52,9 @@ class Mailer extends Singleton {
             $transport = $this->getSendMailTransport();
         }
 
-        return \Swift_Mailer::newInstance($transport);
+        return method_exists(\Swift_Mailer::class, 'newInstance')
+            ? \Swift_Mailer::newInstance($transport)
+            : new \Swift_Mailer($transport);
     }
 
     /**
@@ -62,13 +64,19 @@ class Mailer extends Singleton {
      */
     protected function getSmtpTransport()
     {
-      return \Swift_SmtpTransport::newInstance(               
-            
-            $this->config('smtp.host'),
-            $this->config('smtp.port'),
-            $this->config('smtp.encryption')
+        $object = method_exists(\Swift_SmtpTransport::class, 'newInstance')
+            ? \Swift_SmtpTransport::newInstance(
+                $this->config('smtp.host'),
+                $this->config('smtp.port'),
+                $this->config('smtp.encryption')
+            )
+            : new \Swift_SmtpTransport(
+                $this->config('smtp.host'),
+                $this->config('smtp.port'),
+                $this->config('smtp.encryption')
+            );
 
-        )
+      return $object
         ->setUsername($this->config('smtp.username'))
         ->setPassword($this->config('smtp.password'));
     }
@@ -76,10 +84,13 @@ class Mailer extends Singleton {
     /**
      * Get the Mail transport
      *
-     * @return \Swift_SendmailTransport
+     * @return \Swift_MailTransport
      */
     protected function getMailTrasport()
     {
+        if (!class_exists('\Swift_MailTransport')) {
+            throw new \Exception('Mail transport has been removed in SwiftMailer 6');
+        }
         return \Swift_MailTransport::newInstance();
     }
 
@@ -90,7 +101,9 @@ class Mailer extends Singleton {
      */
     protected function getSendMailTransport()
     {
-        return \Swift_SendmailTransport::newInstance();
+        return method_exists(\Swift_SendmailTransport::class, 'newInstance')
+            ? \Swift_SendmailTransport::newInstance()
+            : new \Swift_SendmailTransport();
     }
 
     /**
@@ -117,8 +130,11 @@ class Mailer extends Singleton {
      */
     protected function getMessage($subject, $message)
     {
-        return  \Swift_Message::newInstance()
-                 
+        $object = method_exists(\Swift_Message::class, 'newInstance')
+            ? \Swift_Message::newInstance()
+            : new \Swift_Message();
+
+        return  $object
                  ->setBody($message)
                  ->setSubject($subject)
                  ->setFrom([$this->config('mailer.sender_email') => $this->config('mailer.sender_name')])
