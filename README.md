@@ -328,7 +328,7 @@ $schedule->run('/usr/bin/php email.php')
         
 ```
 
-Based on our use cases, we can choose and combile the proper set of methods, which are easier to use.
+Based on our use cases, we can choose and combine the proper set of methods, which are easier to use.
 
 
 ## Changing Directories
@@ -563,7 +563,7 @@ $schedule->run('/usr/bin/php email.php')
 
 Method `appendOutputTo()` **appends** the output to the specified file. To override the log file with new data after each run, we use `saveOutputTo()` method.
 
-It is also possible to send the errors as emails to a group of recipents by setting `email_output` and `mailer` settings in the configuration file.
+It is also possible to send the errors as emails to a group of recipients by setting `email_output` and `mailer` settings in the configuration file.
 
 ## Error Handling
 
@@ -610,7 +610,7 @@ errors_log_file: /var/log/error.log
 
 As a result, if the execution of an event is unsuccessful for some reasons, the error message is appended to the specified error log file. Each entry provides useful information including the time it happened, the event description,  the executed command which caused the error, and the error message itself.
 
-It is also possible to send the errors as emails to a group of recipents by setting `email_error` and `mailer` settings in the configuration file.
+It is also possible to send the errors as emails to a group of recipients by setting `email_error` and `mailer` settings in the configuration file.
 
 ## Pre-Process and Post-Process Hooks
 
