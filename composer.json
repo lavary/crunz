@@ -25,7 +25,7 @@
         "issues": "http://github.com/lavary/crunz/issues"
     },
     "require": {
-        "php": ">=5.5",
+        "php": "^5.6 || ^7.0",
         "mtdowling/cron-expression": "^1.1",
         "nesbot/carbon": "^1.21",
         "symfony/yaml": "^3.0 || ^4.0",
