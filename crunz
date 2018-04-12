@@ -49,5 +49,5 @@ setbase(
 Crunz\ErrorHandler::getInstance()->set();
 
 
-$kernel = (new Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.4.0'))
+$kernel = (new Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.5.1'))
         ->handle();
