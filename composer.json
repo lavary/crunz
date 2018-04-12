@@ -18,7 +18,7 @@
         {
             "name": "Reza M. Lavaryan",
             "email": "mrl.8081@gmail.com"
-         }
+        }
     ],
     "support": {
         "email": "mrl.8081@gmail.com",
@@ -35,7 +35,7 @@
         "symfony/config": "^2.7 || ^3.3 || ^4.0",
         "symfony/console": "^2.7 || ^3.3 || ^4.0",
         "symfony/finder": "^2.7 || ^3.3 || ^4.0",
-        "symfony/process": "^2.7 || ^3.3 || ^4.0",
+        "symfony/process": "^2.7.11 || ^3.3 || ^4.0",
         "symfony/yaml": "^2.7 || ^3.3 || ^4.0"
     },
     "require-dev": {
