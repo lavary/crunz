@@ -139,7 +139,7 @@ class EventRunner
                 }
             }
 
-            usleep(500);
+            usleep(50000);
         }
     }
 
