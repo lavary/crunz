@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Option for allowing line breaks in logs - PR [#69](https://github.com/lavary/crunz/pull/69),
+thanks to [@TomasDuda](https://github.com/TomasDuda) 
+
 ## 1.5.1 - 2018-04-12
 
 ### Added
