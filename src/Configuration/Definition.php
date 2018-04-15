@@ -26,6 +26,10 @@ class Definition implements ConfigurationInterface
                     ->info('The suffix for filenames' . PHP_EOL)
                 ->end()
 
+                ->scalarNode('timezone')
+                    ->info('Timezone used to calculate task run date')
+                ->end()
+
                 ->booleanNode('log_errors')
                     ->defaultFalse()
                     ->info('Flag for logging errors' . PHP_EOL)
