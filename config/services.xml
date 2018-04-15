@@ -5,20 +5,40 @@
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service class="Crunz\Console\Command\ScheduleRunCommand" id="Crunz\Console\Command\ScheduleRunCommand">
+        <service
+            class="Crunz\Console\Command\ScheduleRunCommand"
+            id="Crunz\Console\Command\ScheduleRunCommand"
+            public="true"
+        >
             <argument type="service" id="Symfony\Component\Finder\Finder"/>
         </service>
 
-        <service class="Crunz\Console\Command\ClosureRunCommand" id="Crunz\Console\Command\ClosureRunCommand">
+        <service
+            class="Crunz\Console\Command\ClosureRunCommand"
+            id="Crunz\Console\Command\ClosureRunCommand"
+            public="true"
+        >
         </service>
 
-        <service class="Crunz\Console\Command\ConfigGeneratorCommand" id="Crunz\Console\Command\ConfigGeneratorCommand">
+        <service
+            class="Crunz\Console\Command\ConfigGeneratorCommand"
+            id="Crunz\Console\Command\ConfigGeneratorCommand"
+            public="true"
+        >
         </service>
 
-        <service class="Crunz\Console\Command\ScheduleListCommand" id="Crunz\Console\Command\ScheduleListCommand">
+        <service
+            class="Crunz\Console\Command\ScheduleListCommand"
+            id="Crunz\Console\Command\ScheduleListCommand"
+            public="true"
+        >
         </service>
 
-        <service class="Crunz\Console\Command\TaskGeneratorCommand" id="Crunz\Console\Command\TaskGeneratorCommand">
+        <service
+            class="Crunz\Console\Command\TaskGeneratorCommand"
+            id="Crunz\Console\Command\TaskGeneratorCommand"
+            public="true"
+        >
         </service>
 
         <service class="Symfony\Component\Finder\Finder" id="Symfony\Component\Finder\Finder" public="false">
