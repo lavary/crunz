@@ -20,6 +20,15 @@ class ScheduleRunCommand extends Command
      * @var array
      */
     protected $runningEvents = [];
+    /** @var Finder */
+    private $finder;
+
+    public function __construct(Finder $finder)
+    {
+        $this->finder = $finder;
+
+        parent::__construct();
+    }
 
     /**
      * Configures the current command
@@ -96,11 +105,12 @@ class ScheduleRunCommand extends Command
         if(!file_exists($source)) {
             return [];
         }
-        
-        $finder   = new Finder();
-        $iterator = $finder->files()
-                  ->name('*' . $this->config('suffix'))
-                  ->in($source);
+
+        $iterator = $this->finder
+            ->files()
+            ->name('*' . $this->config('suffix'))
+            ->in($source)
+        ;
         
         return $iterator;
     }
