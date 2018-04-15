@@ -32,6 +32,5 @@ setbase(getroot($autoloadFile));
 // Setting the handler for catching/logging fatal and parse errors. 
 Crunz\ErrorHandler::getInstance()->set();
 
-
-$kernel = (new Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.5.1'))
-        ->handle();
+$application = new Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.5.1');
+$application->run();
