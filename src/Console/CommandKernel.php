@@ -104,7 +104,6 @@ class CommandKernel extends SymfonyApplication
     private function buildContainer()
     {
         $containerBuilder = new ContainerBuilder();
-        $containerBuilder->setParameter('crunz.root_dir', CRUNZ_ROOT);
 
         $loader = new XmlFileLoader($containerBuilder, new FileLocator(CRUNZ_ROOT . '/config'));
         $loader->load('services.xml');
