@@ -41,7 +41,7 @@ class EventRunner
     {
         $this->configurable();
 
-        // Create an insance of the Logger 
+        // Create an insance of the Logger
         $this->logger = LoggerFactory::makeOne([
 
             // Logging streams
@@ -89,6 +89,25 @@ class EventRunner
      */
     protected function start(Event $event)
     {
+        // if sendOutputTo or appendOutputTo have been specified
+        if (!$event->nullOutput()) {
+            // if sendOutputTo then truncate the log file if it exists
+            if (!$event->shouldAppendOutput) {
+                $f = @fopen($event->output, "r+");
+                if ($f !== false) {
+                    ftruncate($f, 0);
+                    fclose($f);
+                }
+            }
+            // Create an instance of the Logger specific to the event
+            $event->logger = LoggerFactory::makeOne([
+
+                // Logging streams
+                'info'  => $event->output,
+
+            ]);
+        }
+
         // Running the before-callbacks
         $event->outputStream = ($this->invoke($event->beforeCallbacks()));
 
@@ -169,9 +188,16 @@ class EventRunner
      */
     protected function handleOutput(Event $event)
     {
+        $logged = false;
         if ($this->config('log_output')) {
             $this->logger->info($this->formatEventOutput($event));
-        } else {
+            $logged = true;
+        }
+        if (!$event->nullOutput()) {
+            $event->logger->info($this->formatEventOutput($event));
+            $logged = true;
+        }
+        if (!$logged) {
             $this->display($event->getOutputStream());
         }
 
