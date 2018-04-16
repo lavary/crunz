@@ -12,6 +12,10 @@ thanks to [@TomasDuda](https://github.com/TomasDuda)
 - Dependency injection container - PR [#79](https://github.com/lavary/crunz/pull/79),\
 [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
+### Fixed
+- Typos stopping email transport of 'mail' - PR [#43](https://github.com/lavary/crunz/pull/43),
+thanks to [@m-hume](https://github.com/m-hume)
+
 ## 1.5.1 - 2018-04-12
 
 ### Added
