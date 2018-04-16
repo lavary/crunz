@@ -45,7 +45,7 @@ class Mailer extends Singleton {
             break;
 
             case 'mail':
-            $transport = $this->getMailTranport();
+            $transport = $this->getMailTransport();
             break;
             
             default:
@@ -86,7 +86,7 @@ class Mailer extends Singleton {
      *
      * @return \Swift_MailTransport
      */
-    protected function getMailTrasport()
+    protected function getMailTransport()
     {
         if (!class_exists('\Swift_MailTransport')) {
             throw new \Exception('Mail transport has been removed in SwiftMailer 6');
