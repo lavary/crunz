@@ -15,6 +15,9 @@ thanks to [@TomasDuda](https://github.com/TomasDuda)
 ### Fixed
 - Typos stopping email transport of 'mail' - PR [#43](https://github.com/lavary/crunz/pull/43),
 thanks to [@m-hume](https://github.com/m-hume)
+- sendOutputTo and appendOutputTo, solved issues [#12](https://github.com/lavary/crunz/issues/12)
+and [#38](https://github.com/lavary/crunz/issues/38) - PR [#46](https://github.com/lavary/crunz/pull/46),
+thanks to [@m-hume](https://github.com/m-hume) 
 
 ## 1.5.1 - 2018-04-12
 
