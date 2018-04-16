@@ -13,41 +13,24 @@
 |
 */
 
-foreach ([        
-         
-        __DIR__ . '/../autoload.php',
-        __DIR__ . '/../../autoload.php',
-        __DIR__ . '/../vendor/autoload.php',
-        __DIR__ . '/vendor/autoload.php',
-        __DIR__ . '/../../vendor/autoload.php'
-         
-         ] as $file) {
-    
-    if (file_exists($file)) {
-       define('AUTOLOAD_PHP_FILE', $file);
-       break;
-    }
-}
+$autoloadFile = \implode(
+    DIRECTORY_SEPARATOR,
+    [
+        __DIR__,
+        'vendor',
+        'autoload.php'
+    ]
+);
 
-if (!defined('AUTOLOAD_PHP_FILE')) {
-     fwrite(STDERR,
-        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
-        'wget http://getcomposer.org/composer.phar' . PHP_EOL .
-        'php composer.phar install' . PHP_EOL
-    );
-    die(1);
-}
+require $autoloadFile;
 
-require AUTOLOAD_PHP_FILE;
+define('CRUNZ_ROOT', __DIR__);
 
 // Setting the base directory as an environment variable
-setbase(
-    getroot(AUTOLOAD_PHP_FILE)
-);
+setbase(getroot($autoloadFile));
 
 // Setting the handler for catching/logging fatal and parse errors. 
 Crunz\ErrorHandler::getInstance()->set();
 
-
-$kernel = (new Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.4.0'))
-        ->handle();
+$application = new Crunz\Console\CommandKernel('Crunz Command Line Interface', 'v1.5.1');
+$application->run();

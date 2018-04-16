@@ -2,35 +2,30 @@
 
 namespace Crunz;
 
-use Crunz\Exception\CrunzException;
 use Crunz\Configuration\Configurable;
 use Crunz\Logger\LoggerFactory;
 
-class EventRunner {
-
+class EventRunner
+{
     use Configurable;
-
     /**
      * Schedule objects
      *
      * @var array
      */
     protected $schedules = [];
-
     /**
      * Instance of the invoker class
      *
      * @var \Crunz\Invoker
      */
     protected $invoker;
-
     /**
      * The Logger
      *
      * @var \Crunz\Logger\Logger
      */
     protected $logger;
-
     /**
      * The Mailer
      *
@@ -50,16 +45,16 @@ class EventRunner {
         $this->logger = LoggerFactory::makeOne([
 
             // Logging streams
-            'info'  => $this->config('output_log_file'),
+            'info' => $this->config('output_log_file'),
             'error' => $this->config('errors_log_file'),
 
         ]);
 
         // Initializing the invoker
-        $this->invoker    = new Invoker();
+        $this->invoker = new Invoker();
 
         // Initializing the invoker
-        $this->mailer     = new Mailer();
+        $this->mailer = new Mailer();
     }
 
     /**
@@ -126,10 +121,8 @@ class EventRunner {
      */
     protected function ManageStartedEvents()
     {
-       while ($this->schedules) {
-
+        while ($this->schedules) {
             foreach ($this->schedules as $scheduleKey => $schedule) {
-
                 $events = $schedule->events();
                 foreach ($events as $eventKey => $event) {
 
@@ -144,29 +137,28 @@ class EventRunner {
                         $event->outputStream .= $this->invoke($event->afterCallbacks());
 
                         $this->handleOutput($event);
-
                     } else {
 
                         // Calling registered error callbacks with an instance of $event as argument
                         $this->invoke($schedule->errorCallbacks(), [$event]);
 
                         $this->handleError($event);
-
                     }
 
                     // Dismiss the event if it's finished
                     $schedule->dismissEvent($eventKey);
-
                 }
 
                 // If there's no event left for the Schedule instance,
                 // run the schedule's after-callbacks and remove
                 // the Schedule from list of active schedules.                                                                                                                           zzzwwscxqqqAAAQ11
-                if (! count($schedule->events())) {
+                if (!count($schedule->events())) {
                     $this->invoke($schedule->afterCallbacks());
                     unset($this->schedules[$scheduleKey]);
                 }
             }
+
+            usleep(500000);
         }
     }
 
@@ -180,11 +172,10 @@ class EventRunner {
      */
     protected function invoke(array $callbacks = [], Array $parameters = [])
     {
-
-       $output = '';
-       foreach ($callbacks as $callback) {
-         // Invoke the callback with buffering enabled
-         $output .= $this->invoker->call($callback, $parameters, true);
+        $output = '';
+        foreach ($callbacks as $callback) {
+            // Invoke the callback with buffering enabled
+            $output .= $this->invoker->call($callback, $parameters, true);
         }
 
         return $output;
@@ -239,7 +230,6 @@ class EventRunner {
                 $this->formatEventError($event)
             );
         }
-
     }
 
     /**
@@ -252,12 +242,12 @@ class EventRunner {
     protected function formatEventOutput(Event $event)
     {
         return $event->description
-               . '('
-               . $event->getCommandForDisplay()
-               . ') '
-               . PHP_EOL
-               . $event->outputStream
-               . PHP_EOL;
+            . '('
+            . $event->getCommandForDisplay()
+            . ') '
+            . PHP_EOL
+            . $event->outputStream
+            . PHP_EOL;
     }
 
     /**
@@ -270,12 +260,12 @@ class EventRunner {
     protected function formatEventError(Event $event)
     {
         return $event->description
-               . '('
-               . $event->getCommandForDisplay()
-               . ') '
-               . PHP_EOL
-               . $event->getProcess()->getErrorOutput()
-               . PHP_EOL;
+            . '('
+            . $event->getCommandForDisplay()
+            . ') '
+            . PHP_EOL
+            . $event->getProcess()->getErrorOutput()
+            . PHP_EOL;
     }
 
     /**
@@ -287,6 +277,4 @@ class EventRunner {
     {
         print is_string($output) ? $output : '';
     }
-
-
 }

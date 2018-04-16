@@ -46,6 +46,11 @@ class Definition implements ConfigurationInterface {
                     ->info('Path to output logs' .                 PHP_EOL)
                 ->end()
 
+                ->scalarNode('log_allow_line_breaks')
+                    ->defaultFalse()
+                    ->info('Flag for line breaks in logs' .        PHP_EOL)
+                ->end()
+
                 ->scalarNode('email_output')
                     ->defaultFalse()
                     ->info('Email the event\'s output'  .          PHP_EOL)
