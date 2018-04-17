@@ -1,14 +1,20 @@
 <?php
+
 namespace Crunz;
 
 use Closure;
 use Carbon\Carbon;
-use LogicException;
 use Cron\CronExpression;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Component\Process\Process;
 use SuperClosure\Serializer;
 
+/**
+ * @method self everyMinute() Run task every minute.
+ * @method self everyHour() Run task every hour.
+ * @method self everyDay() Run task every day.
+ * @method self everyMonth() Run task every month.
+ */
 class Event
 {
     /**
@@ -207,7 +213,11 @@ class Event
                 $command .= $this->sudo();
             }
 
-            $command .=  'cd ' . $this->cwd . '; ';
+            // Support changing drives in Windows
+            $cdParameter = $this->isWindows() ? '/d ' : '';
+            $andSign = $this->isWindows() ? '&' : ';';
+
+            $command .=  "cd {$cdParameter}{$this->cwd} {$andSign} ";
         }
     
         if ($this->user) {
@@ -1124,14 +1134,8 @@ class Event
         $pid = $this->lastPid();
         $hasPid = ($pid !== null);
 
-        $osCode = \substr(
-            PHP_OS,
-            0,
-            3
-        );
-
         // No POSIX on Windows
-        if ($osCode === 'WIN') {
+        if ($this->isWindows()) {
             return $hasPid;
         }
 
@@ -1186,4 +1190,15 @@ class Event
         return $this->every(strtolower($matches[2]), $amount);
     }
 
+    private function isWindows()
+    {
+        $osCode = \substr(
+            PHP_OS,
+            0,
+            3
+        );
+
+
+        return $osCode === 'WIN';
+    }
 }
