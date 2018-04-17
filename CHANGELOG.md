@@ -20,6 +20,8 @@ and [#38](https://github.com/lavary/crunz/issues/38) - PR [#46](https://github.c
 thanks to [@m-hume](https://github.com/m-hume) 
 - preventOverlapping on Windows - PR [#80](https://github.com/lavary/crunz/pull/80),
 [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- Problem with `->in(dirname)` on Windows - PR [#81](https://github.com/lavary/crunz/pull/81),
+[@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.5.1 - 2018-04-12
 
