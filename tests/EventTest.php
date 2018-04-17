@@ -201,4 +201,37 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('Testing Cron', $e->description);
     }
 
+    /** @test */
+    public function inChangeWorkingDirectoryInBuildCommandOnWindows()
+    {
+        if (!$this->isWindows()) {
+            $this->markTestSkipped('Required Windows OS.');
+        }
+
+        $workingDir = 'C:\\windows\\temp';
+        $event = new Event($this->id, 'php -v');
+
+        $event->in($workingDir);
+
+        $this->assertSame("cd /d {$workingDir} & php -v", $event->buildCommand());
+    }
+
+    /** @test */
+    public function inChangeWorkingDirectoryInBuildCommandOnUnix()
+    {
+        if ($this->isWindows()) {
+            $this->markTestSkipped('Required Unix-based OS.');
+        }
+
+        $event = new Event($this->id, 'php -v');
+
+        $event->in('/tmp');
+
+        $this->assertSame('cd /tmp; php -v', $event->buildCommand());
+    }
+
+    private function isWindows()
+    {
+        return DIRECTORY_SEPARATOR === '\\';
+    }
 }
