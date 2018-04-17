@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Option for allowing line breaks in logs - PR [#69](https://github.com/lavary/crunz/pull/69),
 thanks to [@TomasDuda](https://github.com/TomasDuda)
-- Dependency injection container - PR [#79](https://github.com/lavary/crunz/pull/79),\
+- Dependency injection container - PR [#79](https://github.com/lavary/crunz/pull/79),
 [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ### Fixed
@@ -18,6 +18,8 @@ thanks to [@m-hume](https://github.com/m-hume)
 - sendOutputTo and appendOutputTo, solved issues [#12](https://github.com/lavary/crunz/issues/12)
 and [#38](https://github.com/lavary/crunz/issues/38) - PR [#46](https://github.com/lavary/crunz/pull/46),
 thanks to [@m-hume](https://github.com/m-hume) 
+- preventOverlapping on Windows - PR [#80](https://github.com/lavary/crunz/pull/80),
+[@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.5.1 - 2018-04-12
 

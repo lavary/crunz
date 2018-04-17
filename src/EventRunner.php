@@ -124,6 +124,8 @@ class EventRunner
         while ($this->schedules) {
             foreach ($this->schedules as $scheduleKey => $schedule) {
                 $events = $schedule->events();
+
+                /** @var Event $event */
                 foreach ($events as $eventKey => $event) {
 
                     $proc = $event->getProcess();
