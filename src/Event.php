@@ -215,9 +215,9 @@ class Event
 
             // Support changing drives in Windows
             $cdParameter = $this->isWindows() ? '/d ' : '';
-            $andSign = $this->isWindows() ? '&' : ';';
+            $andSign = $this->isWindows() ? ' &' : ';';
 
-            $command .=  "cd {$cdParameter}{$this->cwd} {$andSign} ";
+            $command .=  "cd {$cdParameter}{$this->cwd}{$andSign} ";
         }
     
         if ($this->user) {
