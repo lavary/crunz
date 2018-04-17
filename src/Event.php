@@ -1124,8 +1124,14 @@ class Event
         $pid = $this->lastPid();
         $hasPid = ($pid !== null);
 
+        $osCode = \substr(
+            PHP_OS,
+            0,
+            3
+        );
+
         // No POSIX on Windows
-        if (\stripos(PHP_OS, 'win') !== false) {
+        if ($osCode === 'WIN') {
             return $hasPid;
         }
 
