@@ -906,7 +906,7 @@ class Event
     /**
      * Set the event's process
      *
-     * @param Symfony\Component\Process\Process $process
+     * @param \Symfony\Component\Process\Process $process
      * 
      * @return $this
      */
@@ -919,7 +919,7 @@ class Event
     /**
      * Return the event's process
      *
-     * @return Symfony\Component\Process\Process $process
+     * @return \Symfony\Component\Process\Process $process
      */
     public function getProcess()
     {
