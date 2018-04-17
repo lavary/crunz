@@ -28,7 +28,7 @@ class Event
     /**
      * Process that runs the event
      *
-     * @var Symfony\Component\Process\Process
+     * @var \Symfony\Component\Process\Process
      */
     protected $process;
 
@@ -1122,8 +1122,14 @@ class Event
     public function isLocked()
     {        
         $pid = $this->lastPid();
+        $hasPid = ($pid !== null);
 
-        return (! is_null($pid) && posix_getsid($pid)) ? true : false;
+        // No POSIX on Windows
+        if (\stripos(PHP_OS, 'win') !== false) {
+            return $hasPid;
+        }
+
+        return ($hasPid && posix_getsid($pid)) ? true : false;
     }
 
     /**
