@@ -2,6 +2,6 @@
 
 namespace Crunz\Exception;
 
-class CrunzException extends \Exception {
-    
+class CrunzException extends \Exception
+{
 }

@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 class CommandKernel extends SymfonyApplication
 {
     /**
-     * List of commands to register
+     * List of commands to register.
      *
      * @var array
      */
@@ -36,7 +36,7 @@ class CommandKernel extends SymfonyApplication
         // The modify the configuration, the user's own copy should be modified
         // This command creates a configuration file in Crunz installation directory
         \Crunz\Console\Command\ConfigGeneratorCommand::class,
-        
+
         // This command is used by Crunz itself for running serialized closures
         // It accepts an argument which is the serialized form of the closure to run.
         \Crunz\Console\Command\ClosureRunCommand::class,
@@ -46,16 +46,15 @@ class CommandKernel extends SymfonyApplication
     private $container;
 
     /**
-     * Instantiate the class
-     *
+     * Instantiate the class.
      */
     public function __construct($appName, $appVersion)
     {
         parent::__construct($appName, $appVersion);
 
         $this->initializeContainer();
-        
-        foreach(self::COMMANDS as $commandClass) {
+
+        foreach (self::COMMANDS as $commandClass) {
             $command = $this->container
                 ->get($commandClass)
             ;
@@ -73,7 +72,7 @@ class CommandKernel extends SymfonyApplication
                 DIRECTORY_SEPARATOR,
                 [
                     $this->getCacheDir(),
-                    "{$class}.php"
+                    "{$class}.php",
                 ]
             ),
             true
@@ -98,6 +97,7 @@ class CommandKernel extends SymfonyApplication
 
     /**
      * @return ContainerBuilder
+     *
      * @throws \Exception
      */
     private function buildContainer()
@@ -122,7 +122,7 @@ class CommandKernel extends SymfonyApplication
             [
                 'class' => $class,
                 'base_class' => $baseClass,
-                'file' => $cache->getPath()
+                'file' => $cache->getPath(),
             ]
         );
 
@@ -135,7 +135,7 @@ class CommandKernel extends SymfonyApplication
             DIRECTORY_SEPARATOR,
             [
                 \sys_get_temp_dir(),
-                'crunz'
+                'crunz',
             ]
         );
     }

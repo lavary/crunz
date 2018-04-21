@@ -2,18 +2,18 @@
 
 namespace Crunz\Logger;
 
-use Monolog\Logger as MonologLogger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\LineFormatter;
 use Crunz\Configuration\Configurable;
 use Crunz\Singleton;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger as MonologLogger;
 
-class Logger extends Singleton {
-    
+class Logger extends Singleton
+{
     use Configurable;
 
     /**
-     * Instance of Psr\Log\LoggerInterface
+     * Instance of Psr\Log\LoggerInterface.
      *
      * @var Psr\Log\LoggerInterface
      */
@@ -25,64 +25,51 @@ class Logger extends Singleton {
      * @var array
      */
     protected $levels = [
-        
-        'debug'     => MonologLogger::DEBUG,
-        'info'      => MonologLogger::INFO,
-        'notice'    => MonologLogger::NOTICE,
-        'warning'   => MonologLogger::WARNING,
-        'error'     => MonologLogger::ERROR,
-        'critical'  => MonologLogger::CRITICAL,
-        'alert'     => MonologLogger::ALERT,
+        'debug' => MonologLogger::DEBUG,
+        'info' => MonologLogger::INFO,
+        'notice' => MonologLogger::NOTICE,
+        'warning' => MonologLogger::WARNING,
+        'error' => MonologLogger::ERROR,
+        'critical' => MonologLogger::CRITICAL,
+        'alert' => MonologLogger::ALERT,
         'emergency' => MonologLogger::EMERGENCY,
-        
     ];
 
     /**
-     * Initialize the logger instance 
+     * Initialize the logger instance.
      *
      * @param \Monolog\Logger $logger
      */
     public function __construct(\Monolog\Logger $logger)
     {
         $this->configurable();
-        
+
         $this->logger = $logger;
     }
 
     /**
-     * Create a neaw stream handler
+     * Create a neaw stream handler.
      *
-     * @param string  $path
-     * @param int     $level
-     * @param Boolean $bubble
+     * @param string $path
+     * @param int    $level
+     * @param bool   $bubble
      *
      * @return \Monolog\Handler\StreamHandler
      */
     public function addStream($path, $level, $bubble = true)
-    {        
-        $this->logger->pushHandler($handler = new StreamHandler($path, $this->parseLevel($level), $bubble));
-        $handler->setFormatter($this->getDefaultFormatter()); 
-
-        return $this;  
-    }
-
-    /**
-     * Get a default Monolog formatter instance
-     *
-     * @return \Monolog\Formatter\LineFormatter
-     */
-    protected function getDefaultFormatter()
     {
-        $allow_linebreaks = $this->config('log_allow_line_breaks');
-        return new LineFormatter(null, null, $allow_linebreaks, false);
+        $this->logger->pushHandler($handler = new StreamHandler($path, $this->parseLevel($level), $bubble));
+        $handler->setFormatter($this->getDefaultFormatter());
+
+        return $this;
     }
 
     /**
-     * Log any output if output logging is enabled
+     * Log any output if output logging is enabled.
      *
-     * @param  string $content
+     * @param string $content
      *
-     * @return Boolean
+     * @return bool
      */
     public function info($content)
     {
@@ -92,32 +79,45 @@ class Logger extends Singleton {
     /**
      * Log  the error is error logging is enabled.
      *
-     * @param  string $message
+     * @param string $message
      *
-     * @return Boolean
+     * @return bool
      */
     public function error($message)
-    {    
+    {
         return $this->write($message, 'error');
     }
 
     /**
-     * Write the log to the specified stream
+     * Write the log to the specified stream.
      *
-     * @param  string $content
-     * @param  string $level
+     * @param string $content
+     * @param string $level
      *
      * @return mixed
      */
-     public function write($content, $level)
-    {    
+    public function write($content, $level)
+    {
         return $this->logger->{$level}($content);
+    }
+
+    /**
+     * Get a default Monolog formatter instance.
+     *
+     * @return \Monolog\Formatter\LineFormatter
+     */
+    protected function getDefaultFormatter()
+    {
+        $allow_linebreaks = $this->config('log_allow_line_breaks');
+
+        return new LineFormatter(null, null, $allow_linebreaks, false);
     }
 
     /**
      * Parse the string level into a Monolog constant.
      *
-     * @param  string  $level
+     * @param string $level
+     *
      * @return int
      *
      * @throws \InvalidArgumentException
@@ -130,5 +130,4 @@ class Logger extends Singleton {
 
         throw new InvalidArgumentException('Invalid log level.');
     }
-
 }

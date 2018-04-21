@@ -1,11 +1,11 @@
 <?php
 
-use Crunz\Event;
 use Carbon\Carbon;
+use Crunz\Event;
 use SuperClosure\Serializer;
 
-class EventTest extends PHPUnit_Framework_TestCase {
-
+class EventTest extends PHPUnit_Framework_TestCase
+{
     /**
      * The default configuration timezone.
      *
@@ -14,7 +14,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
     protected $defaultTimezone;
 
     /**
-     * Unique identifier for the event
+     * Unique identifier for the event.
      *
      * @var string
      */
@@ -40,13 +40,13 @@ class EventTest extends PHPUnit_Framework_TestCase {
     public function testDynamicMethods()
     {
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('*/6 * * * * *',   $e->everySixMinutes()->getExpression());
+        $this->assertEquals('*/6 * * * * *', $e->everySixMinutes()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 */12 * * * *',  $e->everyTwelveHours()->getExpression());
+        $this->assertEquals('0 */12 * * * *', $e->everyTwelveHours()->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('*/35 * * * * *',  $e->everyThirtyFiveMinutes()->getExpression());
+        $this->assertEquals('*/35 * * * * *', $e->everyThirtyFiveMinutes()->getExpression());
 
         $e = new Event($this->id, 'php bar');
         $this->assertEquals('*/578 * * * * *', $e->everyFiveHundredSeventyEightMinutes()->getExpression());
@@ -56,7 +56,6 @@ class EventTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals('*/50 * * * 1 *', $e->getExpression());
         $this->assertFalse($e->isDue());
-
     }
 
     /**
@@ -67,28 +66,28 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $id = uniqid();
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('0 * * * * *',   $e->hourly()->getExpression());
+        $this->assertEquals('0 * * * * *', $e->hourly()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 0 * * * *',   $e->daily()->getExpression());
+        $this->assertEquals('0 0 * * * *', $e->daily()->getExpression());
 
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('45 15 * * * *', $e->dailyAt('15:45')->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 4,8 * * * *', $e->twiceDaily(4,8)->getExpression());
+        $this->assertEquals('0 4,8 * * * *', $e->twiceDaily(4, 8)->getExpression());
 
-         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('0 0 * * 0 *',   $e->weekly()->getExpression());
+        $e = new Event($this->id, 'php foo');
+        $this->assertEquals('0 0 * * 0 *', $e->weekly()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 0 1 * * *',   $e->monthly()->getExpression());
+        $this->assertEquals('0 0 1 * * *', $e->monthly()->getExpression());
 
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('0 0 1 */3 * *', $e->quarterly()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 0 1 1 * *',   $e->yearly()->getExpression());
+        $this->assertEquals('0 0 1 1 * *', $e->yearly()->getExpression());
     }
 
     /**
@@ -120,7 +119,6 @@ class EventTest extends PHPUnit_Framework_TestCase {
 
         $e = new Event($this->id, 'php foo');
         $this->assertTrue($e->isDue());
-
     }
 
     /**
@@ -144,7 +142,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('* * * * 1-5 *', $e->weekdays()->getExpression());
 
         $e = new Event($this->id, 'php bla');
-        $this->assertEquals('30 1 * * 2 *', $e->weeklyOn('2','01:30')->getExpression());
+        $this->assertEquals('30 1 * * 2 *', $e->weeklyOn('2', '01:30')->getExpression());
     }
 
     public function testCronLifeTime()
@@ -162,23 +160,23 @@ class EventTest extends PHPUnit_Framework_TestCase {
     public function testCronConditions()
     {
         $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->when(function() { return false; })->isDue());
+        $this->assertFalse($e->cron('* * * * * *')->when(function () { return false; })->isDue());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->cron('* * * * * *')->when(function() { return true; })->isDue());
+        $this->assertTrue($e->cron('* * * * * *')->when(function () { return true; })->isDue());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->skip(function() { return true; })->isDue());
+        $this->assertFalse($e->cron('* * * * * *')->skip(function () { return true; })->isDue());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->cron('* * * * * *')->skip(function() { return false; })->isDue());
+        $this->assertTrue($e->cron('* * * * * *')->skip(function () { return false; })->isDue());
     }
 
     public function testBuildCommand()
     {
         $e = new Event($this->id, 'php -i');
 
-        $this->assertSame("php -i", $e->buildCommand());
+        $this->assertSame('php -i', $e->buildCommand());
     }
 
     public function testIsDue()
@@ -191,7 +189,6 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $e = new Event($this->id, 'php bar');
         $this->assertEquals('0 19 * * 6 *', $e->saturdays()->at('19:00')->timezone('EST')->getExpression());
         $this->assertTrue($e->isDue());
-
     }
 
     public function testName()
@@ -297,7 +294,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
             [
                 'path',
                 'to',
-                'crunz'
+                'crunz',
             ]
         );
         $crunzBin = $this->buildPath([$crunzRoot, 'crunz']);
@@ -307,7 +304,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
 
         $command = $event->buildCommand();
 
-        $this->assertSame(PHP_BINARY . " {$crunzBin} closure:run {$queryClosure}" , $command);
+        $this->assertSame(PHP_BINARY . " {$crunzBin} closure:run {$queryClosure}", $command);
     }
 
     private function isWindows()

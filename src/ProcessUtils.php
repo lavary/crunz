@@ -58,7 +58,7 @@ class ProcessUtils
                     $escapedArgument .= '\\"';
                 } elseif (self::isSurroundedBy($part, '%')) {
                     // Avoid environment variable expansion
-                    $escapedArgument .= '^%"'.substr($part, 1, -1).'"^%';
+                    $escapedArgument .= '^%"' . substr($part, 1, -1) . '"^%';
                 } else {
                     // escape trailing backslash
                     if ('\\' === substr($part, -1)) {
@@ -69,13 +69,13 @@ class ProcessUtils
                 }
             }
             if ($quote) {
-                $escapedArgument = '"'.$escapedArgument.'"';
+                $escapedArgument = '"' . $escapedArgument . '"';
             }
 
             return $escapedArgument;
         }
 
-        return "'".str_replace("'", "'\\''", $argument)."'";
+        return "'" . str_replace("'", "'\\''", $argument) . "'";
     }
 
     /**

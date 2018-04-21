@@ -37,4 +37,7 @@ before_script:
     - composer install --prefer-source --no-interaction
 
 script:
+    - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.2' ]]; then
+        composer crunz:analyze;
+      fi
     - vendor/bin/phpunit

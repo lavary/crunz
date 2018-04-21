@@ -2,87 +2,40 @@
 
 namespace Crunz\Configuration;
 
+use Crunz\Singleton;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Crunz\Singleton;
 
-class Configuration extends Singleton {
-
+class Configuration extends Singleton
+{
     /**
-     * Store parameters
+     * Store parameters.
      *
      * @var array
      */
     protected $parameters = [];
 
     /**
-     * The instance of the configuration class
+     * The instance of the configuration class.
      *
-     * @var $this
+     * @var
      */
     protected static $instance;
 
     /**
-     * Process the configuration file into an array
-     *
+     * Process the configuration file into an array.
      */
     protected function __construct()
     {
-        $this->parameters = $this->process($this->locateConfigFile());      
+        $this->parameters = $this->process($this->locateConfigFile());
     }
 
     /**
-     * Handle the configuration settings
+     * Set a parameter.
      *
-     * @return array
-     */
-    protected function process($filename)
-    {    
-        $proc = new Processor();       
-        try {
-            return $proc->processConfiguration(
-                        new Definition(),
-                        $this->parse($filename)
-                    );
-        } catch (InvalidConfigurationException $e) {
-            exit($e->getMessage());
-        }
-    }
-
-    /**
-     * Load configuration files and parse them
-     *
-     * @return array
-     */
-    protected function parse($filename)
-    {    
-        $conf = [];
-
-        $conf[] = Yaml::parse(
-            file_get_contents($filename)
-        );
-
-        return $conf;
-    }
-
-    /**
-     * Locate the right config file and return its name
-     *
-     * @return string
-     */
-    protected function locateConfigFile()
-    {    
-        $config_file = getenv('CRUNZ_BASE_DIR') . '/crunz.yml';
-        
-        return file_exists($config_file) ? $config_file : __DIR__ . '/../../crunz.yml';
-    }
-
-    /**
-     * Set a parameter
-     *     
-     * @param  string  $key
-     * @param  mixed   $value
+     * @param string $key
+     * @param mixed  $value
      *
      * @return array
      */
@@ -100,7 +53,7 @@ class Configuration extends Singleton {
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
+            if (!isset($array[$key]) || !is_array($array[$key])) {
                 $array[$key] = [];
             }
 
@@ -113,15 +66,15 @@ class Configuration extends Singleton {
     }
 
     /**
-     * Check if a parameter exist
+     * Check if a parameter exist.
      *
-     * @param  string $key
+     * @param string $key
      *
-     * @return boolean
+     * @return bool
      */
     public function has($key)
     {
-        if (! $array) {
+        if (!$array) {
             return false;
         }
 
@@ -134,7 +87,7 @@ class Configuration extends Singleton {
         }
 
         $array = $this->parameters;
-        
+
         foreach (explode('.', $key) as $segment) {
             if (is_array($array) && array_key_exists($key, $array)) {
                 $array = $array[$segment];
@@ -147,18 +100,18 @@ class Configuration extends Singleton {
     }
 
     /**
-     * Return a parameter based on a key
+     * Return a parameter based on a key.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return string
      */
     public function get($key, $default = null)
-    {       
+    {
         if (array_key_exists($key, $this->parameters)) {
             return $this->parameters[$key];
         }
-        
+
         $array = $this->parameters;
 
         foreach (explode('.', $key) as $segment) {
@@ -173,12 +126,58 @@ class Configuration extends Singleton {
     }
 
     /**
-     * Return all the parameters as an array
+     * Return all the parameters as an array.
      *
      * @return array
      */
     public function all()
     {
-       return $this->parameters;
+        return $this->parameters;
+    }
+
+    /**
+     * Handle the configuration settings.
+     *
+     * @return array
+     */
+    protected function process($filename)
+    {
+        $proc = new Processor();
+        try {
+            return $proc->processConfiguration(
+                        new Definition(),
+                        $this->parse($filename)
+                    );
+        } catch (InvalidConfigurationException $e) {
+            exit($e->getMessage());
+        }
+    }
+
+    /**
+     * Load configuration files and parse them.
+     *
+     * @return array
+     */
+    protected function parse($filename)
+    {
+        $conf = [];
+
+        $conf[] = Yaml::parse(
+            file_get_contents($filename)
+        );
+
+        return $conf;
+    }
+
+    /**
+     * Locate the right config file and return its name.
+     *
+     * @return string
+     */
+    protected function locateConfigFile()
+    {
+        $config_file = getenv('CRUNZ_BASE_DIR') . '/crunz.yml';
+
+        return file_exists($config_file) ? $config_file : __DIR__ . '/../../crunz.yml';
     }
 }
