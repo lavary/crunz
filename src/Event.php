@@ -377,20 +377,17 @@ class Event
      */
     public function on($date)
     {
-        
-        $date     = date_parse($date);
-        $segments = array_only($date, array_flip($this->fieldsPosition));
+        $date     = \date_parse($date);
+        $segments = \array_only($date, \array_flip($this->fieldsPosition));
 
         if ($date['year']) {
- 
             $this->skip(function () use ($segments) {
                 return (int) date('Y') != $segments['year'];
             });
-
         }
-                
+
         foreach ($segments as $key => $value) {   
-            if ($value != false) {                
+            if ($value !== false) {
                 $this->spliceIntoPosition($this->fieldsPosition[$key], (int) $value);
             }
         }

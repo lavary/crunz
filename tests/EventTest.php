@@ -230,6 +230,16 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('cd /tmp; php -v', $event->buildCommand());
     }
 
+    /** @test */
+    public function onDoNotRunTaskEveryMinute()
+    {
+        $event = new Event($this->id, 'php -i');
+
+        $event->on('Thursday 8:00');
+
+        $this->assertSame('0 8 * * * *', $event->getExpression());
+    }
+
     private function isWindows()
     {
         return DIRECTORY_SEPARATOR === '\\';
