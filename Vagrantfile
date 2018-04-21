@@ -21,6 +21,18 @@ apt-get install git \
     "php$PHP_VERSION-xml" \
     "php$PHP_VERSION-intl" -y
 
+PHP_INI_PATH="/etc/php/$PHP_VERSION/cli/conf.d/99-user.ini";
+
+touch /var/log/php_error.log
+chown vagrant:vagrant /var/log/php_error.log
+
+touch "$PHP_INI_PATH";
+
+echo "display_errors = On" >> "$PHP_INI_PATH";
+echo "display_startup_errors = On" >> "$PHP_INI_PATH";
+echo "log_errors = On" >> "$PHP_INI_PATH";
+echo "error_log = /var/log/php_error.log" >> "$PHP_INI_PATH";
+
 SCRIPT
 
 $composer = <<SCRIPT
