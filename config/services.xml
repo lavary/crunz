@@ -32,6 +32,7 @@
             id="Crunz\Console\Command\ScheduleListCommand"
             public="true"
         >
+            <argument type="service" id="Symfony\Component\Finder\Finder"/>
         </service>
 
         <service
@@ -41,7 +42,10 @@
         >
         </service>
 
-        <service class="Symfony\Component\Finder\Finder" id="Symfony\Component\Finder\Finder" public="false">
-        </service>
+        <service
+            class="Symfony\Component\Finder\Finder"
+            id="Symfony\Component\Finder\Finder"
+            public="false"
+        />
     </services>
 </container>
