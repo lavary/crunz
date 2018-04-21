@@ -1,0 +1,27 @@
+<?php
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'protected_to_private' => false,
+        'combine_consecutive_unsets' => true,
+        'linebreak_after_opening_tag' => true,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'ordered_class_elements' => true,
+        'ordered_imports' => true,
+        'strict_comparison' => false,
+        'strict_param' => false,
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
+    ])
+    ->setRiskyAllowed(true)
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__ . '/src')
+            ->in(__DIR__ . '/tests')
+            ->append([__FILE__])
+    )
+;

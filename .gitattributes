@@ -12,3 +12,4 @@ Vagrantfile export-ignore
 appveyor.yml export-ignore
 phpunit.php export-ignore
 phpunit.xml export-ignore
+.php_cs.dist
