@@ -41,6 +41,7 @@
         "symfony/yaml": "^2.7 || ^3.3 || ^4.0"
     },
     "require-dev": {
+        "phpdocumentor/reflection-docblock": "^2.0.1",
         "phpunit/phpunit": "5.7.27",
         "sebastian/comparator": "1.2.4",
         "symfony/debug": "^2.7 || ^3.3 || ^4.0",

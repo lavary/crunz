@@ -15,9 +15,18 @@ class ScheduleListCommand extends Command
 {
     use Configurable;
 
+    /** @var Finder */
+    private $finder;
+
+    public function __construct(Finder $finder)
+    {
+        $this->finder = $finder;
+
+        parent::__construct();
+    }
+
     /**
      * Configures the current command
-     *
      */
     protected function configure()
     {
@@ -90,10 +99,11 @@ class ScheduleListCommand extends Command
             return [];
         }
 
-        $finder   = new Finder();
-        $iterator = $finder->files()
-                  ->name('*' . $this->config('suffix'))
-                  ->in($source);
+        $iterator = $this->finder
+            ->files()
+            ->name('*' . $this->config('suffix'))
+            ->in($source)
+        ;
         
         return $iterator;
     }

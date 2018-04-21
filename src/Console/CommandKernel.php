@@ -27,8 +27,7 @@ class CommandKernel extends SymfonyApplication
         // This command (vendor/bin/schedule:list) lists the scheduled events in different task files
         // Just like schedule:run it gets the :source argument
         \Crunz\Console\Command\ScheduleListCommand::class,
-        
-        
+
         // This command generates a task from the command-line
         // This is often useful when you want to create a task file and start
         // adding tasks to it.
@@ -77,7 +76,7 @@ class CommandKernel extends SymfonyApplication
                     "{$class}.php"
                 ]
             ),
-            false
+            true
         );
 
         if (!$cache->isFresh()) {
@@ -135,9 +134,8 @@ class CommandKernel extends SymfonyApplication
         return implode(
             DIRECTORY_SEPARATOR,
             [
-                CRUNZ_ROOT,
-                'var',
-                'cache'
+                \sys_get_temp_dir(),
+                'crunz'
             ]
         );
     }
