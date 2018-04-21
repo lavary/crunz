@@ -24,6 +24,8 @@ thanks to [@m-hume](https://github.com/m-hume)
 [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 - Task runs every minute of hour with `on()`, solves issue
 [#83](https://github.com/lavary/crunz/issues/83) - PR [#84](https://github.com/lavary/crunz/pull/84)
+- Closure on Windows, solved issue [#60](https://github.com/lavary/crunz/issues/60) - PR
+[#86](https://github.com/lavary/crunz/pull/86), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.5.1 - 2018-04-12
 
