@@ -26,6 +26,8 @@ thanks to [@m-hume](https://github.com/m-hume)
 [#83](https://github.com/lavary/crunz/issues/83) - PR [#84](https://github.com/lavary/crunz/pull/84)
 - Closure on Windows, solved issue [#60](https://github.com/lavary/crunz/issues/60) - PR
 [#86](https://github.com/lavary/crunz/pull/86), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- Handling errors by removing `Crunz\ErrorHandler`, solved issue [#65](https://github.com/lavary/crunz/issues/65) -
+PR [#87](https://github.com/lavary/crunz/pull/87), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.5.1 - 2018-04-12
 
