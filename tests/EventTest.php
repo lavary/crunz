@@ -2,6 +2,7 @@
 
 use Crunz\Event;
 use Carbon\Carbon;
+use SuperClosure\Serializer;
 
 class EventTest extends PHPUnit_Framework_TestCase {
 
@@ -243,6 +244,10 @@ class EventTest extends PHPUnit_Framework_TestCase {
     /** @test */
     public function settingUserPrependSudoToCommand()
     {
+        if ($this->isWindows()) {
+            $this->markTestSkipped('Required Unix-based OS.');
+        }
+
         $event = new Event($this->id, 'php -v');
 
         $event->user('john');
@@ -280,8 +285,38 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $event->user('john');
     }
 
+    /** @test */
+    public function closureCommandHaveFullBinaryPaths()
+    {
+        $closure = function () {
+            return 0;
+        };
+        $serializedClosure = (new Serializer())->serialize($closure);
+        $queryClosure = \http_build_query([$serializedClosure]);
+        $crunzRoot = $this->buildPath(
+            [
+                'path',
+                'to',
+                'crunz'
+            ]
+        );
+        $crunzBin = $this->buildPath([$crunzRoot, 'crunz']);
+        define('CRUNZ_ROOT', $crunzRoot);
+
+        $event = new Event($this->id, $closure);
+
+        $command = $event->buildCommand();
+
+        $this->assertSame(PHP_BINARY . " {$crunzBin} closure:run {$queryClosure}" , $command);
+    }
+
     private function isWindows()
     {
         return DIRECTORY_SEPARATOR === '\\';
+    }
+
+    private function buildPath(array $segments)
+    {
+        return implode(DIRECTORY_SEPARATOR, $segments);
     }
 }
