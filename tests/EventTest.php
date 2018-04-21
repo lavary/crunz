@@ -243,6 +243,10 @@ class EventTest extends PHPUnit_Framework_TestCase {
     /** @test */
     public function settingUserPrependSudoToCommand()
     {
+        if ($this->isWindows()) {
+            $this->markTestSkipped('Required Unix-based OS.');
+        }
+
         $event = new Event($this->id, 'php -v');
 
         $event->user('john');
