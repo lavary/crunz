@@ -9,33 +9,32 @@ class EventRunner
 {
     use Configurable;
     /**
-     * Schedule objects
+     * Schedule objects.
      *
      * @var array
      */
     protected $schedules = [];
     /**
-     * Instance of the invoker class
+     * Instance of the invoker class.
      *
      * @var \Crunz\Invoker
      */
     protected $invoker;
     /**
-     * The Logger
+     * The Logger.
      *
      * @var \Crunz\Logger\Logger
      */
     protected $logger;
     /**
-     * The Mailer
+     * The Mailer.
      *
      * @var \Crunz\Mailer
      */
     protected $mailer;
 
     /**
-     * Instantiate the event runner
-     *
+     * Instantiate the event runner.
      */
     public function __construct()
     {
@@ -43,11 +42,9 @@ class EventRunner
 
         // Create an insance of the Logger
         $this->logger = LoggerFactory::makeOne([
-
             // Logging streams
             'info' => $this->config('output_log_file'),
             'error' => $this->config('errors_log_file'),
-
         ]);
 
         // Initializing the invoker
@@ -58,16 +55,15 @@ class EventRunner
     }
 
     /**
-     * Handle an array of Schedule objects
+     * Handle an array of Schedule objects.
      *
      * @param array $schedules
      */
-    public function handle(Array $schedules = [])
+    public function handle(array $schedules = [])
     {
         $this->schedules = $schedules;
 
         foreach ($this->schedules as $schedule) {
-
             // Running the before-callbacks of the current schedule
             $this->invoke($schedule->beforeCallbacks());
 
@@ -82,7 +78,7 @@ class EventRunner
     }
 
     /**
-     * Run an event process
+     * Run an event process.
      *
      *
      * @param \Crunz\Event $event
@@ -93,7 +89,7 @@ class EventRunner
         if (!$event->nullOutput()) {
             // if sendOutputTo then truncate the log file if it exists
             if (!$event->shouldAppendOutput) {
-                $f = @fopen($event->output, "r+");
+                $f = @fopen($event->output, 'r+');
                 if ($f !== false) {
                     ftruncate($f, 0);
                     fclose($f);
@@ -101,10 +97,8 @@ class EventRunner
             }
             // Create an instance of the Logger specific to the event
             $event->logger = LoggerFactory::makeOne([
-
                 // Logging streams
-                'info'  => $event->output,
-
+                'info' => $event->output,
             ]);
         }
 
@@ -115,9 +109,7 @@ class EventRunner
     }
 
     /**
-     * Manage the running processes
-     *
-     * @return void
+     * Manage the running processes.
      */
     protected function ManageStartedEvents()
     {
@@ -127,20 +119,17 @@ class EventRunner
 
                 /** @var Event $event */
                 foreach ($events as $eventKey => $event) {
-
                     $proc = $event->getProcess();
                     if ($proc->isRunning()) {
                         continue;
                     }
 
                     if ($proc->isSuccessful()) {
-
                         $event->outputStream .= $proc->getOutput();
                         $event->outputStream .= $this->invoke($event->afterCallbacks());
 
                         $this->handleOutput($event);
                     } else {
-
                         // Calling registered error callbacks with an instance of $event as argument
                         $this->invoke($schedule->errorCallbacks(), [$event]);
 
@@ -165,14 +154,14 @@ class EventRunner
     }
 
     /**
-     * Invoke an array of callables
+     * Invoke an array of callables.
      *
      * @param array $callbacks
      * @param array $parameters
      *
      * @return string
      */
-    protected function invoke(array $callbacks = [], Array $parameters = [])
+    protected function invoke(array $callbacks = [], array $parameters = [])
     {
         $output = '';
         foreach ($callbacks as $callback) {
@@ -184,7 +173,7 @@ class EventRunner
     }
 
     /**
-     * Handle output
+     * Handle output.
      *
      * @param \Crunz\Event
      */
@@ -213,7 +202,7 @@ class EventRunner
     }
 
     /**
-     * Handle errors
+     * Handle errors.
      *
      * @param \Crunz\Event $event
      */
@@ -235,11 +224,11 @@ class EventRunner
     }
 
     /**
-     * Format the event output
+     * Format the event output.
      *
      * @param  \Crunz\Event
      *
-     * @return  string
+     * @return string
      */
     protected function formatEventOutput(Event $event)
     {
@@ -253,11 +242,11 @@ class EventRunner
     }
 
     /**
-     * Format the event error message
+     * Format the event error message.
      *
-     * @param  \Crunz\Event $event
+     * @param \Crunz\Event $event
      *
-     * @return  string
+     * @return string
      */
     protected function formatEventError(Event $event)
     {
@@ -271,12 +260,12 @@ class EventRunner
     }
 
     /**
-     * Display content
+     * Display content.
      *
      * @param string $output
      */
     protected function display($output)
     {
-        print is_string($output) ? $output : '';
+        echo is_string($output) ? $output : '';
     }
 }

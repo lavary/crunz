@@ -4,19 +4,19 @@ namespace Crunz;
 
 use Crunz\Configuration\Configurable;
 
-class Mailer extends Singleton {
-
+class Mailer extends Singleton
+{
     use Configurable;
 
     /**
-     * Mailer instance
+     * Mailer instance.
      *
      * @param \Swift_Mailer
      */
     protected $mailer;
 
     /**
-     * Instantiate the Mailer class
+     * Instantiate the Mailer class.
      *
      * @param \Swift_Mailer $mailer
      */
@@ -27,7 +27,20 @@ class Mailer extends Singleton {
     }
 
     /**
-     * Return the proper mailer
+     * Send an email.
+     *
+     * @param string $subject
+     * @param string $message
+     *
+     * @return bool
+     */
+    public function send($subject, $message)
+    {
+        $this->getMailer()->send($this->getMessage($subject, $message));
+    }
+
+    /**
+     * Return the proper mailer.
      *
      * @return \Swift_Mailer
      */
@@ -39,7 +52,7 @@ class Mailer extends Singleton {
         }
 
         // Get the proper transporter
-        switch ($this->config('mailer.transport')) {           
+        switch ($this->config('mailer.transport')) {
             case 'smtp':
             $transport = $this->getSmtpTransport();
             break;
@@ -47,7 +60,7 @@ class Mailer extends Singleton {
             case 'mail':
             $transport = $this->getMailTransport();
             break;
-            
+
             default:
             $transport = $this->getSendMailTransport();
         }
@@ -58,7 +71,7 @@ class Mailer extends Singleton {
     }
 
     /**
-     * Get the SMTP transport
+     * Get the SMTP transport.
      *
      * @return \Swift_SmtpTransport
      */
@@ -76,13 +89,13 @@ class Mailer extends Singleton {
                 $this->config('smtp.encryption')
             );
 
-      return $object
+        return $object
         ->setUsername($this->config('smtp.username'))
         ->setPassword($this->config('smtp.password'));
     }
 
     /**
-     * Get the Mail transport
+     * Get the Mail transport.
      *
      * @return \Swift_MailTransport
      */
@@ -91,11 +104,12 @@ class Mailer extends Singleton {
         if (!class_exists('\Swift_MailTransport')) {
             throw new \Exception('Mail transport has been removed in SwiftMailer 6');
         }
+
         return \Swift_MailTransport::newInstance();
     }
 
     /**
-     * Get the Sendmail Transport
+     * Get the Sendmail Transport.
      *
      * @return \Swift_SendmailTransport
      */
@@ -107,26 +121,12 @@ class Mailer extends Singleton {
     }
 
     /**
-     * Send an email
+     * Prepare a swift message object.
      *
-     * @param  string $subject
-     * @param  string $message
-     * 
-     * @return boolean 
-     */
-    public function send($subject, $message)
-    {
-        $this->getMailer()->send($this->getMessage($subject, $message));
-    }
-
-    /**
-     * Prepare a swift message object
+     * @param string $subject
+     * @param string $message
      *
-     * @param  string $subject
-     * @param  string $message
-     * 
      * @return \Swift_Message
-     *
      */
     protected function getMessage($subject, $message)
     {
@@ -140,5 +140,4 @@ class Mailer extends Singleton {
                  ->setFrom([$this->config('mailer.sender_email') => $this->config('mailer.sender_name')])
                  ->setTo($this->config('mailer.recipients'));
     }
-
 }

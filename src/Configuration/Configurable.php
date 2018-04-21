@@ -4,18 +4,17 @@ namespace Crunz\Configuration;
 
 use Crunz\Configuration\ConfigurationFactory as ConfigFactory;
 
-trait Configurable {
-
+trait Configurable
+{
     /**
-     * Configuration object
+     * Configuration object.
      *
      * @var \Crunz\Configuration\Configuration
      */
     protected $config = null;
 
     /**
-     * Create an instance of Configuration
-     *
+     * Create an instance of Configuration.
      */
     protected function configurable()
     {
@@ -23,9 +22,9 @@ trait Configurable {
     }
 
     /**
-     * Return a configuration value by key
+     * Return a configuration value by key.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return string
      */
@@ -37,5 +36,4 @@ trait Configurable {
 
         return $this->config->get($key);
     }
-
 }

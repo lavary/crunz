@@ -2,16 +2,31 @@
 
 namespace Crunz;
 
-class Singleton {
-
+class Singleton
+{
     /**
-     * Class instance
-     *
+     * Class instance.
      */
     protected static $instance = null;
 
     /**
-     * Return the instance of the class
+     * Private clone method to prevent cloning of the instance of the
+     * Singleton instance.
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * Private unserialize method to prevent unserializing of the *Singleton*
+     * instance.
+     */
+    private function __wakeup()
+    {
+    }
+
+    /**
+     * Return the instance of the class.
      *
      * @return mixed
      */
@@ -23,27 +38,4 @@ class Singleton {
 
         return static::$instance;
     }
-
-    /**
-     * Private clone method to prevent cloning of the instance of the
-     * Singleton instance.
-     *
-     * @return void
-     */
-    private function __clone()
-    {
-
-    }
-
-    /**
-     * Private unserialize method to prevent unserializing of the *Singleton*
-     * instance.
-     *
-     * @return void
-     */
-    private function __wakeup()
-    { 
-       
-    } 
-
 }

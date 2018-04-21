@@ -4,92 +4,98 @@ use Crunz\Utils;
 
 if (!function_exists('split_camel')) {
     /**
-     * Split camel case words to a sentence
+     * Split camel case words to a sentence.
      *
-     * @param  string $text
+     * @param string $text
      *
      * @return string
      */
-    function split_camel($text) {
-        return Utils::splitCamel($text); 
+    function split_camel($text)
+    {
+        return Utils::splitCamel($text);
     }
 }
 
 if (!function_exists('word2number')) {
     /**
-     * Convert words to numbers
+     * Convert words to numbers.
      *
-     * @param  string $text
+     * @param string $text
      *
      * @return string
      */
-    function word2number($text) {
-        return Utils::wordToNumber($text); 
+    function word2number($text)
+    {
+        return Utils::wordToNumber($text);
     }
 }
-
 
 if (!function_exists('array_only')) {
     /**
      * Get a subset of the items from the given array
-     * From Illuminate/support helper functions
+     * From Illuminate/support helper functions.
      *
-     * @param  array         $array
-     * @param  array|string  $keys
+     * @param array        $array
+     * @param array|string $keys
      *
      * @return array
      */
-    function array_only($array, $keys) {
+    function array_only($array, $keys)
+    {
         return Utils::arrayOnly($array, $keys);
     }
 }
 
 if (!function_exists('setbase')) {
     /**
-     * Set the project's root directory
+     * Set the project's root directory.
      *
-     * @param  string $dir
+     * @param string $dir
      *
      * @return string
      */
-    function setbase($dir) {
+    function setbase($dir)
+    {
         return Utils::setBaseDir($dir);
     }
 }
 
 if (!function_exists('getbase')) {
     /**
-     * Return the project's root directory
+     * Return the project's root directory.
      *
      * @return string
      */
-    function getbase() {
+    function getbase()
+    {
         return Utils::getBaseDir();
     }
 }
 
 if (!function_exists('generate_path')) {
     /**
-     * Return absolute path for relative path
+     * Return absolute path for relative path.
      *
-     * @param  string $relative_path
+     * @param string $relative_path
      *
      * @return string
      */
-    function generate_path($relative_path) {
+    function generate_path($relative_path)
+    {
         return Utils::generatePath($relative_path);
     }
 }
 
 if (!function_exists('getroot')) {
     /**
-     * Return absolute path for relative path
+     * Return absolute path for relative path.
      *
-     * @param  string $autoloader
+     * @param string $autoloader
      *
      * @return string
      */
-    function getroot($autoloader) {
+    function getroot($autoloader)
+    {
         return Utils::getRoot($autoloader);
     }
 }

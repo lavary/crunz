@@ -2,12 +2,10 @@
 
 namespace Crunz\Configuration;
 
-use Crunz\Configuration\Configuration;
-
-class ConfigurationFactory {
-    
+class ConfigurationFactory
+{
     /**
-     * Create an instance of Configuration class
+     * Create an instance of Configuration class.
      *
      * @return \Configuration\Configuration
      */
@@ -15,5 +13,4 @@ class ConfigurationFactory {
     {
         return Configuration::getInstance();
     }
-
 }

@@ -22,5 +22,4 @@ $scheduler->run('DummyCommand')
           ->DummyConstraint()
           ->preventOverlapping();
 
-
-return $scheduler;          
+return $scheduler;
