@@ -26,7 +26,7 @@ SCRIPT
 $composer = <<SCRIPT
 
 COMPOSER_VERSION="1.6.4";
-BIN_DIR="/home/ubuntu/bin";
+BIN_DIR="/home/vagrant/bin";
 COMPOSER_FILE="$BIN_DIR/composer";
 
 mkdir -p "$BIN_DIR" &&
