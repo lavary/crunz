@@ -240,6 +240,46 @@ class EventTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('0 8 * * * *', $event->getExpression());
     }
 
+    /** @test */
+    public function settingUserPrependSudoToCommand()
+    {
+        $event = new Event($this->id, 'php -v');
+
+        $event->user('john');
+
+        $this->assertSame('sudo -u john php -v', $event->buildCommand());
+    }
+
+    /** @test */
+    public function customUserAndCwd()
+    {
+        if ($this->isWindows()) {
+            $this->markTestSkipped('Required Unix-based OS.');
+        }
+
+        $event = new Event($this->id, 'php -i');
+
+        $event->user('john');
+        $event->in('/var/test');
+
+        $this->assertSame('sudo -u john cd /var/test; sudo -u john php -i', $event->buildCommand());
+    }
+
+    /** @test */
+    public function notImplementedUserChangeOnWindows()
+    {
+        if (!$this->isWindows()) {
+            $this->markTestSkipped('Required Windows OS.');
+        }
+
+        $this->expectException(\Crunz\Exception\NotImplementedException::class);
+        $this->expectExceptionMessage('Changing user on Windows is not implemented.');
+
+        $event = new Event($this->id, 'php -i');
+
+        $event->user('john');
+    }
+
     private function isWindows()
     {
         return DIRECTORY_SEPARATOR === '\\';

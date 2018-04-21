@@ -5,6 +5,7 @@ namespace Crunz;
 use Closure;
 use Carbon\Carbon;
 use Cron\CronExpression;
+use Crunz\Exception\NotImplementedException;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Component\Process\Process;
 use SuperClosure\Serializer;
@@ -210,7 +211,7 @@ class Event
         
         if ($this->cwd) {           
             if($this->user) {
-                $command .= $this->sudo();
+                $command .= $this->sudo($this->user);
             }
 
             // Support changing drives in Windows
@@ -221,7 +222,7 @@ class Event
         }
     
         if ($this->user) {
-           $this->sudo();
+            $command .= $this->sudo($this->user);
         }
         
         $command .= $this->isClosure() ? $this->serializeClosure($this->command) : $this->command;
@@ -238,7 +239,7 @@ class Event
      */
     protected function sudo($user)
     {
-        return 'sudo -u' . $user . ' ';
+        return "sudo -u {$user} ";
     }
 
     /**
@@ -741,6 +742,10 @@ class Event
      */
     public function user($user)
     {
+        if ($this->isWindows()) {
+            throw new NotImplementedException('Changing user on Windows is not implemented.');
+        }
+
         $this->user = $user;
 
         return $this;
