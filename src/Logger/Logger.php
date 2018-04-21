@@ -91,8 +91,8 @@ class Logger extends Singleton
     /**
      * Write the log to the specified stream.
      *
-     * @param  string $content
-     * @param  string $level
+     * @param string $content
+     * @param string $level
      *
      * @return mixed
      */

@@ -401,7 +401,7 @@ class Event
     /**
      * Check if event should be on.
      *
-     * @param  string $datetime
+     * @param string $datetime
      */
     public function from($datetime)
     {
