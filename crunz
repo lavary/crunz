@@ -13,7 +13,7 @@
 |
 */
 
-$autoloadFile = \implode(
+$autoloadSrc = \implode(
     DIRECTORY_SEPARATOR,
     [
         __DIR__,
@@ -22,12 +22,28 @@ $autoloadFile = \implode(
     ]
 );
 
-require $autoloadFile;
+$autoloadBin = \implode(
+    DIRECTORY_SEPARATOR,
+    [
+        __DIR__,
+        '..',
+        '..',
+        'autoload.php'
+    ]
+);
+
+$hasBinAutoloader = \file_exists($autoloadBin);
+
+if ($hasBinAutoloader) {
+    require_once $autoloadBin;
+} else {
+    require_once $autoloadSrc;
+}
 
 define('CRUNZ_ROOT', __DIR__);
 
 // Setting the base directory as an environment variable
-setbase(getroot($autoloadFile));
+setbase(getroot($hasBinAutoloader ? $autoloadBin : $autoloadSrc));
 
 // Setting the handler for catching/logging fatal and parse errors. 
 Crunz\ErrorHandler::getInstance()->set();
