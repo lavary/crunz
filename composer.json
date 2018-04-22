@@ -74,7 +74,7 @@
         }
     },
     "scripts": {
-        "crunz:cs-fix": "vendor/bin/php-cs-fixer fix --diff -v --ansi",
-        "crunz:analyze": "vendor/bin/php-cs-fixer fix --diff --dry-run -v"
+        "crunz:cs-fix": "@php vendor/bin/php-cs-fixer fix --diff -v --ansi",
+        "crunz:analyze": "@php vendor/bin/php-cs-fixer fix --diff --dry-run -v"
     }
 }
