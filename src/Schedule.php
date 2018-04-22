@@ -168,7 +168,7 @@ class Schedule
      *
      * @param array $events
      *
-     * @return array
+     * @return Event[]
      */
     public function events(array $events = null)
     {
