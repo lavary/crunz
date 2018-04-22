@@ -1,10 +1,13 @@
 <?php
 
+namespace Crunz\Tests\Unit;
+
 use Carbon\Carbon;
 use Crunz\Event;
+use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
 
-class EventTest extends PHPUnit_Framework_TestCase
+class EventTest extends TestCase
 {
     /**
      * The default configuration timezone.

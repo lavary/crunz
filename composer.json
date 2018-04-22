@@ -57,6 +57,11 @@
             "src/Helpers.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Crunz\\Tests\\": "tests/"
+        }
+    },
     "bin": [
         "crunz"
     ],

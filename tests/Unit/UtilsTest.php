@@ -1,8 +1,11 @@
 <?php
 
-use Crunz\Utils;
+namespace Crunz\Tests\Unit;
 
-class UtilsTest extends PHPUnit_Framework_TestCase
+use Crunz\Utils;
+use PHPUnit\Framework\TestCase;
+
+class UtilsTest extends TestCase
 {
     public function testSplitCamel()
     {
