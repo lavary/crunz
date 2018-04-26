@@ -293,15 +293,8 @@ class EventTest extends TestCase
         };
         $serializedClosure = (new Serializer())->serialize($closure);
         $queryClosure = \http_build_query([$serializedClosure]);
-        $crunzRoot = $this->buildPath(
-            [
-                'path',
-                'to',
-                'crunz',
-            ]
-        );
+        $crunzRoot = CRUNZ_ROOT;
         $crunzBin = $this->buildPath([$crunzRoot, 'crunz']);
-        define('CRUNZ_ROOT', $crunzRoot);
 
         $event = new Event($this->id, $closure);
 
