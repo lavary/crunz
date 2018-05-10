@@ -32,7 +32,8 @@
             id="Crunz\Console\Command\ScheduleListCommand"
             public="true"
         >
-            <argument type="service" id="Symfony\Component\Finder\Finder"/>
+            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Task\Collection"/>
         </service>
 
         <service
@@ -47,5 +48,65 @@
             id="Symfony\Component\Finder\Finder"
             public="false"
         />
+
+        <service
+            class="Crunz\Configuration\Definition"
+            id="Crunz\Configuration\Definition"
+            public="false"
+        />
+
+        <service
+            class="Symfony\Component\Yaml\Yaml"
+            id="Symfony\Component\Yaml\Yaml"
+            public="false"
+        />
+
+        <service
+            class="Symfony\Component\Config\Definition\Processor"
+            id="Symfony\Component\Config\Definition\Processor"
+            public="false"
+        />
+
+        <service
+            class="Symfony\Component\Yaml\Yaml"
+            id="Symfony\Component\Yaml\Yaml"
+            public="false"
+        />
+
+        <service
+            class="Crunz\Task\Collection"
+            id="Crunz\Task\Collection"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Symfony\Component\Finder\Finder"/>
+        </service>
+
+        <service
+            class="Crunz\Configuration\FileParser"
+            id="Crunz\Configuration\FileParser"
+            public="false"
+        >
+            <argument type="service" id="Symfony\Component\Yaml\Yaml" />
+        </service>
+
+        <service
+            class="Symfony\Component\PropertyAccess\PropertyAccessor"
+            id="Symfony\Component\PropertyAccess\PropertyAccessorInterface"
+        >
+            <argument type="string">false</argument>
+            <argument type="string">true</argument>
+        </service>
+
+        <service
+            class="Crunz\Configuration\NonSingletonConfiguration"
+            id="Crunz\Configuration\NonSingletonConfiguration"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\Definition"/>
+            <argument type="service" id="Symfony\Component\Config\Definition\Processor"/>
+            <argument type="service" id="Crunz\Configuration\FileParser"/>
+            <argument type="service" id="Symfony\Component\PropertyAccess\PropertyAccessorInterface"/>
+        </service>
     </services>
 </container>

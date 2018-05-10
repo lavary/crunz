@@ -2,48 +2,27 @@
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\Configurable;
+use Crunz\Configuration\NonSingletonConfiguration;
 use Crunz\Schedule;
+use Crunz\Task\Collection;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 class ScheduleListCommand extends Command
 {
-    use Configurable;
+    /** @var NonSingletonConfiguration */
+    private $configuration;
+    /** @var Collection */
+    private $taskCollection;
 
-    /** @var Finder */
-    private $finder;
-
-    public function __construct(Finder $finder)
+    public function __construct(NonSingletonConfiguration $configuration, Collection $taskCollection)
     {
-        $this->finder = $finder;
+        $this->configuration = $configuration;
+        $this->taskCollection = $taskCollection;
 
         parent::__construct();
-    }
-
-    /**
-     * Collect all task files.
-     *
-     * @param string $source
-     *
-     * @return Iterator
-     */
-    public function collectTaskFiles($source)
-    {
-        if (!file_exists($source)) {
-            return [];
-        }
-
-        $iterator = $this->finder
-            ->files()
-            ->name('*' . $this->config('suffix'))
-            ->in($source)
-        ;
-
-        return $iterator;
     }
 
     /**
@@ -51,14 +30,23 @@ class ScheduleListCommand extends Command
      */
     protected function configure()
     {
-        $this->configurable();
+        $sourcePath = $this->configuration
+            ->get('source')
+        ;
 
         $this->setName('schedule:list')
             ->setDescription('Displays the list of scheduled tasks.')
-            ->setDefinition([
-               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory for collecting the tasks.', generate_path($this->config('source'))),
-           ])
-           ->setHelp('This command displays the scheduled tasks in a tabular format.');
+            ->setDefinition(
+                [
+                    new InputArgument(
+                        'source',
+                        InputArgument::OPTIONAL,
+                        'The source directory for collecting the tasks.',
+                        generate_path($sourcePath)
+                    ),
+                ]
+            )
+            ->setHelp('This command displays the scheduled tasks in a tabular format.');
     }
 
     /**
@@ -73,18 +61,28 @@ class ScheduleListCommand extends Command
     {
         $this->options = $input->getOptions();
         $this->arguments = $input->getArguments();
-        $task_files = $this->collectTaskFiles($this->arguments['source']);
+        $tasks = $this->taskCollection
+            ->all($this->arguments['source'])
+        ;
 
-        if (!count($task_files)) {
+        if (!\count($tasks)) {
             $output->writeln('<comment>No task found!</comment>');
-            exit();
+
+            return 0;
         }
 
         $table = new Table($output);
-        $table->setHeaders(['#', 'Task', 'Expression', 'Command to Run']);
+        $table->setHeaders(
+            [
+                '#',
+                'Task',
+                'Expression',
+                'Command to Run',
+            ]
+        );
         $row = 0;
 
-        foreach ($task_files as $key => $taskFile) {
+        foreach ($tasks as $key => $taskFile) {
             $schedule = require $taskFile->getRealPath();
             if (!$schedule instanceof Schedule) {
                 continue;
@@ -92,15 +90,19 @@ class ScheduleListCommand extends Command
 
             $events = $schedule->events();
             foreach ($events as $event) {
-                $table->addRow([
-                ++$row,
-                $event->description,
-                $event->getExpression(),
-                $event->getCommandForDisplay(),
-              ]);
+                $table->addRow(
+                    [
+                        ++$row,
+                        $event->description,
+                        $event->getExpression(),
+                        $event->getCommandForDisplay(),
+                    ]
+                );
             }
         }
 
         $table->render();
+
+        return 0;
     }
 }
