@@ -5,6 +5,7 @@ namespace Crunz\Console\Command;
 use Crunz\Configuration\Configurable;
 use Crunz\EventRunner;
 use Crunz\Schedule;
+use Crunz\Task\Collection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,10 +23,13 @@ class ScheduleRunCommand extends Command
     protected $runningEvents = [];
     /** @var Finder */
     private $finder;
+    /** @var Collection */
+    private $taskCollection;
 
-    public function __construct(Finder $finder)
+    public function __construct(Finder $finder, Collection $taskCollection)
     {
         $this->finder = $finder;
+        $this->taskCollection = $taskCollection;
 
         parent::__construct();
     }
@@ -46,22 +50,20 @@ class ScheduleRunCommand extends Command
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param use Symfony\Component\Console\Input\InputInterface $input
-     * @param use Symfony\Component\Console\Input\OutputIterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->arguments = $input->getArguments();
         $this->options = $input->getOptions();
-        $files = $this->collectFiles($this->arguments['source']);
+        $files = $this->taskCollection
+            ->all($this->arguments['source'])
+        ;
 
         if (!count($files)) {
             $output->writeln('<comment>No task found! Please check your source path.</comment>');
-            exit();
+
+            return 0;
         }
 
         // List of schedules
@@ -83,33 +85,12 @@ class ScheduleRunCommand extends Command
 
         if (!count($schedules)) {
             $output->writeln('<comment>No event is due!</comment>');
-            exit();
+
+            return 0;
         }
 
         // Running the events
         (new EventRunner())
             ->handle($schedules);
-    }
-
-    /**
-     * Collect all task files.
-     *
-     * @param string $source
-     *
-     * @return Iterator
-     */
-    protected function collectFiles($source)
-    {
-        if (!file_exists($source)) {
-            return [];
-        }
-
-        $iterator = $this->finder
-            ->files()
-            ->name('*' . $this->config('suffix'))
-            ->in($source)
-        ;
-
-        return $iterator;
     }
 }

@@ -11,6 +11,7 @@
             public="true"
         >
             <argument type="service" id="Symfony\Component\Finder\Finder"/>
+            <argument type="service" id="Crunz\Task\Collection"/>
         </service>
 
         <service
