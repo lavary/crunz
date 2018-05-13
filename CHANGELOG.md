@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Crunz sends output email even if the output is empty,
+solves issue [#64](https://github.com/lavary/crunz/issues/64) - PR
+[#90](https://github.com/lavary/crunz/pull/90), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ## 1.6.0 - 2018-04-22
 
 ### Added

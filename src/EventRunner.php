@@ -193,7 +193,7 @@ class EventRunner
         }
 
         // Email the output
-        if ($this->config('email_output')) {
+        if (!empty($event->getOutputStream()) && $this->config('email_output')) {
             $this->mailer->send(
                 'Crunz: output for event: ' . (($event->description) ? $event->description : $event->getId()),
                 $this->formatEventOutput($event)
@@ -236,6 +236,7 @@ class EventRunner
             . '('
             . $event->getCommandForDisplay()
             . ') '
+            . PHP_EOL
             . PHP_EOL
             . $event->outputStream
             . PHP_EOL;
