@@ -22,6 +22,10 @@ env:
     global:
         - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --no-suggest --prefer-dist"
 
+cache:
+    directories:
+        - $HOME/.composer/cache
+
 before_install:
     - composer self-update
 
