@@ -42,6 +42,7 @@
             id="Crunz\Console\Command\TaskGeneratorCommand"
             public="true"
         >
+            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
         </service>
 
         <service

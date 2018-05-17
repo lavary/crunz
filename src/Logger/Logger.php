@@ -15,7 +15,7 @@ class Logger extends Singleton
     /**
      * Instance of Psr\Log\LoggerInterface.
      *
-     * @var Psr\Log\LoggerInterface
+     * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
 
