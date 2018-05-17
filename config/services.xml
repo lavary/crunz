@@ -12,6 +12,7 @@
         >
             <argument type="service" id="Crunz\Task\Collection"/>
             <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\EventRunner"/>
         </service>
 
         <service
@@ -114,6 +115,12 @@
         <service
             class="Crunz\Invoker"
             id="Crunz\Invoker"
+            public="false"
+        />
+
+        <service
+            class="Crunz\EventRunner"
+            id="Crunz\EventRunner"
             public="false"
         />
     </services>

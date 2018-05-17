@@ -22,11 +22,17 @@ class ScheduleRunCommand extends Command
     private $taskCollection;
     /** @var NonSingletonConfiguration */
     private $configuration;
+    /** @var EventRunner */
+    private $eventRunner;
 
-    public function __construct(Collection $taskCollection, NonSingletonConfiguration $configuration)
-    {
+    public function __construct(
+        Collection $taskCollection,
+        NonSingletonConfiguration $configuration,
+        EventRunner $eventRunner
+    ) {
         $this->taskCollection = $taskCollection;
         $this->configuration = $configuration;
+        $this->eventRunner = $eventRunner;
 
         parent::__construct();
     }
@@ -96,7 +102,8 @@ class ScheduleRunCommand extends Command
         }
 
         // Running the events
-        (new EventRunner())
-            ->handle($output, $schedules);
+        $this->eventRunner
+            ->handle($output, $schedules)
+        ;
     }
 }
