@@ -10,7 +10,6 @@
             id="Crunz\Console\Command\ScheduleRunCommand"
             public="true"
         >
-            <argument type="service" id="Symfony\Component\Finder\Finder"/>
             <argument type="service" id="Crunz\Task\Collection"/>
             <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
         </service>

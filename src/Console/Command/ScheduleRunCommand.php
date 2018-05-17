@@ -9,7 +9,6 @@ use Crunz\Task\Collection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 class ScheduleRunCommand extends Command
 {
@@ -19,19 +18,13 @@ class ScheduleRunCommand extends Command
      * @var array
      */
     protected $runningEvents = [];
-    /** @var Finder */
-    private $finder;
     /** @var Collection */
     private $taskCollection;
     /** @var NonSingletonConfiguration */
     private $configuration;
 
-    public function __construct(
-        Finder $finder,
-        Collection $taskCollection,
-        NonSingletonConfiguration $configuration
-    ) {
-        $this->finder = $finder;
+    public function __construct(Collection $taskCollection, NonSingletonConfiguration $configuration)
+    {
         $this->taskCollection = $taskCollection;
         $this->configuration = $configuration;
 
