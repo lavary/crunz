@@ -2,7 +2,7 @@
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\Configurable;
+use Crunz\Configuration\NonSingletonConfiguration;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
@@ -13,8 +13,6 @@ use Symfony\Component\Finder\Finder;
 
 class ScheduleRunCommand extends Command
 {
-    use Configurable;
-
     /**
      * Running tasks.
      *
@@ -25,11 +23,17 @@ class ScheduleRunCommand extends Command
     private $finder;
     /** @var Collection */
     private $taskCollection;
+    /** @var NonSingletonConfiguration */
+    private $configuration;
 
-    public function __construct(Finder $finder, Collection $taskCollection)
-    {
+    public function __construct(
+        Finder $finder,
+        Collection $taskCollection,
+        NonSingletonConfiguration $configuration
+    ) {
         $this->finder = $finder;
         $this->taskCollection = $taskCollection;
+        $this->configuration = $configuration;
 
         parent::__construct();
     }
@@ -39,13 +43,22 @@ class ScheduleRunCommand extends Command
      */
     protected function configure()
     {
-        $this->configurable();
+        $sourcePath = $this->configuration
+            ->get('source')
+        ;
 
         $this->setName('schedule:run')
             ->setDescription('Starts the event runner.')
-            ->setDefinition([
-               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory for collecting the task files.', generate_path($this->config('source'))),
-           ])
+            ->setDefinition(
+                [
+                    new InputArgument(
+                        'source',
+                        InputArgument::OPTIONAL,
+                        'The source directory for collecting the task files.',
+                        generate_path($sourcePath)
+                    ),
+                ]
+            )
            ->setHelp('This command starts the Crunz event runner.');
     }
 
@@ -91,6 +104,6 @@ class ScheduleRunCommand extends Command
 
         // Running the events
         (new EventRunner())
-            ->handle($schedules);
+            ->handle($output, $schedules);
     }
 }

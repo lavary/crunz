@@ -4,6 +4,7 @@ namespace Crunz;
 
 use Crunz\Configuration\Configurable;
 use Crunz\Logger\LoggerFactory;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class EventRunner
 {
@@ -32,6 +33,8 @@ class EventRunner
      * @var \Crunz\Mailer
      */
     protected $mailer;
+    /** @var OutputInterface */
+    private $output;
 
     /**
      * Instantiate the event runner.
@@ -56,12 +59,11 @@ class EventRunner
 
     /**
      * Handle an array of Schedule objects.
-     *
-     * @param array $schedules
      */
-    public function handle(array $schedules = [])
+    public function handle(OutputInterface $output, array $schedules = [])
     {
         $this->schedules = $schedules;
+        $this->output = $output;
 
         foreach ($this->schedules as $schedule) {
             // Running the before-callbacks of the current schedule
@@ -267,6 +269,8 @@ class EventRunner
      */
     protected function display($output)
     {
-        echo is_string($output) ? $output : '';
+        $this->output
+            ->write(\is_string($output) ? $output : '')
+        ;
     }
 }
