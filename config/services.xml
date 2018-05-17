@@ -110,5 +110,11 @@
             <argument type="service" id="Crunz\Configuration\FileParser"/>
             <argument type="service" id="Symfony\Component\PropertyAccess\PropertyAccessorInterface"/>
         </service>
+
+        <service
+            class="Crunz\Invoker"
+            id="Crunz\Invoker"
+            public="false"
+        />
     </services>
 </container>
