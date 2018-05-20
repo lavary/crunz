@@ -119,9 +119,21 @@
         />
 
         <service
+            class="Crunz\Mailer"
+            id="Crunz\Mailer"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+        </service>
+
+        <service
             class="Crunz\EventRunner"
             id="Crunz\EventRunner"
             public="false"
-        />
+        >
+            <argument type="service" id="Crunz\Invoker"/>
+            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Mailer"/>
+        </service>
     </services>
 </container>

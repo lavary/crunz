@@ -2,13 +2,12 @@
 
 namespace Crunz;
 
-use Crunz\Configuration\Configurable;
+use Crunz\Configuration\NonSingletonConfiguration;
 use Crunz\Logger\LoggerFactory;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class EventRunner
 {
-    use Configurable;
     /**
      * Schedule objects.
      *
@@ -35,26 +34,28 @@ class EventRunner
     protected $mailer;
     /** @var OutputInterface */
     private $output;
+    /** @var NonSingletonConfiguration */
+    private $configuration;
 
     /**
      * Instantiate the event runner.
      */
-    public function __construct()
-    {
-        $this->configurable();
-
-        // Create an insance of the Logger
+    public function __construct(
+        Invoker $invoker,
+        NonSingletonConfiguration $configuration,
+        Mailer $mailer
+    ) {
+        $outputLogFile = $configuration->get('output_log_file');
+        $errorLogFile = $configuration->get('errors_log_file');
         $this->logger = LoggerFactory::makeOne([
             // Logging streams
-            'info' => $this->config('output_log_file'),
-            'error' => $this->config('errors_log_file'),
+            'info' => $outputLogFile,
+            'error' => $errorLogFile,
         ]);
 
-        // Initializing the invoker
-        $this->invoker = new Invoker();
-
-        // Initializing the invoker
-        $this->mailer = new Mailer();
+        $this->invoker = $invoker;
+        $this->mailer = $mailer;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -76,7 +77,7 @@ class EventRunner
         }
 
         // Watch events until they are finished
-        $this->ManageStartedEvents();
+        $this->manageStartedEvents();
     }
 
     /**
@@ -113,7 +114,7 @@ class EventRunner
     /**
      * Manage the running processes.
      */
-    protected function ManageStartedEvents()
+    protected function manageStartedEvents()
     {
         while ($this->schedules) {
             foreach ($this->schedules as $scheduleKey => $schedule) {
@@ -182,7 +183,11 @@ class EventRunner
     protected function handleOutput(Event $event)
     {
         $logged = false;
-        if ($this->config('log_output')) {
+        $logOutput = $this->configuration
+            ->get('log_output')
+        ;
+
+        if ($logOutput) {
             $this->logger->info($this->formatEventOutput($event));
             $logged = true;
         }
@@ -194,8 +199,10 @@ class EventRunner
             $this->display($event->getOutputStream());
         }
 
-        // Email the output
-        if (!empty($event->getOutputStream()) && $this->config('email_output')) {
+        $emailOutput = $this->configuration
+            ->get('email_output')
+        ;
+        if ($emailOutput && !empty($event->getOutputStream())) {
             $this->mailer->send(
                 'Crunz: output for event: ' . (($event->description) ? $event->description : $event->getId()),
                 $this->formatEventOutput($event)
@@ -210,14 +217,21 @@ class EventRunner
      */
     protected function handleError(Event $event)
     {
-        if ($this->config('log_errors')) {
+        $logErrors = $this->configuration
+            ->get('log_errors')
+        ;
+        $emailErrors = $this->configuration
+            ->get('email_errors')
+        ;
+
+        if ($logErrors) {
             $this->logger->error($this->formatEventError($event));
         } else {
             $this->display($event->getProcess()->getErrorOutput());
         }
 
         // Send error as email as configured
-        if ($this->config('email_errors')) {
+        if ($emailErrors) {
             $this->mailer->send(
                 'Crunz: reporting error for event:' . (($event->description) ? $event->description : $event->getId()),
                 $this->formatEventError($event)
