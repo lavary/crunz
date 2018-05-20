@@ -4,6 +4,7 @@ namespace Crunz\Tests\Functional;
 
 use Crunz\Application;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class TaskGeneratorTest extends TestCase
@@ -42,8 +43,11 @@ class TaskGeneratorTest extends TestCase
         $command = $application->get('make:task');
 
         $commandTester = new CommandTester($command);
-        $helper = $command->getHelper('question');
-        $helper->setInputStream($this->getInputStream("{$this->outputDirectory}\n"));
+        $this->provideAnswer(
+            "{$this->outputDirectory}\n",
+            $commandTester,
+            $command
+        );
         $returnCode = $commandTester->execute(
             [
                 'taskfile' => $this->fileName,
@@ -68,5 +72,20 @@ class TaskGeneratorTest extends TestCase
         if (\file_exists($this->taskFilePath)) {
             \unlink($this->taskFilePath);
         }
+    }
+
+    private function provideAnswer(
+        $answer,
+        CommandTester $commandTester,
+        Command $command
+    ) {
+        if (\method_exists($commandTester, 'setInputs')) {
+            $commandTester->setInputs([$answer]);
+
+            return;
+        }
+
+        $helper = $command->getHelper('question');
+        $helper->setInputStream($this->getInputStream($answer));
     }
 }
