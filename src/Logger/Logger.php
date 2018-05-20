@@ -2,7 +2,7 @@
 
 namespace Crunz\Logger;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
@@ -31,7 +31,7 @@ class Logger
         'alert' => MonologLogger::ALERT,
         'emergency' => MonologLogger::EMERGENCY,
     ];
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $configuration;
 
     /**
@@ -39,7 +39,7 @@ class Logger
      *
      * @param \Monolog\Logger $logger
      */
-    public function __construct(\Monolog\Logger $logger, NonSingletonConfiguration $configuration)
+    public function __construct(\Monolog\Logger $logger, Configuration $configuration)
     {
         $this->logger = $logger;
         $this->configuration = $configuration;

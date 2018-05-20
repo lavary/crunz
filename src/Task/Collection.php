@@ -2,18 +2,18 @@
 
 namespace Crunz\Task;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 class Collection
 {
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $configuration;
     /** @var Finder */
     private $finder;
 
-    public function __construct(NonSingletonConfiguration $configuration, Finder $finder)
+    public function __construct(Configuration $configuration, Finder $finder)
     {
         $this->configuration = $configuration;
         $this->finder = $finder;

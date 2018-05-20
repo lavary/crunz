@@ -11,7 +11,7 @@
             public="true"
         >
             <argument type="service" id="Crunz\Task\Collection"/>
-            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\EventRunner"/>
         </service>
 
@@ -34,7 +34,7 @@
             id="Crunz\Console\Command\ScheduleListCommand"
             public="true"
         >
-            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\Task\Collection"/>
         </service>
 
@@ -43,7 +43,7 @@
             id="Crunz\Console\Command\TaskGeneratorCommand"
             public="true"
         >
-            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
         </service>
 
         <service
@@ -75,7 +75,7 @@
             id="Crunz\Task\Collection"
             public="false"
         >
-            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Symfony\Component\Finder\Finder"/>
         </service>
 
@@ -96,8 +96,8 @@
         </service>
 
         <service
-            class="Crunz\Configuration\NonSingletonConfiguration"
-            id="Crunz\Configuration\NonSingletonConfiguration"
+            class="Crunz\Configuration\Configuration"
+            id="Crunz\Configuration\Configuration"
             public="false"
         >
             <argument type="service" id="Crunz\Configuration\Definition"/>
@@ -117,14 +117,14 @@
             id="Crunz\Mailer"
             public="false"
         >
-            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
         </service>
 
         <service
             class="Crunz\Logger\LoggerFactory"
             id="Crunz\Logger\LoggerFactory"
         >
-            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
         </service>
 
         <service
@@ -133,7 +133,7 @@
             public="false"
         >
             <argument type="service" id="Crunz\Invoker"/>
-            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\Mailer"/>
             <argument type="service" id="Crunz\Logger\LoggerFactory"/>
         </service>

@@ -2,7 +2,7 @@
 
 namespace Crunz;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 
 class Mailer
 {
@@ -12,10 +12,10 @@ class Mailer
      * @param \Swift_Mailer
      */
     protected $mailer;
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $configuration;
 
-    public function __construct(NonSingletonConfiguration $configuration)
+    public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
     }

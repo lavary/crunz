@@ -3,7 +3,7 @@
 namespace Crunz\Tests\Unit\Configuration;
 
 use Crunz\Configuration\FileParser;
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
@@ -49,7 +49,7 @@ class NonSingletonConfigurationTest extends TestCase
             ->willReturn([])
         ;
 
-        return new NonSingletonConfiguration(
+        return new Configuration(
             $mockConfigurationDefinition,
             $mockDefinitionProcessor,
             $mockFileParser,

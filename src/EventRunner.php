@@ -2,7 +2,7 @@
 
 namespace Crunz;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use Crunz\Logger\LoggerFactory;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -34,7 +34,7 @@ class EventRunner
     protected $mailer;
     /** @var OutputInterface */
     private $output;
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $configuration;
     /** @var LoggerFactory */
     private $loggerFactory;
@@ -44,7 +44,7 @@ class EventRunner
      */
     public function __construct(
         Invoker $invoker,
-        NonSingletonConfiguration $configuration,
+        Configuration $configuration,
         Mailer $mailer,
         LoggerFactory $loggerFactory
     ) {

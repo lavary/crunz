@@ -2,7 +2,7 @@
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
@@ -20,14 +20,14 @@ class ScheduleRunCommand extends Command
     protected $runningEvents = [];
     /** @var Collection */
     private $taskCollection;
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $configuration;
     /** @var EventRunner */
     private $eventRunner;
 
     public function __construct(
         Collection $taskCollection,
-        NonSingletonConfiguration $configuration,
+        Configuration $configuration,
         EventRunner $eventRunner
     ) {
         $this->taskCollection = $taskCollection;

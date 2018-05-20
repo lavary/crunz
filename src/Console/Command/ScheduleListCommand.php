@@ -2,7 +2,7 @@
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
 use Symfony\Component\Console\Helper\Table;
@@ -12,12 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ScheduleListCommand extends Command
 {
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $configuration;
     /** @var Collection */
     private $taskCollection;
 
-    public function __construct(NonSingletonConfiguration $configuration, Collection $taskCollection)
+    public function __construct(Configuration $configuration, Collection $taskCollection)
     {
         $this->configuration = $configuration;
         $this->taskCollection = $taskCollection;

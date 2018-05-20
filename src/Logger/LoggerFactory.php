@@ -2,15 +2,15 @@
 
 namespace Crunz\Logger;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use Monolog\Logger as MonologLogger;
 
 class LoggerFactory
 {
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $configuration;
 
-    public function __construct(NonSingletonConfiguration $configuration)
+    public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
     }

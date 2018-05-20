@@ -2,7 +2,7 @@
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\NonSingletonConfiguration;
+use Crunz\Configuration\Configuration;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -30,10 +30,10 @@ class TaskGeneratorCommand extends Command
      * @var string
      */
     protected $stub;
-    /** @var NonSingletonConfiguration */
+    /** @var Configuration */
     private $config;
 
-    public function __construct(NonSingletonConfiguration $nonSingletonConfiguration)
+    public function __construct(Configuration $nonSingletonConfiguration)
     {
         $this->config = $nonSingletonConfiguration;
 
