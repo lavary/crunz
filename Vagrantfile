@@ -30,6 +30,7 @@ touch "$PHP_INI_PATH";
 
 echo "display_errors = On" >> "$PHP_INI_PATH";
 echo "display_startup_errors = On" >> "$PHP_INI_PATH";
+echo "error_reporting = E_ALL" >> "$PHP_INI_PATH";
 echo "log_errors = On" >> "$PHP_INI_PATH";
 echo "error_log = /var/log/php_error.log" >> "$PHP_INI_PATH";
 
