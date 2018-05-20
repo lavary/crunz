@@ -128,6 +128,12 @@
         </service>
 
         <service
+            class="Crunz\Timezone\Provider"
+            id="Crunz\Timezone\ProviderInterface"
+            public="false"
+        />
+
+        <service
             class="Crunz\EventRunner"
             id="Crunz\EventRunner"
             public="false"
