@@ -11,10 +11,10 @@ source: tasks
 # to make sure all the existing tasks files are renamed accordingly.
 suffix: Tasks.php
 
-# Timezone used to calculate task run date
+# Timezone is used to calculate task run time
 # This option is very important and not setting it is deprecated
 # and will result in exception in 2.0 version.
-timezone: UTC
+timezone: ~
 
 # By default the errors are not logged by Crunz
 # You may set the value to true for logging the errors
@@ -22,7 +22,7 @@ log_errors: false
 
 # This is the absolute path to the errors' log file
 # You need to make sure you have the required permission to write to this file though.
-errors_log_file:
+errors_log_file: ~
 
 # By default the output is not logged as they are redirected to the
 # null output.
@@ -32,7 +32,7 @@ log_output: false
 # This is the absolute path to the global output log file
 # The events which have dedicated log files (defined with them), won't be
 # logged to this file though.
-output_log_file:
+output_log_file: ~
 
 # By default line breaks in logs aren't allowed.
 # Set the value to true to allow them.
@@ -45,7 +45,6 @@ email_output: false
 email_errors: false
 
 # Global Swift Mailer settings
-#
 mailer:
     # Possible values: smtp, mail, and sendmail
     transport: smtp
@@ -55,10 +54,9 @@ mailer:
 
 
 # SMTP settings
-#
 smtp:
-    host:
-    port:
-    username:
-    password:
-    encryption:
+    host: ~
+    port: ~
+    username: ~
+    password: ~
+    encryption: ~
