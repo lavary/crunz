@@ -11,7 +11,7 @@ class EventRunner
     /**
      * Schedule objects.
      *
-     * @var array
+     * @var Schedule[]
      */
     protected $schedules = [];
     /**
