@@ -2,14 +2,14 @@
 
 namespace Crunz\Tests\Unit\Configuration;
 
-use Crunz\Configuration\FileParser;
 use Crunz\Configuration\Configuration;
+use Crunz\Configuration\FileParser;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-class NonSingletonConfigurationTest extends TestCase
+class ConfigurationTest extends TestCase
 {
     /** @test */
     public function getCanReturnPathSplitByDot()
