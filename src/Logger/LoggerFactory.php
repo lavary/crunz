@@ -2,18 +2,25 @@
 
 namespace Crunz\Logger;
 
+use Crunz\Configuration\NonSingletonConfiguration;
 use Monolog\Logger as MonologLogger;
 
 class LoggerFactory
 {
-    /**
-     * Create an instance of the Logger class.
-     *
-     * @return \Logger\Logger
-     */
-    public static function makeOne(array $streams = [])
+    /** @var NonSingletonConfiguration */
+    private $configuration;
+
+    public function __construct(NonSingletonConfiguration $configuration)
     {
-        $logger = new Logger(new MonologLogger('crunz'));
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * @return Logger
+     */
+    public function create(array $streams = [])
+    {
+        $logger = new Logger(new MonologLogger('crunz'), $this->configuration);
 
         // Adding stream for normal output
         foreach ($streams as $stream => $file) {

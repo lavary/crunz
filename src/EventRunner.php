@@ -36,6 +36,8 @@ class EventRunner
     private $output;
     /** @var NonSingletonConfiguration */
     private $configuration;
+    /** @var LoggerFactory */
+    private $loggerFactory;
 
     /**
      * Instantiate the event runner.
@@ -43,19 +45,23 @@ class EventRunner
     public function __construct(
         Invoker $invoker,
         NonSingletonConfiguration $configuration,
-        Mailer $mailer
+        Mailer $mailer,
+        LoggerFactory $loggerFactory
     ) {
         $outputLogFile = $configuration->get('output_log_file');
         $errorLogFile = $configuration->get('errors_log_file');
-        $this->logger = LoggerFactory::makeOne([
-            // Logging streams
-            'info' => $outputLogFile,
-            'error' => $errorLogFile,
-        ]);
 
+        $this->logger = $loggerFactory->create(
+            [
+                // Logging streams
+                'info' => $outputLogFile,
+                'error' => $errorLogFile,
+            ]
+        );
         $this->invoker = $invoker;
         $this->mailer = $mailer;
         $this->configuration = $configuration;
+        $this->loggerFactory = $loggerFactory;
     }
 
     /**
@@ -99,15 +105,16 @@ class EventRunner
                 }
             }
             // Create an instance of the Logger specific to the event
-            $event->logger = LoggerFactory::makeOne([
-                // Logging streams
-                'info' => $event->output,
-            ]);
+            $event->logger = $this->loggerFactory->create(
+                [
+                    // Logging streams
+                    'info' => $event->output,
+                ]
+            );
         }
 
         // Running the before-callbacks
         $event->outputStream = ($this->invoke($event->beforeCallbacks()));
-
         $event->start();
     }
 

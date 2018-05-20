@@ -71,12 +71,6 @@
         />
 
         <service
-            class="Symfony\Component\Yaml\Yaml"
-            id="Symfony\Component\Yaml\Yaml"
-            public="false"
-        />
-
-        <service
             class="Crunz\Task\Collection"
             id="Crunz\Task\Collection"
             public="false"
@@ -127,6 +121,13 @@
         </service>
 
         <service
+            class="Crunz\Logger\LoggerFactory"
+            id="Crunz\Logger\LoggerFactory"
+        >
+            <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
+        </service>
+
+        <service
             class="Crunz\EventRunner"
             id="Crunz\EventRunner"
             public="false"
@@ -134,6 +135,7 @@
             <argument type="service" id="Crunz\Invoker"/>
             <argument type="service" id="Crunz\Configuration\NonSingletonConfiguration"/>
             <argument type="service" id="Crunz\Mailer"/>
+            <argument type="service" id="Crunz\Logger\LoggerFactory"/>
         </service>
     </services>
 </container>
