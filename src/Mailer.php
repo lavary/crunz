@@ -2,28 +2,22 @@
 
 namespace Crunz;
 
-use Crunz\Configuration\Configurable;
+use Crunz\Configuration\Configuration;
 
-class Mailer extends Singleton
+class Mailer
 {
-    use Configurable;
-
     /**
      * Mailer instance.
      *
      * @param \Swift_Mailer
      */
     protected $mailer;
+    /** @var Configuration */
+    private $configuration;
 
-    /**
-     * Instantiate the Mailer class.
-     *
-     * @param \Swift_Mailer $mailer
-     */
-    public function __construct(\Swift_Mailer $mailer = null)
+    public function __construct(Configuration $configuration)
     {
-        $this->configurable();
-        $this->mailer = $mailer;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -31,12 +25,14 @@ class Mailer extends Singleton
      *
      * @param string $subject
      * @param string $message
-     *
-     * @return bool
      */
     public function send($subject, $message)
     {
-        $this->getMailer()->send($this->getMessage($subject, $message));
+        $this->getMailer()
+            ->send(
+                $this->getMessage($subject, $message)
+            )
+        ;
     }
 
     /**
@@ -65,9 +61,12 @@ class Mailer extends Singleton
             $transport = $this->getSendMailTransport();
         }
 
-        return method_exists(\Swift_Mailer::class, 'newInstance')
+        $this->mailer = \method_exists(\Swift_Mailer::class, 'newInstance')
             ? \Swift_Mailer::newInstance($transport)
-            : new \Swift_Mailer($transport);
+            : new \Swift_Mailer($transport)
+        ;
+
+        return $this->mailer;
     }
 
     /**
@@ -139,5 +138,12 @@ class Mailer extends Singleton
                  ->setSubject($subject)
                  ->setFrom([$this->config('mailer.sender_email') => $this->config('mailer.sender_name')])
                  ->setTo($this->config('mailer.recipients'));
+    }
+
+    private function config($key)
+    {
+        return $this->configuration
+            ->get($key)
+        ;
     }
 }

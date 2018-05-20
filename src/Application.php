@@ -1,6 +1,6 @@
 <?php
 
-namespace Crunz\Console;
+namespace Crunz;
 
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class CommandKernel extends SymfonyApplication
+class Application extends SymfonyApplication
 {
     /**
      * List of commands to register.
@@ -104,7 +104,16 @@ class CommandKernel extends SymfonyApplication
     {
         $containerBuilder = new ContainerBuilder();
 
-        $loader = new XmlFileLoader($containerBuilder, new FileLocator(CRUNZ_ROOT . '/config'));
+        $configDir = \implode(
+            DIRECTORY_SEPARATOR,
+            [
+                __DIR__,
+                '..',
+                'config',
+            ]
+        );
+
+        $loader = new XmlFileLoader($containerBuilder, new FileLocator($configDir));
         $loader->load('services.xml');
 
         return $containerBuilder;

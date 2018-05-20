@@ -1,10 +1,13 @@
 <?php
 
+namespace Crunz\Tests\Unit;
+
 use Carbon\Carbon;
 use Crunz\Event;
+use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
 
-class EventTest extends PHPUnit_Framework_TestCase
+class EventTest extends TestCase
 {
     /**
      * The default configuration timezone.
@@ -290,15 +293,8 @@ class EventTest extends PHPUnit_Framework_TestCase
         };
         $serializedClosure = (new Serializer())->serialize($closure);
         $queryClosure = \http_build_query([$serializedClosure]);
-        $crunzRoot = $this->buildPath(
-            [
-                'path',
-                'to',
-                'crunz',
-            ]
-        );
+        $crunzRoot = CRUNZ_ROOT;
         $crunzBin = $this->buildPath([$crunzRoot, 'crunz']);
-        define('CRUNZ_ROOT', $crunzRoot);
 
         $event = new Event($this->id, $closure);
 

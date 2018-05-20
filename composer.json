@@ -38,7 +38,8 @@
         "symfony/dependency-injection": "^2.7 || ^3.3 || ^4.0",
         "symfony/finder": "^2.7 || ^3.3 || ^4.0",
         "symfony/process": "^2.7.11 || ^3.3 || ^4.0",
-        "symfony/yaml": "^2.7 || ^3.3 || ^4.0"
+        "symfony/yaml": "^2.7 || ^3.3 || ^4.0",
+        "symfony/property-access": "^2.7 || ^3.3 || ^4.0"
     },
     "require-dev": {
         "ext-mbstring": "*",
@@ -46,8 +47,14 @@
         "phpdocumentor/reflection-docblock": "^2.0.1",
         "phpunit/phpunit": "5.7.27",
         "sebastian/comparator": "1.2.4",
-        "symfony/debug": "^2.7 || ^3.3 || ^4.0",
-        "symfony/phpunit-bridge": "^2.8 || ^3.3 || ^4.0"
+        "symfony/debug": "^3.3 || ^4.0",
+        "symfony/phpunit-bridge": "^2.8 || ^3.3 || ^4.0",
+        "symfony/var-dumper": "^3.4"
+    },
+    "replace": {
+        "symfony/polyfill-php56": "*",
+        "symfony/polyfill-php55": "*",
+        "symfony/polyfill-php54": "*"
     },
     "autoload": {
         "psr-4": {
@@ -56,6 +63,11 @@
         "files": [
             "src/Helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Crunz\\Tests\\": "tests/"
+        }
     },
     "bin": [
         "crunz"
@@ -69,7 +81,7 @@
         }
     },
     "scripts": {
-        "crunz:cs-fix": "vendor/bin/php-cs-fixer fix --diff -v --ansi",
-        "crunz:analyze": "vendor/bin/php-cs-fixer fix --diff --dry-run -v"
+        "crunz:cs-fix": "@php vendor/bin/php-cs-fixer fix --diff -v --ansi",
+        "crunz:analyze": "@php vendor/bin/php-cs-fixer fix --diff --dry-run -v"
     }
 }

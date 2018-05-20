@@ -2,30 +2,37 @@
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\Configurable;
+use Crunz\Configuration\Configuration;
 use Crunz\EventRunner;
 use Crunz\Schedule;
+use Crunz\Task\Collection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 class ScheduleRunCommand extends Command
 {
-    use Configurable;
-
     /**
      * Running tasks.
      *
      * @var array
      */
     protected $runningEvents = [];
-    /** @var Finder */
-    private $finder;
+    /** @var Collection */
+    private $taskCollection;
+    /** @var Configuration */
+    private $configuration;
+    /** @var EventRunner */
+    private $eventRunner;
 
-    public function __construct(Finder $finder)
-    {
-        $this->finder = $finder;
+    public function __construct(
+        Collection $taskCollection,
+        Configuration $configuration,
+        EventRunner $eventRunner
+    ) {
+        $this->taskCollection = $taskCollection;
+        $this->configuration = $configuration;
+        $this->eventRunner = $eventRunner;
 
         parent::__construct();
     }
@@ -35,33 +42,40 @@ class ScheduleRunCommand extends Command
      */
     protected function configure()
     {
-        $this->configurable();
+        $sourcePath = $this->configuration
+            ->get('source')
+        ;
 
         $this->setName('schedule:run')
             ->setDescription('Starts the event runner.')
-            ->setDefinition([
-               new InputArgument('source', InputArgument::OPTIONAL, 'The source directory for collecting the task files.', generate_path($this->config('source'))),
-           ])
+            ->setDefinition(
+                [
+                    new InputArgument(
+                        'source',
+                        InputArgument::OPTIONAL,
+                        'The source directory for collecting the task files.',
+                        generate_path($sourcePath)
+                    ),
+                ]
+            )
            ->setHelp('This command starts the Crunz event runner.');
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param use Symfony\Component\Console\Input\InputInterface $input
-     * @param use Symfony\Component\Console\Input\OutputIterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->arguments = $input->getArguments();
         $this->options = $input->getOptions();
-        $files = $this->collectFiles($this->arguments['source']);
+        $files = $this->taskCollection
+            ->all($this->arguments['source'])
+        ;
 
         if (!count($files)) {
             $output->writeln('<comment>No task found! Please check your source path.</comment>');
-            exit();
+
+            return 0;
         }
 
         // List of schedules
@@ -83,33 +97,13 @@ class ScheduleRunCommand extends Command
 
         if (!count($schedules)) {
             $output->writeln('<comment>No event is due!</comment>');
-            exit();
+
+            return 0;
         }
 
         // Running the events
-        (new EventRunner())
-            ->handle($schedules);
-    }
-
-    /**
-     * Collect all task files.
-     *
-     * @param string $source
-     *
-     * @return Iterator
-     */
-    protected function collectFiles($source)
-    {
-        if (!file_exists($source)) {
-            return [];
-        }
-
-        $iterator = $this->finder
-            ->files()
-            ->name('*' . $this->config('suffix'))
-            ->in($source)
+        $this->eventRunner
+            ->handle($output, $schedules)
         ;
-
-        return $iterator;
     }
 }

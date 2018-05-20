@@ -1,8 +1,11 @@
 <?php
 
-use Crunz\Schedule;
+namespace Crunz\Tests\Unit;
 
-class ScheduleTest extends PHPUnit_Framework_TestCase
+use Crunz\Schedule;
+use PHPUnit\Framework\TestCase;
+
+class ScheduleTest extends TestCase
 {
     public function testRun()
     {

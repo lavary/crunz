@@ -2,182 +2,71 @@
 
 namespace Crunz\Configuration;
 
-use Crunz\Singleton;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-class Configuration extends Singleton
+class Configuration
 {
-    /**
-     * Store parameters.
-     *
-     * @var array
-     */
-    protected $parameters = [];
+    /** @var array */
+    private $config;
+    /** @var PropertyAccessorInterface */
+    private $propertyAccessor;
 
-    /**
-     * The instance of the configuration class.
-     *
-     * @var
-     */
-    protected static $instance;
-
-    /**
-     * Process the configuration file into an array.
-     */
-    protected function __construct()
-    {
-        $this->parameters = $this->process($this->locateConfigFile());
-    }
-
-    /**
-     * Set a parameter.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return array
-     */
-    public function set($key, $value)
-    {
-        if (is_null($key)) {
-            return $array = $value;
-        }
-
-        $keys = explode('.', $key);
-
-        while (count($keys) > 1) {
-            $key = array_shift($keys);
-
-            // If the key doesn't exist at this depth, we will just create an empty array
-            // to hold the next value, allowing us to create the arrays to hold final
-            // values at the correct depth. Then we'll keep digging into the array.
-            if (!isset($array[$key]) || !is_array($array[$key])) {
-                $array[$key] = [];
-            }
-
-            $array = &$array[$key];
-        }
-
-        $array[array_shift($keys)] = $value;
-
-        return $array;
-    }
-
-    /**
-     * Check if a parameter exist.
-     *
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function has($key)
-    {
-        if (!$array) {
-            return false;
-        }
-
-        if (is_null($key)) {
-            return false;
-        }
-
-        if (array_key_exists($key, $this->parameters)) {
-            return true;
-        }
-
-        $array = $this->parameters;
-
-        foreach (explode('.', $key) as $segment) {
-            if (is_array($array) && array_key_exists($key, $array)) {
-                $array = $array[$segment];
-            } else {
-                return false;
-            }
-        }
-
-        return true;
+    public function __construct(
+        ConfigurationInterface $configurationDefinition,
+        Processor $definitionProcessor,
+        FileParser $fileParser,
+        PropertyAccessorInterface $propertyAccessor
+    ) {
+        $this->propertyAccessor = $propertyAccessor;
+        $this->config = $definitionProcessor->processConfiguration(
+            $configurationDefinition,
+            $fileParser->parse($this->configFilePath())
+        );
     }
 
     /**
      * Return a parameter based on a key.
      *
      * @param string $key
+     * @param null   $default
      *
      * @return string
      */
     public function get($key, $default = null)
     {
-        if (array_key_exists($key, $this->parameters)) {
-            return $this->parameters[$key];
+        if (\array_key_exists($key, $this->config)) {
+            return $this->config[$key];
         }
 
-        $array = $this->parameters;
-
-        foreach (explode('.', $key) as $segment) {
-            if (is_array($array) && array_key_exists($segment, $array)) {
-                $array = $array[$segment];
-            } else {
-                return null;
-            }
-        }
-
-        return $array;
-    }
-
-    /**
-     * Return all the parameters as an array.
-     *
-     * @return array
-     */
-    public function all()
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * Handle the configuration settings.
-     *
-     * @return array
-     */
-    protected function process($filename)
-    {
-        $proc = new Processor();
-        try {
-            return $proc->processConfiguration(
-                        new Definition(),
-                        $this->parse($filename)
-                    );
-        } catch (InvalidConfigurationException $e) {
-            exit($e->getMessage());
-        }
-    }
-
-    /**
-     * Load configuration files and parse them.
-     *
-     * @return array
-     */
-    protected function parse($filename)
-    {
-        $conf = [];
-
-        $conf[] = Yaml::parse(
-            file_get_contents($filename)
+        $path = \implode(
+            '',
+            \array_map(
+                function ($keyPart) {
+                    return "[{$keyPart}]";
+                },
+                \explode('.', $key)
+            )
         );
 
-        return $conf;
+        try {
+            return $this->propertyAccessor
+                ->getValue(
+                    $this->config,
+                    $path
+                )
+            ;
+        } catch (AccessException $exception) {
+            return $default;
+        }
     }
 
-    /**
-     * Locate the right config file and return its name.
-     *
-     * @return string
-     */
-    protected function locateConfigFile()
+    private function configFilePath()
     {
-        $config_file = getenv('CRUNZ_BASE_DIR') . '/crunz.yml';
+        $config_file = CRUNZ_ROOT . '/crunz.yml';
 
-        return file_exists($config_file) ? $config_file : __DIR__ . '/../../crunz.yml';
+        return \file_exists($config_file) ? $config_file : __DIR__ . '/../../crunz.yml';
     }
 }

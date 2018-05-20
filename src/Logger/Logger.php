@@ -2,20 +2,17 @@
 
 namespace Crunz\Logger;
 
-use Crunz\Configuration\Configurable;
-use Crunz\Singleton;
+use Crunz\Configuration\Configuration;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 
-class Logger extends Singleton
+class Logger
 {
-    use Configurable;
-
     /**
      * Instance of Psr\Log\LoggerInterface.
      *
-     * @var Psr\Log\LoggerInterface
+     * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
 
@@ -34,17 +31,18 @@ class Logger extends Singleton
         'alert' => MonologLogger::ALERT,
         'emergency' => MonologLogger::EMERGENCY,
     ];
+    /** @var Configuration */
+    private $configuration;
 
     /**
      * Initialize the logger instance.
      *
      * @param \Monolog\Logger $logger
      */
-    public function __construct(\Monolog\Logger $logger)
+    public function __construct(\Monolog\Logger $logger, Configuration $configuration)
     {
-        $this->configurable();
-
         $this->logger = $logger;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -58,8 +56,16 @@ class Logger extends Singleton
      */
     public function addStream($path, $level, $bubble = true)
     {
-        $this->logger->pushHandler($handler = new StreamHandler($path, $this->parseLevel($level), $bubble));
+        $handler = new StreamHandler(
+            $path,
+            $this->parseLevel($level),
+            $bubble
+        );
         $handler->setFormatter($this->getDefaultFormatter());
+
+        $this->logger
+            ->pushHandler($handler)
+        ;
 
         return $this;
     }
@@ -108,9 +114,16 @@ class Logger extends Singleton
      */
     protected function getDefaultFormatter()
     {
-        $allow_linebreaks = $this->config('log_allow_line_breaks');
+        $allowLinebreaks = $this->configuration
+            ->get('log_allow_line_breaks')
+        ;
 
-        return new LineFormatter(null, null, $allow_linebreaks, false);
+        return new LineFormatter(
+            null,
+            null,
+            $allowLinebreaks,
+            false
+        );
     }
 
     /**

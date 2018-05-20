@@ -10,7 +10,9 @@
             id="Crunz\Console\Command\ScheduleRunCommand"
             public="true"
         >
-            <argument type="service" id="Symfony\Component\Finder\Finder"/>
+            <argument type="service" id="Crunz\Task\Collection"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+            <argument type="service" id="Crunz\EventRunner"/>
         </service>
 
         <service
@@ -32,7 +34,8 @@
             id="Crunz\Console\Command\ScheduleListCommand"
             public="true"
         >
-            <argument type="service" id="Symfony\Component\Finder\Finder"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+            <argument type="service" id="Crunz\Task\Collection"/>
         </service>
 
         <service
@@ -40,6 +43,7 @@
             id="Crunz\Console\Command\TaskGeneratorCommand"
             public="true"
         >
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
         </service>
 
         <service
@@ -47,5 +51,91 @@
             id="Symfony\Component\Finder\Finder"
             public="false"
         />
+
+        <service
+            class="Crunz\Configuration\Definition"
+            id="Crunz\Configuration\Definition"
+            public="false"
+        />
+
+        <service
+            class="Symfony\Component\Yaml\Yaml"
+            id="Symfony\Component\Yaml\Yaml"
+            public="false"
+        />
+
+        <service
+            class="Symfony\Component\Config\Definition\Processor"
+            id="Symfony\Component\Config\Definition\Processor"
+            public="false"
+        />
+
+        <service
+            class="Crunz\Task\Collection"
+            id="Crunz\Task\Collection"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+            <argument type="service" id="Symfony\Component\Finder\Finder"/>
+        </service>
+
+        <service
+            class="Crunz\Configuration\FileParser"
+            id="Crunz\Configuration\FileParser"
+            public="false"
+        >
+            <argument type="service" id="Symfony\Component\Yaml\Yaml" />
+        </service>
+
+        <service
+            class="Symfony\Component\PropertyAccess\PropertyAccessor"
+            id="Symfony\Component\PropertyAccess\PropertyAccessorInterface"
+        >
+            <argument type="string">false</argument>
+            <argument type="string">true</argument>
+        </service>
+
+        <service
+            class="Crunz\Configuration\Configuration"
+            id="Crunz\Configuration\Configuration"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\Definition"/>
+            <argument type="service" id="Symfony\Component\Config\Definition\Processor"/>
+            <argument type="service" id="Crunz\Configuration\FileParser"/>
+            <argument type="service" id="Symfony\Component\PropertyAccess\PropertyAccessorInterface"/>
+        </service>
+
+        <service
+            class="Crunz\Invoker"
+            id="Crunz\Invoker"
+            public="false"
+        />
+
+        <service
+            class="Crunz\Mailer"
+            id="Crunz\Mailer"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+        </service>
+
+        <service
+            class="Crunz\Logger\LoggerFactory"
+            id="Crunz\Logger\LoggerFactory"
+        >
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+        </service>
+
+        <service
+            class="Crunz\EventRunner"
+            id="Crunz\EventRunner"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Invoker"/>
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+            <argument type="service" id="Crunz\Mailer"/>
+            <argument type="service" id="Crunz\Logger\LoggerFactory"/>
+        </service>
     </services>
 </container>
