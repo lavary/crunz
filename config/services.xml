@@ -143,5 +143,14 @@
             <argument type="service" id="Crunz\Mailer"/>
             <argument type="service" id="Crunz\Logger\LoggerFactory"/>
         </service>
+
+        <service
+            class="Crunz\Task\Timezone"
+            id="Crunz\Task\Timezone"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+            <argument type="service" id="Crunz\Timezone\ProviderInterface"/>
+        </service>
     </services>
 </container>
