@@ -1,0 +1,22 @@
+source: tasks
+suffix: Tasks.php
+timezone: UTC
+log_errors: false
+errors_log_file: ~
+log_output: false
+output_log_file: ~
+log_allow_line_breaks: false
+email_output: false
+email_errors: false
+mailer:
+    transport: smtp
+    recipients:
+    sender_name:
+    sender_email:
+
+smtp:
+    host: ~
+    port: ~
+    username: ~
+    password: ~
+    encryption: ~
