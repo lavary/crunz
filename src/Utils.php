@@ -5,21 +5,6 @@ namespace Crunz;
 class Utils
 {
     /**
-     * Split camel case string.
-     *
-     * @param string $text
-     *
-     * @return string
-     */
-    public static function splitCamel($text)
-    {
-        $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        $segments = preg_split($pattern, $text);
-
-        return strtolower(join($segments, ' '));
-    }
-
-    /**
      * Set project's root directory.
      *
      * @param string $autoloader

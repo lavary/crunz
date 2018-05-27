@@ -70,7 +70,7 @@ class Application extends SymfonyApplication
 
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
-        if ($output === null) {
+        if (null === $output) {
             $output = new ConsoleOutput();
         }
 

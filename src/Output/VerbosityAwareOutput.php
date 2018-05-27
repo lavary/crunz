@@ -6,8 +6,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @TODO Remove it in Crunz v2.
+ *
+ * @internal
  */
-class VerbosityAwareOutput
+final class VerbosityAwareOutput
 {
     /** @var OutputInterface */
     private $output;
