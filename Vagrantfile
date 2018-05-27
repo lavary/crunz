@@ -30,6 +30,7 @@ touch "$PHP_INI_PATH";
 
 echo "display_errors = On" >> "$PHP_INI_PATH";
 echo "display_startup_errors = On" >> "$PHP_INI_PATH";
+echo "error_reporting = E_ALL" >> "$PHP_INI_PATH";
 echo "log_errors = On" >> "$PHP_INI_PATH";
 echo "error_log = /var/log/php_error.log" >> "$PHP_INI_PATH";
 
@@ -37,7 +38,7 @@ SCRIPT
 
 $composer = <<SCRIPT
 
-COMPOSER_VERSION="1.6.4";
+COMPOSER_VERSION="1.6.5";
 BIN_DIR="/home/vagrant/bin";
 COMPOSER_FILE="$BIN_DIR/composer";
 
@@ -71,5 +72,5 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.provision "shell", inline: $script
-    config.vm.provision "shell", inline: $composer
+    config.vm.provision "shell", inline: $composer, privileged: false
 end

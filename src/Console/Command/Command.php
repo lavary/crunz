@@ -23,14 +23,14 @@ class Command extends BaseCommand
     /**
      * Input object.
      *
-     * @var use Symfony\Component\Console\Input\InputInterface
+     * @var \Symfony\Component\Console\Input\InputInterface
      */
     protected $input;
 
     /**
      * output object.
      *
-     * @var use Symfony\Component\Console\Input\OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     protected $output;
 }

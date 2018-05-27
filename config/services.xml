@@ -13,6 +13,7 @@
             <argument type="service" id="Crunz\Task\Collection"/>
             <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\EventRunner"/>
+            <argument type="service" id="Crunz\Task\Timezone"/>
         </service>
 
         <service
@@ -27,6 +28,8 @@
             id="Crunz\Console\Command\ConfigGeneratorCommand"
             public="true"
         >
+            <argument type="service" id="Crunz\Timezone\ProviderInterface"/>
+            <argument type="service" id="Symfony\Component\Filesystem\Filesystem"/>
         </service>
 
         <service
@@ -128,6 +131,12 @@
         </service>
 
         <service
+            class="Crunz\Timezone\Provider"
+            id="Crunz\Timezone\ProviderInterface"
+            public="false"
+        />
+
+        <service
             class="Crunz\EventRunner"
             id="Crunz\EventRunner"
             public="false"
@@ -136,6 +145,20 @@
             <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\Mailer"/>
             <argument type="service" id="Crunz\Logger\LoggerFactory"/>
+        </service>
+
+        <service
+            class="Symfony\Component\Filesystem\Filesystem"
+            id="Symfony\Component\Filesystem\Filesystem"
+        />
+
+        <service
+            class="Crunz\Task\Timezone"
+            id="Crunz\Task\Timezone"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\Configuration"/>
+            <argument type="service" id="Crunz\Timezone\ProviderInterface"/>
         </service>
     </services>
 </container>

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Closure;
 use Cron\CronExpression;
 use Crunz\Exception\NotImplementedException;
+use Crunz\Logger\Logger;
 use GuzzleHttp\Client as HttpClient;
 use SuperClosure\Serializer;
 use Symfony\Component\Process\Process;
@@ -56,7 +57,7 @@ class Event
     /**
      * Event personal logger instance.
      *
-     * @var string
+     * @var Logger
      */
     public $logger;
     /**
@@ -255,9 +256,9 @@ class Event
      *
      * @return bool
      */
-    public function isDue()
+    public function isDue(\DateTimeZone $timeZone)
     {
-        return $this->expressionPasses() && $this->filtersPass();
+        return $this->expressionPasses($timeZone) && $this->filtersPass();
     }
 
     /**
@@ -1102,9 +1103,10 @@ class Event
      *
      * @return bool
      */
-    protected function expressionPasses()
+    protected function expressionPasses(\DateTimeZone $timeZone)
     {
         $date = Carbon::now();
+        $date->setTimezone($timeZone);
 
         if ($this->timezone) {
             $date->setTimezone($this->timezone);
