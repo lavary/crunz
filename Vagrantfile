@@ -38,7 +38,7 @@ SCRIPT
 
 $composer = <<SCRIPT
 
-COMPOSER_VERSION="1.6.4";
+COMPOSER_VERSION="1.6.5";
 BIN_DIR="/home/vagrant/bin";
 COMPOSER_FILE="$BIN_DIR/composer";
 
@@ -72,5 +72,5 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.provision "shell", inline: $script
-    config.vm.provision "shell", inline: $composer
+    config.vm.provision "shell", inline: $composer, privileged: false
 end
