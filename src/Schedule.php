@@ -172,7 +172,7 @@ class Schedule
      */
     public function events(array $events = null)
     {
-        if ($events !== null) {
+        if (null !== $events) {
             return $this->events = $events;
         }
 

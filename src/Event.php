@@ -13,9 +13,9 @@ use Symfony\Component\Process\Process;
 
 /**
  * @method self everyMinute() Run task every minute.
- * @method self everyHour() Run task every hour.
- * @method self everyDay() Run task every day.
- * @method self everyMonth() Run task every month.
+ * @method self everyHour()   Run task every hour.
+ * @method self everyDay()    Run task every day.
+ * @method self everyMonth()  Run task every month.
  */
 class Event
 {
@@ -174,7 +174,7 @@ class Event
     {
         preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);
 
-        if (!count($matches) || $matches[1] == 'Zero') {
+        if (!count($matches) || 'Zero' == $matches[1]) {
             throw new \BadMethodCallException();
         }
 
@@ -208,7 +208,7 @@ class Event
      */
     public function nullOutput()
     {
-        return  $this->output == 'NUL' || $this->output == '/dev/null';
+        return  'NUL' == $this->output || '/dev/null' == $this->output;
     }
 
     /**
@@ -355,7 +355,7 @@ class Event
         }
 
         foreach ($segments as $key => $value) {
-            if ($value !== false) {
+            if (false !== $value) {
                 $this->spliceIntoPosition($this->fieldsPosition[$key], (int) $value);
             }
         }
@@ -906,7 +906,7 @@ class Event
             return $this;
         }
 
-        $value = $value == 1 ? '*' : '*/' . $value;
+        $value = 1 == $value ? '*' : '*/' . $value;
 
         return $this->spliceIntoPosition($this->fieldsPosition[$unit], $value)
                     ->applyMask($unit);
@@ -1028,7 +1028,7 @@ class Event
     public function isLocked()
     {
         $pid = $this->lastPid();
-        $hasPid = ($pid !== null);
+        $hasPid = (null !== $pid);
 
         // No POSIX on Windows
         if ($this->isWindows()) {
@@ -1194,6 +1194,6 @@ class Event
             3
         );
 
-        return $osCode === 'WIN';
+        return 'WIN' === $osCode;
     }
 }
