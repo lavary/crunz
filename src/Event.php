@@ -1191,9 +1191,9 @@ class Event
     private function splitCamel($text)
     {
         $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        $segments = preg_split($pattern, $text);
+        $segments = \preg_split($pattern, $text);
 
-        return \strtolower(
+        return \mb_strtolower(
             \implode(
                 $segments,
                 ' '
