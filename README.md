@@ -2,8 +2,16 @@
 
 Install a cron job once and for all, manage the rest from the code.
 
-![Version](http://img.shields.io/packagist/v/lavary/crunz.svg?style=flat-square)
-![Build](http://img.shields.io/travis/lavary/crunz.svg?style=flat-square)
+[![Version](http://img.shields.io/packagist/v/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz)
+[![Packagist](https://img.shields.io/packagist/dt/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz/stats)
+[![Packagist](https://img.shields.io/packagist/dm/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz/stats)
+
+|Version|Build status|
+|---|---|
+|stable (v1.6.1)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.6.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|
+|v2 (v2.x-dev)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|
+|v1 (v1.x-dev)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|
 
 Crunz is a framework-agnostic package to schedule periodic tasks (cron jobs) in PHP using a fluent API.
 
