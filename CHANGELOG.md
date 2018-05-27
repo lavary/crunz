@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `timezone` option in config file is now required,
 lack of it will result in Exception in version `2.0`
 
+### Removed
+- `\Crunz\Utils::splitCamel()` method - PR [#104](https://github.com/lavary/crunz/pull/104),
+[@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ## 1.6.1 - 2018-05-13
 
 ### Fixed
