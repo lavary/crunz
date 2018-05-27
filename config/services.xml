@@ -158,7 +158,6 @@
             public="false"
         >
             <argument type="service" id="Crunz\Configuration\Configuration"/>
-            <argument type="service" id="Crunz\Timezone\ProviderInterface"/>
         </service>
     </services>
 </container>
