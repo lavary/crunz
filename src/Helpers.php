@@ -2,25 +2,13 @@
 
 use Crunz\Utils;
 
-if (!function_exists('split_camel')) {
-    /**
-     * Split camel case words to a sentence.
-     *
-     * @param string $text
-     *
-     * @return string
-     */
-    function split_camel($text)
-    {
-        return Utils::splitCamel($text);
-    }
-}
-
 if (!function_exists('word2number')) {
     /**
      * Convert words to numbers.
      *
      * @param string $text
+     *
+     * @internal
      *
      * @return string
      */
@@ -38,6 +26,8 @@ if (!function_exists('array_only')) {
      * @param array        $array
      * @param array|string $keys
      *
+     * @internal
+     *
      * @return array
      */
     function array_only($array, $keys)
@@ -52,6 +42,8 @@ if (!function_exists('setbase')) {
      *
      * @param string $dir
      *
+     * @internal
+     *
      * @return string
      */
     function setbase($dir)
@@ -63,6 +55,8 @@ if (!function_exists('setbase')) {
 if (!function_exists('getbase')) {
     /**
      * Return the project's root directory.
+     *
+     * @internal
      *
      * @return string
      */
@@ -78,6 +72,8 @@ if (!function_exists('generate_path')) {
      *
      * @param string $relative_path
      *
+     * @internal
+     *
      * @return string
      */
     function generate_path($relative_path)
@@ -91,6 +87,8 @@ if (!function_exists('getroot')) {
      * Return absolute path for relative path.
      *
      * @param string $autoloader
+     *
+     * @internal
      *
      * @return string
      */

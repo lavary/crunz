@@ -99,7 +99,7 @@ class EventRunner
             // if sendOutputTo then truncate the log file if it exists
             if (!$event->shouldAppendOutput) {
                 $f = @fopen($event->output, 'r+');
-                if ($f !== false) {
+                if (false !== $f) {
                     ftruncate($f, 0);
                     fclose($f);
                 }

@@ -2,27 +2,14 @@
 
 namespace Crunz;
 
-class Utils
+final class Utils
 {
-    /**
-     * Split camel case string.
-     *
-     * @param string $text
-     *
-     * @return string
-     */
-    public static function splitCamel($text)
-    {
-        $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        $segments = preg_split($pattern, $text);
-
-        return strtolower(join($segments, ' '));
-    }
-
     /**
      * Set project's root directory.
      *
      * @param string $autoloader
+     *
+     * @internal
      *
      * @return string
      */
@@ -33,6 +20,8 @@ class Utils
 
     /**
      * Return project's root directory.
+     *
+     * @internal
      *
      * @return string
      */
@@ -46,6 +35,8 @@ class Utils
      *
      * @param string $autoloader
      *
+     * @internal
+     *
      * @return string
      */
     public static function getRoot($autoloader)
@@ -57,6 +48,8 @@ class Utils
      * return absolute path for relative path.
      *
      * @param string $relative_path
+     *
+     * @internal
      *
      * @return string
      */
@@ -72,6 +65,8 @@ class Utils
      * @param array        $array
      * @param array|string $keys
      *
+     * @internal
+     *
      * @return array
      */
     public static function arrayOnly($array, $keys)
@@ -83,6 +78,8 @@ class Utils
      * Converts words to numbers.
      *
      * @param string $text
+     *
+     * @internal
      *
      * @return string
      */
