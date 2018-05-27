@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+- Removed `Crunz\Output\VerbosityAwareOutput` class - PR
+[#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ## 1.7.0 - 2018-05-27
 
 ### Added
@@ -19,8 +23,6 @@ lack of it will result in Exception in version `2.0`
 ### Removed
 - `\Crunz\Utils::splitCamel()` method - PR [#104](https://github.com/lavary/crunz/pull/104),
 [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-- Removed `Crunz\Output\VerbosityAwareOutput` class - PR
-[#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.6.1 - 2018-05-13
 
