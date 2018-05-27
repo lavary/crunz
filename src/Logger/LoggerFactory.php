@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Logger;
 
 use Crunz\Configuration\Configuration;

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
 use Crunz\Utils;
 
-if (!function_exists('split_camel')) {
+if (!\function_exists('split_camel')) {
     /**
      * Split camel case words to a sentence.
      *
@@ -16,7 +17,7 @@ if (!function_exists('split_camel')) {
     }
 }
 
-if (!function_exists('word2number')) {
+if (!\function_exists('word2number')) {
     /**
      * Convert words to numbers.
      *
@@ -30,7 +31,7 @@ if (!function_exists('word2number')) {
     }
 }
 
-if (!function_exists('array_only')) {
+if (!\function_exists('array_only')) {
     /**
      * Get a subset of the items from the given array
      * From Illuminate/support helper functions.
@@ -46,7 +47,7 @@ if (!function_exists('array_only')) {
     }
 }
 
-if (!function_exists('setbase')) {
+if (!\function_exists('setbase')) {
     /**
      * Set the project's root directory.
      *
@@ -60,7 +61,7 @@ if (!function_exists('setbase')) {
     }
 }
 
-if (!function_exists('getbase')) {
+if (!\function_exists('getbase')) {
     /**
      * Return the project's root directory.
      *
@@ -72,7 +73,7 @@ if (!function_exists('getbase')) {
     }
 }
 
-if (!function_exists('generate_path')) {
+if (!\function_exists('generate_path')) {
     /**
      * Return absolute path for relative path.
      *
@@ -86,7 +87,7 @@ if (!function_exists('generate_path')) {
     }
 }
 
-if (!function_exists('getroot')) {
+if (!\function_exists('getroot')) {
     /**
      * Return absolute path for relative path.
      *

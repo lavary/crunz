@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Tests\Unit\Configuration;
 
 use Crunz\Configuration\Configuration;
@@ -24,7 +26,7 @@ class ConfigurationTest extends TestCase
     {
         $configuration = $this->createConfiguration();
 
-        $this->assertSame(null, $configuration->get('wrong'));
+        $this->assertNull($configuration->get('wrong'));
         $this->assertSame('anon', $configuration->get('notExist', 'anon'));
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz;
 
 use Crunz\Configuration\Configuration;
@@ -76,7 +78,7 @@ class Mailer
      */
     protected function getSmtpTransport()
     {
-        $object = method_exists(\Swift_SmtpTransport::class, 'newInstance')
+        $object = \method_exists(\Swift_SmtpTransport::class, 'newInstance')
             ? \Swift_SmtpTransport::newInstance(
                 $this->config('smtp.host'),
                 $this->config('smtp.port'),
@@ -100,7 +102,7 @@ class Mailer
      */
     protected function getMailTransport()
     {
-        if (!class_exists('\Swift_MailTransport')) {
+        if (!\class_exists('\Swift_MailTransport')) {
             throw new \Exception('Mail transport has been removed in SwiftMailer 6');
         }
 
@@ -114,7 +116,7 @@ class Mailer
      */
     protected function getSendMailTransport()
     {
-        return method_exists(\Swift_SendmailTransport::class, 'newInstance')
+        return \method_exists(\Swift_SendmailTransport::class, 'newInstance')
             ? \Swift_SendmailTransport::newInstance()
             : new \Swift_SendmailTransport();
     }
@@ -129,7 +131,7 @@ class Mailer
      */
     protected function getMessage($subject, $message)
     {
-        $object = method_exists(\Swift_Message::class, 'newInstance')
+        $object = \method_exists(\Swift_Message::class, 'newInstance')
             ? \Swift_Message::newInstance()
             : new \Swift_Message();
 
