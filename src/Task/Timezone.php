@@ -24,6 +24,7 @@ final class Timezone
             ->get('timezone')
         ;
 
+        /* @TODO Throw Exception in Crunz v2. */
         if (empty($newTimezone)) {
             @trigger_error(
                 'Timezone is not configured and this is deprecated from 1.7 and will result in exception in 2.0 version. Add `timezone` key to your YAML config file.',
