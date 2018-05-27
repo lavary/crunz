@@ -75,10 +75,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "5.6"
-        }
+        "sort-packages": true
     },
     "scripts": {
         "crunz:cs-fix": "@php vendor/bin/php-cs-fixer fix --diff -v --ansi",
