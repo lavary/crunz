@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz;
 
 class Schedule
@@ -42,7 +44,7 @@ class Schedule
      */
     public function run($command, array $parameters = [])
     {
-        if (is_string($command) && count($parameters)) {
+        if (\is_string($command) && \count($parameters)) {
             $command .= ' ' . $this->compileParameters($parameters);
         }
 
@@ -232,7 +234,7 @@ class Schedule
      */
     protected function compileParameters(array $parameters)
     {
-        return implode(
+        return \implode(
             ' ',
             \array_map(
                 function ($value, $key) {

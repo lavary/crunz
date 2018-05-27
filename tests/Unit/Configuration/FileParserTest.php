@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Tests\Unit\Configuration;
 
 use Crunz\Configuration\ConfigFileNotExistsExtension;
@@ -29,9 +31,9 @@ class FileParserTest extends TestCase
             $this->markTestSkipped('Required Windows OS.');
         }
 
-        $file = tmpfile();
-        $filePath = stream_get_meta_data($file)['uri'];
-        chmod($filePath, 0200);
+        $file = \tmpfile();
+        $filePath = \stream_get_meta_data($file)['uri'];
+        \chmod($filePath, 0200);
 
         $this->expectException(ConfigFileNotReadableException::class);
         $this->expectExceptionMessage("Config file '{$filePath}' is not readable.");
@@ -43,8 +45,8 @@ class FileParserTest extends TestCase
     /** @test */
     public function parseReturnsParsedFileContent()
     {
-        $file = tmpfile();
-        $filePath = stream_get_meta_data($file)['uri'];
+        $file = \tmpfile();
+        $filePath = \stream_get_meta_data($file)['uri'];
         $configData = [
             'suffix' => 'Task.php',
             'source' => 'tasks',
