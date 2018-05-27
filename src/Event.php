@@ -180,7 +180,7 @@ class Event
             throw new \BadMethodCallException();
         }
 
-        $amount = !empty($matches[1]) ? word2number(split_camel($matches[1])) : 1;
+        $amount = !empty($matches[1]) ? word2number($this->splitCamel($matches[1])) : 1;
 
         if (!$amount) {
             throw new \BadMethodCallException();
@@ -1186,6 +1186,19 @@ class Event
     protected function lock()
     {
         \file_put_contents($this->lockFile(), $this->process->getPid());
+    }
+
+    private function splitCamel($text)
+    {
+        $pattern = '/(?<=[a-z])(?=[A-Z])/x';
+        $segments = preg_split($pattern, $text);
+
+        return \strtolower(
+            \implode(
+                $segments,
+                ' '
+            )
+        );
     }
 
     private function isWindows()

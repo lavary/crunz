@@ -24,6 +24,8 @@ use Symfony\Component\Process\Process;
  * This class contains static methods only and is not meant to be instantiated.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
+ *
+ * @todo Remove this class as it is deprecated in Symfony 3.3
  */
 class ProcessUtils
 {
