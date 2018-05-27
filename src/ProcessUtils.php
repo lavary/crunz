@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * A copy from Symfony 3.4 with deprecations removed
  * since escapeArgument() method has been removed in 4.0.
@@ -48,20 +49,20 @@ class ProcessUtils
         //@see https://bugs.php.net/bug.php?id=49446
         if ('\\' === DIRECTORY_SEPARATOR) {
             if ('' === $argument) {
-                return escapeshellarg($argument);
+                return \escapeshellarg($argument);
             }
 
             $escapedArgument = '';
             $quote = false;
-            foreach (preg_split('/(")/', $argument, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $part) {
+            foreach (\preg_split('/(")/', $argument, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $part) {
                 if ('"' === $part) {
                     $escapedArgument .= '\\"';
                 } elseif (self::isSurroundedBy($part, '%')) {
                     // Avoid environment variable expansion
-                    $escapedArgument .= '^%"' . substr($part, 1, -1) . '"^%';
+                    $escapedArgument .= '^%"' . \mb_substr($part, 1, -1) . '"^%';
                 } else {
                     // escape trailing backslash
-                    if ('\\' === substr($part, -1)) {
+                    if ('\\' === \mb_substr($part, -1)) {
                         $part .= '\\';
                     }
                     $quote = true;
@@ -75,7 +76,7 @@ class ProcessUtils
             return $escapedArgument;
         }
 
-        return "'" . str_replace("'", "'\\''", $argument) . "'";
+        return "'" . \str_replace("'", "'\\''", $argument) . "'";
     }
 
     /**
@@ -91,13 +92,13 @@ class ProcessUtils
     public static function validateInput($caller, $input)
     {
         if (null !== $input) {
-            if (is_resource($input)) {
+            if (\is_resource($input)) {
                 return $input;
             }
-            if (is_string($input)) {
+            if (\is_string($input)) {
                 return $input;
             }
-            if (is_scalar($input)) {
+            if (\is_scalar($input)) {
                 return (string) $input;
             }
             if ($input instanceof Process) {
@@ -110,7 +111,7 @@ class ProcessUtils
                 return new \IteratorIterator($input);
             }
 
-            throw new InvalidArgumentException(sprintf('%s only accepts strings, Traversable objects or stream resources.', $caller));
+            throw new InvalidArgumentException(\sprintf('%s only accepts strings, Traversable objects or stream resources.', $caller));
         }
 
         return $input;
@@ -118,6 +119,6 @@ class ProcessUtils
 
     private static function isSurroundedBy($arg, $char)
     {
-        return 2 < strlen($arg) && $char === $arg[0] && $char === $arg[strlen($arg) - 1];
+        return 2 < \mb_strlen($arg) && $char === $arg[0] && $char === $arg[\mb_strlen($arg) - 1];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Timezone;
 
 final class Provider implements ProviderInterface

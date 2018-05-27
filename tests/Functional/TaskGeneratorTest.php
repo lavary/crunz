@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Tests\Functional;
 
 use Crunz\Application;
@@ -18,8 +20,6 @@ class TaskGeneratorTest extends TestCase
 
     public function setUp()
     {
-        $this->clearTask();
-
         $this->outputDirectory = \sys_get_temp_dir();
         $this->fileName = 'CrunzTest';
         $this->taskFilePath = \implode(
@@ -29,6 +29,8 @@ class TaskGeneratorTest extends TestCase
                 "{$this->fileName}Tasks.php",
             ]
         );
+
+        $this->clearTask();
     }
 
     public function tearDown()
@@ -60,7 +62,7 @@ class TaskGeneratorTest extends TestCase
 
     private function getInputStream($input)
     {
-        $stream = fopen('php://memory', 'rb+', false);
+        $stream = \fopen('php://memory', 'rb+', false);
         \fwrite($stream, $input);
         \rewind($stream);
 
