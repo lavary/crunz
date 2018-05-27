@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- `timezone` option to config file - PR [#94](https://github.com/lavary/crunz/pull/94),
+[@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+### Deprecated
+- `timezone` option in config file is now required,
+lack of it will result in Exception in version `2.0`
+
 ## 1.6.1 - 2018-05-13
 
 ### Fixed
