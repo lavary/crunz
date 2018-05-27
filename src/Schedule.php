@@ -2,6 +2,8 @@
 
 namespace Crunz;
 
+use Symfony\Component\Process\ProcessUtils;
+
 class Schedule
 {
     /**
