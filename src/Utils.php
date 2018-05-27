@@ -2,12 +2,14 @@
 
 namespace Crunz;
 
-class Utils
+final class Utils
 {
     /**
      * Set project's root directory.
      *
      * @param string $autoloader
+     *
+     * @internal
      *
      * @return string
      */
@@ -18,6 +20,8 @@ class Utils
 
     /**
      * Return project's root directory.
+     *
+     * @internal
      *
      * @return string
      */
@@ -31,6 +35,8 @@ class Utils
      *
      * @param string $autoloader
      *
+     * @internal
+     *
      * @return string
      */
     public static function getRoot($autoloader)
@@ -42,6 +48,8 @@ class Utils
      * return absolute path for relative path.
      *
      * @param string $relative_path
+     *
+     * @internal
      *
      * @return string
      */
@@ -57,6 +65,8 @@ class Utils
      * @param array        $array
      * @param array|string $keys
      *
+     * @internal
+     *
      * @return array
      */
     public static function arrayOnly($array, $keys)
@@ -68,6 +78,8 @@ class Utils
      * Converts words to numbers.
      *
      * @param string $text
+     *
+     * @internal
      *
      * @return string
      */
