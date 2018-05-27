@@ -13,6 +13,7 @@
             <argument type="service" id="Crunz\Task\Collection"/>
             <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\EventRunner"/>
+            <argument type="service" id="Crunz\Task\Timezone"/>
         </service>
 
         <service

@@ -172,7 +172,7 @@ class Schedule
      */
     public function events(array $events = null)
     {
-        if (!is_null($events)) {
+        if ($events !== null) {
             return $this->events = $events;
         }
 
@@ -184,11 +184,14 @@ class Schedule
      *
      * @return array
      */
-    public function dueEvents()
+    public function dueEvents(\DateTimeZone $timeZone)
     {
-        return array_filter($this->events, function ($event) {
-            return $event->isDue();
-        });
+        return \array_filter(
+            $this->events,
+            function (Event $event) use ($timeZone) {
+                return $event->isDue($timeZone);
+            }
+        );
     }
 
     /**
@@ -213,8 +216,8 @@ class Schedule
     protected function id()
     {
         while (true) {
-            $id = uniqid();
-            if (!array_key_exists($id, $this->events)) {
+            $id = \uniqid('crunz', true);
+            if (!\array_key_exists($id, $this->events)) {
                 return $id;
             }
         }
@@ -229,8 +232,15 @@ class Schedule
      */
     protected function compileParameters(array $parameters)
     {
-        return implode(' ', array_map(function ($value, $key) {
-            return is_numeric($key) ? $value : $key . '=' . (is_numeric($value) ? $value : ProcessUtils::escapeArgument($value));
-        }, $parameters, array_keys($parameters)));
+        return implode(
+            ' ',
+            \array_map(
+                function ($value, $key) {
+                    return \is_numeric($key) ? $value : "{$key}=" . (\is_numeric($value) ? $value : ProcessUtils::escapeArgument($value));
+                },
+                $parameters,
+                \array_keys($parameters)
+            )
+        );
     }
 }
