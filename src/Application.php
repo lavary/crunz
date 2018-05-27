@@ -5,6 +5,11 @@ namespace Crunz;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -61,6 +66,21 @@ class Application extends SymfonyApplication
 
             $this->add($command);
         }
+    }
+
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        if ($output === null) {
+            $output = new ConsoleOutput();
+        }
+
+        if (null === $input) {
+            $input = new ArgvInput();
+        }
+
+        $this->registerDeprecationHandler($input, $output);
+
+        return parent::run($input, $output);
     }
 
     private function initializeContainer()
@@ -138,6 +158,9 @@ class Application extends SymfonyApplication
         $cache->write($content, $container->getResources());
     }
 
+    /**
+     * @return string
+     */
     private function getCacheDir()
     {
         return implode(
@@ -146,6 +169,28 @@ class Application extends SymfonyApplication
                 \sys_get_temp_dir(),
                 'crunz',
             ]
+        );
+    }
+
+    private function registerDeprecationHandler(InputInterface $input, OutputInterface $output)
+    {
+        $io = new SymfonyStyle($input, $output);
+        \set_error_handler(
+            function (
+                $errorNumber,
+                $errorString,
+                $file,
+                $line
+            ) use ($io) {
+                $io->block(
+                    "{$errorString} File {$file}, line {$line}",
+                    'Deprecation',
+                    'bg=yellow;fg=black',
+                    ' ',
+                    true
+                );
+            },
+            E_USER_DEPRECATED
         );
     }
 }
