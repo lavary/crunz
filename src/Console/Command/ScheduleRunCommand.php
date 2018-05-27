@@ -6,6 +6,7 @@ use Crunz\Configuration\Configuration;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
+use Crunz\Task\Timezone;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,15 +25,19 @@ class ScheduleRunCommand extends Command
     private $configuration;
     /** @var EventRunner */
     private $eventRunner;
+    /** @var Timezone */
+    private $taskTimezone;
 
     public function __construct(
         Collection $taskCollection,
         Configuration $configuration,
-        EventRunner $eventRunner
+        EventRunner $eventRunner,
+        Timezone $taskTimezone
     ) {
         $this->taskCollection = $taskCollection;
         $this->configuration = $configuration;
         $this->eventRunner = $eventRunner;
+        $this->taskTimezone = $taskTimezone;
 
         parent::__construct();
     }
@@ -81,6 +86,10 @@ class ScheduleRunCommand extends Command
         // List of schedules
         $schedules = [];
 
+        $tasksTimezone = $this->taskTimezone
+            ->timezoneForComparisons()
+        ;
+
         foreach ($files as $file) {
             $schedule = require $file->getRealPath();
             if (!$schedule instanceof Schedule) {
@@ -88,7 +97,11 @@ class ScheduleRunCommand extends Command
             }
 
             // We keep the events which are due and dismiss the rest.
-            $schedule->events($schedule->dueEvents());
+            $schedule->events(
+                $schedule->dueEvents(
+                    $tasksTimezone
+                )
+            );
 
             if (count($schedule->events())) {
                 $schedules[] = $schedule;

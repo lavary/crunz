@@ -460,6 +460,11 @@ source: tasks
 # to make sure all the existing tasks files are renamed accordingly.
 suffix: Tasks.php
 
+# Timezone is used to calculate task run time
+# This option is very important and not setting it is deprecated
+# and will result in exception in 2.0 version.
+timezone: ~
+
 # By default the errors are not logged by Crunz
 # You may set the value to true for logging the errors
 log_errors: false

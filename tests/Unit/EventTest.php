@@ -25,7 +25,7 @@ class EventTest extends TestCase
 
     public function setUp()
     {
-        $this->id = uniqid();
+        $this->id = \uniqid('crunz', true);
 
         $this->defaultTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -58,7 +58,7 @@ class EventTest extends TestCase
         $e->everyFiftyMinutes()->mondays();
 
         $this->assertEquals('*/50 * * * 1 *', $e->getExpression());
-        $this->assertFalse($e->isDue());
+        $this->assertFalse($e->isDue(new \DateTimeZone('UTC')));
     }
 
     /**
@@ -98,6 +98,8 @@ class EventTest extends TestCase
      */
     public function testLowLevelMethods()
     {
+        $timezone = new \DateTimeZone('UTC');
+
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('30 1 11 4 * *', $e->on('01:30 11-04-2016')->getExpression());
 
@@ -121,7 +123,7 @@ class EventTest extends TestCase
         $this->assertEquals('45 13 * * * *', $e->cron('45 13 * * * *')->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->isDue());
+        $this->assertTrue($e->isDue($timezone));
     }
 
     /**
@@ -150,29 +152,33 @@ class EventTest extends TestCase
 
     public function testCronLifeTime()
     {
-        $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->between('1-1-2015', '1-2-2015')->isDue());
+        $timezone = new \DateTimeZone('UTC');
 
         $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->from('01-01-2048')->isDue());
+        $this->assertFalse($e->cron('* * * * * *')->between('1-1-2015', '1-2-2015')->isDue($timezone));
 
         $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->to('01-01-2015')->isDue());
+        $this->assertFalse($e->cron('* * * * * *')->from('01-01-2048')->isDue($timezone));
+
+        $e = new Event($this->id, 'php foo');
+        $this->assertFalse($e->cron('* * * * * *')->to('01-01-2015')->isDue($timezone));
     }
 
     public function testCronConditions()
     {
-        $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->when(function () { return false; })->isDue());
+        $timezone = new \DateTimeZone('UTC');
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->cron('* * * * * *')->when(function () { return true; })->isDue());
+        $this->assertFalse($e->cron('* * * * * *')->when(function () { return false; })->isDue($timezone));
 
         $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->skip(function () { return true; })->isDue());
+        $this->assertTrue($e->cron('* * * * * *')->when(function () { return true; })->isDue($timezone));
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->cron('* * * * * *')->skip(function () { return false; })->isDue());
+        $this->assertFalse($e->cron('* * * * * *')->skip(function () { return true; })->isDue($timezone));
+
+        $e = new Event($this->id, 'php foo');
+        $this->assertTrue($e->cron('* * * * * *')->skip(function () { return false; })->isDue($timezone));
     }
 
     public function testBuildCommand()
@@ -185,13 +191,14 @@ class EventTest extends TestCase
     public function testIsDue()
     {
         Carbon::setTestNow(Carbon::create(2015, 4, 12, 0, 0, 0));
+        $timezone = new \DateTimeZone('UTC');
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->sundays()->isDue());
+        $this->assertTrue($e->sundays()->isDue($timezone));
 
         $e = new Event($this->id, 'php bar');
         $this->assertEquals('0 19 * * 6 *', $e->saturdays()->at('19:00')->timezone('EST')->getExpression());
-        $this->assertTrue($e->isDue());
+        $this->assertTrue($e->isDue($timezone));
     }
 
     public function testName()
