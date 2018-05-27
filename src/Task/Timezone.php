@@ -26,7 +26,7 @@ final class Timezone
 
         if (empty($newTimezone)) {
             throw new EmptyTimezoneException(
-                'Configuring timezone is required. Please add it to your config file.'
+                'Timezone must be configured. Please add it to your config file.'
             );
         }
 
