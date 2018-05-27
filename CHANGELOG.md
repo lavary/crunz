@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.7.0 - 2018-05-27
+
 ### Added
 - `timezone` option to config file - PR [#94](https://github.com/lavary/crunz/pull/94),
 [@PabloKowalczyk](https://github.com/PabloKowalczyk)
