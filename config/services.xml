@@ -28,6 +28,8 @@
             id="Crunz\Console\Command\ConfigGeneratorCommand"
             public="true"
         >
+            <argument type="service" id="Crunz\Timezone\ProviderInterface"/>
+            <argument type="service" id="Symfony\Component\Filesystem\Filesystem"/>
         </service>
 
         <service
@@ -144,6 +146,11 @@
             <argument type="service" id="Crunz\Mailer"/>
             <argument type="service" id="Crunz\Logger\LoggerFactory"/>
         </service>
+
+        <service
+            class="Symfony\Component\Filesystem\Filesystem"
+            id="Symfony\Component\Filesystem\Filesystem"
+        />
 
         <service
             class="Crunz\Task\Timezone"
