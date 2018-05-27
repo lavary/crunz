@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Crunz\Console\Command;
 
-use Crunz\Output\VerbosityAwareOutput;
 use Crunz\Timezone\ProviderInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,7 +43,6 @@ class ConfigGeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $verbosityAwareOutput = new VerbosityAwareOutput($output);
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
         $path = getbase() . '/crunz.yml';
@@ -53,13 +51,13 @@ class ConfigGeneratorCommand extends Command
             ->exists($destination)
         ;
 
-        $verbosityAwareOutput->writeln(
+        $output->writeln(
             "<info>Destination config file: '{$destination}'.</info>",
             OutputInterface::VERBOSITY_VERBOSE
         );
 
         if ($configExists) {
-            $verbosityAwareOutput->writeln(
+            $output->writeln(
                 "<comment>The configuration file already exists at '{$destination}'.</comment>"
             );
 
@@ -67,12 +65,12 @@ class ConfigGeneratorCommand extends Command
         }
 
         $src = __DIR__ . '/../../../crunz.yml';
-        $verbosityAwareOutput->writeln(
+        $output->writeln(
             "<info>Source config file: '{$src}'.</info>",
             OutputInterface::VERBOSITY_VERBOSE
         );
         $defaultTimezone = $this->askForTimezone($symfonyStyleIo);
-        $verbosityAwareOutput->writeln(
+        $output->writeln(
             "<info>Provided timezone: '{$defaultTimezone}'.</info>",
             OutputInterface::VERBOSITY_VERBOSE
         );
