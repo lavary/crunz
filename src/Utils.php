@@ -43,7 +43,7 @@ final class Utils
      */
     public static function getRoot($autoloader)
     {
-        return \dirname($autoloader) . '/..';
+        return \dirname($autoloader) . DIRECTORY_SEPARATOR . '..';
     }
 
     /**

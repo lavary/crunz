@@ -30,6 +30,64 @@ class ConfigurationTest extends TestCase
         $this->assertSame('anon', $configuration->get('notExist', 'anon'));
     }
 
+    /** @test */
+    public function checkConfigInProjectRootFirst()
+    {
+        $expectedPath = $this->makePath([getbase(), 'crunz.yml']);
+
+        $this->createConfigurationForPathChecks($expectedPath);
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     * @runInSeparateProcess
+     */
+    public function checkConfigInCwdAfterProjectRoot()
+    {
+        setbase(\sys_get_temp_dir());
+
+        $expectedPath = $this->makePath([\getcwd(), 'crunz.yml']);
+
+        $this->createConfigurationForPathChecks($expectedPath);
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     * @runInSeparateProcess
+     */
+    public function fallbackConfigPathToCrunz()
+    {
+        setbase(\sys_get_temp_dir());
+        \chdir(\sys_get_temp_dir());
+
+        $expectedPath = $this->makePath([CRUNZ_ROOT, 'crunz.yml']);
+
+        $this->createConfigurationForPathChecks($expectedPath);
+        $this->assertTrue(true);
+    }
+
+    private function createConfigurationForPathChecks($expectedPath)
+    {
+        $mockDefinitionProcessor = $this->createMock(Processor::class);
+        $mockFileParser = $this->createMock(FileParser::class);
+        $mockConfigurationDefinition = $this->createMock(ConfigurationInterface::class);
+
+        $mockFileParser
+            ->method('parse')
+            ->with($expectedPath)
+            ->willReturn([])
+        ;
+
+        return new Configuration(
+            $mockConfigurationDefinition,
+            $mockDefinitionProcessor,
+            $mockFileParser,
+            new PropertyAccessor(false, true)
+        );
+    }
+
     private function createConfiguration()
     {
         $mockDefinitionProcessor = $this->createMock(Processor::class);
@@ -57,5 +115,10 @@ class ConfigurationTest extends TestCase
             $mockFileParser,
             new PropertyAccessor(false, true)
         );
+    }
+
+    private function makePath($parts)
+    {
+        return \implode(DIRECTORY_SEPARATOR, $parts);
     }
 }

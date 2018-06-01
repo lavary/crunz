@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Configuration;
 
+use Crunz\Exception\ConfigFileNotFoundException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
@@ -65,10 +66,46 @@ class Configuration
         }
     }
 
+    /**
+     * @return string
+     *
+     * @throws ConfigFileNotFoundException
+     */
     private function configFilePath()
     {
-        $config_file = CRUNZ_ROOT . '/crunz.yml';
+        $pathsParts = [
+            [
+                getbase(),
+                'crunz.yml',
+            ],
+            [
+                \getcwd(),
+                'crunz.yml',
+            ],
+            [
+                CRUNZ_ROOT,
+                'crunz.yml',
+            ],
+        ];
 
-        return \file_exists($config_file) ? $config_file : __DIR__ . '/../../crunz.yml';
+        $paths = \array_map(
+            function (array $parts) {
+                return \implode(DIRECTORY_SEPARATOR, $parts);
+            },
+            $pathsParts
+        );
+
+        foreach ($paths as $configPath) {
+            if (\file_exists($configPath)) {
+                return $configPath;
+            }
+        }
+
+        throw new ConfigFileNotFoundException(
+            \sprintf(
+                'Unable to find any config file. Tested paths: %s',
+                \implode(' ', $paths)
+            )
+        );
     }
 }
