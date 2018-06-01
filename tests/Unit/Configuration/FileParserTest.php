@@ -26,7 +26,7 @@ class FileParserTest extends TestCase
     public function parseThrowsExceptionOnNonReadableFile()
     {
         if ($this->isWindows()) {
-            $this->markTestSkipped('Required Windows OS.');
+            $this->markTestSkipped('Required Unix-based OS.');
         }
 
         $file = tmpfile();

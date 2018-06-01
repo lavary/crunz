@@ -154,14 +154,31 @@ class EventTest extends TestCase
     {
         $timezone = new \DateTimeZone('UTC');
 
-        $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->between('1-1-2015', '1-2-2015')->isDue($timezone));
+        $event = new Event($this->id, 'php foo');
+        $this->assertFalse(
+            $event
+                ->between('2015-01-01', '2015-01-02')
+                ->isDue($timezone)
+            )
+        ;
 
-        $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->from('01-01-2048')->isDue($timezone));
+        $futureDate = new \DateTimeImmutable('+1 year');
 
-        $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->to('01-01-2015')->isDue($timezone));
+        $event = new Event($this->id, 'php foo');
+        $this->assertFalse(
+            $event
+                ->from($futureDate->format('Y-m-d'))
+                ->isDue($timezone)
+            )
+        ;
+
+        $event = new Event($this->id, 'php foo');
+        $this->assertFalse(
+            $event
+                ->to('2015-01-01')
+                ->isDue($timezone)
+            )
+        ;
     }
 
     public function testCronConditions()
