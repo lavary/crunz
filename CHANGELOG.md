@@ -6,10 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.7.1 - 2018-06-01
+
 ### Fixed
 
-- Project configuration file not loaded,
-solves issue [#108](https://github.com/lavary/crunz/issues/108) - PR
+- Project configuration file not loaded (issue [#108](https://github.com/lavary/crunz/issues/108)) - PR
 [#110](https://github.com/lavary/crunz/pull/110), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.7.0 - 2018-05-27
