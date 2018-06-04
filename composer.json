@@ -44,7 +44,7 @@
     },
     "require-dev": {
         "ext-mbstring": "*",
-        "friendsofphp/php-cs-fixer": "2.2.19",
+        "bamarni/composer-bin-plugin": "^1.2",
         "phpdocumentor/reflection-docblock": "^2.0.1",
         "phpunit/phpunit": "5.7.27",
         "sebastian/comparator": "1.2.4",
