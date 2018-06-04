@@ -35,6 +35,9 @@ install:
     - if [[ "$DEPENDENCIES" = 'low' ]]; then
         travis_retry composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest;
       fi
+    - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.2' ]]; then
+        travis_retry composer bin all install -a --no-dev;
+      fi
 
 before_script:
     - composer install --prefer-source --no-interaction
