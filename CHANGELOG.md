@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.7.2 - 2018-06-13
+
 ### Fixed
 
 - Stop `replace`ing Symfony's polyfills to avoid installation issues - PR
