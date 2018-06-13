@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
+### Fixed
+
+- Stop `replace`ing Symfony's polyfills to avoid installation issues - PR
+[#116](https://github.com/lavary/crunz/pull/116), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ## 1.7.1 - 2018-06-01
 
 ### Fixed

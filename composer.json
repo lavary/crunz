@@ -50,13 +50,6 @@
         "symfony/phpunit-bridge": "^3.4.5 || ^4.1",
         "symfony/var-dumper": "^3.4 || ^4.1"
     },
-    "replace": {
-        "symfony/polyfill-php56": "*",
-        "symfony/polyfill-php55": "*",
-        "symfony/polyfill-php54": "*",
-        "symfony/polyfill-php70": "*",
-        "symfony/polyfill-php71": "*"
-    },
     "autoload": {
         "psr-4": {
             "Crunz\\": "src/"
