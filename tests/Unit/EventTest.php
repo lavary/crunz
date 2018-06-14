@@ -219,7 +219,7 @@ class EventTest extends TestCase
 
         $e = new Event($this->id, 'php bar');
         Carbon::setTestNow(Carbon::create(\date('Y'), 4, 12, 0, 0, 0));
-        $this->assertTrue($e->on('00:00 '.\date('Y').'-04-12')->isDue($timezone));
+        $this->assertTrue($e->on('00:00 ' . \date('Y') . '-04-12')->isDue($timezone));
     }
 
     public function testName()
