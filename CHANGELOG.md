@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.7.3 - 2018-06-15
+
+### Fixed
+
+- Undefined index: `year` in vendor/lavary/crunz/src/Event.php on line 370, solves issue
+[#41](https://github.com/lavary/crunz/issues/41) - PR [#118](https://github.com/lavary/crunz/pull/118) by [@mindcreations](https://github.com/mindcreations)
+
 ## 1.7.2 - 2018-06-13
 
 ### Fixed
