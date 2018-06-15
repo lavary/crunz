@@ -349,8 +349,8 @@ class Event
         $segments = \array_only($date, \array_flip($this->fieldsPosition));
 
         if ($date['year']) {
-            $this->skip(function () use ($segments) {
-                return (int) date('Y') != $segments['year'];
+            $this->skip(function () use ($date) {
+                return (int) date('Y') != $date['year'];
             });
         }
 
