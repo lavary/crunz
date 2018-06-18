@@ -7,7 +7,10 @@ namespace Crunz\Task;
 use Crunz\Configuration\Configuration;
 use Crunz\Exception\EmptyTimezoneException;
 
-final class Timezone
+/**
+ * @internal
+ */
+class Timezone
 {
     /** @var Configuration */
     private $configuration;

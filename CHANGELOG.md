@@ -6,9 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- `--force` option to `schedule:run` command.
+This option allow to run all tasks regardless of configured run time,
+part of issue [#11](https://github.com/lavary/crunz/issues/11) -
+PR [#120](https://github.com/lavary/crunz/pull/120) by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ### Removed
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+## 1.7.3 - 2018-06-15
+
+### Fixed
+
+- Undefined index: `year` in vendor/lavary/crunz/src/Event.php on line 370, solves issue
+[#41](https://github.com/lavary/crunz/issues/41) - PR [#118](https://github.com/lavary/crunz/pull/118) by [@mindcreations](https://github.com/mindcreations)
 
 ## 1.7.2 - 2018-06-13
 
