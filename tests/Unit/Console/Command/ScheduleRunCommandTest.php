@@ -101,7 +101,8 @@ class ScheduleRunCommandTest extends TestCase
     {
         $filesystem = new Filesystem();
 
-        $filename = $filesystem->tempnam(\sys_get_temp_dir(), 'crunz');
+        $filename = \tempnam(\sys_get_temp_dir(), 'crunz');
+        $filesystem->touch($filename);
         $filesystem->dumpFile($filename, $taskContent);
 
         return $filename;
