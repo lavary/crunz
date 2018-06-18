@@ -5,7 +5,10 @@ namespace Crunz\Task;
 use Crunz\Configuration\Configuration;
 use Crunz\Timezone\ProviderInterface;
 
-final class Timezone
+/**
+ * @internal
+ */
+class Timezone
 {
     /** @var Configuration */
     private $configuration;
