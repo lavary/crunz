@@ -9,6 +9,7 @@ use Crunz\Task\Collection;
 use Crunz\Task\Timezone;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ScheduleRunCommand extends Command
@@ -63,6 +64,12 @@ class ScheduleRunCommand extends Command
                     ),
                 ]
             )
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'Run all tasks regardless of configured run time.'
+            )
            ->setHelp('This command starts the Crunz event runner.');
     }
 
@@ -96,12 +103,14 @@ class ScheduleRunCommand extends Command
                 continue;
             }
 
-            // We keep the events which are due and dismiss the rest.
-            $schedule->events(
-                $schedule->dueEvents(
-                    $tasksTimezone
-                )
-            );
+            if (false === $this->options['force']) {
+                // We keep the events which are due and dismiss the rest.
+                $schedule->events(
+                    $schedule->dueEvents(
+                        $tasksTimezone
+                    )
+                );
+            }
 
             if (count($schedule->events())) {
                 $schedules[] = $schedule;
@@ -118,5 +127,7 @@ class ScheduleRunCommand extends Command
         $this->eventRunner
             ->handle($output, $schedules)
         ;
+
+        return 0;
     }
 }
