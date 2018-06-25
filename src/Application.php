@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz;
 
 use Symfony\Component\Config\ConfigCache;
@@ -88,7 +90,7 @@ class Application extends SymfonyApplication
         $class = 'CrunzContainer';
         $baseClass = 'Container';
         $cache = new ConfigCache(
-            implode(
+            \implode(
                 DIRECTORY_SEPARATOR,
                 [
                     $this->getCacheDir(),
@@ -163,7 +165,7 @@ class Application extends SymfonyApplication
      */
     private function getCacheDir()
     {
-        return implode(
+        return \implode(
             DIRECTORY_SEPARATOR,
             [
                 \sys_get_temp_dir(),

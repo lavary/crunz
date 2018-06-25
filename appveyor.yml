@@ -6,14 +6,6 @@ clone_folder: c:\projects\crunz
 environment:
     matrix:
         - dependencies: low
-          php_ver_target: 5.6
-        - dependencies: high
-          php_ver_target: 5.6
-        - dependencies: low
-          php_ver_target: 7.0
-        - dependencies: high
-          php_ver_target: 7.0
-        - dependencies: low
           php_ver_target: 7.1
         - dependencies: high
           php_ver_target: 7.1

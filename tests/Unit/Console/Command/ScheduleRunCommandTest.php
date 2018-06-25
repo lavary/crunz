@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Tests\Unit\Console\Command;
 
 use Crunz\Configuration\Configuration;
@@ -28,7 +30,7 @@ class ScheduleRunCommandTest extends TestCase
 
         $command = new ScheduleRunCommand(
             $mockTaskCollection,
-            $this->createMock(Configuration::class),
+            $this->mockConfiguration(),
             $mockEventRunner,
             $this->createMock(Timezone::class)
         );
@@ -37,6 +39,18 @@ class ScheduleRunCommandTest extends TestCase
             $mockInput,
             $mockOutput
         );
+    }
+
+    private function mockConfiguration()
+    {
+        $mockConfiguration = $this->createMock(Configuration::class);
+
+        $mockConfiguration
+            ->method('get')
+            ->willReturn('')
+        ;
+
+        return $mockConfiguration;
     }
 
     private function mockEventRunner(OutputInterface $output)

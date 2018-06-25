@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz;
 
 final class Utils
@@ -15,7 +17,7 @@ final class Utils
      */
     public static function setBaseDir($base_dir)
     {
-        putenv('CRUNZ_BASE_DIR=' . $base_dir);
+        \putenv('CRUNZ_BASE_DIR=' . $base_dir);
     }
 
     /**
@@ -27,7 +29,7 @@ final class Utils
      */
     public static function getBaseDir()
     {
-        return getenv('CRUNZ_BASE_DIR');
+        return \getenv('CRUNZ_BASE_DIR');
     }
 
     /**
@@ -41,7 +43,7 @@ final class Utils
      */
     public static function getRoot($autoloader)
     {
-        return dirname($autoloader) . DIRECTORY_SEPARATOR . '..';
+        return \dirname($autoloader) . DIRECTORY_SEPARATOR . '..';
     }
 
     /**
@@ -55,7 +57,7 @@ final class Utils
      */
     public static function generatePath($relative_path)
     {
-        return static::getBaseDir() . '/' . trim($relative_path, '/');
+        return static::getBaseDir() . '/' . \trim($relative_path, '/');
     }
 
     /**
@@ -71,7 +73,7 @@ final class Utils
      */
     public static function arrayOnly($array, $keys)
     {
-        return array_intersect_key($array, array_flip((array) $keys));
+        return \array_intersect_key($array, \array_flip((array) $keys));
     }
 
     /**
@@ -85,7 +87,7 @@ final class Utils
      */
     public static function wordToNumber($text)
     {
-        $data = strtr(
+        $data = \strtr(
             $text,
             [
                 'zero' => '0',
@@ -127,11 +129,11 @@ final class Utils
         );
 
         // Coerce all tokens to numbers
-        $parts = array_map(
+        $parts = \array_map(
             function ($val) {
-                return floatval($val);
+                return (float) $val;
             },
-            preg_split('/[\s-]+/', $data)
+            \preg_split('/[\s-]+/', $data)
         );
 
         $tmp = null;
@@ -139,7 +141,7 @@ final class Utils
         $last = null;
 
         foreach ($parts as $part) {
-            if (!is_null($tmp)) {
+            if (null !== $tmp) {
                 if ($tmp > $part) {
                     if ($last >= 1000) {
                         $sum += $tmp;

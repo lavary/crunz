@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Console\Command;
 
 use Crunz\Configuration\Configuration;
@@ -84,7 +86,7 @@ class ScheduleRunCommand extends Command
             ->all($this->arguments['source'])
         ;
 
-        if (!count($files)) {
+        if (!\count($files)) {
             $output->writeln('<comment>No task found! Please check your source path.</comment>');
 
             return 0;
@@ -112,12 +114,12 @@ class ScheduleRunCommand extends Command
                 );
             }
 
-            if (count($schedule->events())) {
+            if (\count($schedule->events())) {
                 $schedules[] = $schedule;
             }
         }
 
-        if (!count($schedules)) {
+        if (!\count($schedules)) {
             $output->writeln('<comment>No event is due!</comment>');
 
             return 0;

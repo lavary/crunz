@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Console\Command;
 
 use Crunz\Configuration\Configuration;
@@ -202,7 +204,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function getStub()
     {
-        return \file_get_contents(__DIR__ . '/../../Stubs/' . ucfirst($this->type() . 'Task.php'));
+        return \file_get_contents(__DIR__ . '/../../Stubs/' . \ucfirst($this->type() . 'Task.php'));
     }
 
     /**
@@ -220,7 +222,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function replaceFrequency()
     {
-        $this->stub = \str_replace('DummyFrequency', rtrim($this->options['frequency'], '()'), $this->stub);
+        $this->stub = \str_replace('DummyFrequency', \rtrim($this->options['frequency'], '()'), $this->stub);
 
         return $this;
     }
@@ -230,7 +232,7 @@ class TaskGeneratorCommand extends Command
      */
     protected function replaceConstraint()
     {
-        $this->stub = \str_replace('DummyConstraint', rtrim($this->options['constraint'], '()'), $this->stub);
+        $this->stub = \str_replace('DummyConstraint', \rtrim($this->options['constraint'], '()'), $this->stub);
 
         return $this;
     }

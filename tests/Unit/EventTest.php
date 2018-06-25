@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Tests\Unit;
 
 use Carbon\Carbon;
@@ -27,13 +29,13 @@ class EventTest extends TestCase
     {
         $this->id = \uniqid('crunz', true);
 
-        $this->defaultTimezone = date_default_timezone_get();
-        date_default_timezone_set('UTC');
+        $this->defaultTimezone = \date_default_timezone_get();
+        \date_default_timezone_set('UTC');
     }
 
     public function tearDown()
     {
-        date_default_timezone_set($this->defaultTimezone);
+        \date_default_timezone_set($this->defaultTimezone);
         Carbon::setTestNow(null);
     }
 
@@ -66,7 +68,7 @@ class EventTest extends TestCase
      */
     public function testUnitMethods()
     {
-        $id = uniqid();
+        $id = \uniqid();
 
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('0 * * * * *', $e->hourly()->getExpression());
@@ -338,6 +340,6 @@ class EventTest extends TestCase
 
     private function buildPath(array $segments)
     {
-        return implode(DIRECTORY_SEPARATOR, $segments);
+        return \implode(DIRECTORY_SEPARATOR, $segments);
     }
 }

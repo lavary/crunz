@@ -741,5 +741,11 @@ vendor/bin/crunz make:task --help
 Please submit all issues and questions using GitHub issues and I will try to help you.
 
 
+## Credits
+
+* [PabloKowalczyk](https://github.com/PabloKowalczyk)
+* [Reza Lavarian](https://github.com/lavary)
+* [All Contributors](https://github.com/lavary/crunz/graphs/contributors)
+
 ## License
 Crunz is free software distributed under the terms of the MIT license.

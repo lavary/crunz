@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Console\Command;
 
 use SuperClosure\Serializer;
@@ -35,8 +37,8 @@ class ClosureRunCommand extends Command
         $args = [];
         $this->arguments = $input->getArguments();
 
-        parse_str($this->arguments['closure'], $args);
+        \parse_str($this->arguments['closure'], $args);
         $serializer = new Serializer();
-        call_user_func_array($serializer->unserialize($args[0]), []);
+        \call_user_func_array($serializer->unserialize($args[0]), []);
     }
 }

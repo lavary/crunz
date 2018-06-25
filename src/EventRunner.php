@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz;
 
 use Crunz\Configuration\Configuration;
@@ -98,10 +100,10 @@ class EventRunner
         if (!$event->nullOutput()) {
             // if sendOutputTo then truncate the log file if it exists
             if (!$event->shouldAppendOutput) {
-                $f = @fopen($event->output, 'r+');
+                $f = @\fopen($event->output, 'r+');
                 if (false !== $f) {
-                    ftruncate($f, 0);
-                    fclose($f);
+                    \ftruncate($f, 0);
+                    \fclose($f);
                 }
             }
             // Create an instance of the Logger specific to the event
@@ -153,13 +155,13 @@ class EventRunner
                 // If there's no event left for the Schedule instance,
                 // run the schedule's after-callbacks and remove
                 // the Schedule from list of active schedules.                                                                                                                           zzzwwscxqqqAAAQ11
-                if (!count($schedule->events())) {
+                if (!\count($schedule->events())) {
                     $this->invoke($schedule->afterCallbacks());
                     unset($this->schedules[$scheduleKey]);
                 }
             }
 
-            usleep(500000);
+            \usleep(500000);
         }
     }
 

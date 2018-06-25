@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz;
 
 use Carbon\Carbon;
@@ -172,9 +174,9 @@ class Event
      */
     public function __call($methodName, $params)
     {
-        preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);
+        \preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);
 
-        if (!count($matches) || 'Zero' == $matches[1]) {
+        if (!\count($matches) || 'Zero' === $matches[1]) {
             throw new \BadMethodCallException();
         }
 
@@ -184,7 +186,7 @@ class Event
             throw new \BadMethodCallException();
         }
 
-        return $this->every(strtolower($matches[2]), $amount);
+        return $this->every(\mb_strtolower($matches[2]), $amount);
     }
 
     /**
@@ -208,11 +210,11 @@ class Event
      */
     public function nullOutput()
     {
-        return  'NUL' == $this->output || '/dev/null' == $this->output;
+        return  'NUL' === $this->output || '/dev/null' === $this->output;
     }
 
     /**
-     * Build the comand string.
+     * Build the command string.
      *
      * @return string
      */
@@ -238,7 +240,7 @@ class Event
 
         $command .= $this->isClosure() ? $this->serializeClosure($this->command) : $this->command;
 
-        return trim($command, '& ');
+        return \trim($command, '& ');
     }
 
     /**
@@ -248,7 +250,7 @@ class Event
      */
     public function isClosure()
     {
-        return is_object($this->command) && ($this->command instanceof Closure);
+        return \is_object($this->command) && ($this->command instanceof Closure);
     }
 
     /**
@@ -350,7 +352,7 @@ class Event
 
         if ($date['year']) {
             $this->skip(function () use ($date) {
-                return (int) date('Y') != $date['year'];
+                return (int) \date('Y') !== $date['year'];
             });
         }
 
@@ -384,10 +386,10 @@ class Event
      */
     public function dailyAt($time)
     {
-        $segments = explode(':', $time);
+        $segments = \explode(':', $time);
 
         return $this->spliceIntoPosition(2, (int) $segments[0])
-                    ->spliceIntoPosition(1, count($segments) > 1 ? (int) $segments[1] : '0');
+                    ->spliceIntoPosition(1, \count($segments) > 1 ? (int) $segments[1] : '0');
     }
 
     /**
@@ -583,9 +585,9 @@ class Event
      */
     public function days($days)
     {
-        $days = is_array($days) ? $days : func_get_args();
+        $days = \is_array($days) ? $days : \func_get_args();
 
-        return $this->spliceIntoPosition(5, implode(',', $days));
+        return $this->spliceIntoPosition(5, \implode(',', $days));
     }
 
     /**
@@ -597,9 +599,9 @@ class Event
      */
     public function hour($value)
     {
-        $value = is_array($value) ? $value : func_get_args();
+        $value = \is_array($value) ? $value : \func_get_args();
 
-        return $this->spliceIntoPosition(2, implode(',', $value));
+        return $this->spliceIntoPosition(2, \implode(',', $value));
     }
 
     /**
@@ -611,9 +613,9 @@ class Event
      */
     public function minute($value)
     {
-        $value = is_array($value) ? $value : func_get_args();
+        $value = \is_array($value) ? $value : \func_get_args();
 
-        return $this->spliceIntoPosition(1, implode(',', $value));
+        return $this->spliceIntoPosition(1, \implode(',', $value));
     }
 
     /**
@@ -625,9 +627,9 @@ class Event
      */
     public function dayOfMonth($value)
     {
-        $value = is_array($value) ? $value : func_get_args();
+        $value = \is_array($value) ? $value : \func_get_args();
 
-        return $this->spliceIntoPosition(3, implode(',', $value));
+        return $this->spliceIntoPosition(3, \implode(',', $value));
     }
 
     /**
@@ -639,9 +641,9 @@ class Event
      */
     public function month($value)
     {
-        $value = is_array($value) ? $value : func_get_args();
+        $value = \is_array($value) ? $value : \func_get_args();
 
-        return $this->spliceIntoPosition(4, implode(',', $value));
+        return $this->spliceIntoPosition(4, \implode(',', $value));
     }
 
     /**
@@ -653,9 +655,9 @@ class Event
      */
     public function dayOfWeek($value)
     {
-        $value = is_array($value) ? $value : func_get_args();
+        $value = \is_array($value) ? $value : \func_get_args();
 
-        return $this->spliceIntoPosition(5, implode(',', $value));
+        return $this->spliceIntoPosition(5, \implode(',', $value));
     }
 
     /**
@@ -709,8 +711,8 @@ class Event
         // Delete the lock file when the event is completed
         $this->after(function () {
             $lockfile = $this->lockFile();
-            if (file_exists($lockfile)) {
-                unlink($lockfile);
+            if (\file_exists($lockfile)) {
+                \unlink($lockfile);
             }
         });
 
@@ -906,7 +908,7 @@ class Event
             return $this;
         }
 
-        $value = 1 == $value ? '*' : '*/' . $value;
+        $value = 1 === $value ? '*' : '*/' . $value;
 
         return $this->spliceIntoPosition($this->fieldsPosition[$unit], $value)
                     ->applyMask($unit);
@@ -929,7 +931,7 @@ class Event
      */
     public function getSummaryForDisplay()
     {
-        if (is_string($this->description)) {
+        if (\is_string($this->description)) {
             return $this->description;
         }
 
@@ -1035,7 +1037,7 @@ class Event
             return $hasPid;
         }
 
-        return ($hasPid && posix_getsid($pid)) ? true : false;
+        return ($hasPid && \posix_getsid($pid)) ? true : false;
     }
 
     /**
@@ -1047,7 +1049,7 @@ class Event
     {
         $lock_file = $this->lockFile();
 
-        return file_exists($lock_file) ? (int) trim(file_get_contents($lock_file)) : null;
+        return \file_exists($lock_file) ? (int) \trim(\file_get_contents($lock_file)) : null;
     }
 
     /**
@@ -1057,7 +1059,7 @@ class Event
      */
     public function lockFile()
     {
-        return rtrim(sys_get_temp_dir(), '/') . '/crunz-' . md5($this->buildCommand());
+        return \rtrim(\sys_get_temp_dir(), '/') . '/crunz-' . \md5($this->buildCommand());
     }
 
     /**
@@ -1067,7 +1069,7 @@ class Event
      */
     protected function getDefaultOutput()
     {
-        return (DIRECTORY_SEPARATOR == '\\') ? 'NUL' : '/dev/null';
+        return (DIRECTORY_SEPARATOR === '\\') ? 'NUL' : '/dev/null';
     }
 
     /**
@@ -1124,7 +1126,7 @@ class Event
      */
     protected function notYet($datetime)
     {
-        return time() < strtotime($datetime);
+        return \time() < \strtotime($datetime);
     }
 
     /**
@@ -1136,7 +1138,7 @@ class Event
      */
     protected function past($datetime)
     {
-        return time() > strtotime($datetime);
+        return \time() > \strtotime($datetime);
     }
 
     /**
@@ -1149,11 +1151,11 @@ class Event
      */
     protected function spliceIntoPosition($position, $value)
     {
-        $segments = explode(' ', $this->expression);
+        $segments = \explode(' ', $this->expression);
 
         $segments[$position - 1] = $value;
 
-        return $this->cron(implode(' ', $segments));
+        return $this->cron(\implode(' ', $segments));
     }
 
     /**
@@ -1165,13 +1167,13 @@ class Event
      */
     protected function applyMask($unit)
     {
-        $cron = explode(' ', $this->expression);
+        $cron = \explode(' ', $this->expression);
         $mask = ['0', '0', '1', '1', '*', '*'];
         $fpos = $this->fieldsPosition[$unit] - 1;
 
-        array_splice($cron, 0, $fpos, array_slice($mask, 0, $fpos));
+        \array_splice($cron, 0, $fpos, \array_slice($mask, 0, $fpos));
 
-        return $this->cron(implode(' ', $cron));
+        return $this->cron(\implode(' ', $cron));
     }
 
     /**
@@ -1183,15 +1185,15 @@ class Event
      */
     protected function lock()
     {
-        file_put_contents($this->lockFile(), $this->process->getPid());
+        \file_put_contents($this->lockFile(), $this->process->getPid());
     }
 
     private function splitCamel($text)
     {
         $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        $segments = preg_split($pattern, $text);
+        $segments = \preg_split($pattern, $text);
 
-        return \strtolower(
+        return \mb_strtolower(
             \implode(
                 $segments,
                 ' '
@@ -1201,7 +1203,7 @@ class Event
 
     private function isWindows()
     {
-        $osCode = \substr(
+        $osCode = \mb_substr(
             PHP_OS,
             0,
             3

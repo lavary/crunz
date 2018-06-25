@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Task;
 
 use Crunz\Configuration\Configuration;
-use Crunz\Timezone\ProviderInterface;
+use Crunz\Exception\EmptyTimezoneException;
 
 /**
  * @internal
@@ -12,32 +14,25 @@ class Timezone
 {
     /** @var Configuration */
     private $configuration;
-    /** @var ProviderInterface */
-    private $timezoneProvider;
 
-    public function __construct(Configuration $configuration, ProviderInterface $timezoneProvider)
+    public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
-        $this->timezoneProvider = $timezoneProvider;
     }
 
-    public function timezoneForComparisons()
+    /**
+     * @throws EmptyTimezoneException
+     */
+    public function timezoneForComparisons(): \DateTimeZone
     {
         $newTimezone = $this->configuration
             ->get('timezone')
         ;
 
-        /* @TODO Throw Exception in Crunz v2. */
         if (empty($newTimezone)) {
-            @trigger_error(
-                'Timezone is not configured and this is deprecated from 1.7 and will result in exception in 2.0 version. Add `timezone` key to your YAML config file.',
-                E_USER_DEPRECATED
+            throw new EmptyTimezoneException(
+                'Timezone must be configured. Please add it to your config file.'
             );
-
-            $newTimezone = $this->timezoneProvider
-                ->defaultTimezone()
-                ->getName()
-            ;
         }
 
         return new \DateTimeZone($newTimezone);
