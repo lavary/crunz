@@ -212,7 +212,7 @@ class Event
     }
 
     /**
-     * Build the comand string.
+     * Build the command string.
      *
      * @return string
      */
