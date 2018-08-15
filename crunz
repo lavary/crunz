@@ -45,5 +45,5 @@ define('CRUNZ_ROOT', __DIR__);
 // Setting the base directory as an environment variable
 setbase(getroot($hasBinAutoloader ? $autoloadBin : $autoloadSrc));
 
-$application = new Crunz\Application('Crunz Command Line Interface', 'v1.7.3');
+$application = new Crunz\Application('Crunz Command Line Interface', 'v1.8.0');
 $application->run();
