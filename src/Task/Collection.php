@@ -37,6 +37,7 @@ class Collection
         $iterator = $this->finder
             ->files()
             ->name("*{$suffix}")
+            ->sortByName()
             ->in($source)
         ;
 

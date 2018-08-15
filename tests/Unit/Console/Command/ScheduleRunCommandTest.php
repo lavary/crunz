@@ -4,6 +4,7 @@ namespace Crunz\Tests\Unit\Console\Command;
 
 use Crunz\Configuration\Configuration;
 use Crunz\Console\Command\ScheduleRunCommand;
+use Crunz\Event;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
@@ -21,7 +22,7 @@ class ScheduleRunCommandTest extends TestCase
     {
         $filename = $this->createTaskFile($this->taskContent());
 
-        $mockInput = $this->mockInput(['force' => true]);
+        $mockInput = $this->mockInput(['force' => true, 'task' => null]);
         $mockOutput = $this->createMock(OutputInterface::class);
         $mockTaskCollection = $this->mockTaskCollection($filename);
         $mockEventRunner = $this->mockEventRunner($mockOutput);
@@ -30,13 +31,56 @@ class ScheduleRunCommandTest extends TestCase
             $mockTaskCollection,
             $this->createMock(Configuration::class),
             $mockEventRunner,
-            $this->createMock(Timezone::class)
+            $this->createMock(Timezone::class),
+            $this->createMock(Schedule\ScheduleFactory::class)
         );
 
         $command->run(
             $mockInput,
             $mockOutput
         );
+    }
+
+    /** @test */
+    public function runSpecificTask()
+    {
+        $filename1 = $this->createTaskFile($this->phpVersionTaskContent());
+        $filename2 = $this->createTaskFile($this->phpVersionTaskContent());
+
+        $mockInput = $this->mockInput(['force' => false, 'task' => '1']);
+        $mockOutput = $this->createMock(OutputInterface::class);
+        $mockTaskCollection = $this->mockTaskCollection($filename1, $filename2);
+        $mockEventRunner = $this->mockEventRunner($mockOutput);
+
+        $command = new ScheduleRunCommand(
+            $mockTaskCollection,
+            $this->createMock(Configuration::class),
+            $mockEventRunner,
+            $this->mockTimezoneProvider(),
+            $this->mockScheduleFactory()
+        );
+
+        $command->run(
+            $mockInput,
+            $mockOutput
+        );
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Schedule\ScheduleFactory
+     */
+    private function mockScheduleFactory()
+    {
+        $mockEvent = $this->createMock(Event::class);
+        $mockSchedule = $this->createConfiguredMock(Schedule::class, ['events' => [$mockEvent]]);
+        $mockScheduleFactory = $this->createMock(Schedule\ScheduleFactory::class);
+        $mockScheduleFactory
+            ->expects($this->once())
+            ->method('singleTaskSchedule')
+            ->willReturn([$mockSchedule])
+        ;
+
+        return $mockScheduleFactory;
     }
 
     private function mockEventRunner(OutputInterface $output)
@@ -56,7 +100,7 @@ class ScheduleRunCommandTest extends TestCase
                         return $isArray
                             && 1 === $count
                             && $schedule instanceof Schedule
-                            ;
+                        ;
                     }
                 )
             )
@@ -70,28 +114,36 @@ class ScheduleRunCommandTest extends TestCase
         $mockInput = $this->createMock(InputInterface::class);
         $mockInput
             ->method('getOptions')
-            ->willReturn(
-                [
-                    'force' => true,
-                ]
-            )
+            ->willReturn($options)
         ;
 
         return $mockInput;
     }
 
-    private function mockTaskCollection($taskFile)
+    /**
+     * @return Timezone|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function mockTimezoneProvider()
     {
-        $mockFileInfo = $this->createMock(SplFileInfo::class);
+        $timeZone = new \DateTimeZone('UTC');
+
+        return $this->createConfiguredMock(Timezone::class, ['timezoneForComparisons' => $timeZone]);
+    }
+
+    private function mockTaskCollection(...$taskFiles)
+    {
         $mockTaskCollection = $this->createMock(Collection::class);
+
+        $mocksFileInfo = \array_map(
+            function ($taskFile) {
+                return $this->createConfiguredMock(SplFileInfo::class, ['getRealPath' => $taskFile]);
+            },
+            $taskFiles
+        );
 
         $mockTaskCollection
             ->method('all')
-            ->willReturn([$mockFileInfo])
-        ;
-        $mockFileInfo
-            ->method('getRealPath')
-            ->willReturn($taskFile)
+            ->willReturn($mocksFileInfo)
         ;
 
         return $mockTaskCollection;
@@ -121,6 +173,24 @@ $schedule->run('php -v')
     ->description('Show PHP version')
     // Always skip
     ->skip(function () {return true;})
+;
+
+return $schedule;
+PHP;
+    }
+
+    private function phpVersionTaskContent()
+    {
+        return <<<'PHP'
+<?php
+
+use Crunz\Schedule;
+
+$schedule = new Schedule();
+
+$schedule->run('php -v')
+    ->everyMinute()
+    ->description('Show PHP version')
 ;
 
 return $schedule;
