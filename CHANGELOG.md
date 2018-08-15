@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.8.0 - 2018-08-15
+
 ### Added
 
 - `--force` option to `schedule:run` command.
