@@ -14,6 +14,7 @@
             <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\EventRunner"/>
             <argument type="service" id="Crunz\Task\Timezone"/>
+            <argument type="service" id="Crunz\Schedule\ScheduleFactory"/>
         </service>
 
         <service
@@ -150,6 +151,11 @@
         <service
             class="Symfony\Component\Filesystem\Filesystem"
             id="Symfony\Component\Filesystem\Filesystem"
+        />
+
+        <service
+            class="Crunz\Schedule\ScheduleFactory"
+            id="Crunz\Schedule\ScheduleFactory"
         />
 
         <service

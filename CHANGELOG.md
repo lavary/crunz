@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+- Removed `Crunz\Output\VerbosityAwareOutput` class - PR
+[#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+## 1.8.0 - 2018-08-15
+
 ### Added
 
 - `--force` option to `schedule:run` command.
@@ -13,9 +19,14 @@ This option allow to run all tasks regardless of configured run time,
 part of issue [#11](https://github.com/lavary/crunz/issues/11) -
 PR [#120](https://github.com/lavary/crunz/pull/120) by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
-### Removed
-- Removed `Crunz\Output\VerbosityAwareOutput` class - PR
-[#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- `--task=TASK-NUMBER` option to `schedule:run` command.
+This option allow to run only one specific task,
+part of issue [#11](https://github.com/lavary/crunz/issues/11) -
+PR [#129](https://github.com/lavary/crunz/pull/129) by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+### Changed
+- Tasks in `schedule:list` is sorted by filename,
+PR [#129](https://github.com/lavary/crunz/pull/129) by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.7.3 - 2018-06-15
 
