@@ -48,7 +48,7 @@
         "phpdocumentor/reflection-docblock": "^2.0.1",
         "phpunit/phpunit": "5.7.27",
         "sebastian/comparator": "1.2.4",
-        "symfony/phpunit-bridge": "^2.8 || ^3.3 || ^4.0",
+        "symfony/phpunit-bridge": "^3.4 || ^4.0",
         "symfony/var-dumper": "^3.4"
     },
     "autoload": {

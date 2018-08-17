@@ -186,16 +186,29 @@ class EventTest extends TestCase
         $timezone = new \DateTimeZone('UTC');
 
         $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->when(function () { return false; })->isDue($timezone));
+        $this->assertFalse($e->cron('* * * * *')->when(function () { return false; })->isDue($timezone));
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->cron('* * * * * *')->when(function () { return true; })->isDue($timezone));
+        $this->assertTrue($e->cron('* * * * *')->when(function () { return true; })->isDue($timezone));
 
         $e = new Event($this->id, 'php foo');
-        $this->assertFalse($e->cron('* * * * * *')->skip(function () { return true; })->isDue($timezone));
+        $this->assertFalse($e->cron('* * * * *')->skip(function () { return true; })->isDue($timezone));
 
         $e = new Event($this->id, 'php foo');
-        $this->assertTrue($e->cron('* * * * * *')->skip(function () { return false; })->isDue($timezone));
+        $this->assertTrue($e->cron('* * * * *')->skip(function () { return false; })->isDue($timezone));
+    }
+
+    /**
+     * @test
+     * @group legacy
+     * @expectedDeprecation Using cron expression with more than 5 parts is deprecated from v1.8 and will result in exception in v2.0. If you are using dragonmantank/cron-expression package be aware that passing more than five parts to this method will result in exception.
+     */
+    public function moreThanFivePartsInCronExpressionResultsInDeprecationNotice()
+    {
+        $e = new Event(1, 'php foo -v');
+        $e->cron('* * * * * *');
+
+        $this->assertTrue(true);
     }
 
     public function testBuildCommand()
