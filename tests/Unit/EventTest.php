@@ -43,21 +43,21 @@ class EventTest extends TestCase
     public function testDynamicMethods()
     {
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('*/6 * * * * *', $e->everySixMinutes()->getExpression());
+        $this->assertEquals('*/6 * * * *', $e->everySixMinutes()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 */12 * * * *', $e->everyTwelveHours()->getExpression());
+        $this->assertEquals('0 */12 * * *', $e->everyTwelveHours()->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('*/35 * * * * *', $e->everyThirtyFiveMinutes()->getExpression());
+        $this->assertEquals('*/35 * * * *', $e->everyThirtyFiveMinutes()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('*/578 * * * * *', $e->everyFiveHundredSeventyEightMinutes()->getExpression());
+        $this->assertEquals('*/578 * * * *', $e->everyFiveHundredSeventyEightMinutes()->getExpression());
 
         $e = new Event($this->id, 'php foo');
         $e->everyFiftyMinutes()->mondays();
 
-        $this->assertEquals('*/50 * * * 1 *', $e->getExpression());
+        $this->assertEquals('*/50 * * * 1', $e->getExpression());
         $this->assertFalse($e->isDue(new \DateTimeZone('UTC')));
     }
 
@@ -69,28 +69,28 @@ class EventTest extends TestCase
         $id = uniqid();
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('0 * * * * *', $e->hourly()->getExpression());
+        $this->assertEquals('0 * * * *', $e->hourly()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 0 * * * *', $e->daily()->getExpression());
+        $this->assertEquals('0 0 * * *', $e->daily()->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('45 15 * * * *', $e->dailyAt('15:45')->getExpression());
+        $this->assertEquals('45 15 * * *', $e->dailyAt('15:45')->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 4,8 * * * *', $e->twiceDaily(4, 8)->getExpression());
+        $this->assertEquals('0 4,8 * * *', $e->twiceDaily(4, 8)->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('0 0 * * 0 *', $e->weekly()->getExpression());
+        $this->assertEquals('0 0 * * 0', $e->weekly()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 0 1 * * *', $e->monthly()->getExpression());
+        $this->assertEquals('0 0 1 * *', $e->monthly()->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('0 0 1 */3 * *', $e->quarterly()->getExpression());
+        $this->assertEquals('0 0 1 */3 *', $e->quarterly()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 0 1 1 * *', $e->yearly()->getExpression());
+        $this->assertEquals('0 0 1 1 *', $e->yearly()->getExpression());
     }
 
     /**
@@ -101,13 +101,13 @@ class EventTest extends TestCase
         $timezone = new \DateTimeZone('UTC');
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('30 1 11 4 * *', $e->on('01:30 11-04-2016')->getExpression());
+        $this->assertEquals('30 1 11 4 *', $e->on('01:30 11-04-2016')->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('45 13 * * * *', $e->on('13:45')->getExpression());
+        $this->assertEquals('45 13 * * *', $e->on('13:45')->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('45 13 * * * *', $e->at('13:45')->getExpression());
+        $this->assertEquals('45 13 * * *', $e->at('13:45')->getExpression());
 
         $e = new Event($this->id, 'php bar');
 
@@ -117,10 +117,10 @@ class EventTest extends TestCase
           ->month('1-8')
           ->dayOfWeek('mon,wed,thu');
 
-        $this->assertEquals('12,24,35 1-5,4,8 1,6,12,19,25 1-8 mon,wed,thu *', $e->getExpression());
+        $this->assertEquals('12,24,35 1-5,4,8 1,6,12,19,25 1-8 mon,wed,thu', $e->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('45 13 * * * *', $e->cron('45 13 * * * *')->getExpression());
+        $this->assertEquals('45 13 * * *', $e->cron('45 13 * * *')->getExpression());
 
         $e = new Event($this->id, 'php foo');
         $this->assertTrue($e->isDue($timezone));
@@ -132,22 +132,22 @@ class EventTest extends TestCase
     public function testWeekdayMethods()
     {
         $e = new Event($this->id, 'php qux');
-        $this->assertEquals('* * * * 2 *', $e->tuesdays()->getExpression());
+        $this->assertEquals('* * * * 2', $e->tuesdays()->getExpression());
 
         $e = new Event($this->id, 'php flob');
-        $this->assertEquals('* * * * 3 *', $e->wednesdays()->getExpression());
+        $this->assertEquals('* * * * 3', $e->wednesdays()->getExpression());
 
         $e = new Event($this->id, 'php foo');
-        $this->assertEquals('* * * * 4 *', $e->thursdays()->getExpression());
+        $this->assertEquals('* * * * 4', $e->thursdays()->getExpression());
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('* * * * 5 *', $e->fridays()->getExpression());
+        $this->assertEquals('* * * * 5', $e->fridays()->getExpression());
 
         $e = new Event($this->id, 'php baz');
-        $this->assertEquals('* * * * 1-5 *', $e->weekdays()->getExpression());
+        $this->assertEquals('* * * * 1-5', $e->weekdays()->getExpression());
 
         $e = new Event($this->id, 'php bla');
-        $this->assertEquals('30 1 * * 2 *', $e->weeklyOn('2', '01:30')->getExpression());
+        $this->assertEquals('30 1 * * 2', $e->weeklyOn('2', '01:30')->getExpression());
     }
 
     public function testCronLifeTime()
@@ -214,7 +214,7 @@ class EventTest extends TestCase
         $this->assertTrue($e->sundays()->isDue($timezone));
 
         $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 19 * * 6 *', $e->saturdays()->at('19:00')->timezone('EST')->getExpression());
+        $this->assertEquals('0 19 * * 6', $e->saturdays()->at('19:00')->timezone('EST')->getExpression());
         $this->assertTrue($e->isDue($timezone));
 
         $e = new Event($this->id, 'php bar');
@@ -266,7 +266,7 @@ class EventTest extends TestCase
 
         $event->on('Thursday 8:00');
 
-        $this->assertSame('0 8 * * * *', $event->getExpression());
+        $this->assertSame('0 8 * * *', $event->getExpression());
     }
 
     /** @test */

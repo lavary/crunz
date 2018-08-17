@@ -86,7 +86,7 @@ class Event
      *
      * @var string
      */
-    protected $expression = '* * * * * *';
+    protected $expression = '* * * * *';
 
     /**
      * The timezone the date should be evaluated on.
@@ -323,7 +323,7 @@ class Event
      */
     public function hourly()
     {
-        return $this->cron('0 * * * * *');
+        return $this->cron('0 * * * *');
     }
 
     /**
@@ -333,7 +333,7 @@ class Event
      */
     public function daily()
     {
-        return $this->cron('0 0 * * * *');
+        return $this->cron('0 0 * * *');
     }
 
     /**
@@ -526,7 +526,7 @@ class Event
      */
     public function weekly()
     {
-        return $this->cron('0 0 * * 0 *');
+        return $this->cron('0 0 * * 0');
     }
 
     /**
@@ -551,7 +551,7 @@ class Event
      */
     public function monthly()
     {
-        return $this->cron('0 0 1 * * *');
+        return $this->cron('0 0 1 * *');
     }
 
     /**
@@ -561,7 +561,7 @@ class Event
      */
     public function quarterly()
     {
-        return $this->cron('0 0 1 */3 * *');
+        return $this->cron('0 0 1 */3 *');
     }
 
     /**
@@ -571,7 +571,7 @@ class Event
      */
     public function yearly()
     {
-        return $this->cron('0 0 1 1 * *');
+        return $this->cron('0 0 1 1 *');
     }
 
     /**
