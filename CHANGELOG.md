@@ -10,6 +10,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
+## 1.9.0 - 2018-08-18
+
+### Changed
+
+- Container cache directory is in `<OS-temp-dir>/.crunz/<current-user>/<crunz-version>` now,
+[#128](https://github.com/lavary/crunz/issues/128) - PR [#132](https://github.com/lavary/crunz/pull/132)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk) 
+
+### Fixed
+
+- Crunz can be used with `dragonmantank/cron-expression` package, solves issue
+[#126](https://github.com/lavary/crunz/issues/126) - PR [#131](https://github.com/lavary/crunz/pull/131)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+### Deprecated
+
+- Passing more than five parts (e.g `* * * * * *`) to `Crunz\Event::cron` - PR [#131](https://github.com/lavary/crunz/pull/131)
+
 ## 1.8.0 - 2018-08-15
 
 ### Added

@@ -88,7 +88,7 @@ class Event
      *
      * @var string
      */
-    protected $expression = '* * * * * *';
+    protected $expression = '* * * * *';
 
     /**
      * The timezone the date should be evaluated on.
@@ -313,6 +313,21 @@ class Event
      */
     public function cron($expression)
     {
+        $parts = \preg_split(
+            '/\s/',
+            $expression,
+            -1,
+            PREG_SPLIT_NO_EMPTY
+        );
+
+        // @TODO Throw exception in v2
+        if (\count($parts) > 5) {
+            @\trigger_error(
+                'Using cron expression with more than 5 parts is deprecated from v1.9 and will result in exception in v2.0. If you are using dragonmantank/cron-expression package be aware that passing more than five parts to this method will result in exception.',
+                E_USER_DEPRECATED
+            );
+        }
+
         $this->expression = $expression;
 
         return $this;
@@ -325,7 +340,7 @@ class Event
      */
     public function hourly()
     {
-        return $this->cron('0 * * * * *');
+        return $this->cron('0 * * * *');
     }
 
     /**
@@ -335,7 +350,7 @@ class Event
      */
     public function daily()
     {
-        return $this->cron('0 0 * * * *');
+        return $this->cron('0 0 * * *');
     }
 
     /**
@@ -528,7 +543,7 @@ class Event
      */
     public function weekly()
     {
-        return $this->cron('0 0 * * 0 *');
+        return $this->cron('0 0 * * 0');
     }
 
     /**
@@ -553,7 +568,7 @@ class Event
      */
     public function monthly()
     {
-        return $this->cron('0 0 1 * * *');
+        return $this->cron('0 0 1 * *');
     }
 
     /**
@@ -563,7 +578,7 @@ class Event
      */
     public function quarterly()
     {
-        return $this->cron('0 0 1 */3 * *');
+        return $this->cron('0 0 1 */3 *');
     }
 
     /**
@@ -573,7 +588,7 @@ class Event
      */
     public function yearly()
     {
-        return $this->cron('0 0 1 1 * *');
+        return $this->cron('0 0 1 1 *');
     }
 
     /**

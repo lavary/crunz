@@ -13,7 +13,7 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 
 |Version|Linux build|Windows build|
 |---|---|---|
-|stable (v1.8.0)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.8.0.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
+|stable (v1.9.0)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.9.0.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
 |v2 (master/v2.x-dev)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 |v1 (v1.x-dev)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
