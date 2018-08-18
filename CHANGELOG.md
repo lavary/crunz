@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Crunz can be used with `dragonmantank/cron-expression` package, solves issue
+[#126](https://github.com/lavary/crunz/issues/126) - PR [#131](https://github.com/lavary/crunz/pull/131)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+### Deprecated
+
+- Passing more than five parts (e.g `* * * * * *`) to `Crunz\Event::cron` - PR [#131](https://github.com/lavary/crunz/pull/131)
+
 ## 1.8.0 - 2018-08-15
 
 ### Added
