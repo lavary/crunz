@@ -201,7 +201,7 @@ class Application extends SymfonyApplication
             DIRECTORY_SEPARATOR,
             [
                 \sys_get_temp_dir(),
-                '.crunz'
+                '.crunz',
             ]
         );
     }
@@ -216,7 +216,7 @@ class Application extends SymfonyApplication
             [
                 $this->getBaseCacheDir(),
                 \get_current_user(),
-                $this->getVersion()
+                $this->getVersion(),
             ]
         );
     }
