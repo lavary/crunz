@@ -85,45 +85,34 @@ class Application extends SymfonyApplication
 
     private function initializeContainer()
     {
-        $containerCacheDirWritable = $this->createBaseCacheDirectory();
+        $class = 'CrunzContainer';
+        $baseClass = 'Container';
+        $cache = new ConfigCache(
+            implode(
+                DIRECTORY_SEPARATOR,
+                [
+                    $this->getCacheDir(),
+                    "{$class}.php",
+                ]
+            ),
+            true
+        );
 
-        if ($containerCacheDirWritable) {
-            $class = 'CrunzContainer';
-            $baseClass = 'Container';
-            $cache = new ConfigCache(
-                implode(
-                    DIRECTORY_SEPARATOR,
-                    [
-                        $this->getContainerCacheDir(),
-                        "{$class}.php",
-                    ]
-                ),
-                true
+        if (!$cache->isFresh()) {
+            $containerBuilder = $this->buildContainer();
+            $containerBuilder->compile();
+
+            $this->dumpContainer(
+                $cache,
+                $containerBuilder,
+                $class,
+                $baseClass
             );
-
-            if (!$cache->isFresh()) {
-                $containerBuilder = $this->buildContainer();
-                $containerBuilder->compile();
-
-                $this->dumpContainer(
-                    $cache,
-                    $containerBuilder,
-                    $class,
-                    $baseClass
-                );
-            }
-
-            require_once $cache->getPath();
-
-            $this->container = new $class();
-
-            return;
         }
 
-        $containerBuilder = $this->buildContainer();
-        $containerBuilder->compile();
+        require_once $cache->getPath();
 
-        $this->container = $containerBuilder;
+        $this->container = new $class();
     }
 
     /**
@@ -170,53 +159,15 @@ class Application extends SymfonyApplication
     }
 
     /**
-     * @return bool
-     */
-    private function createBaseCacheDirectory()
-    {
-        $baseCacheDir = $this->getBaseCacheDir();
-
-        if (!\is_dir($baseCacheDir)) {
-            $makeDirResult = \mkdir(
-                $this->getBaseCacheDir(),
-                0777,
-                true
-            );
-
-            return $makeDirResult
-                && \is_dir($baseCacheDir)
-                && \is_writable($baseCacheDir)
-            ;
-        }
-
-        return \is_writable($baseCacheDir);
-    }
-
-    /**
      * @return string
      */
-    private function getBaseCacheDir()
+    private function getCacheDir()
     {
         return implode(
             DIRECTORY_SEPARATOR,
             [
                 \sys_get_temp_dir(),
-                '.crunz'
-            ]
-        );
-    }
-
-    /**
-     * @return string
-     */
-    private function getContainerCacheDir()
-    {
-        return implode(
-            DIRECTORY_SEPARATOR,
-            [
-                $this->getBaseCacheDir(),
-                \get_current_user(),
-                $this->getVersion()
+                'crunz',
             ]
         );
     }
