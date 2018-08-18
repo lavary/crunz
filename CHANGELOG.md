@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.9.0 - 2018-08-18
+
+### Changed
+
+- Container cache directory is in `<OS-temp-dir>/.crunz/<current-user>/<crunz-version>` now,
+[#128](https://github.com/lavary/crunz/issues/128) - PR [#132](https://github.com/lavary/crunz/pull/132)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk) 
+
 ### Fixed
 
 - Crunz can be used with `dragonmantank/cron-expression` package, solves issue
