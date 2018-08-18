@@ -321,7 +321,7 @@ class Event
         // @TODO Throw exception in v2
         if (\count($parts) > 5) {
             @trigger_error(
-                'Using cron expression with more than 5 parts is deprecated from v1.8 and will result in exception in v2.0. If you are using dragonmantank/cron-expression package be aware that passing more than five parts to this method will result in exception.',
+                'Using cron expression with more than 5 parts is deprecated from v1.9 and will result in exception in v2.0. If you are using dragonmantank/cron-expression package be aware that passing more than five parts to this method will result in exception.',
                 E_USER_DEPRECATED
             );
         }
