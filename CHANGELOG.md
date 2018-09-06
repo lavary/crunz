@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+
+- Remove `guzzlehttp/guzzle` dependency and use in-house `CurlHttpClient` -
+PR [#132](https://github.com/lavary/crunz/pull/136)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ## 1.9.0 - 2018-08-18
 
 ### Changed
