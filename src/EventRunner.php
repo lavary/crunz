@@ -234,7 +234,11 @@ class EventRunner
         if ($logErrors) {
             $this->logger->error($this->formatEventError($event));
         } else {
-            $this->display($event->getProcess()->getErrorOutput());
+            $output = $event->getProcess()
+                ->getOutput();
+
+            $this->output
+                ->write("<error>{$output}</error>");
         }
 
         // Send error as email as configured
@@ -279,7 +283,7 @@ class EventRunner
             . $event->getCommandForDisplay()
             . ') '
             . PHP_EOL
-            . $event->getProcess()->getErrorOutput()
+            . $event->getProcess()->getOutput()
             . PHP_EOL;
     }
 
