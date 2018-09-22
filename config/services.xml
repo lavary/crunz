@@ -198,8 +198,31 @@
         </service>
 
         <service
+            class="Crunz\HttpClient\StreamHttpClient"
+            id="Crunz\HttpClient\StreamHttpClient"
+            public="false"
+        />
+
+        <service
+            class="Crunz\HttpClient\FallbackHttpClient"
+            id="Crunz\HttpClient\FallbackHttpClient"
+            public="false"
+        >
+            <argument id="Crunz\HttpClient\StreamHttpClient" type="service"/>
+            <argument id="Crunz\HttpClient\CurlHttpClient" type="service"/>
+            <argument type="service" id="Crunz\Logger\ConsoleLoggerInterface"/>
+        </service>
+
+        <service
             class="Crunz\HttpClient\CurlHttpClient"
+            id="Crunz\HttpClient\CurlHttpClient"
+            public="false"
+        />
+
+        <service
+            alias="Crunz\HttpClient\FallbackHttpClient"
             id="Crunz\HttpClient\HttpClientInterface"
+            public="false"
         />
 
         <service
