@@ -7,9 +7,11 @@ PHP_VERSION="$1";
 add-apt-repository -y -u ppa:ondrej/php;
 
 apt-get install git \
+    unzip \
     make \
     "php$PHP_VERSION" \
     "php$PHP_VERSION-cli" \
+    "php$PHP_VERSION-curl" \
     "php$PHP_VERSION-common" \
     "php$PHP_VERSION-zip" \
     "php$PHP_VERSION-mbstring" \

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Crunz;
 
 use Crunz\Configuration\Configuration;
+use Crunz\HttpClient\HttpClientInterface;
+use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Logger\LoggerFactory;
+use Crunz\Pinger\PingableInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class EventRunner
@@ -40,6 +43,10 @@ class EventRunner
     private $configuration;
     /** @var LoggerFactory */
     private $loggerFactory;
+    /** @var HttpClientInterface */
+    private $httpClient;
+    /** @var ConsoleLoggerInterface */
+    private $consoleLogger;
 
     /**
      * Instantiate the event runner.
@@ -48,7 +55,9 @@ class EventRunner
         Invoker $invoker,
         Configuration $configuration,
         Mailer $mailer,
-        LoggerFactory $loggerFactory
+        LoggerFactory $loggerFactory,
+        HttpClientInterface $httpClient,
+        ConsoleLoggerInterface $consoleLogger
     ) {
         $outputLogFile = $configuration->get('output_log_file');
         $errorLogFile = $configuration->get('errors_log_file');
@@ -64,6 +73,8 @@ class EventRunner
         $this->mailer = $mailer;
         $this->configuration = $configuration;
         $this->loggerFactory = $loggerFactory;
+        $this->httpClient = $httpClient;
+        $this->consoleLogger = $consoleLogger;
     }
 
     /**
@@ -75,6 +86,11 @@ class EventRunner
         $this->output = $output;
 
         foreach ($this->schedules as $schedule) {
+            $this->consoleLogger
+                ->debug("Invoke Schedule's ping before");
+
+            $this->pingBefore($schedule);
+
             // Running the before-callbacks of the current schedule
             $this->invoke($schedule->beforeCallbacks());
 
@@ -115,6 +131,11 @@ class EventRunner
             );
         }
 
+        $this->consoleLogger
+            ->debug("Invoke Event's ping before.");
+
+        $this->pingBefore($event);
+
         // Running the before-callbacks
         $event->outputStream = ($this->invoke($event->beforeCallbacks()));
         $event->start();
@@ -136,17 +157,30 @@ class EventRunner
                         continue;
                     }
 
+                    $runStatus = '';
+
                     if ($proc->isSuccessful()) {
+                        $this->consoleLogger
+                            ->debug("Invoke Event's ping after.");
+                        $this->pingAfter($event);
+
+                        $runStatus = '<info>success</info>';
+
                         $event->outputStream .= $proc->getOutput();
                         $event->outputStream .= $this->invoke($event->afterCallbacks());
 
                         $this->handleOutput($event);
                     } else {
+                        $runStatus = '<error>fail</error>';
                         // Calling registered error callbacks with an instance of $event as argument
                         $this->invoke($schedule->errorCallbacks(), [$event]);
-
                         $this->handleError($event);
                     }
+
+                    $id = $event->description ?: $event->getId();
+
+                    $this->consoleLogger
+                        ->debug("Task <info>${id}</info> status: {$runStatus}.");
 
                     // Dismiss the event if it's finished
                     $schedule->dismissEvent($eventKey);
@@ -156,6 +190,10 @@ class EventRunner
                 // run the schedule's after-callbacks and remove
                 // the Schedule from list of active schedules.                                                                                                                           zzzwwscxqqqAAAQ11
                 if (!\count($schedule->events())) {
+                    $this->consoleLogger
+                        ->debug("Invoke Schedule's ping after.");
+
+                    $this->pingAfter($schedule);
                     $this->invoke($schedule->afterCallbacks());
                     unset($this->schedules[$scheduleKey]);
                 }
@@ -236,7 +274,11 @@ class EventRunner
         if ($logErrors) {
             $this->logger->error($this->formatEventError($event));
         } else {
-            $this->display($event->getProcess()->getErrorOutput());
+            $output = $event->getProcess()
+                ->getOutput();
+
+            $this->output
+                ->write("<error>{$output}</error>");
         }
 
         // Send error as email as configured
@@ -281,7 +323,7 @@ class EventRunner
             . $event->getCommandForDisplay()
             . ') '
             . PHP_EOL
-            . $event->getProcess()->getErrorOutput()
+            . $event->getProcess()->getOutput()
             . PHP_EOL;
     }
 
@@ -295,5 +337,37 @@ class EventRunner
         $this->output
             ->write(\is_string($output) ? $output : '')
         ;
+    }
+
+    /**
+     * @param PingableInterface $schedule
+     */
+    private function pingBefore(PingableInterface $schedule)
+    {
+        if (!$schedule->hasPingBefore()) {
+            $this->consoleLogger
+                ->debug('There is no ping before url.');
+
+            return;
+        }
+
+        $this->httpClient
+            ->ping($schedule->getPingBeforeUrl());
+    }
+
+    /**
+     * @param PingableInterface $schedule
+     */
+    private function pingAfter(PingableInterface $schedule)
+    {
+        if (!$schedule->hasPingAfter()) {
+            $this->consoleLogger
+                ->debug('There is no ping after url.');
+
+            return;
+        }
+
+        $this->httpClient
+            ->ping($schedule->getPingAfterUrl());
     }
 }

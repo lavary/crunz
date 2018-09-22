@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Crunz;
 
-class Schedule
+use Crunz\Pinger\PingableInterface;
+use Crunz\Pinger\PingableTrait;
+
+class Schedule implements PingableInterface
 {
+    use PingableTrait;
+
     /**
      * All of the events on the schedule.
      *
@@ -51,34 +56,6 @@ class Schedule
         $this->events[] = $event = new Event($this->id(), $command);
 
         return $event;
-    }
-
-    /**
-     * Register a callback to ping a given URL before the job runs.
-     *
-     * @param string $url
-     *
-     * @return $this
-     */
-    public function pingBefore($url)
-    {
-        return $this->before(function () use ($url) {
-            (new HttpClient())->get($url);
-        });
-    }
-
-    /**
-     * Register a callback to ping a given URL after the job runs.
-     *
-     * @param string $url
-     *
-     * @return $this
-     */
-    public function thenPing($url)
-    {
-        return $this->then(function () use ($url) {
-            (new HttpClient())->get($url);
-        });
     }
 
     /**

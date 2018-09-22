@@ -3,7 +3,7 @@
 
 $composer = <<SCRIPT
 
-COMPOSER_VERSION="1.6.5";
+COMPOSER_VERSION="1.7.2";
 BIN_DIR="/home/vagrant/bin";
 COMPOSER_FILE="$BIN_DIR/composer";
 

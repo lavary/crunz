@@ -7,9 +7,7 @@ namespace Crunz;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application as SymfonyApplication;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
@@ -73,14 +71,16 @@ class Application extends SymfonyApplication
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         if (null === $output) {
-            $output = new ConsoleOutput();
+            $output = $this->container
+                ->get(OutputInterface::class);
         }
 
         if (null === $input) {
-            $input = new ArgvInput();
+            $input = $this->container
+                ->get(InputInterface::class);
         }
 
-        $this->registerDeprecationHandler($input, $output);
+        $this->registerDeprecationHandler();
 
         return parent::run($input, $output);
     }
@@ -223,9 +223,11 @@ class Application extends SymfonyApplication
         );
     }
 
-    private function registerDeprecationHandler(InputInterface $input, OutputInterface $output)
+    private function registerDeprecationHandler()
     {
-        $io = new SymfonyStyle($input, $output);
+        $io = $this->container
+            ->get(SymfonyStyle::class);
+
         \set_error_handler(
             function (
                 $errorNumber,

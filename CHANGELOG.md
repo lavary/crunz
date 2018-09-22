@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
+## 1.10.0 - 2018-09-22
+
+### Fixed
+
+- Treat whole output of failed command as "error output", solves issue
+[#135](https://github.com/lavary/crunz/issues/135),
+[#134](https://github.com/lavary/crunz/issues/134) - PR [#137](https://github.com/lavary/crunz/pull/137)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+### Removed
+
+- Remove `guzzlehttp/guzzle` dependency and use in-house `CurlHttpClient` -
+PR [#136](https://github.com/lavary/crunz/pull/136)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ## 1.9.0 - 2018-08-18
 
 ### Changed

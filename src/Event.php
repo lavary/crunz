@@ -9,7 +9,8 @@ use Closure;
 use Cron\CronExpression;
 use Crunz\Exception\NotImplementedException;
 use Crunz\Logger\Logger;
-use GuzzleHttp\Client as HttpClient;
+use Crunz\Pinger\PingableInterface;
+use Crunz\Pinger\PingableTrait;
 use SuperClosure\Serializer;
 use Symfony\Component\Process\Process;
 
@@ -19,8 +20,10 @@ use Symfony\Component\Process\Process;
  * @method self everyDay()    Run task every day.
  * @method self everyMonth()  Run task every month.
  */
-class Event
+class Event implements PingableInterface
 {
+    use PingableTrait;
+
     /**
      * Indicates if the command should not overlap itself.
      *
@@ -792,20 +795,6 @@ class Event
     }
 
     /**
-     * Register a callback to ping a given URL before the job runs.
-     *
-     * @param string $url
-     *
-     * @return $this
-     */
-    public function pingBefore($url)
-    {
-        return $this->before(function () use ($url) {
-            (new HttpClient())->get($url);
-        });
-    }
-
-    /**
      * Register a callback to be called before the operation.
      *
      * @param \Closure $callback
@@ -817,20 +806,6 @@ class Event
         $this->beforeCallbacks[] = $callback;
 
         return $this;
-    }
-
-    /**
-     * Register a callback to ping a given URL after the job runs.
-     *
-     * @param string $url
-     *
-     * @return $this
-     */
-    public function thenPing($url)
-    {
-        return $this->then(function () use ($url) {
-            (new HttpClient())->get($url);
-        });
     }
 
     /**

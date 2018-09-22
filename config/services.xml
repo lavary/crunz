@@ -21,8 +21,7 @@
             class="Crunz\Console\Command\ClosureRunCommand"
             id="Crunz\Console\Command\ClosureRunCommand"
             public="true"
-        >
-        </service>
+        />
 
         <service
             class="Crunz\Console\Command\ConfigGeneratorCommand"
@@ -146,6 +145,8 @@
             <argument type="service" id="Crunz\Configuration\Configuration"/>
             <argument type="service" id="Crunz\Mailer"/>
             <argument type="service" id="Crunz\Logger\LoggerFactory"/>
+            <argument type="service" id="Crunz\HttpClient\HttpClientLoggerDecorator"/>
+            <argument type="service" id="Crunz\Logger\ConsoleLoggerInterface"/>
         </service>
 
         <service
@@ -164,6 +165,48 @@
             public="false"
         >
             <argument type="service" id="Crunz\Configuration\Configuration"/>
+        </service>
+
+        <service
+            class="Symfony\Component\Console\Output\ConsoleOutput"
+            id="Symfony\Component\Console\Output\OutputInterface"
+            public="true"
+        />
+
+        <service
+            class="Symfony\Component\Console\Input\ArgvInput"
+            id="Symfony\Component\Console\Input\InputInterface"
+            public="true"
+        />
+
+        <service
+            class="Symfony\Component\Console\Style\SymfonyStyle"
+            id="Symfony\Component\Console\Style\SymfonyStyle"
+            public="true"
+        >
+            <argument type="service" id="Symfony\Component\Console\Input\InputInterface"/>
+            <argument type="service" id="Symfony\Component\Console\Output\OutputInterface"/>
+        </service>
+
+        <service
+            class="Crunz\Logger\ConsoleLogger"
+            id="Crunz\Logger\ConsoleLoggerInterface"
+            public="false"
+        >
+            <argument type="service" id="Symfony\Component\Console\Style\SymfonyStyle" />
+        </service>
+
+        <service
+            class="Crunz\HttpClient\CurlHttpClient"
+            id="Crunz\HttpClient\HttpClientInterface"
+        />
+
+        <service
+            class="Crunz\HttpClient\HttpClientLoggerDecorator"
+            id="Crunz\HttpClient\HttpClientLoggerDecorator"
+        >
+            <argument type="service" id="Crunz\HttpClient\HttpClientInterface"/>
+            <argument type="service" id="Crunz\Logger\ConsoleLoggerInterface"/>
         </service>
     </services>
 </container>

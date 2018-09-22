@@ -26,7 +26,7 @@
     },
     "require": {
         "php": "^7.1.3",
-        "guzzlehttp/guzzle": "^6.1",
+        "ext-curl": "*",
         "jeremeamia/superclosure": "^2.2",
         "monolog/monolog": "^1.19",
         "mtdowling/cron-expression": "^1.1",
