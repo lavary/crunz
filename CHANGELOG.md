@@ -23,7 +23,7 @@ by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 ### Removed
 
 - Remove `guzzlehttp/guzzle` dependency and use in-house `CurlHttpClient` -
-PR [#132](https://github.com/lavary/crunz/pull/136)
+PR [#136](https://github.com/lavary/crunz/pull/136)
 by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
 ## 1.9.0 - 2018-08-18
