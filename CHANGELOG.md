@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.10.1 - 2018-09-22
+
 ### Fixed
 
 - Incompatibility for users without cURL extension but with enabled `allow_url_fopen` - PR [#139](https://github.com/lavary/crunz/pull/139)
