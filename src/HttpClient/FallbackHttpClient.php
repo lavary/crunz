@@ -38,6 +38,7 @@ final class FallbackHttpClient implements HttpClientInterface
 
     /**
      * @return HttpClientInterface
+     *
      * @throws HttpClientException
      */
     private function chooseHttpClient()
@@ -58,7 +59,7 @@ final class FallbackHttpClient implements HttpClientInterface
             return $this->httpClient;
         }
 
-        if (\ini_get('allow_url_fopen') === '1') {
+        if ('1' === \ini_get('allow_url_fopen')) {
             $this->httpClient = $this->streamHttpClient;
 
             $this->consoleLogger
