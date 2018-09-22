@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Treat whole output of failed command as "error output", solves issue
+[#135](https://github.com/lavary/crunz/issues/135),
+[#134](https://github.com/lavary/crunz/issues/134) - PR [#137](https://github.com/lavary/crunz/pull/137)
+by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
 ## 1.9.0 - 2018-08-18
 
 ### Changed
