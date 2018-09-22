@@ -13,4 +13,5 @@ Vagrantfile export-ignore
 appveyor.yml export-ignore
 phpunit.php export-ignore
 phpunit.xml export-ignore
-.php_cs.dist
+.php_cs.dist export-ignore
+/.github export-ignore
