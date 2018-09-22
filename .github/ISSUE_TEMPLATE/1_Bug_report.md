@@ -1,10 +1,14 @@
 ---
-name: 🐛 Bug Report
+name: "\U0001F41B Bug Report"
 about: Report errors and problems
 
 ---
 
 **Crunz version**: x.y.z
+
+**PHP version**: x.y.z
+
+**Operating system type and version**:
 
 **Description**  
 <!-- A clear and concise description of the problem. -->
