@@ -13,7 +13,7 @@ final class StreamHttpClientTest extends TestCase
     {
         $this->expectException(HttpClientException::class);
         $this->expectExceptionMessage(
-            'Ping failed with message: "fopen(http://www.wrong-address.tld): failed to open stream: php_network_getaddresses: getaddrinfo failed: Name or service not known".'
+            'Ping failed with message: "fopen(http://www.wrong-address.tld): failed to open stream: php_network_getaddresses: getaddrinfo failed:'
         );
 
         $client = new StreamHttpClient();
