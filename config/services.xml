@@ -169,10 +169,23 @@
         </service>
 
         <service
-            class="Symfony\Component\Console\Output\ConsoleOutput"
             id="Symfony\Component\Console\Output\OutputInterface"
+            class="Symfony\Component\Console\Output\ConsoleOutput"
             public="true"
-        />
+        >
+            <factory
+                service="Crunz\Output\OutputFactory"
+                method="createOutput"
+            />
+        </service>
+
+        <service
+            class="Crunz\Output\OutputFactory"
+            id="Crunz\Output\OutputFactory"
+            public="false"
+        >
+            <argument type="service" id="Symfony\Component\Console\Input\InputInterface" />
+        </service>
 
         <service
             class="Symfony\Component\Console\Input\ArgvInput"
