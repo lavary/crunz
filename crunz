@@ -13,37 +13,47 @@
 |
 */
 
-$autoloadSrc = \implode(
-    DIRECTORY_SEPARATOR,
-    [
-        __DIR__,
-        'vendor',
-        'autoload.php'
-    ]
-);
+$generatePath = function (array $parts) {
+    return \implode(DIRECTORY_SEPARATOR, $parts);
+};
+$autoloadPaths = [
+    // Dependency
+    $generatePath(
+        [
+            __DIR__,
+            '..',
+            '..',
+            'autoload.php'
+        ]
+    ),
+    // Local dev
+    $generatePath(
+        [
+            __DIR__,
+            'vendor',
+            'autoload.php'
+        ]
+    ),
+];
 
-$autoloadBin = \implode(
-    DIRECTORY_SEPARATOR,
-    [
-        __DIR__,
-        '..',
-        '..',
-        'autoload.php'
-    ]
-);
+$autoloadFileFound = false;
 
-$hasBinAutoloader = \file_exists($autoloadBin);
-
-if ($hasBinAutoloader) {
-    require_once $autoloadBin;
-} else {
-    require_once $autoloadSrc;
+foreach ($autoloadPaths as $autoloadPath) {
+    if (\file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+        $autoloadFileFound = true;
+        break;
+    }
 }
 
-define('CRUNZ_ROOT', __DIR__);
-
-// Setting the base directory as an environment variable
-setbase(getroot($hasBinAutoloader ? $autoloadBin : $autoloadSrc));
+if ($autoloadFileFound === false) {
+    throw new RuntimeException(
+        \sprintf(
+            'Unable to find "vendor/autoload.php" in "%s" paths.',
+            \implode('", "', $autoloadPaths)
+        )
+    );
+}
 
 $application = new Crunz\Application('Crunz Command Line Interface', 'v1.10.1');
 $application->run();
