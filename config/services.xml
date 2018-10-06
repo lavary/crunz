@@ -30,6 +30,7 @@
         >
             <argument type="service" id="Crunz\Timezone\ProviderInterface"/>
             <argument type="service" id="Symfony\Component\Filesystem\Filesystem"/>
+            <argument type="service" id="Crunz\Filesystem\FilesystemInterface"/>
         </service>
 
         <service
