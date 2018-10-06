@@ -2,8 +2,8 @@
 
 # This option defines where the task files and
 # directories reside.
-# The path is relative to the project's root directory,
-# where the Crunz is installed (Trailing slashes will be ignored).
+# The path is relative to this config file.
+# Trailing slashes will be ignored.
 source: tasks
 
 # The suffix is meant to target the task files inside the ":source" directory.
