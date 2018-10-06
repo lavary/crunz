@@ -169,10 +169,10 @@ class TaskGeneratorCommand extends Command
     protected function outputPath()
     {
         $source = $this->config
-            ->get('source')
+            ->getSourcePath()
         ;
         $destination = $this->ask('Where do you want to save the file? (Press enter for the current directory)');
-        $outputPath = null !== $destination ? $destination : generate_path($source);
+        $outputPath = null !== $destination ? $destination : $source;
 
         if (!\file_exists($outputPath)) {
             \mkdir($outputPath, 0744, true);
