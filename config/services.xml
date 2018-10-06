@@ -251,5 +251,17 @@
             id="Crunz\Filesystem\FilesystemInterface"
             public="false"
         />
+
+        <service
+            class="Crunz\Configuration\ConfigurationParser"
+            id="Crunz\Configuration\ConfigurationParserInterface"
+            public="false"
+        >
+            <argument type="service" id="Crunz\Configuration\Definition"/>
+            <argument type="service" id="Symfony\Component\Config\Definition\Processor"/>
+            <argument type="service" id="Crunz\Configuration\FileParser"/>
+            <argument type="service" id="Crunz\Logger\ConsoleLoggerInterface"/>
+            <argument type="service" id="Crunz\Filesystem\FilesystemInterface"/>
+        </service>
     </services>
 </container>
