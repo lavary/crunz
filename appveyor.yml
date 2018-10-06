@@ -41,4 +41,4 @@ install:
 ## Run the actual test
 test_script:
     - cd c:\projects\crunz
-    - vendor/bin/phpunit -c phpunit.xml
+    - vendor/bin/phpunit
