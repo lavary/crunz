@@ -68,46 +68,20 @@ class Configuration
         }
     }
 
-    /**
-     * @return string
-     *
-     * @throws ConfigFileNotFoundException
-     */
-    private function configFilePath()
+    /** @return string */
+    public function getSourcePath()
     {
-        $pathsParts = [
+        return $this->makePath(
             [
-                getbase(),
-                'crunz.yml',
-            ],
-            [
-                \getcwd(),
-                'crunz.yml',
-            ],
-            [
-                CRUNZ_ROOT,
-                'crunz.yml',
-            ],
-        ];
-
-        $paths = \array_map(
-            function (array $parts) {
-                return \implode(DIRECTORY_SEPARATOR, $parts);
-            },
-            $pathsParts
+                $this->filesystem
+                    ->getCwd(),
+                $this->get('source'),
+            ]
         );
+    }
 
-        foreach ($paths as $configPath) {
-            if (\file_exists($configPath)) {
-                return $configPath;
-            }
-        }
-
-        throw new ConfigFileNotFoundException(
-            \sprintf(
-                'Unable to find any config file. Tested paths: %s',
-                \implode(' ', $paths)
-            )
-        );
+    private function makePath(array $parts)
+    {
+        return \implode(DIRECTORY_SEPARATOR, $parts);
     }
 }
