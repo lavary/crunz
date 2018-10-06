@@ -18,10 +18,10 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 |v1 (v1.x-dev)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
 ## Roadmap
-|Version|Release date|Active support until|Security support until 
+|Version|Release date|Active support until|Bug support until 
 |---|---|---|---|
-|v1 (v1.x-dev)|April 2016|January 2019|June 2019
-|v2 (master/v2.x-dev)|January 2019|January 2020|June 2020
+|v1 (v1.x-dev)|April 2016|April 2019|April 2020
+|v2 (master/v2.x-dev)|April 2019|April 2021|April 2022
 
 ## Installation
 
