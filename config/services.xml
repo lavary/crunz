@@ -245,5 +245,11 @@
             <argument type="service" id="Crunz\HttpClient\HttpClientInterface"/>
             <argument type="service" id="Crunz\Logger\ConsoleLoggerInterface"/>
         </service>
+
+        <service
+            class="Crunz\Filesystem\Filesystem"
+            id="Crunz\Filesystem\FilesystemInterface"
+            public="false"
+        />
     </services>
 </container>
