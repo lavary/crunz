@@ -103,10 +103,9 @@
             id="Crunz\Configuration\Configuration"
             public="false"
         >
-            <argument type="service" id="Crunz\Configuration\Definition"/>
-            <argument type="service" id="Symfony\Component\Config\Definition\Processor"/>
-            <argument type="service" id="Crunz\Configuration\FileParser"/>
             <argument type="service" id="Symfony\Component\PropertyAccess\PropertyAccessorInterface"/>
+            <argument type="service" id="Crunz\Configuration\ConfigurationParserInterface"/>
+            <argument type="service" id="Crunz\Filesystem\FilesystemInterface"/>
         </service>
 
         <service
