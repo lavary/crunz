@@ -11,7 +11,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 class Application extends SymfonyApplication
 {
@@ -144,8 +144,8 @@ class Application extends SymfonyApplication
             ]
         );
 
-        $loader = new XmlFileLoader($containerBuilder, new FileLocator($configDir));
-        $loader->load('services.xml');
+        $phpLoader = new PhpFileLoader($containerBuilder, new FileLocator($configDir));
+        $phpLoader->load('services.php');
 
         return $containerBuilder;
     }
