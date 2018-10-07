@@ -1085,7 +1085,7 @@ class Event implements PingableInterface
     {
         $closure = (new Serializer())->serialize($closure);
         $serializedClosure = \http_build_query([$closure]);
-        $crunzRoot = CRUNZ_ROOT . DIRECTORY_SEPARATOR;
+        $crunzRoot = \getcwd() . DIRECTORY_SEPARATOR;
 
         return PHP_BINARY . " {$crunzRoot}crunz closure:run {$serializedClosure}";
     }

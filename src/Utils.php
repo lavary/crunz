@@ -7,60 +7,6 @@ namespace Crunz;
 final class Utils
 {
     /**
-     * Set project's root directory.
-     *
-     * @param string $autoloader
-     *
-     * @internal
-     *
-     * @return string
-     */
-    public static function setBaseDir($base_dir)
-    {
-        \putenv('CRUNZ_BASE_DIR=' . $base_dir);
-    }
-
-    /**
-     * Return project's root directory.
-     *
-     * @internal
-     *
-     * @return string
-     */
-    public static function getBaseDir()
-    {
-        return \getenv('CRUNZ_BASE_DIR');
-    }
-
-    /**
-     * Get the root directory by the autoloader file.
-     *
-     * @param string $autoloader
-     *
-     * @internal
-     *
-     * @return string
-     */
-    public static function getRoot($autoloader)
-    {
-        return \dirname($autoloader) . DIRECTORY_SEPARATOR . '..';
-    }
-
-    /**
-     * return absolute path for relative path.
-     *
-     * @param string $relative_path
-     *
-     * @internal
-     *
-     * @return string
-     */
-    public static function generatePath($relative_path)
-    {
-        return static::getBaseDir() . '/' . \trim($relative_path, '/');
-    }
-
-    /**
      * Get a subset of the items from the given array
      * From Illuminate/support helper functions.
      *

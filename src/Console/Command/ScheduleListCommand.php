@@ -32,10 +32,6 @@ class ScheduleListCommand extends Command
      */
     protected function configure()
     {
-        $sourcePath = $this->configuration
-            ->get('source')
-        ;
-
         $this->setName('schedule:list')
             ->setDescription('Displays the list of scheduled tasks.')
             ->setDefinition(
@@ -44,7 +40,8 @@ class ScheduleListCommand extends Command
                         'source',
                         InputArgument::OPTIONAL,
                         'The source directory for collecting the tasks.',
-                        generate_path($sourcePath)
+                        $this->configuration
+                            ->getSourcePath()
                     ),
                 ]
             )

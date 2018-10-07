@@ -2,13 +2,10 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$testCrunzRoot = \implode(
-    DIRECTORY_SEPARATOR,
-    [
-        __DIR__,
-        'tests'
-    ]
-);
+if (\strpos(\getcwd(), 'tests') !== false) {
+    return;
+}
 
-\define('CRUNZ_ROOT', $testCrunzRoot);
-\putenv('CRUNZ_BASE_DIR=' . $testCrunzRoot);
+if (!\chdir('tests')) {
+    throw new RuntimeException("Unable to change currenjt directory to 'tests'.");
+}

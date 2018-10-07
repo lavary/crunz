@@ -38,7 +38,6 @@
         "symfony/filesystem": "^3.4 || ^4.1",
         "symfony/finder": "^3.4 || ^4.1",
         "symfony/process": "^3.4 || ^4.1",
-        "symfony/property-access": "^3.4 || ^4.1",
         "symfony/yaml": "^3.4 || ^4.1"
     },
     "require-dev": {

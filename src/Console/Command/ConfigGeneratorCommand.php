@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Console\Command;
 
+use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Timezone\ProviderInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,11 +17,17 @@ class ConfigGeneratorCommand extends Command
     /** @var ProviderInterface */
     private $timezoneProvider;
     /** @var Filesystem */
+    private $symfonyFilesystem;
+    /** @var FilesystemInterface */
     private $filesystem;
 
-    public function __construct(ProviderInterface $timezoneProvider, Filesystem $filesystem)
-    {
+    public function __construct(
+        ProviderInterface $timezoneProvider,
+        Filesystem $symfonyFilesystem,
+        FilesystemInterface $filesystem
+    ) {
         $this->timezoneProvider = $timezoneProvider;
+        $this->symfonyFilesystem = $symfonyFilesystem;
         $this->filesystem = $filesystem;
 
         parent::__construct();
@@ -44,11 +51,12 @@ class ConfigGeneratorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
-
-        $path = getbase() . '/crunz.yml';
+        $cwd = $this->filesystem
+            ->getCwd();
+        $path = $cwd . DIRECTORY_SEPARATOR . 'crunz.yml';
         $destination = \realpath($path) ?: $path;
         $configExists = $this->filesystem
-            ->exists($destination)
+            ->fileExists($destination)
         ;
 
         $output->writeln(
@@ -120,7 +128,7 @@ class ConfigGeneratorCommand extends Command
         $src,
         $timezone
     ) {
-        $this->filesystem
+        $this->symfonyFilesystem
             ->dumpFile(
                 $destination,
                 \str_replace(

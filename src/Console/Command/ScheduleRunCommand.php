@@ -55,10 +55,6 @@ class ScheduleRunCommand extends Command
      */
     protected function configure()
     {
-        $sourcePath = $this->configuration
-            ->get('source')
-        ;
-
         $this->setName('schedule:run')
             ->setDescription('Starts the event runner.')
             ->setDefinition(
@@ -67,7 +63,8 @@ class ScheduleRunCommand extends Command
                         'source',
                         InputArgument::OPTIONAL,
                         'The source directory for collecting the task files.',
-                        generate_path($sourcePath)
+                        $this->configuration
+                            ->getSourcePath()
                     ),
                 ]
             )

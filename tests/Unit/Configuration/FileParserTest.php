@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit\Configuration;
 
-use Crunz\Configuration\ConfigFileNotExistsExtension;
+use Crunz\Configuration\ConfigFileNotExistsException;
 use Crunz\Configuration\ConfigFileNotReadableException;
 use Crunz\Configuration\FileParser;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +17,7 @@ class FileParserTest extends TestCase
     {
         $filePath = '/path/to/wrong/file';
 
-        $this->expectException(ConfigFileNotExistsExtension::class);
+        $this->expectException(ConfigFileNotExistsException::class);
         $this->expectExceptionMessage("Configuration file '{$filePath}' not exists.");
 
         $parser = $this->createFileParser();

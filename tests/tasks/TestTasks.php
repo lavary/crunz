@@ -5,7 +5,7 @@ use Crunz\Schedule;
 
 $schedule = new Schedule();
 
-$schedule->run('php -v')
+$schedule->run(PHP_BINARY . ' -v')
     ->description('Show PHP version')
     ->everyMinute()
 ;
