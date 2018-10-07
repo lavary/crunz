@@ -9,6 +9,7 @@ use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
 use Crunz\Task\Timezone;
+use Crunz\Tests\TestCase\TemporaryFile;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +21,8 @@ class ScheduleRunCommandTest extends TestCase
     /** @test */
     public function forceRunAllTasks()
     {
-        $filename = $this->createTaskFile($this->taskContent());
+        $tempFile = new TemporaryFile();
+        $filename = $this->createTaskFile($this->taskContent(), $tempFile);
 
         $mockInput = $this->mockInput(['force' => true, 'task' => null]);
         $mockOutput = $this->createMock(OutputInterface::class);
@@ -44,8 +46,10 @@ class ScheduleRunCommandTest extends TestCase
     /** @test */
     public function runSpecificTask()
     {
-        $filename1 = $this->createTaskFile($this->phpVersionTaskContent());
-        $filename2 = $this->createTaskFile($this->phpVersionTaskContent());
+        $tempFile1 = new TemporaryFile();
+        $tempFile2 = new TemporaryFile();
+        $filename1 = $this->createTaskFile($this->phpVersionTaskContent(), $tempFile1);
+        $filename2 = $this->createTaskFile($this->phpVersionTaskContent(), $tempFile2);
 
         $mockInput = $this->mockInput(['force' => false, 'task' => '1']);
         $mockOutput = $this->createMock(OutputInterface::class);
@@ -149,11 +153,11 @@ class ScheduleRunCommandTest extends TestCase
         return $mockTaskCollection;
     }
 
-    private function createTaskFile($taskContent)
+    private function createTaskFile($taskContent, TemporaryFile $file)
     {
         $filesystem = new Filesystem();
 
-        $filename = \tempnam(\sys_get_temp_dir(), 'crunz');
+        $filename = $file->filePath();
         $filesystem->touch($filename);
         $filesystem->dumpFile($filename, $taskContent);
 

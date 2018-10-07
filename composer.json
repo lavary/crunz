@@ -52,10 +52,7 @@
     "autoload": {
         "psr-4": {
             "Crunz\\": "src/"
-        },
-        "files": [
-            "src/Helpers.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
