@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\SplFileInfo;
 
 class ScheduleRunCommandTest extends TestCase
 {
@@ -140,7 +139,7 @@ class ScheduleRunCommandTest extends TestCase
 
         $mocksFileInfo = \array_map(
             function ($taskFile) {
-                return $this->createConfiguredMock(SplFileInfo::class, ['getRealPath' => $taskFile]);
+                return $this->createConfiguredMock(\SplFileInfo::class, ['getRealPath' => $taskFile]);
             },
             $taskFiles
         );
