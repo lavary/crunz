@@ -23,7 +23,7 @@ final class PathTest extends TestCase
         $parts = [
             'home',
             'crunz',
-            'bin'
+            'bin',
         ];
 
         $path = Path::create($parts);
