@@ -3,26 +3,18 @@
 namespace Crunz\Configuration;
 
 use Crunz\Filesystem\FilesystemInterface;
-use Symfony\Component\PropertyAccess\Exception\AccessException;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class Configuration
 {
     /** @var array */
     private $config;
-    /** @var PropertyAccessorInterface */
-    private $propertyAccessor;
     /** @var ConfigurationParser */
     private $configurationParser;
     /** @var FilesystemInterface */
     private $filesystem;
 
-    public function __construct(
-        PropertyAccessorInterface $propertyAccessor,
-        ConfigurationParserInterface $configurationParser,
-        FilesystemInterface $filesystem
-    ) {
-        $this->propertyAccessor = $propertyAccessor;
+    public function __construct(ConfigurationParserInterface $configurationParser, FilesystemInterface $filesystem)
+    {
         $this->configurationParser = $configurationParser;
         $this->filesystem = $filesystem;
     }
@@ -46,26 +38,18 @@ class Configuration
             return $this->config[$key];
         }
 
-        $path = \implode(
-            '',
-            \array_map(
-                function ($keyPart) {
-                    return "[{$keyPart}]";
-                },
-                \explode('.', $key)
-            )
-        );
+        $parts = \explode('.', $key);
 
-        try {
-            return $this->propertyAccessor
-                ->getValue(
-                    $this->config,
-                    $path
-                )
-            ;
-        } catch (AccessException $exception) {
-            return $default;
+        $value = $this->config;
+        foreach ($parts as $part) {
+            if (!\is_array($value) || !\array_key_exists($part, $value)) {
+                return $default;
+            }
+
+            $value = $value[$part];
         }
+
+        return $value;
     }
 
     /** @return string */

@@ -38,8 +38,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Yaml\Yaml;
 
 $simpleServices = [
@@ -123,21 +121,10 @@ $container
     )
 ;
 $container
-    ->register(PropertyAccessorInterface::class, PropertyAccessor::class)
-    ->setPublic(false)
-    ->setArguments(
-        [
-            false,
-            true,
-        ]
-    )
-;
-$container
     ->register(Configuration::class, Configuration::class)
     ->setPublic(false)
     ->setArguments(
         [
-            new Reference(PropertyAccessorInterface::class),
             new Reference(ConfigurationParserInterface::class),
             new Reference(FilesystemInterface::class),
         ]
