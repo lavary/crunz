@@ -15,6 +15,8 @@ use Crunz\Console\Command\TaskGeneratorCommand;
 use Crunz\EventRunner;
 use Crunz\Filesystem\Filesystem as CrunzFilesystem;
 use Crunz\Filesystem\FilesystemInterface;
+use Crunz\Finder\Finder;
+use Crunz\Finder\FinderInterface;
 use Crunz\HttpClient\CurlHttpClient;
 use Crunz\HttpClient\FallbackHttpClient;
 use Crunz\HttpClient\HttpClientInterface;
@@ -39,12 +41,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 $simpleServices = [
     Definition::class,
-    Finder::class,
     Yaml::class,
     Processor::class,
     Invoker::class,
@@ -54,6 +54,7 @@ $simpleServices = [
     StreamHttpClient::class,
     CurlHttpClient::class,
     FilesystemInterface::class => CrunzFilesystem::class,
+    FinderInterface::class => Finder::class,
 ];
 
 $container
@@ -109,7 +110,7 @@ $container
     ->setArguments(
         [
             new Reference(Configuration::class),
-            new Reference(Finder::class),
+            new Reference(FinderInterface::class),
         ]
     )
 ;

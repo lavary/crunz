@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz;
 
+use Crunz\Path\Path;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application as SymfonyApplication;
@@ -92,16 +93,13 @@ class Application extends SymfonyApplication
         if ($containerCacheDirWritable) {
             $class = 'CrunzContainer';
             $baseClass = 'Container';
-            $cache = new ConfigCache(
-                \implode(
-                    DIRECTORY_SEPARATOR,
-                    [
-                        $this->getContainerCacheDir(),
-                        "{$class}.php",
-                    ]
-                ),
-                true
+            $cachePath = Path::create(
+                [
+                    $this->getContainerCacheDir(),
+                    "{$class}.php",
+                ]
             );
+            $cache = new ConfigCache($cachePath->toString(), true);
 
             if (!$cache->isFresh()) {
                 $containerBuilder = $this->buildContainer();
@@ -136,9 +134,7 @@ class Application extends SymfonyApplication
     private function buildContainer()
     {
         $containerBuilder = new ContainerBuilder();
-
-        $configDir = \implode(
-            DIRECTORY_SEPARATOR,
+        $configDir = Path::create(
             [
                 __DIR__,
                 '..',
@@ -146,7 +142,7 @@ class Application extends SymfonyApplication
             ]
         );
 
-        $phpLoader = new PhpFileLoader($containerBuilder, new FileLocator($configDir));
+        $phpLoader = new PhpFileLoader($containerBuilder, new FileLocator($configDir->toString()));
         $phpLoader->load('services.php');
 
         return $containerBuilder;
@@ -199,13 +195,14 @@ class Application extends SymfonyApplication
      */
     private function getBaseCacheDir()
     {
-        return \implode(
-            DIRECTORY_SEPARATOR,
+        $baseCacheDir = Path::create(
             [
                 \sys_get_temp_dir(),
                 '.crunz',
             ]
         );
+
+        return $baseCacheDir->toString();
     }
 
     /**
@@ -213,14 +210,15 @@ class Application extends SymfonyApplication
      */
     private function getContainerCacheDir()
     {
-        return \implode(
-            DIRECTORY_SEPARATOR,
+        $containerCacheDir = Path::create(
             [
                 $this->getBaseCacheDir(),
                 \get_current_user(),
                 $this->getVersion(),
             ]
         );
+
+        return $containerCacheDir->toString();
     }
 
     private function registerDeprecationHandler()

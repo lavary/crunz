@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Crunz\Console\Command;
 
 use Crunz\Configuration\Configuration;
+use Crunz\Path\Path;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -145,7 +146,9 @@ class TaskGeneratorCommand extends Command
      */
     protected function save()
     {
-        return \file_put_contents($this->outputPath() . DIRECTORY_SEPARATOR . $this->outputFile(), $this->stub);
+        $filename = Path::create([$this->outputPath(), $this->outputFile()]);
+
+        return \file_put_contents($filename->toString(), $this->stub);
     }
 
     /**

@@ -81,7 +81,7 @@ class ScheduleListCommand extends Command
         );
         $row = 0;
 
-        foreach ($tasks as $key => $taskFile) {
+        foreach ($tasks as $taskFile) {
             $schedule = require $taskFile->getRealPath();
             if (!$schedule instanceof Schedule) {
                 continue;

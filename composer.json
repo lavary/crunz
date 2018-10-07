@@ -36,7 +36,6 @@
         "symfony/console": "^3.4 || ^4.1",
         "symfony/dependency-injection": "^3.4 || ^4.1",
         "symfony/filesystem": "^3.4 || ^4.1",
-        "symfony/finder": "^3.4 || ^4.1",
         "symfony/process": "^3.4 || ^4.1",
         "symfony/yaml": "^3.4 || ^4.1"
     },
@@ -51,10 +50,7 @@
     "autoload": {
         "psr-4": {
             "Crunz\\": "src/"
-        },
-        "files": [
-            "src/Helpers.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

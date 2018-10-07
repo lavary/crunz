@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Crunz\Console\Command;
 
 use Crunz\Filesystem\FilesystemInterface;
+use Crunz\Path\Path;
 use Crunz\Timezone\ProviderInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -53,7 +54,7 @@ class ConfigGeneratorCommand extends Command
         $symfonyStyleIo = new SymfonyStyle($input, $output);
         $cwd = $this->filesystem
             ->getCwd();
-        $path = $cwd . DIRECTORY_SEPARATOR . 'crunz.yml';
+        $path = Path::create([$cwd, 'crunz.yml'])->toString();
         $destination = \realpath($path) ?: $path;
         $configExists = $this->filesystem
             ->fileExists($destination)
