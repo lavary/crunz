@@ -3,17 +3,17 @@
 namespace Crunz\Task;
 
 use Crunz\Configuration\Configuration;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
+use Crunz\Finder\FinderInterface;
+use Crunz\Path\Path;
 
 class Collection
 {
     /** @var Configuration */
     private $configuration;
-    /** @var Finder */
+    /** @var FinderInterface */
     private $finder;
 
-    public function __construct(Configuration $configuration, Finder $finder)
+    public function __construct(Configuration $configuration, FinderInterface $finder)
     {
         $this->configuration = $configuration;
         $this->finder = $finder;
@@ -22,7 +22,7 @@ class Collection
     /**
      * @param string $source
      *
-     * @return SplFileInfo[]|Finder
+     * @return \SplFileInfo[]
      */
     public function all($source)
     {
@@ -33,14 +33,15 @@ class Collection
         $suffix = $this->configuration
             ->get('suffix')
         ;
+        $sourcePath = Path::create(
+            [
+                $source,
+                "*{$suffix}",
+            ]
+        );
 
-        $iterator = $this->finder
-            ->files()
-            ->name("*{$suffix}")
-            ->sortByName()
-            ->in($source)
+        return $this->finder
+            ->find($sourcePath)
         ;
-
-        return $iterator;
     }
 }
