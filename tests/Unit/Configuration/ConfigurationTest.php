@@ -6,7 +6,6 @@ use Crunz\Configuration\Configuration;
 use Crunz\Configuration\ConfigurationParserInterface;
 use Crunz\Filesystem\FilesystemInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 final class ConfigurationTest extends TestCase
 {
@@ -43,7 +42,6 @@ final class ConfigurationTest extends TestCase
         ;
 
         return new Configuration(
-            new PropertyAccessor(false, true),
             $mockConfigurationParser,
             $this->createMock(FilesystemInterface::class)
         );
