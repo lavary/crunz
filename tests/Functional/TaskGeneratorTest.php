@@ -3,6 +3,7 @@
 namespace Crunz\Tests\Functional;
 
 use Crunz\Application;
+use Crunz\Path\Path;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -22,13 +23,13 @@ class TaskGeneratorTest extends TestCase
 
         $this->outputDirectory = \sys_get_temp_dir();
         $this->fileName = 'CrunzTest';
-        $this->taskFilePath = \implode(
-            DIRECTORY_SEPARATOR,
+        $taskFilePath = Path::create(
             [
                 $this->outputDirectory,
                 "{$this->fileName}Tasks.php",
             ]
         );
+        $this->taskFilePath = $taskFilePath->toString();
     }
 
     public function tearDown()

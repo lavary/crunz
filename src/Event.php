@@ -7,6 +7,7 @@ use Closure;
 use Cron\CronExpression;
 use Crunz\Exception\NotImplementedException;
 use Crunz\Logger\Logger;
+use Crunz\Path\Path;
 use Crunz\Pinger\PingableInterface;
 use Crunz\Pinger\PingableTrait;
 use SuperClosure\Serializer;
@@ -1083,9 +1084,9 @@ class Event implements PingableInterface
     {
         $closure = (new Serializer())->serialize($closure);
         $serializedClosure = \http_build_query([$closure]);
-        $crunzRoot = \getcwd() . DIRECTORY_SEPARATOR;
+        $crunzRoot = Path::create([\getcwd(), 'crunz']);
 
-        return PHP_BINARY . " {$crunzRoot}crunz closure:run {$serializedClosure}";
+        return PHP_BINARY . " {$crunzRoot->toString()} closure:run {$serializedClosure}";
     }
 
     /**

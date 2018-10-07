@@ -4,6 +4,7 @@ namespace Crunz\Tests\Unit;
 
 use Carbon\Carbon;
 use Crunz\Event;
+use Crunz\Path\Path;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
 
@@ -350,6 +351,6 @@ class EventTest extends TestCase
 
     private function buildPath(array $segments)
     {
-        return implode(DIRECTORY_SEPARATOR, $segments);
+        return Path::create($segments)->toString();
     }
 }

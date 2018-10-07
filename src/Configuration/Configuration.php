@@ -3,6 +3,7 @@
 namespace Crunz\Configuration;
 
 use Crunz\Filesystem\FilesystemInterface;
+use Crunz\Path\Path;
 
 class Configuration
 {
@@ -55,17 +56,14 @@ class Configuration
     /** @return string */
     public function getSourcePath()
     {
-        return $this->makePath(
+        $sourcePath = Path::create(
             [
                 $this->filesystem
                     ->getCwd(),
                 $this->get('source'),
             ]
         );
-    }
 
-    private function makePath(array $parts)
-    {
-        return \implode(DIRECTORY_SEPARATOR, $parts);
+        return $sourcePath->toString();
     }
 }
