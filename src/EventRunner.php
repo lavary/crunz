@@ -197,7 +197,7 @@ class EventRunner
                 }
             }
 
-            \usleep(500000);
+            \usleep(250000);
         }
     }
 

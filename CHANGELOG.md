@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Incompatibility with PHAR format - PR [#146](https://github.com/lavary/crunz/pull/146)
+
 ## 1.10.1 - 2018-09-22
 
 ### Fixed
