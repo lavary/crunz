@@ -13,10 +13,18 @@ use Crunz\Mailer;
 use Crunz\Schedule;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Lock\Store\FlockStore;
+use Symfony\Component\Lock\StoreInterface;
 
 final class PreventOverlappingTest extends TestCase
 {
-    public function testPreventOverlapping()
+    /**
+     * @dataProvider lockDataProvider
+     * @test
+     *
+     * @param StoreInterface|null $store
+     */
+    public function testPreventOverlapping(StoreInterface $store = null)
     {
         $command = PHP_BINARY . ' -r "usleep(250000);"';
 
@@ -46,7 +54,7 @@ final class PreventOverlappingTest extends TestCase
         $this->assertEquals([$event1], $schedule1->dueEvents(new \DateTimeZone(date_default_timezone_get())));
         $this->assertEquals([$event2], $schedule2->dueEvents(new \DateTimeZone(date_default_timezone_get())));
 
-        // Start schedule, so that event1 will be locked
+        // Start schedule1, so that event1 will be locked
         $eventRunner->handle(new NullOutput(), [$schedule1]);
 
         // Event is locked and therefore not due (even over the boundaries of multiple independent events and schedules)
@@ -63,13 +71,27 @@ final class PreventOverlappingTest extends TestCase
 
         // Wait until the process finished
         while ($event1->isLocked()) {
+            // Verify the events are still locked
+            $this->assertEquals([], $schedule1->dueEvents(new \DateTimeZone(date_default_timezone_get())));
+            $this->assertEquals([], $schedule2->dueEvents(new \DateTimeZone(date_default_timezone_get())));
+            $this->assertTrue($event1->isLocked());
+            $this->assertTrue($event2->isLocked());
+
             $eventRunner->manageStartedEvents();
-            usleep(10000);
+            usleep(50000);
         }
 
         // Assert both locks were removed
         $this->assertFalse($event1->isLocked());
         $this->assertFalse($event2->isLocked());
+    }
+
+    public function lockDataProvider()
+    {
+        return [
+            [null], // Default file locking
+            [new FlockStore()],
+        ];
     }
 }
 

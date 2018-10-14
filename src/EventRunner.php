@@ -150,6 +150,8 @@ class EventRunner
 
                 /** @var Event $event */
                 foreach ($events as $eventKey => $event) {
+                    $event->refreshLock();
+
                     $proc = $event->getProcess();
                     if ($proc->isRunning()) {
                         continue;
