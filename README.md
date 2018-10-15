@@ -736,6 +736,13 @@ vendor/bin/crunz make:task --help
 
 ```
 
+## Contributing
+
+### Which branch should I choose?
+
+In most cases you should target branch `1.x`, as this is active development branch.
+Branch `master` is for future release, but all bugs/features should go to `1.x` anyway.
+
 ## If You Need Help
 
 Please submit all issues and questions using GitHub issues and I will try to help you.
