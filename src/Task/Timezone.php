@@ -53,6 +53,9 @@ class Timezone
                 ->debug("Default timezone: '<info>{$newTimezone}</info>'.");
         }
 
+        $this->consoleLogger
+            ->debug("Timezone for comparisons: '<info>{$newTimezone}</info>'.");
+
         return new \DateTimeZone($newTimezone);
     }
 }
