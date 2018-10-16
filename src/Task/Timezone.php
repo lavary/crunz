@@ -3,6 +3,7 @@
 namespace Crunz\Task;
 
 use Crunz\Configuration\Configuration;
+use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Timezone\ProviderInterface;
 
 /**
@@ -14,11 +15,17 @@ class Timezone
     private $configuration;
     /** @var ProviderInterface */
     private $timezoneProvider;
+    /** @var ConsoleLoggerInterface */
+    private $consoleLogger;
 
-    public function __construct(Configuration $configuration, ProviderInterface $timezoneProvider)
-    {
+    public function __construct(
+        Configuration $configuration,
+        ProviderInterface $timezoneProvider,
+        ConsoleLoggerInterface $consoleLogger
+    ) {
         $this->configuration = $configuration;
         $this->timezoneProvider = $timezoneProvider;
+        $this->consoleLogger = $consoleLogger;
     }
 
     public function timezoneForComparisons()
@@ -26,6 +33,9 @@ class Timezone
         $newTimezone = $this->configuration
             ->get('timezone')
         ;
+
+        $this->consoleLogger
+            ->debug("Timezone from config: '<info>{$newTimezone}</info>'.");
 
         /* @TODO Throw Exception in Crunz v2. */
         if (empty($newTimezone)) {
@@ -38,6 +48,9 @@ class Timezone
                 ->defaultTimezone()
                 ->getName()
             ;
+
+            $this->consoleLogger
+                ->debug("Default timezone: '<info>{$newTimezone}</info>'.");
         }
 
         return new \DateTimeZone($newTimezone);

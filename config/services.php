@@ -170,6 +170,7 @@ $container
         [
             new Reference(Configuration::class),
             new Reference(ProviderInterface::class),
+            new Reference(ConsoleLoggerInterface::class),
         ]
     )
 ;
