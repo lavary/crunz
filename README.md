@@ -549,6 +549,21 @@ $schedule->run('/usr/bin/php email.php')
  //       
 ```
 
+By default, crunz uses file based locking (if no parameters are passed to `preventOverlapping`). For alternative lock mechanisms, crunz uses the [symfony/lock](https://symfony.com/doc/current/components/lock.html) component that provides lock mechanisms with various stores. To use this component, you can pass a store to the `preventOverlapping()` method. In the following example, the file based `FlockStore` is used to provide an alternative lock file path.
+
+```php
+<?php
+//
+
+use Symfony\Component\Lock\Store\FlockStore;
+
+$store = new FlockStore(__DIR__ . '/locks);
+$schedule->run('/usr/bin/php email.php')
+         ->everyFiveMinutes()
+         ->preventOverlapping($store);
+ //
+```
+
 ## Keeping the Output
 
 Cron jobs usually have outputs, which is normally emailed to the owner of the crontab file, or the user or users set by `MAILTO` environment variable inside the crontab file.
