@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Crunz;
 
-use Carbon\Carbon;
 use Closure;
 use Cron\CronExpression;
+use Crunz\Clock\Clock;
+use Crunz\Clock\ClockInterface;
 use Crunz\Exception\NotImplementedException;
 use Crunz\Logger\Logger;
 use Crunz\Path\Path;
@@ -155,6 +156,8 @@ class Event implements PingableInterface
         'month' => 4,
         'week' => 5,
     ];
+    /** @var ClockInterface */
+    private static $clock;
 
     /**
      * Create a new event instance.
@@ -1098,14 +1101,15 @@ class Event implements PingableInterface
      */
     protected function expressionPasses(\DateTimeZone $timeZone)
     {
-        $date = Carbon::now();
-        $date->setTimezone($timeZone);
+        $now = $this->getClock()
+            ->now();
+        $now = $now->setTimezone($timeZone);
 
         if ($this->timezone) {
-            $date->setTimezone($this->timezone);
+            $now = $now->setTimezone(new \DateTimeZone($this->timezone));
         }
 
-        return CronExpression::factory($this->expression)->isDue($date->toDateTimeString());
+        return CronExpression::factory($this->expression)->isDue($now->format('Y-m-d H:i:s'));
     }
 
     /**
@@ -1177,6 +1181,16 @@ class Event implements PingableInterface
     protected function lock()
     {
         \file_put_contents($this->lockFile(), $this->process->getPid());
+    }
+
+    /** @return ClockInterface */
+    private function getClock()
+    {
+        if (null === self::$clock) {
+            self::$clock = new Clock();
+        }
+
+        return self::$clock;
     }
 
     private function splitCamel($text)

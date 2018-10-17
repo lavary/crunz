@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit;
 
-use Carbon\Carbon;
 use Crunz\Event;
 use Crunz\Path\Path;
+use Crunz\Tests\TestCase\TestClock;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
 
@@ -37,7 +37,6 @@ class EventTest extends TestCase
     public function tearDown()
     {
         \date_default_timezone_set($this->defaultTimezone);
-        Carbon::setTestNow(null);
     }
 
     /**
@@ -223,8 +222,8 @@ class EventTest extends TestCase
 
     public function testIsDue()
     {
-        Carbon::setTestNow(Carbon::create(2015, 4, 12, 0, 0, 0));
         $timezone = new \DateTimeZone('UTC');
+        $this->setClockNow(new \DateTimeImmutable('2015-04-12 00:00:00', $timezone));
 
         $e = new Event($this->id, 'php foo');
         $this->assertTrue($e->sundays()->isDue($timezone));
@@ -234,7 +233,7 @@ class EventTest extends TestCase
         $this->assertTrue($e->isDue($timezone));
 
         $e = new Event($this->id, 'php bar');
-        Carbon::setTestNow(Carbon::create(\date('Y'), 4, 12, 0, 0, 0));
+        $this->setClockNow(new \DateTimeImmutable(\date('Y') . '-04-12 00:00:00'));
         $this->assertTrue($e->on('00:00 ' . \date('Y') . '-04-12')->isDue($timezone));
     }
 
@@ -344,6 +343,15 @@ class EventTest extends TestCase
         $command = $event->buildCommand();
 
         $this->assertSame(PHP_BINARY . " {$crunzBin} closure:run {$queryClosure}", $command);
+    }
+
+    private function setClockNow(\DateTimeImmutable $dateTime)
+    {
+        $testClock = new TestClock($dateTime);
+        $reflection = new \ReflectionClass(Event::class);
+        $property = $reflection->getProperty('clock');
+        $property->setAccessible(true);
+        $property->setValue($testClock);
     }
 
     private function isWindows()
