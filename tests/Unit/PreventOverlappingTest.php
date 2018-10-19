@@ -14,6 +14,7 @@ use Crunz\Schedule;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Lock\Store\FlockStore;
+use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Lock\StoreInterface;
 
 final class PreventOverlappingTest extends TestCase
@@ -70,8 +71,9 @@ final class PreventOverlappingTest extends TestCase
         $this->assertTrue($event2->isLocked());
 
         // Wait until the process finished
+        $start = time();
         while ($event1->isLocked()) {
-            // Verify the events are still locked
+            // Verify the events are still locked while the process is running
             $this->assertEquals([], $schedule1->dueEvents(new \DateTimeZone(date_default_timezone_get())));
             $this->assertEquals([], $schedule2->dueEvents(new \DateTimeZone(date_default_timezone_get())));
             $this->assertTrue($event1->isLocked());
@@ -79,6 +81,10 @@ final class PreventOverlappingTest extends TestCase
 
             $eventRunner->manageStartedEvents();
             usleep(50000);
+
+            if (time() - $start > 5) {
+                $this->fail('Lock was not released after 5 seconds, something is wrong here.');
+            }
         }
 
         // Assert both locks were removed
@@ -88,10 +94,16 @@ final class PreventOverlappingTest extends TestCase
 
     public function lockDataProvider()
     {
-        return [
-            [null], // Default file locking
-            [new FlockStore()],
-        ];
+        // File based lock storage in sys_get_temp_dir()
+        yield [null];
+
+        // Symfony lock with file based lock store
+        yield [new FlockStore()];
+
+        if (extension_loaded('sysvsem')) {
+            // Symfony lock with semaphore store
+            yield [new SemaphoreStore()];
+        }
     }
 }
 
