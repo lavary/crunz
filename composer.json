@@ -35,6 +35,7 @@
         "symfony/console": "^3.4 || ^4.1",
         "symfony/dependency-injection": "^3.4 || ^4.1",
         "symfony/filesystem": "^3.4 || ^4.1",
+        "symfony/lock": "^3.4 || ^4.0",
         "symfony/process": "^3.4 || ^4.1",
         "symfony/yaml": "^3.4 || ^4.1"
     },

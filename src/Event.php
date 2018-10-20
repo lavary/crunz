@@ -14,6 +14,9 @@ use Crunz\Path\Path;
 use Crunz\Pinger\PingableInterface;
 use Crunz\Pinger\PingableTrait;
 use SuperClosure\Serializer;
+use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\Lock;
+use Symfony\Component\Lock\StoreInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -67,6 +70,7 @@ class Event implements PingableInterface
      * @var Logger
      */
     public $logger;
+
     /**
      * The event's unique identifier.
      *
@@ -158,6 +162,21 @@ class Event implements PingableInterface
     ];
     /** @var ClockInterface */
     private static $clock;
+
+    /**
+     * The symfony lock factory that is used to acquire locks. If the value is null, but preventOverlapping = true
+     * crunz falls back to filesystem locks.
+     *
+     * @var Factory|null
+     */
+    private $lockFactory;
+
+    /**
+     * Contains the timestamp of the last lock refresh.
+     *
+     * @var int
+     */
+    private $lastLockRefresh = 0;
 
     /**
      * Create a new event instance.
@@ -717,13 +736,19 @@ class Event implements PingableInterface
     /**
      * Do not allow the event to overlap each other.
      *
-     * @param string|int $safe_duration
+     * By default, the lock is acquired through file system locks. Alternatively, you can pass a symfony lock store
+     * that will be responsible for the locking.
+     *
+     * @param StoreInterface $store
      *
      * @return $this
      */
-    public function preventOverlapping()
+    public function preventOverlapping(StoreInterface $store = null)
     {
         $this->preventOverlapping = true;
+        if (null !== $store) {
+            $this->lockFactory = new Factory($store);
+        }
 
         // Skip the event if it's locked (processing)
         $this->skip(function () {
@@ -732,10 +757,7 @@ class Event implements PingableInterface
 
         // Delete the lock file when the event is completed
         $this->after(function () {
-            $lockfile = $this->lockFile();
-            if (\file_exists($lockfile)) {
-                \unlink($lockfile);
-            }
+            $this->releaseLock();
         });
 
         return $this;
@@ -1023,6 +1045,13 @@ class Event implements PingableInterface
      */
     public function isLocked()
     {
+        if (null !== $this->lockFactory) {
+            $lock = $this->createLockObject();
+
+            return $lock->isAcquired();
+        }
+
+        // If no symfony lock object is given, fall back to file system locks.
         $pid = $this->lastPid();
         $hasPid = (null !== $pid);
 
@@ -1053,7 +1082,67 @@ class Event implements PingableInterface
      */
     public function lockFile()
     {
+        if (null !== $this->lockFactory) {
+            throw new \BadMethodCallException('We are not using file based locking, but instead symfony/lock');
+        }
+
         return \rtrim(\sys_get_temp_dir(), '/') . '/crunz-' . \md5($this->buildCommand());
+    }
+
+    /**
+     * If this event is prevented from overlapping, this method should be called regularly to refresh the lock.
+     */
+    public function refreshLock()
+    {
+        if (!$this->preventOverlapping) {
+            return;
+        }
+
+        if (null === $this->lockFactory) {
+            // In case of file based locking there is nothing to do.
+        }
+
+        // Refresh lock every 10s
+        $lockRefreshNeeded = $this->lastLockRefresh < (\time() - 10);
+        if ($lockRefreshNeeded) {
+            $this->createLockObject()->refresh();
+        }
+    }
+
+    /**
+     * Get the symfony lock object for the task.
+     *
+     * @return Lock
+     */
+    protected function createLockObject()
+    {
+        if (null === $this->lockFactory) {
+            throw new \BadMethodCallException(
+                'No lock factory. Please call preventOverlapping() with lock storage first.'
+            );
+        }
+
+        $ttl = 30;
+
+        return $this->lockFactory->createLock('crunz-' . \md5($this->buildCommand()), $ttl);
+    }
+
+    /**
+     * Release the lock after the command completed.
+     */
+    protected function releaseLock()
+    {
+        if (null !== $this->lockFactory) {
+            $lock = $this->createLockObject();
+            $lock->release();
+
+            return;
+        }
+
+        $lockfile = $this->lockFile();
+        if (\file_exists($lockfile)) {
+            \unlink($lockfile);
+        }
     }
 
     /**
