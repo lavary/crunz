@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.11.0-beta.1 - 2018-10-23
+
+### Added
+
+- Custom `LockStore` support, issue [#125](https://github.com/lavary/crunz/issues/125) - PR [#153](https://github.com/lavary/crunz/pull/153) by [@digilist](https://github.com/digilist)
+
 ### Fixed
 
 - Incompatibility with PHAR format - PR [#146](https://github.com/lavary/crunz/pull/146)
