@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Incompatibility with PHAR format - PR [#146](https://github.com/lavary/crunz/pull/146)
+- Passed task number is not string, issue [#156](https://github.com/lavary/crunz/issues/156) - PR [#158](https://github.com/lavary/crunz/pull/158)
 
 ## 1.10.1 - 2018-09-22
 

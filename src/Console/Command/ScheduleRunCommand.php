@@ -118,7 +118,7 @@ class ScheduleRunCommand extends Command
         }
 
         // Is specified task should be invoked?
-        if (null !== $task) {
+        if (\is_string($task)) {
             $schedules = $this->scheduleFactory
                 ->singleTaskSchedule(TaskNumber::fromString($task), ...$schedules);
         }
