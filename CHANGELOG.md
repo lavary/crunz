@@ -6,13 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Fixed
-
-- Incompatibility with PHAR format - PR [#146](https://github.com/lavary/crunz/pull/146)
-
 ### Removed
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+## 1.11.0-beta.1 - 2018-10-23
+
+### Added
+
+- Custom `LockStore` support, issue [#125](https://github.com/lavary/crunz/issues/125) - PR [#153](https://github.com/lavary/crunz/pull/153) by [@digilist](https://github.com/digilist)
+
+### Fixed
+
+- Incompatibility with PHAR format - PR [#146](https://github.com/lavary/crunz/pull/146)
+- Passed task number is not string, issue [#156](https://github.com/lavary/crunz/issues/156) - PR [#158](https://github.com/lavary/crunz/pull/158)
 
 ## 1.10.1 - 2018-09-22
 

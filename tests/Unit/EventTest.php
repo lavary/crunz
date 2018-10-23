@@ -56,6 +56,8 @@ class EventTest extends TestCase
         $e = new Event($this->id, 'php bar');
         $this->assertEquals('*/578 * * * *', $e->everyFiveHundredSeventyEightMinutes()->getExpression());
 
+        $this->setClockNow(new \DateTimeImmutable('2018-10-23 11:33:18'));
+
         $e = new Event($this->id, 'php foo');
         $e->everyFiftyMinutes()->mondays();
 
