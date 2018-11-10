@@ -30,6 +30,7 @@ cache:
 before_install:
     - phpenv config-rm xdebug.ini || return 0;
     - composer self-update
+    - composer global require hirak/prestissimo --no-progress --profile -n -a
 
 install:
     - if [[ "$DEPENDENCIES" = 'high' ]]; then
