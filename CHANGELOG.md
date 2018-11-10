@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.11.0-beta.2 - 2018-11-10
+
 ### Fixed
 
 - Crunz doesn't provide error log when emailing, issue [#161](https://github.com/lavary/crunz/issues/161) - PR [#162](https://github.com/lavary/crunz/pull/162)
