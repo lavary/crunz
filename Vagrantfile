@@ -50,6 +50,8 @@ wget -q -O "$COMPOSER_FILE" "https://getcomposer.org/download/$COMPOSER_VERSION/
 
 chmod +x "$COMPOSER_FILE";
 
+sudo -u vagrant php "$COMPOSER_FILE" global require hirak/prestissimo -a
+
 SCRIPT
 
 Vagrant.configure("2") do |config|
