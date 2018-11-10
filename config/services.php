@@ -109,6 +109,7 @@ $container
         [
             new Reference(Configuration::class),
             new Reference(FinderInterface::class),
+            new Reference(ConsoleLoggerInterface::class),
         ]
     )
 ;
