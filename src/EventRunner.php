@@ -168,7 +168,7 @@ class EventRunner
 
                         $runStatus = '<info>success</info>';
 
-                        $event->outputStream .= $proc->getOutput();
+                        $event->outputStream .= $event->wholeOutput();
                         $event->outputStream .= $this->invoke($event->afterCallbacks());
 
                         $this->handleOutput($event);
@@ -276,8 +276,7 @@ class EventRunner
         if ($logErrors) {
             $this->logger->error($this->formatEventError($event));
         } else {
-            $output = $event->getProcess()
-                ->getOutput();
+            $output = $event->wholeOutput();
 
             $this->output
                 ->write("<error>{$output}</error>");
@@ -325,7 +324,7 @@ class EventRunner
             . $event->getCommandForDisplay()
             . ') '
             . PHP_EOL
-            . $event->getProcess()->getOutput()
+            . $event->wholeOutput()
             . PHP_EOL;
     }
 

@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
+## 1.11.0-beta.2 - 2018-11-10
+
+### Fixed
+
+- Crunz doesn't provide error log when emailing, issue [#161](https://github.com/lavary/crunz/issues/161) - PR [#162](https://github.com/lavary/crunz/pull/162)
+
 ## 1.11.0-beta.1 - 2018-10-23
 
 ### Added

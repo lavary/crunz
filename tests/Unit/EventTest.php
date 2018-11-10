@@ -347,6 +347,32 @@ class EventTest extends TestCase
         $this->assertSame(PHP_BINARY . " {$crunzBin} closure:run {$queryClosure}", $command);
     }
 
+    /** @test */
+    public function wholeOutputCatchesStdoutAndStderr()
+    {
+        $command = "php -r \"echo 'Test output'; throw new \Exception('Exception output');\"";
+        $event = new Event(\uniqid('c', true), $command);
+        $event->start();
+        $process = $event->getProcess();
+
+        while ($process->isRunning()) {
+            \usleep(20000); // wait 20 ms
+        }
+
+        $wholeOutput = $event->wholeOutput();
+
+        $this->assertContains(
+            'Test output',
+            $wholeOutput,
+            'Missing standard output'
+        );
+        $this->assertContains(
+            'Exception output',
+            $wholeOutput,
+            'Missing error output'
+        );
+    }
+
     private function setClockNow(\DateTimeImmutable $dateTime)
     {
         $testClock = new TestClock($dateTime);

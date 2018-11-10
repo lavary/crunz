@@ -178,6 +178,8 @@ class Event implements PingableInterface
      */
     private $lastLockRefresh = 0;
 
+    private $wholeOutput = [];
+
     /**
      * Create a new event instance.
      *
@@ -313,6 +315,11 @@ class Event implements PingableInterface
         return true;
     }
 
+    public function wholeOutput()
+    {
+        return \implode('', $this->wholeOutput);
+    }
+
     /**
      * Start the event execution.
      *
@@ -321,7 +328,11 @@ class Event implements PingableInterface
     public function start()
     {
         $this->setProcess(new Process($this->buildCommand()));
-        $this->getProcess()->start();
+        $this->getProcess()->start(
+            function ($type, $content) {
+                $this->wholeOutput[] = $content;
+            }
+        );
 
         if ($this->preventOverlapping) {
             $this->lock();

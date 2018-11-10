@@ -7,16 +7,15 @@ Crunz is a framework-agnostic package to schedule periodic tasks (cron jobs) in 
 Crunz is capable of executing any kind of executable command as well as PHP closures.
 
 [![Version](http://img.shields.io/packagist/v/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz)
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz)
 [![Packagist](https://img.shields.io/packagist/dt/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz/stats)
 [![Packagist](https://img.shields.io/packagist/dm/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz/stats)
 
-|Version|Linux build|Windows build|
-|---|---|---|
-|stable (v1.10.1)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.10.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
-|beta (v1.11.0-beta.1)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.11.0-beta.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
-|v2 (master/v2.x-dev)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
-|v1 (v1.x-dev)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|Version|Supported PHP versions|Linux build|Windows build|
+|---|---|---|---|
+|stable (v1.10.1)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.10.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
+|beta (v1.11.0-beta.2)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.11.0-beta.2.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
+|v2 (master/v2.x-dev)|![7.1.3+](https://img.shields.io/badge/php-%5E7.1.3-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|v1 (v1.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
 ## Roadmap
 |Version|Release date|Active support until|Bug support until 
