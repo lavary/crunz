@@ -49,8 +49,7 @@ mkdir -p "$BIN_DIR" &&
 wget -q -O "$COMPOSER_FILE" "https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar" &&
 
 chmod +x "$COMPOSER_FILE";
-
-sudo -u vagrant php "$COMPOSER_FILE" global require hirak/prestissimo -a
+php "$COMPOSER_FILE" global require hirak/prestissimo -a
 
 SCRIPT
 
