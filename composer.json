@@ -68,6 +68,8 @@
     },
     "scripts": {
         "crunz:cs-fix": "@php vendor/bin/php-cs-fixer fix --diff -v --ansi",
-        "crunz:analyze": "@php vendor/bin/php-cs-fixer fix --diff --dry-run -v"
+        "crunz:analyze": "@php vendor/bin/php-cs-fixer fix --diff --dry-run -v",
+        "crunz:link-changelog": "@php vendor/bin/changelog-linker dump-merges --dry-run --in-categories",
+        "crunz:link-changelog:since": "@php vendor/bin/changelog-linker dump-merges --dry-run --in-categories --since-id"
     }
 }
