@@ -6,6 +6,7 @@ namespace Crunz\Task;
 
 use Crunz\Configuration\Configuration;
 use Crunz\Finder\FinderInterface;
+use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Path\Path;
 
 class Collection
@@ -14,11 +15,17 @@ class Collection
     private $configuration;
     /** @var FinderInterface */
     private $finder;
+    /** @var ConsoleLoggerInterface */
+    private $consoleLogger;
 
-    public function __construct(Configuration $configuration, FinderInterface $finder)
-    {
+    public function __construct(
+        Configuration $configuration,
+        FinderInterface $finder,
+        ConsoleLoggerInterface $consoleLogger
+    ) {
         $this->configuration = $configuration;
         $this->finder = $finder;
+        $this->consoleLogger = $consoleLogger;
     }
 
     /**
@@ -28,6 +35,9 @@ class Collection
      */
     public function all($source)
     {
+        $this->consoleLogger
+            ->debug("Task source path '<info>$source</info>'");
+
         if (!\file_exists($source)) {
             return [];
         }
@@ -41,6 +51,9 @@ class Collection
                 "*{$suffix}",
             ]
         );
+
+        $this->consoleLogger
+            ->debug("Task finder pattern '<info>{$sourcePath->toString()}</info>'");
 
         return $this->finder
             ->find($sourcePath)

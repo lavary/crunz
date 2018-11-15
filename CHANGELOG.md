@@ -4,159 +4,246 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
 
 ### Removed
+
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+### Fixed
+
+- [#166] Improve task collection debugging
+
+### Fixed
 
 ## 1.11.0-beta.2 - 2018-11-10
 
 ### Fixed
 
-- Crunz doesn't provide error log when emailing, issue [#161](https://github.com/lavary/crunz/issues/161) - PR [#162](https://github.com/lavary/crunz/pull/162)
+- [#162] Fix command error output [closes [#161]]
 
-## 1.11.0-beta.1 - 2018-10-23
+## [v1.11.0-beta.1] - 2018-10-23
 
 ### Added
 
-- Custom `LockStore` support, issue [#125](https://github.com/lavary/crunz/issues/125) - PR [#153](https://github.com/lavary/crunz/pull/153) by [@digilist](https://github.com/digilist)
+- [#153] Add support for `symfony/lock`, Thanks to [@digilist]
 
 ### Fixed
 
-- Incompatibility with PHAR format - PR [#146](https://github.com/lavary/crunz/pull/146)
-- Passed task number is not string, issue [#156](https://github.com/lavary/crunz/issues/156) - PR [#158](https://github.com/lavary/crunz/pull/158)
+- [#146] Make paths relative to current working directory - "cwd".
+- [#158] Accept only string task number.
 
-## 1.10.1 - 2018-09-22
-
-### Fixed
-
-- Incompatibility for users without cURL extension but with enabled `allow_url_fopen` - PR [#139](https://github.com/lavary/crunz/pull/139)
-by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-
-## 1.10.0 - 2018-09-22
+## [v1.10.1] - 2018-09-22
 
 ### Fixed
 
-- Treat whole output of failed command as "error output", solves issue
-[#135](https://github.com/lavary/crunz/issues/135),
-[#134](https://github.com/lavary/crunz/issues/134) - PR [#137](https://github.com/lavary/crunz/pull/137)
-by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- [#139] Do not require `cURL` extension
+
+## [v1.10.0] - 2018-09-22
+
+### Fixed
+
+- [#137] Treat whole output of failed command as "error output".
 
 ### Removed
 
-- Remove `guzzlehttp/guzzle` dependency and use in-house `CurlHttpClient` -
-PR [#136](https://github.com/lavary/crunz/pull/136)
-by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- [#136] Remove guzzle
 
-## 1.9.0 - 2018-08-18
+## [v1.9.0] - 2018-08-18
 
 ### Changed
 
-- Container cache directory is in `<OS-temp-dir>/.crunz/<current-user>/<crunz-version>` now,
-[#128](https://github.com/lavary/crunz/issues/128) - PR [#132](https://github.com/lavary/crunz/pull/132)
-by [@PabloKowalczyk](https://github.com/PabloKowalczyk) 
+- [#132] Improved container caching in shared servers
 
 ### Fixed
 
-- Crunz can be used with `dragonmantank/cron-expression` package, solves issue
-[#126](https://github.com/lavary/crunz/issues/126) - PR [#131](https://github.com/lavary/crunz/pull/131)
-by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- [#131] Crunz can be used with `dragonmantank/cron-expression` package
 
 ### Deprecated
 
-- Passing more than five parts (e.g `* * * * * *`) to `Crunz\Event::cron` - PR [#131](https://github.com/lavary/crunz/pull/131)
+- Passing more than five parts (e.g `* * * * * *`) to `Crunz\Event::cron()`
 
-## 1.8.0 - 2018-08-15
+## [v1.8.0] - 2018-08-15
+
+### Added
+
+- [#120] Added `--force` option to `schedule:run` command
+- [#129] Add `--task` option for `schedule:run` command
+
+### Fixed
+
+- [#123] Spellfix: `comand` -> `command`, Thanks to [@FallDi]
+
+## [v1.7.3] - 2018-06-15
+
+- [#118] Undefined index: year in `vendor/lavary/crunz/src/Event.php` on line 370, Thanks to [@mindcreations]
+
+## [v1.7.2] - 2018-06-13
+
+### Fixed
+
+- [#116] Do not replace Symfony's polyfills.
+
+## [v1.7.1] - 2018-06-01
+
+### Fixed
+
+- [#110] Fixed config file path guessing.
+
+## [v1.7.0] - 2018-05-27
 
 ### Added
 
-- `--force` option to `schedule:run` command.
-This option allow to run all tasks regardless of configured run time,
-part of issue [#11](https://github.com/lavary/crunz/issues/11) -
-PR [#120](https://github.com/lavary/crunz/pull/120) by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-
-- `--task=TASK-NUMBER` option to `schedule:run` command.
-This option allow to run only one specific task,
-part of issue [#11](https://github.com/lavary/crunz/issues/11) -
-PR [#129](https://github.com/lavary/crunz/pull/129) by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-
-### Changed
-- Tasks in `schedule:list` is sorted by filename,
-PR [#129](https://github.com/lavary/crunz/pull/129) by [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-
-## 1.7.3 - 2018-06-15
-
-### Fixed
-
-- Undefined index: `year` in vendor/lavary/crunz/src/Event.php on line 370, solves issue
-[#41](https://github.com/lavary/crunz/issues/41) - PR [#118](https://github.com/lavary/crunz/pull/118) by [@mindcreations](https://github.com/mindcreations)
-
-## 1.7.2 - 2018-06-13
-
-### Fixed
-
-- Stop `replace`ing Symfony's polyfills to avoid installation issues - PR
-[#116](https://github.com/lavary/crunz/pull/116), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-
-## 1.7.1 - 2018-06-01
-
-### Fixed
-
-- Project configuration file not loaded (issue [#108](https://github.com/lavary/crunz/issues/108)) - PR
-[#110](https://github.com/lavary/crunz/pull/110), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-
-## 1.7.0 - 2018-05-27
-
-### Added
-- `timezone` option to config file - PR [#94](https://github.com/lavary/crunz/pull/94),
-[@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- [#94] Added timezone option
 
 ### Deprecated
-- `timezone` option in config file is now required,
-lack of it will result in Exception in version `2.0`
+- `timezone` option in config file is now required, lack of it will result in Exception in version `2.0`
 
 ### Removed
-- `\Crunz\Utils::splitCamel()` method - PR [#104](https://github.com/lavary/crunz/pull/104),
-[@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
-## 1.6.1 - 2018-05-13
+- [#104] Remove splitCamel helper.
+
+## [v1.6.1] - 2018-05-13
 
 ### Fixed
-- Crunz sends output email even if the output is empty,
-solves issue [#64](https://github.com/lavary/crunz/issues/64) - PR
-[#90](https://github.com/lavary/crunz/pull/90), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
-## 1.6.0 - 2018-04-22
+- [#90] Send output by email only if it is not empty.
+
+## [v1.6.0] - 2018-04-22
 
 ### Added
-- Option for allowing line breaks in logs - PR [#69](https://github.com/lavary/crunz/pull/69),
-thanks to [@TomasDuda](https://github.com/TomasDuda)
-- Dependency injection container - PR [#79](https://github.com/lavary/crunz/pull/79),
-[@PabloKowalczyk](https://github.com/PabloKowalczyk)
+
+- [#69] Option for allowing line breaks in logs, Thanks to [@TomasDuda]
+- [#79] Introduce DI container
 
 ### Fixed
-- Typos stopping email transport of 'mail' - PR [#43](https://github.com/lavary/crunz/pull/43),
-thanks to [@m-hume](https://github.com/m-hume)
-- sendOutputTo and appendOutputTo, solved issues [#12](https://github.com/lavary/crunz/issues/12)
-and [#38](https://github.com/lavary/crunz/issues/38) - PR [#46](https://github.com/lavary/crunz/pull/46),
-thanks to [@m-hume](https://github.com/m-hume) 
-- preventOverlapping on Windows - PR [#80](https://github.com/lavary/crunz/pull/80),
-[@PabloKowalczyk](https://github.com/PabloKowalczyk)
-- Problem with `->in(dirname)` on Windows - PR [#81](https://github.com/lavary/crunz/pull/81),
-[@PabloKowalczyk](https://github.com/PabloKowalczyk)
-- Task runs every minute of hour with `on()`, solves issue
-[#83](https://github.com/lavary/crunz/issues/83) - PR [#84](https://github.com/lavary/crunz/pull/84)
-- Closure on Windows, solved issue [#60](https://github.com/lavary/crunz/issues/60) - PR
-[#86](https://github.com/lavary/crunz/pull/86), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
-- Handling errors by removing `Crunz\ErrorHandler`, solved issue [#65](https://github.com/lavary/crunz/issues/65) -
-PR [#87](https://github.com/lavary/crunz/pull/87), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
-## 1.5.1 - 2018-04-12
+- [#43] Typos stopping email transport of 'mail', Thanks to [@m-hume]
+- [#46] sendOutputTo and appendOutputTo fix, Thanks to [@m-hume]
+- [#80] Fixed prevent overlapping on windows
+- [#81] Fix Event::in on windows
+- [#84] Make comparing date segments strict.
+- [#86] Fix closure running on windows
+- [#85] Fix changing user
+- [#87] Remove error handler
+
+## [v1.5.1] - 2018-04-12
 
 ### Added
-- This changelog file
-- .editorconfig file
+
+- [#76] Introduce editorconfig
+- [#75] Added changelog file.
 
 ### Fixed
-- issue [#61](https://github.com/lavary/crunz/issues/61) - High CPU usage 
+
+- [#77] Fix high cpu usage
+
+
+[#166]: https://github.com/lavary/crunz/pull/166
+[#164]: https://github.com/lavary/crunz/pull/164
+[#163]: https://github.com/lavary/crunz/pull/163
+[#162]: https://github.com/lavary/crunz/pull/162
+[#161]: https://github.com/lavary/crunz/pull/161
+[#159]: https://github.com/lavary/crunz/pull/159
+[#158]: https://github.com/lavary/crunz/pull/158
+[#157]: https://github.com/lavary/crunz/pull/157
+[#155]: https://github.com/lavary/crunz/pull/155
+[#154]: https://github.com/lavary/crunz/pull/154
+[#153]: https://github.com/lavary/crunz/pull/153
+[#151]: https://github.com/lavary/crunz/pull/151
+[#150]: https://github.com/lavary/crunz/pull/150
+[#149]: https://github.com/lavary/crunz/pull/149
+[#148]: https://github.com/lavary/crunz/pull/148
+[#147]: https://github.com/lavary/crunz/pull/147
+[#146]: https://github.com/lavary/crunz/pull/146
+[#142]: https://github.com/lavary/crunz/pull/142
+[#141]: https://github.com/lavary/crunz/pull/141
+[#140]: https://github.com/lavary/crunz/pull/140
+[#139]: https://github.com/lavary/crunz/pull/139
+[#138]: https://github.com/lavary/crunz/pull/138
+[#137]: https://github.com/lavary/crunz/pull/137
+[#136]: https://github.com/lavary/crunz/pull/136
+[#133]: https://github.com/lavary/crunz/pull/133
+[#132]: https://github.com/lavary/crunz/pull/132
+[#131]: https://github.com/lavary/crunz/pull/131
+[#130]: https://github.com/lavary/crunz/pull/130
+[#129]: https://github.com/lavary/crunz/pull/129
+[#123]: https://github.com/lavary/crunz/pull/123
+[#120]: https://github.com/lavary/crunz/pull/120
+[#119]: https://github.com/lavary/crunz/pull/119
+[#118]: https://github.com/lavary/crunz/pull/118
+[#117]: https://github.com/lavary/crunz/pull/117
+[#116]: https://github.com/lavary/crunz/pull/116
+[#113]: https://github.com/lavary/crunz/pull/113
+[#112]: https://github.com/lavary/crunz/pull/112
+[#111]: https://github.com/lavary/crunz/pull/111
+[#110]: https://github.com/lavary/crunz/pull/110
+[#109]: https://github.com/lavary/crunz/pull/109
+[#107]: https://github.com/lavary/crunz/pull/107
+[#105]: https://github.com/lavary/crunz/pull/105
+[#104]: https://github.com/lavary/crunz/pull/104
+[#103]: https://github.com/lavary/crunz/pull/103
+[#102]: https://github.com/lavary/crunz/pull/102
+[#101]: https://github.com/lavary/crunz/pull/101
+[#100]: https://github.com/lavary/crunz/pull/100
+[#98]: https://github.com/lavary/crunz/pull/98
+[#97]: https://github.com/lavary/crunz/pull/97
+[#96]: https://github.com/lavary/crunz/pull/96
+[#95]: https://github.com/lavary/crunz/pull/95
+[#94]: https://github.com/lavary/crunz/pull/94
+[#92]: https://github.com/lavary/crunz/pull/92
+[#90]: https://github.com/lavary/crunz/pull/90
+[#89]: https://github.com/lavary/crunz/pull/89
+[#88]: https://github.com/lavary/crunz/pull/88
+[#87]: https://github.com/lavary/crunz/pull/87
+[#86]: https://github.com/lavary/crunz/pull/86
+[#85]: https://github.com/lavary/crunz/pull/85
+[#84]: https://github.com/lavary/crunz/pull/84
+[#82]: https://github.com/lavary/crunz/pull/82
+[#81]: https://github.com/lavary/crunz/pull/81
+[#80]: https://github.com/lavary/crunz/pull/80
+[#79]: https://github.com/lavary/crunz/pull/79
+[#77]: https://github.com/lavary/crunz/pull/77
+[#76]: https://github.com/lavary/crunz/pull/76
+[#75]: https://github.com/lavary/crunz/pull/75
+[#74]: https://github.com/lavary/crunz/pull/74
+[#73]: https://github.com/lavary/crunz/pull/73
+[#72]: https://github.com/lavary/crunz/pull/72
+[#69]: https://github.com/lavary/crunz/pull/69
+[#50]: https://github.com/lavary/crunz/pull/50
+[#46]: https://github.com/lavary/crunz/pull/46
+[#43]: https://github.com/lavary/crunz/pull/43
+[#36]: https://github.com/lavary/crunz/pull/36
+[#25]: https://github.com/lavary/crunz/pull/25
+[#24]: https://github.com/lavary/crunz/pull/24
+[#23]: https://github.com/lavary/crunz/pull/23
+[#17]: https://github.com/lavary/crunz/pull/17
+[#16]: https://github.com/lavary/crunz/pull/16
+[v1.9.0]: https://github.com/lavary/crunz/compare/v1.8.0...v1.9.0
+[v1.8.0]: https://github.com/lavary/crunz/compare/v1.7.3...v1.8.0
+[v1.7.3]: https://github.com/lavary/crunz/compare/v1.7.2...v1.7.3
+[v1.7.2]: https://github.com/lavary/crunz/compare/v1.7.1...v1.7.2
+[v1.7.1]: https://github.com/lavary/crunz/compare/v1.7.0...v1.7.1
+[v1.7.0]: https://github.com/lavary/crunz/compare/v1.6.1...v1.7.0
+[v1.6.1]: https://github.com/lavary/crunz/compare/v1.6.0...v1.6.1
+[v1.6.0]: https://github.com/lavary/crunz/compare/v1.5.1...v1.6.0
+[v1.5.1]: https://github.com/lavary/crunz/compare/v1.5.0...v1.5.1
+[v1.11.0-beta.2]: https://github.com/lavary/crunz/compare/v1.11.0-beta.1...v1.11.0-beta.2
+[v1.11.0-beta.1]: https://github.com/lavary/crunz/compare/v1.10.1...v1.11.0-beta.1
+[v1.10.1]: https://github.com/lavary/crunz/compare/v1.10.0...v1.10.1
+[v1.10.0]: https://github.com/lavary/crunz/compare/v1.9.0...v1.10.0
+[@vinkla]: https://github.com/vinkla
+[@timurbakarov]: https://github.com/timurbakarov
+[@radarhere]: https://github.com/radarhere
+[@mindcreations]: https://github.com/mindcreations
+[@m-hume]: https://github.com/m-hume
+[@jhoughtelin]: https://github.com/jhoughtelin
+[@erfan723]: https://github.com/erfan723
+[@digilist]: https://github.com/digilist
+[@codermarcel]: https://github.com/codermarcel
+[@arthurbarros]: https://github.com/arthurbarros
+[@andrewmy]: https://github.com/andrewmy
+[@TomasDuda]: https://github.com/TomasDuda
+[@PhilETaylor]: https://github.com/PhilETaylor
+[@FallDi]: https://github.com/FallDi
