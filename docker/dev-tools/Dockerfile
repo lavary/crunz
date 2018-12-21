@@ -1,10 +1,9 @@
-FROM php:5.6-cli-alpine
+FROM php:7.2-cli-alpine
 
 RUN apk add --no-cache \
         su-exec && \
     docker-php-ext-install -j$(nproc) \
-        opcache \
-        sysvsem
+        opcache
 
 RUN mkdir -p \
         /var/log/php \

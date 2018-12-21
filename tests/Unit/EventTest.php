@@ -7,6 +7,8 @@ use Crunz\Path\Path;
 use Crunz\Tests\TestCase\TestClock;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
+use Symfony\Component\Lock\Store\SemaphoreStore;
+use Symfony\Component\Lock\StoreInterface;
 
 class EventTest extends TestCase
 {
@@ -369,6 +371,43 @@ class EventTest extends TestCase
             $wholeOutput,
             'Missing error output'
         );
+    }
+
+    /** @test */
+    public function taskWillPreventOverlappingWithDefaultStore()
+    {
+        $this->assertPreventOverlapping();
+    }
+
+    /** @test */
+    public function taskWillPreventOverlappingWithSemaphoreStore()
+    {
+        if (!\extension_loaded('sysvsem')) {
+            $this->markTestSkipped('Semaphore extension not installed.');
+        }
+
+        $this->assertPreventOverlapping(new SemaphoreStore());
+    }
+
+    private function assertPreventOverlapping(StoreInterface $store = null)
+    {
+        $event = $this->createPreventOverlappingEvent($store);
+        $event2 = $this->createPreventOverlappingEvent($store);
+
+        $event->start();
+
+        $this->assertFalse($event2->isDue(new \DateTimeZone('UTC')));
+    }
+
+    private function createPreventOverlappingEvent(StoreInterface $store = null)
+    {
+        $command = "php -r 'sleep(2);'";
+
+        $event = new Event(\uniqid('c', true), $command);
+        $event->preventOverlapping($store);
+        $event->everyMinute();
+
+        return $event;
     }
 
     private function setClockNow(\DateTimeImmutable $dateTime)
