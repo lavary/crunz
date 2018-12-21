@@ -322,7 +322,7 @@ class Event implements PingableInterface
      */
     public function start()
     {
-        $this->setProcess(new Process($this->buildCommand()));
+        $this->setProcess(Process::fromShellCommandline($this->buildCommand()));
         $this->getProcess()->start(
             function ($type, $content) {
                 $this->wholeOutput[] = $content;
