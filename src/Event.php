@@ -322,7 +322,16 @@ class Event implements PingableInterface
      */
     public function start()
     {
-        $this->setProcess(new Process($this->buildCommand()));
+        $command = $this->buildCommand();
+
+        if (\method_exists(Process::class, 'fromShellCommandline')) {
+            $process = Process::fromShellCommandline($command);
+        } else {
+            // BC layer for Symfony 4.1 and older
+            $process = new Process($command);
+        }
+
+        $this->setProcess($process);
         $this->getProcess()->start(
             function ($type, $content) {
                 $this->wholeOutput[] = $content;
