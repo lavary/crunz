@@ -149,10 +149,14 @@ class EventRunner
         while ($this->schedules) {
             foreach ($this->schedules as $scheduleKey => $schedule) {
                 $events = $schedule->events();
+                // 10% chance that refresh will be called
+                $refreshLocks = (\mt_rand(1, 100) <= 10);
 
                 /** @var Event $event */
                 foreach ($events as $eventKey => $event) {
-                    $event->refreshLock();
+                    if ($refreshLocks) {
+                        $event->refreshLock();
+                    }
 
                     $proc = $event->getProcess();
                     if ($proc->isRunning()) {

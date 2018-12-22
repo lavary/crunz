@@ -36,7 +36,7 @@ class Collection
     public function all($source)
     {
         $this->consoleLogger
-            ->debug("Task source path '<info>$source</info>'");
+            ->debug("Task source path '<info>${source}</info>'");
 
         if (!\file_exists($source)) {
             return [];

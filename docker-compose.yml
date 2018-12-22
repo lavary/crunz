@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+    php56:
+        build:
+            context: ./docker/php56
+        working_dir: /var/www/html
+        command: >
+            sh -c "
+                chown -R www-data:www-data /var/www/.composer \
+                && echo 'Logs from /var/log/php/error.log:' \
+                && touch /var/log/php/error.log \
+                && tail -f /var/log/php/error.log
+            "
+        volumes:
+            - .:/var/www/html
+            - ./docker/php56/php.ini:/usr/local/etc/php/php.ini:ro
+
+    php71:
+        build:
+            context: ./docker/php71
+        working_dir: /var/www/html
+        command: >
+            sh -c "
+                chown -R www-data:www-data /var/www/.composer \
+                && echo 'Logs from /var/log/php/error.log:' \
+                && touch /var/log/php/error.log \
+                && tail -f /var/log/php/error.log
+            "
+        volumes:
+            - .:/var/www/html
+            - ./docker/php71/php.ini:/usr/local/etc/php/php.ini:ro
+
+    dev_tools:
+        build:
+            context: ./docker/dev-tools
+        working_dir: /var/www/html
+        command: >
+            sh -c "
+                chown -R www-data:www-data /var/www/.composer \
+                && su-exec www-data composer bin all install -o \
+                && echo 'Logs from /var/log/php/error.log:' \
+                && touch /var/log/php/error.log \
+                && tail -f /var/log/php/error.log
+            "
+        volumes:
+            - .:/var/www/html
+            - ./docker/php56/php.ini:/usr/local/etc/php/php.ini:ro

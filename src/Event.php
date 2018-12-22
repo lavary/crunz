@@ -14,8 +14,10 @@ use Crunz\Path\Path;
 use Crunz\Pinger\PingableInterface;
 use Crunz\Pinger\PingableTrait;
 use SuperClosure\Serializer;
+use Symfony\Component\Lock\Exception\InvalidArgumentException;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Lock\Lock;
+use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\Lock\StoreInterface;
 use Symfony\Component\Process\Process;
 
@@ -28,13 +30,6 @@ use Symfony\Component\Process\Process;
 class Event implements PingableInterface
 {
     use PingableTrait;
-
-    /**
-     * Indicates if the command should not overlap itself.
-     *
-     * @var bool
-     */
-    public $preventOverlapping = false;
 
     /**
      * The location that output should be sent to.
@@ -160,6 +155,13 @@ class Event implements PingableInterface
         'month' => 4,
         'week' => 5,
     ];
+
+    /**
+     * Indicates if the command should not overlap itself.
+     *
+     * @var bool
+     */
+    private $preventOverlapping = false;
     /** @var ClockInterface */
     private static $clock;
 
@@ -170,15 +172,10 @@ class Event implements PingableInterface
      * @var Factory|null
      */
     private $lockFactory;
-
-    /**
-     * Contains the timestamp of the last lock refresh.
-     *
-     * @var int
-     */
-    private $lastLockRefresh = 0;
-
+    /** @var string[] */
     private $wholeOutput = [];
+    /** @var Lock */
+    private $lock;
 
     /**
      * Create a new event instance.
@@ -327,7 +324,16 @@ class Event implements PingableInterface
      */
     public function start()
     {
-        $this->setProcess(new Process($this->buildCommand()));
+        $command = $this->buildCommand();
+
+        if (\method_exists(Process::class, 'fromShellCommandline')) {
+            $process = Process::fromShellCommandline($command);
+        } else {
+            // BC layer for Symfony 4.1 and older
+            $process = new Process($command);
+        }
+
+        $this->setProcess($process);
         $this->getProcess()->start(
             function ($type, $content) {
                 $this->wholeOutput[] = $content;
@@ -756,14 +762,16 @@ class Event implements PingableInterface
      */
     public function preventOverlapping(StoreInterface $store = null)
     {
+        $lockStore = $store ?: $this->createDefaultLockStore();
         $this->preventOverlapping = true;
-        if (null !== $store) {
-            $this->lockFactory = new Factory($store);
-        }
+        $this->lockFactory = new Factory($lockStore);
 
         // Skip the event if it's locked (processing)
         $this->skip(function () {
-            return $this->isLocked();
+            $lock = $this->createLockObject();
+            $lock->acquire();
+
+            return !$lock->isAcquired();
         });
 
         // Delete the lock file when the event is completed
@@ -1050,57 +1058,6 @@ class Event implements PingableInterface
     }
 
     /**
-     * Check if another instance of the event is still running.
-     *
-     * @return bool
-     */
-    public function isLocked()
-    {
-        if (null !== $this->lockFactory) {
-            $lock = $this->createLockObject();
-
-            return $lock->isAcquired();
-        }
-
-        // If no symfony lock object is given, fall back to file system locks.
-        $pid = $this->lastPid();
-        $hasPid = (null !== $pid);
-
-        // No POSIX on Windows
-        if ($this->isWindows()) {
-            return $hasPid;
-        }
-
-        return ($hasPid && \posix_getsid($pid)) ? true : false;
-    }
-
-    /**
-     * Get the last process Id of the event.
-     *
-     * @return int
-     */
-    public function lastPid()
-    {
-        $lock_file = $this->lockFile();
-
-        return \file_exists($lock_file) ? (int) \trim(\file_get_contents($lock_file)) : null;
-    }
-
-    /**
-     * Get the lock file path for the task.
-     *
-     * @return string
-     */
-    public function lockFile()
-    {
-        if (null !== $this->lockFactory) {
-            throw new \BadMethodCallException('We are not using file based locking, but instead symfony/lock');
-        }
-
-        return \rtrim(\sys_get_temp_dir(), '/') . '/crunz-' . \md5($this->buildCommand());
-    }
-
-    /**
      * If this event is prevented from overlapping, this method should be called regularly to refresh the lock.
      */
     public function refreshLock()
@@ -1109,14 +1066,18 @@ class Event implements PingableInterface
             return;
         }
 
-        if (null === $this->lockFactory) {
-            // In case of file based locking there is nothing to do.
+        $lock = $this->createLockObject();
+        $remainingLifetime = $lock->getRemainingLifetime();
+
+        // Lock will never expire
+        if (null === $remainingLifetime) {
+            return;
         }
 
-        // Refresh lock every 10s
-        $lockRefreshNeeded = $this->lastLockRefresh < (\time() - 10);
+        // Refresh 15s before lock expiration
+        $lockRefreshNeeded = $remainingLifetime < 15;
         if ($lockRefreshNeeded) {
-            $this->createLockObject()->refresh();
+            $lock->refresh();
         }
     }
 
@@ -1127,15 +1088,16 @@ class Event implements PingableInterface
      */
     protected function createLockObject()
     {
-        if (null === $this->lockFactory) {
-            throw new \BadMethodCallException(
-                'No lock factory. Please call preventOverlapping() with lock storage first.'
-            );
+        $this->checkLockFactory();
+
+        if (null === $this->lock) {
+            $ttl = 30;
+
+            $this->lock = $this->lockFactory
+                ->createLock($this->lockKey(), $ttl);
         }
 
-        $ttl = 30;
-
-        return $this->lockFactory->createLock('crunz-' . \md5($this->buildCommand()), $ttl);
+        return $this->lock;
     }
 
     /**
@@ -1143,17 +1105,10 @@ class Event implements PingableInterface
      */
     protected function releaseLock()
     {
-        if (null !== $this->lockFactory) {
-            $lock = $this->createLockObject();
-            $lock->release();
+        $this->checkLockFactory();
 
-            return;
-        }
-
-        $lockfile = $this->lockFile();
-        if (\file_exists($lockfile)) {
-            \unlink($lockfile);
-        }
+        $lock = $this->createLockObject();
+        $lock->release();
     }
 
     /**
@@ -1273,14 +1228,53 @@ class Event implements PingableInterface
 
     /**
      * Lock the event.
-     *
-     * @param \Crunz\Event $event
-     *
-     * @return string
      */
     protected function lock()
     {
-        \file_put_contents($this->lockFile(), $this->process->getPid());
+        $lock = $this->createLockObject();
+        $lock->acquire();
+    }
+
+    /**
+     * @return FlockStore
+     *
+     * @throws Exception\CrunzException
+     */
+    private function createDefaultLockStore()
+    {
+        try {
+            $lockPath = Path::create(
+                [
+                    \sys_get_temp_dir(),
+                    '.crunz',
+                ]
+            );
+
+            $store = new FlockStore($lockPath->toString());
+        } catch (InvalidArgumentException $exception) {
+            // Fallback to system temp dir
+            $lockPath = Path::create([\sys_get_temp_dir()]);
+            $store = new FlockStore($lockPath->toString());
+        }
+
+        return $store;
+    }
+
+    /**
+     * @return string
+     */
+    private function lockKey()
+    {
+        return 'crunz-' . \md5($this->buildCommand());
+    }
+
+    private function checkLockFactory()
+    {
+        if (null === $this->lockFactory) {
+            throw new \BadMethodCallException(
+                'No lock factory. Please call preventOverlapping() first.'
+            );
+        }
     }
 
     /** @return ClockInterface */
