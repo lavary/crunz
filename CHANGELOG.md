@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v1.11.0-rc.1]
+
 ### Fixed
 
+- [#171] Fix lock storage bug
+- [#173] Remove Symfony 4.2 deprecations
 - [#166] Improve task collection debugging
 
 ## [v1.11.0-beta.2]
@@ -133,6 +137,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [#77] Fix high cpu usage
 
 
+[#173]: https://github.com/lavary/crunz/pull/173  
+[#171]: https://github.com/lavary/crunz/pull/171
 [#166]: https://github.com/lavary/crunz/pull/166
 [#164]: https://github.com/lavary/crunz/pull/164
 [#163]: https://github.com/lavary/crunz/pull/163
@@ -222,6 +228,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [v1.6.1]: https://github.com/lavary/crunz/compare/v1.6.0...v1.6.1
 [v1.6.0]: https://github.com/lavary/crunz/compare/v1.5.1...v1.6.0
 [v1.5.1]: https://github.com/lavary/crunz/compare/v1.5.0...v1.5.1
+[v1.11.0-rc.1]: https://github.com/lavary/crunz/compare/v1.11.0-beta.2...v1.11.0-rc.1
 [v1.11.0-beta.2]: https://github.com/lavary/crunz/compare/v1.11.0-beta.1...v1.11.0-beta.2
 [v1.11.0-beta.1]: https://github.com/lavary/crunz/compare/v1.10.1...v1.11.0-beta.1
 [v1.10.1]: https://github.com/lavary/crunz/compare/v1.10.0...v1.10.1
