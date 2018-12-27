@@ -50,6 +50,15 @@ class Collection
             ]
         );
 
+        $realPath = \realpath($source);
+        if (false !== $realPath) {
+            $this->consoleLogger
+                ->verbose("Realpath for '<info>{$source}</info>' is '<info>{$realPath}</info>'");
+        } else {
+            $this->consoleLogger
+                ->verbose("Realpath resolve for '<info>{$source}</info>' failed.");
+        }
+
         $this->consoleLogger
             ->debug("Task finder pattern '<info>{$sourcePath->toString()}</info>'");
 
