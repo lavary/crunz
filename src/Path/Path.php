@@ -24,12 +24,13 @@ final class Path
             throw new CrunzException('At least one part expected.');
         }
 
-        return new self(
-            \implode(
-                DIRECTORY_SEPARATOR,
-                $parts
-            )
+        $normalizedPath = \str_replace(
+            DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            \implode(DIRECTORY_SEPARATOR, $parts)
         );
+
+        return new self($normalizedPath);
     }
 
     public function toString()

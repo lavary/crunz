@@ -33,4 +33,20 @@ final class PathTest extends TestCase
             $path->toString()
         );
     }
+
+    /** @test */
+    public function doubledDirectorySeparatorIsNormalized()
+    {
+        $parts = [
+            'home' . DIRECTORY_SEPARATOR,
+            'user',
+        ];
+
+        $path = Path::create($parts);
+
+        $this->assertSame(
+            'home' . DIRECTORY_SEPARATOR . 'user',
+            $path->toString()
+        );
+    }
 }
