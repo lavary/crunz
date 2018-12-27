@@ -58,9 +58,10 @@ class ScheduleListCommand extends Command
     {
         $this->options = $input->getOptions();
         $this->arguments = $input->getArguments();
-        $tasks = $this->taskCollection
-            ->all($this->arguments['source'])
-        ;
+        $tasks = $this->fallbackTaskSource(
+            $this->taskCollection
+                ->all($this->arguments['source'])
+        );
 
         if (!\count($tasks)) {
             $output->writeln('<comment>No task found!</comment>');
@@ -101,5 +102,17 @@ class ScheduleListCommand extends Command
         $table->render();
 
         return 0;
+    }
+
+    /** @param iterable|array $tasks */
+    private function fallbackTaskSource($tasks)
+    {
+        $tasksCount = \count($tasks);
+        if (0 !== $tasksCount) {
+            return $tasks;
+        }
+
+        return $this->taskCollection
+            ->allLegacyPaths();
     }
 }
