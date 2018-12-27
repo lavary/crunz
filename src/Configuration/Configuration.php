@@ -66,4 +66,34 @@ class Configuration
 
         return $sourcePath->toString();
     }
+
+    /**
+     * @deprecated Since v1.11
+     *
+     * @todo Remove in v2
+     *
+     * @return string[]
+     */
+    public function binRelativeSourcePaths()
+    {
+        $vendorBin = Path::create(['..', '..']);
+        $vendorCrunzBin = Path::create(
+            [
+                '..',
+                '..',
+                '..',
+            ]
+        );
+        $paths = [
+            $vendorBin->toString(),
+            $vendorCrunzBin->toString(),
+        ];
+
+        return \array_map(
+            function ($relativePart) {
+                return Path::create([CRUNZ_BIN_DIR, $relativePart])->toString();
+            },
+            $paths
+        );
+    }
 }
