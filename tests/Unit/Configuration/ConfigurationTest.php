@@ -48,6 +48,7 @@ final class ConfigurationTest extends TestCase
                     $crunzBinDir,
                     '..',
                     '..',
+                    'tasks',
                 ]
             )->toString(),
             Path::create(
@@ -56,6 +57,7 @@ final class ConfigurationTest extends TestCase
                     '..',
                     '..',
                     '..',
+                    'tasks',
                 ]
             )->toString(),
         ];

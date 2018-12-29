@@ -76,12 +76,19 @@ class Configuration
      */
     public function binRelativeSourcePaths()
     {
-        $vendorBin = Path::create(['..', '..']);
+        $vendorBin = Path::create(
+            [
+                '..',
+                '..',
+                'tasks',
+            ]
+        );
         $vendorCrunzBin = Path::create(
             [
                 '..',
                 '..',
                 '..',
+                'tasks',
             ]
         );
         $paths = [
