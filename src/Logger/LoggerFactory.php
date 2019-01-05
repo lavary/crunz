@@ -13,10 +13,6 @@ class LoggerFactory
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
-        $timezone = $this->configuration->get('timezone');
-        if ($timezone) {
-            MonologLogger::setTimezone(new \DateTimeZone($timezone));
-        }
     }
 
     /**
