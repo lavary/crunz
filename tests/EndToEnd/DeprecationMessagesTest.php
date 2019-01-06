@@ -18,8 +18,14 @@ final class DeprecationMessagesTest extends TestCase
                 'crunz',
             ]
         );
+        $command = PHP_BINARY . " {$path->toString()}";
 
-        $process = new Process($path->toString());
+        if (\method_exists(Process::class, 'fromShellCommandline')) {
+            $process = Process::fromShellCommandline($command);
+        } else {
+            $process = new Process($path->toString());
+        }
+
         $process->start();
         $process->wait();
 
