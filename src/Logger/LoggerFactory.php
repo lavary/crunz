@@ -24,6 +24,8 @@ class LoggerFactory
         $timezoneLog = $configuration->get('timezone_log');
         if ($timezoneLog and $timezone) {
             MonologLogger::setTimezone(new \DateTimeZone($timezone));
+        } else {
+            MonologLogger::setTimezone(new \DateTimeZone('UTC'));
         }
     }
 
