@@ -2,6 +2,7 @@
 
 namespace Crunz;
 
+use Crunz\EnvFlags\EnvFlags;
 use Crunz\Path\Path;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
@@ -221,6 +222,14 @@ class Application extends SymfonyApplication
 
     private function registerDeprecationHandler()
     {
+        /** @var EnvFlags $envFlags */
+        $envFlags = $this->container
+            ->get(EnvFlags::class);
+
+        if (!$envFlags->isDeprecationHandlerEnabled()) {
+            return;
+        }
+
         $io = $this->container
             ->get(SymfonyStyle::class);
 
