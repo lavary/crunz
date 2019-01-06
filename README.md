@@ -479,6 +479,11 @@ suffix: Tasks.php
 # and will result in exception in 2.0 version.
 timezone: ~
 
+# This option define which timezone should be used for log files
+# If false, system default timezone will be used
+# If true, the timezone in config file that is used to calculate task run time will be used
+timezone_log: false
+
 # By default the errors are not logged by Crunz
 # You may set the value to true for logging the errors
 log_errors: false
