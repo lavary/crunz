@@ -58,6 +58,7 @@ class Application extends SymfonyApplication
         parent::__construct($appName, $appVersion);
 
         $this->initializeContainer();
+        $this->registerDeprecationHandler();
 
         foreach (self::COMMANDS as $commandClass) {
             $command = $this->container
@@ -79,8 +80,6 @@ class Application extends SymfonyApplication
             $input = $this->container
                 ->get(InputInterface::class);
         }
-
-        $this->registerDeprecationHandler();
 
         return parent::run($input, $output);
     }
