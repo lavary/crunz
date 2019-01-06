@@ -23,7 +23,7 @@ final class DeprecationMessagesTest extends TestCase
         if (\method_exists(Process::class, 'fromShellCommandline')) {
             $process = Process::fromShellCommandline($command);
         } else {
-            $process = new Process($path->toString());
+            $process = new Process($command);
         }
 
         $process->start();
