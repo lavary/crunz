@@ -1,6 +1,7 @@
 source: tasks
 suffix: Tasks.php
 timezone: UTC
+timezone_log: false
 log_errors: false
 errors_log_file: ~
 log_output: false
