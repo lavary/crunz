@@ -111,7 +111,7 @@ final class ConfigurationParser implements ConfigurationParserInterface
                     E_USER_DEPRECATED
                 );
 
-                return $configPath;
+                return $legacyConfigPath;
             }
         }
 
