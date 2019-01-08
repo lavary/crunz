@@ -36,7 +36,8 @@ class Definition implements ConfigurationInterface
                     ->info('Timezone used to calculate task run date')
                 ->end()
 
-                ->scalarNode('timezone_log')
+                ->booleanNode('timezone_log')
+                ->defaultFalse()
                 ->info('Whether configured timezone will be used for logs')
                 ->end()
 
