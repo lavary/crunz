@@ -62,7 +62,7 @@ final class ConfigurationTest extends TestCase
             )->toString(),
         ];
 
-        $configuration = $this->createConfiguration();
+        $configuration = $this->createConfiguration(['source' => 'tasks']);
 
         $paths = $configuration->binRelativeSourcePaths();
 
