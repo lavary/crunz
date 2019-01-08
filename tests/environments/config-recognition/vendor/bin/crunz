@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+$testsRoot = __DIR__;
+for ($i = 0; $i < 4; $i++) {
+    $testsRoot = \dirname($testsRoot);
+}
+
+$bootstrapPath = \implode(
+    DIRECTORY_SEPARATOR,
+    [
+        $testsRoot,
+        'bin',
+        'bootstrap.php'
+    ]
+);
+
+require_once $bootstrapPath;
+
+// Enable Crunz deprecation handler because
+// it is disabled in test env
+\putenv('CRUNZ_DEPRECATION_HANDLER=1');
+
+\define('CRUNZ_BIN_DIR', __DIR__);
+
+$application = new \Crunz\Application('Crunz', 'dev-test');
+$application->run();
