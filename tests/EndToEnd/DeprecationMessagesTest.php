@@ -3,10 +3,9 @@
 namespace Crunz\Tests\EndToEnd;
 
 use Crunz\Path\Path;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
+use Crunz\Tests\TestCase\EndToEndTestCase;
 
-final class DeprecationMessagesTest extends TestCase
+final class DeprecationMessagesTest extends EndToEndTestCase
 {
     /** @test */
     public function earlyDeprecationShouldBeVisible()
@@ -20,12 +19,7 @@ final class DeprecationMessagesTest extends TestCase
         );
         $command = PHP_BINARY . " {$path->toString()}";
 
-        if (\method_exists(Process::class, 'fromShellCommandline')) {
-            $process = Process::fromShellCommandline($command);
-        } else {
-            $process = new Process($command);
-        }
-
+        $process = $this->createProcess($command);
         $process->start();
         $process->wait();
 
