@@ -35,6 +35,24 @@ final class PathTest extends TestCase
     }
 
     /** @test */
+    public function pathCanBeCreatedFromStrings()
+    {
+        $parts = [
+            'home',
+            'user',
+            'vendor',
+            'bin',
+            'crunz',
+        ];
+        $path = Path::fromStrings(...$parts);
+
+        $this->assertSame(
+            \implode(DIRECTORY_SEPARATOR, $parts),
+            $path->toString()
+        );
+    }
+
+    /** @test */
     public function doubledDirectorySeparatorIsNormalized()
     {
         $parts = [

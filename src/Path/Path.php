@@ -33,6 +33,18 @@ final class Path
         return new self($normalizedPath);
     }
 
+    /**
+     * @param string ...$parts
+     *
+     * @return Path
+     *
+     * @throws CrunzException
+     */
+    public static function fromStrings(...$parts)
+    {
+        return self::create($parts);
+    }
+
     public function toString()
     {
         return $this->path;
