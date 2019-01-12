@@ -69,6 +69,8 @@ final class FilesystemTest extends TestCase
         $filesystem->dumpFile($filePath->toString(), $content);
 
         $this->assertStringEqualsFile($filePath->toString(), $content);
+
+        \unlink($filePath->toString());
     }
 
     public function fileExistsProvider()
