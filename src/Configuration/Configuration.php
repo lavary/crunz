@@ -60,7 +60,7 @@ class Configuration
             [
                 $this->filesystem
                     ->getCwd(),
-                $this->get('source'),
+                $this->get('source', 'tasks'),
             ]
         );
 
@@ -80,7 +80,7 @@ class Configuration
             [
                 '..',
                 '..',
-                $this->get('source'),
+                $this->get('source', 'tasks'),
             ]
         );
         $vendorCrunzBin = Path::create(
@@ -88,7 +88,7 @@ class Configuration
                 '..',
                 '..',
                 '..',
-                $this->get('source'),
+                $this->get('source', 'tasks'),
             ]
         );
         $paths = [

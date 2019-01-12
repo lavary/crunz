@@ -33,6 +33,22 @@ final class ConfigurationTest extends TestCase
         $this->assertSame('anon', $configuration->get('notExist', 'anon'));
     }
 
+    /** @test */
+    public function sourcePathIsRelativeToCwd()
+    {
+        $configuration = $this->createConfiguration(['source' => 'app/tasks'], '/tmp');
+
+        $this->assertSame('/tmp/app/tasks', $configuration->getSourcePath());
+    }
+
+    /** @test */
+    public function sourcePathFallbackToTasksDirectory()
+    {
+        $configuration = $this->createConfiguration([], '/tmp');
+
+        $this->assertSame('/tmp/tasks', $configuration->getSourcePath());
+    }
+
     /**
      * @test
      *
@@ -70,7 +86,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @return Configuration */
-    private function createConfiguration(array $config = [])
+    private function createConfiguration(array $config = [], $cwd = '')
     {
         $mockConfigurationParser = $this->createMock(ConfigurationParserInterface::class);
         $mockConfigurationParser
@@ -78,9 +94,12 @@ final class ConfigurationTest extends TestCase
             ->willReturn($config)
         ;
 
-        return new Configuration(
-            $mockConfigurationParser,
-            $this->createMock(FilesystemInterface::class)
-        );
+        $mockFilesystem = $this->createMock(FilesystemInterface::class);
+        $mockFilesystem
+            ->method('getCwd')
+            ->willReturn($cwd)
+        ;
+
+        return new Configuration($mockConfigurationParser, $mockFilesystem);
     }
 }
