@@ -73,6 +73,26 @@ final class FilesystemTest extends TestCase
         \unlink($filePath->toString());
     }
 
+    /** @test */
+    public function createDirectoryCreatesDirectoryRecursive()
+    {
+        $tempDir = \sys_get_temp_dir();
+        $rootDirectoryPath = Path::fromStrings($tempDir, 'crunz-test');
+        $directoryPath = Path::fromStrings(
+            $rootDirectoryPath->toString(),
+            'deep',
+            'path',
+            'here'
+        );
+
+        $filesystem = new Filesystem();
+        $filesystem->createDirectory($directoryPath->toString());
+
+        $this->assertDirectoryExists($directoryPath->toString());
+
+        $filesystem->removeDirectory($rootDirectoryPath->toString());
+    }
+
     public function fileExistsProvider()
     {
         $tempFile = new TemporaryFile();

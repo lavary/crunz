@@ -46,4 +46,18 @@ final class Filesystem implements FilesystemInterface
     {
         \file_put_contents($filePath, $content);
     }
+
+    /** {@inheritdoc} */
+    public function createDirectory($directoryPath)
+    {
+        $created = \mkdir(
+            $directoryPath,
+            0770,
+            true
+        );
+
+        if (!$created && !\is_dir($directoryPath)) {
+            throw new \RuntimeException("Directory '{$directoryPath}' was not created.");
+        }
+    }
 }

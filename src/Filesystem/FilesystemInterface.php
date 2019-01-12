@@ -24,4 +24,7 @@ interface FilesystemInterface
      * @param string $content
      */
     public function dumpFile($filePath, $content);
+
+    /** @param string $directoryPath */
+    public function createDirectory($directoryPath);
 }
