@@ -27,4 +27,10 @@ interface FilesystemInterface
 
     /** @param string $directoryPath */
     public function createDirectory($directoryPath);
+
+    /**
+     * @param string $sourceFile
+     * @param string $targetFile
+     */
+    public function copy($sourceFile, $targetFile);
 }

@@ -60,4 +60,13 @@ final class Filesystem implements FilesystemInterface
             throw new \RuntimeException("Directory '{$directoryPath}' was not created.");
         }
     }
+
+    /**
+     * @param string $sourceFile
+     * @param string $targetFile
+     */
+    public function copy($sourceFile, $targetFile)
+    {
+        \copy($sourceFile, $targetFile);
+    }
 }

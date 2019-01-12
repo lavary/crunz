@@ -93,6 +93,26 @@ final class FilesystemTest extends TestCase
         $filesystem->removeDirectory($rootDirectoryPath->toString());
     }
 
+    /** @test */
+    public function copyFiles()
+    {
+        $content = 'Copy content';
+        $tempDir = \sys_get_temp_dir();
+        $rootDirectoryPath = Path::fromStrings($tempDir, 'copy-test');
+        \mkdir($rootDirectoryPath->toString());
+        $filePath = Path::fromStrings($rootDirectoryPath->toString(), 'file1.txt');
+        $targetFile = Path::fromStrings($rootDirectoryPath->toString(), 'file-copy.txt');
+        \file_put_contents($filePath->toString(), $content);
+
+        $filesystem = new Filesystem();
+        $filesystem->copy($filePath->toString(), $targetFile->toString());
+
+        $this->assertFileExists($targetFile->toString());
+        $this->assertStringEqualsFile($targetFile->toString(), $content);
+
+        $filesystem->removeDirectory($rootDirectoryPath->toString());
+    }
+
     public function fileExistsProvider()
     {
         $tempFile = new TemporaryFile();
