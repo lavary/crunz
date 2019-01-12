@@ -46,7 +46,7 @@ final class FilesystemTest extends TestCase
             $tempFile,
         ];
 
-        yield 'noeExists' => [
+        yield 'notExists' => [
             '/some/wrong/path',
             false,
         ];
