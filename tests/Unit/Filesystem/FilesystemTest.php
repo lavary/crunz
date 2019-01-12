@@ -3,6 +3,7 @@
 namespace Crunz\Tests\Unit\Filesystem;
 
 use Crunz\Filesystem\Filesystem;
+use Crunz\Path\Path;
 use Crunz\Tests\TestCase\TemporaryFile;
 use PHPUnit\Framework\TestCase;
 
@@ -33,6 +34,28 @@ final class FilesystemTest extends TestCase
         $filesystem = new Filesystem();
 
         $this->assertSame(\sys_get_temp_dir(), $filesystem->tempDir());
+    }
+
+    /** @test */
+    public function removeDirectoryRemovesDirectoriesRecursively()
+    {
+        $filesystem = new Filesystem();
+
+        $tempDir = \sys_get_temp_dir();
+        $rootPath = Path::fromStrings($tempDir, 'fs-tests');
+        $innerPath = Path::fromStrings($rootPath->toString(), 'inner');
+        $filePath = Path::fromStrings($innerPath->toString(), 'some-file.txt');
+
+        \mkdir(
+            $innerPath->toString(),
+            0777,
+            true
+        );
+        \touch($filePath->toString());
+
+        $filesystem->removeDirectory($rootPath->toString());
+
+        $this->assertDirectoryNotExists($rootPath->toString());
     }
 
     public function fileExistsProvider()

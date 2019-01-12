@@ -21,4 +21,22 @@ final class Filesystem implements FilesystemInterface
     {
         return \sys_get_temp_dir();
     }
+
+    public function removeDirectory($directoryPath)
+    {
+        $directoryIterator = new \RecursiveDirectoryIterator($directoryPath, \FilesystemIterator::SKIP_DOTS);
+        $recursiveIterator = new \RecursiveIteratorIterator(
+            $directoryIterator,
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($recursiveIterator as $path) {
+            $path->isDir() && !$path->isLink()
+                ? \rmdir($path->getPathname())
+                : \unlink($path->getPathname())
+            ;
+        }
+
+        \rmdir($directoryPath);
+    }
 }

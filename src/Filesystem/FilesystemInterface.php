@@ -16,4 +16,6 @@ interface FilesystemInterface
 
     /** @return string */
     public function tempDir();
+
+    public function removeDirectory($directoryPath);
 }
