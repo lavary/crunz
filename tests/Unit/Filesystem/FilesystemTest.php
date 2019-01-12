@@ -27,6 +27,14 @@ final class FilesystemTest extends TestCase
         $this->assertSame($expectedExistence, $filesystem->fileExists($path));
     }
 
+    /** @test */
+    public function tempDirectoryReturnSystemTempDirectory()
+    {
+        $filesystem = new Filesystem();
+
+        $this->assertSame(\sys_get_temp_dir(), $filesystem->tempDir());
+    }
+
     public function fileExistsProvider()
     {
         $tempFile = new TemporaryFile();

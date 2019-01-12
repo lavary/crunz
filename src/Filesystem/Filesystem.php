@@ -15,4 +15,10 @@ final class Filesystem implements FilesystemInterface
     {
         return \file_exists($filePath);
     }
+
+    /** @return string */
+    public function tempDir()
+    {
+        return \sys_get_temp_dir();
+    }
 }

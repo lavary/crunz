@@ -13,4 +13,7 @@ interface FilesystemInterface
      * @return bool
      */
     public function fileExists($filePath);
+
+    /** @return string */
+    public function tempDir();
 }
