@@ -18,4 +18,10 @@ interface FilesystemInterface
     public function tempDir();
 
     public function removeDirectory($directoryPath);
+
+    /**
+     * @param string $filePath
+     * @param string $content
+     */
+    public function dumpFile($filePath, $content);
 }

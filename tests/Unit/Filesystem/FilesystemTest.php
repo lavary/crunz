@@ -58,6 +58,19 @@ final class FilesystemTest extends TestCase
         $this->assertDirectoryNotExists($rootPath->toString());
     }
 
+    /** @test */
+    public function dumpFileWritesContentToFile()
+    {
+        $content = 'Some content';
+        $tempDir = \sys_get_temp_dir();
+        $filePath = Path::fromStrings($tempDir, 'dump-file.txt');
+
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile($filePath->toString(), $content);
+
+        $this->assertStringEqualsFile($filePath->toString(), $content);
+    }
+
     public function fileExistsProvider()
     {
         $tempFile = new TemporaryFile();

@@ -16,12 +16,13 @@ final class Filesystem implements FilesystemInterface
         return \file_exists($filePath);
     }
 
-    /** @return string */
+    /** {@inheritdoc} */
     public function tempDir()
     {
         return \sys_get_temp_dir();
     }
 
+    /** {@inheritdoc} */
     public function removeDirectory($directoryPath)
     {
         $directoryIterator = new \RecursiveDirectoryIterator($directoryPath, \FilesystemIterator::SKIP_DOTS);
@@ -38,5 +39,11 @@ final class Filesystem implements FilesystemInterface
         }
 
         \rmdir($directoryPath);
+    }
+
+    /** {@inheritdoc} */
+    public function dumpFile($filePath, $content)
+    {
+        \file_put_contents($filePath, $content);
     }
 }
