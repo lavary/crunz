@@ -113,6 +113,14 @@ final class FilesystemTest extends TestCase
         $filesystem->removeDirectory($rootDirectoryPath->toString());
     }
 
+    /** @test */
+    public function projectRootDirectory()
+    {
+        $filesystem = new Filesystem();
+
+        $this->assertSame($this->findProjectRootDirectory(), $filesystem->projectRootDirectory());
+    }
+
     public function fileExistsProvider()
     {
         $tempFile = new TemporaryFile();
@@ -128,5 +136,21 @@ final class FilesystemTest extends TestCase
             '/some/wrong/path',
             false,
         ];
+    }
+
+    private function findProjectRootDirectory()
+    {
+        $dir = $rootDir = \dirname(__DIR__);
+        $path = Path::fromStrings($dir, 'composer.json');
+
+        while (!\file_exists($path->toString())) {
+            if ($dir === \dirname($dir)) {
+                return $rootDir;
+            }
+            $dir = \dirname($dir);
+            $path = Path::fromStrings($dir, 'composer.json');
+        }
+
+        return $dir;
     }
 }

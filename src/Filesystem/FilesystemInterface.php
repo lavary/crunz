@@ -33,4 +33,7 @@ interface FilesystemInterface
      * @param string $targetFile
      */
     public function copy($sourceFile, $targetFile);
+
+    /** @return string */
+    public function projectRootDirectory();
 }

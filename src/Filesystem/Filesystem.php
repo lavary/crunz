@@ -2,8 +2,13 @@
 
 namespace Crunz\Filesystem;
 
+use Crunz\Path\Path;
+
 final class Filesystem implements FilesystemInterface
 {
+    /** @var string */
+    private $projectRootDir;
+
     /** {@inheritdoc} */
     public function getCwd()
     {
@@ -68,5 +73,26 @@ final class Filesystem implements FilesystemInterface
     public function copy($sourceFile, $targetFile)
     {
         \copy($sourceFile, $targetFile);
+    }
+
+    /** {@inheritdoc} */
+    public function projectRootDirectory()
+    {
+        if (null === $this->projectRootDir) {
+            $dir = $rootDir = \dirname(__DIR__);
+            $path = Path::fromStrings($dir, 'composer.json');
+
+            while (!\file_exists($path->toString())) {
+                if ($dir === \dirname($dir)) {
+                    return $this->projectRootDir = $rootDir;
+                }
+                $dir = \dirname($dir);
+                $path = Path::fromStrings($dir, 'composer.json');
+            }
+
+            $this->projectRootDir = $dir;
+        }
+
+        return $this->projectRootDir;
     }
 }
