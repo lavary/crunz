@@ -70,9 +70,14 @@ final class Environment
             ? $cwd
             : $this->rootDirectory()
         ;
+        // On Windows do not add php binary path
+        $phpBinary = DIRECTORY_SEPARATOR === '\\'
+            ? ''
+            : PHP_BINARY
+        ;
         $fullCommand = Path::create(
             [
-                PHP_BINARY . ' ' . $this->rootDirectory(),
+                "{$phpBinary} {$this->rootDirectory()}",
                 'vendor',
                 'bin',
                 "crunz {$command}",
