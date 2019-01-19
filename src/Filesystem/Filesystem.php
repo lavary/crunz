@@ -55,6 +55,10 @@ final class Filesystem implements FilesystemInterface
     /** {@inheritdoc} */
     public function createDirectory($directoryPath)
     {
+        if ($this->fileExists($directoryPath)) {
+            return;
+        }
+
         $created = \mkdir(
             $directoryPath,
             0770,
