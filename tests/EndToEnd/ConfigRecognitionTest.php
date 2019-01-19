@@ -26,58 +26,73 @@ final class ConfigRecognitionTest extends EndToEndTestCase
      */
     public function configRecognitionRelatedToCrunzBinIsDeprecated()
     {
-        \chdir('environments');
+        $tasksSource = Path::fromStrings('resources', 'tasks');
+        $environmentBuilder = $this->createEnvironmentBuilder();
+        $environmentBuilder
+            ->changeTaskDirectory($tasksSource)
+            ->addTask('PhpVersionTasks')
+            ->withConfig(
+                [
+                    'source' => $tasksSource->toString(),
+                    'timezone' => 'UTC',
+                ]
+            )
+        ;
 
-        $command = Path::create(
-            [
-                PHP_BINARY . ' config-recognition',
-                'vendor',
-                'bin',
-                'crunz schedule:list',
-            ]
+        $environment = $environmentBuilder->createEnvironment();
+
+        $process = $environment->runCrunzCommand('schedule:list', \sys_get_temp_dir());
+        $normalizedOutput = \preg_replace(
+            "/\s+/",
+            ' ',
+            $process->getOutput()
         );
-
-        $process = $this->createProcess($command->toString());
-        $process->start();
-        $process->wait();
 
         $this->assertContains(
             '[Deprecation] Probably you are relying on legacy config file recognition which is deprecated.',
-            $process->getOutput()
+            $normalizedOutput
         );
         $this->assertContains(
             '[Deprecation] Probably you are relying on legacy tasks source recognition which is deprecated.',
-            $process->getOutput()
+            $normalizedOutput
         );
-        $this->assertHasTask($process->getOutput());
+        $this->assertHasTask($normalizedOutput);
     }
 
     /** @test */
     public function searchConfigInCwd()
     {
-        \chdir('environments/config-recognition');
+        $tasksSource = Path::fromStrings('resources', 'tasks');
+        $environmentBuilder = $this->createEnvironmentBuilder();
+        $environmentBuilder
+            ->changeTaskDirectory($tasksSource)
+            ->addTask('PhpVersionTasks')
+            ->withConfig(
+                [
+                    'source' => $tasksSource->toString(),
+                    'timezone' => 'UTC',
+                ]
+            )
+        ;
 
-        $command = Path::create(
-            [
-                PHP_BINARY . ' vendor',
-                'bin',
-                'crunz schedule:list',
-            ]
+        $environment = $environmentBuilder->createEnvironment();
+
+        $process = $environment->runCrunzCommand('schedule:list');
+        $normalizedOutput = \preg_replace(
+            "/\s+/",
+            ' ',
+            $process->getOutput()
         );
-
-        $process = $this->createProcess($command->toString());
-        $process->start();
-        $process->wait();
 
         $this->assertNotContains(
             '[Deprecation] Probably you are relying on legacy config file recognition which is deprecated.',
-            $process->getOutput()
+            $normalizedOutput
         );
         $this->assertNotContains(
             '[Deprecation] Probably you are relying on legacy tasks source recognition which is deprecated.',
-            $process->getOutput()
+            $normalizedOutput
         );
-        $this->assertHasTask($process->getOutput());
+        $this->assertHasTask($normalizedOutput);
     }
 
     /** @param string $output */
