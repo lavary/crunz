@@ -224,6 +224,10 @@ final class Environment
             $process = new Process($command);
         }
 
+        if (\method_exists($process, 'inheritEnvironmentVariables')) {
+            $process->inheritEnvironmentVariables(true);
+        }
+
         return $process;
     }
 }
