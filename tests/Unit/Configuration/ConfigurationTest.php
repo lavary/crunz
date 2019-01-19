@@ -36,17 +36,22 @@ final class ConfigurationTest extends TestCase
     /** @test */
     public function sourcePathIsRelativeToCwd()
     {
-        $configuration = $this->createConfiguration(['source' => 'app/tasks'], '/tmp');
+        $cwd = \sys_get_temp_dir();
+        $sourcePath = Path::fromStrings('app', 'tasks');
+        $expectedPath = Path::fromStrings($cwd, $sourcePath->toString());
+        $configuration = $this->createConfiguration(['source' => $sourcePath->toString()], $cwd);
 
-        $this->assertSame('/tmp/app/tasks', $configuration->getSourcePath());
+        $this->assertSame($expectedPath->toString(), $configuration->getSourcePath());
     }
 
     /** @test */
     public function sourcePathFallbackToTasksDirectory()
     {
-        $configuration = $this->createConfiguration([], '/tmp');
+        $cwd = \sys_get_temp_dir();
+        $expectedPath = Path::fromStrings($cwd, 'tasks');
+        $configuration = $this->createConfiguration([], $cwd);
 
-        $this->assertSame('/tmp/tasks', $configuration->getSourcePath());
+        $this->assertSame($expectedPath->toString(), $configuration->getSourcePath());
     }
 
     /**
