@@ -59,18 +59,17 @@ final class Environment
     }
 
     /**
-     * @param string $command
-     * @param string $cwd
+     * @param string      $command
+     * @param string|null $cwd
      *
      * @return Process
      */
-    public function runCrunzCommand($command, $cwd = '')
+    public function runCrunzCommand($command, $cwd = null)
     {
-        $cwd = '' !== $cwd
+        $cwd = !empty($cwd)
             ? $cwd
             : $this->rootDirectory()
         ;
-        $originalCwd = \getcwd();
         $fullCommand = Path::create(
             [
                 PHP_BINARY . ' ' . $this->rootDirectory(),
@@ -80,14 +79,10 @@ final class Environment
             ]
         );
 
-        \chdir($cwd);
-
-        $process = $this->createProcess($fullCommand->toString());
+        $process = $this->createProcess($fullCommand->toString(), $cwd);
         $process->setEnv(['CRUNZ_DEPRECATION_HANDLER' => '1']);
         $process->start();
         $process->wait();
-
-        \chdir($originalCwd);
 
         return $process;
     }
@@ -188,7 +183,7 @@ final class Environment
 
     private function composerInstall()
     {
-        $process = new Process("cd {$this->rootDirectory()}; composer install -q --no-suggest");
+        $process = $this->createProcess('composer install -q --no-suggest', $this->rootDirectory());
         $process->start();
         $process->wait();
 
@@ -212,16 +207,17 @@ final class Environment
     }
 
     /**
-     * @param string $command
+     * @param string      $command
+     * @param string|null $cwd
      *
      * @return Process
      */
-    private function createProcess($command)
+    private function createProcess($command, $cwd = null)
     {
         if (\method_exists(Process::class, 'fromShellCommandline')) {
-            $process = Process::fromShellCommandline($command);
+            $process = Process::fromShellCommandline($command, $cwd);
         } else {
-            $process = new Process($command);
+            $process = new Process($command, $cwd);
         }
 
         if (\method_exists($process, 'inheritEnvironmentVariables')) {
