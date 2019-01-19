@@ -28,22 +28,40 @@ final class Filesystem implements FilesystemInterface
     }
 
     /** {@inheritdoc} */
-    public function removeDirectory($directoryPath)
+    public function removeDirectory($directoryPath, $ignoredPaths = [])
     {
+        $ignoredCount = 0;
+        $ignored = [];
+
+        /** @var Path $ignoredPath */
+        foreach ($ignoredPaths as $ignoredPath) {
+            $path = Path::fromStrings($directoryPath, $ignoredPath->toString());
+            $ignored[$path->toString()] = '';
+        }
+
         $directoryIterator = new \RecursiveDirectoryIterator($directoryPath, \FilesystemIterator::SKIP_DOTS);
         $recursiveIterator = new \RecursiveIteratorIterator(
             $directoryIterator,
             \RecursiveIteratorIterator::CHILD_FIRST
         );
 
+        /** @var \SplFileInfo $path */
         foreach ($recursiveIterator as $path) {
+            if (\array_key_exists($path->getPathname(), $ignored)) {
+                ++$ignoredCount;
+
+                continue;
+            }
+
             $path->isDir() && !$path->isLink()
                 ? \rmdir($path->getPathname())
                 : \unlink($path->getPathname())
             ;
         }
 
-        \rmdir($directoryPath);
+        if (0 === $ignoredCount) {
+            \rmdir($directoryPath);
+        }
     }
 
     /** {@inheritdoc} */

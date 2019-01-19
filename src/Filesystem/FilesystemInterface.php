@@ -2,6 +2,8 @@
 
 namespace Crunz\Filesystem;
 
+use Crunz\Path\Path;
+
 interface FilesystemInterface
 {
     /** @return string */
@@ -17,7 +19,11 @@ interface FilesystemInterface
     /** @return string */
     public function tempDir();
 
-    public function removeDirectory($directoryPath);
+    /**
+     * @param string $directoryPath
+     * @param Path[] $ignoredPaths
+     */
+    public function removeDirectory($directoryPath, $ignoredPaths = []);
 
     /**
      * @param string $filePath
