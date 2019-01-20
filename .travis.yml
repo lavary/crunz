@@ -33,7 +33,6 @@ before_install:
     - composer global require hirak/prestissimo -a
 
 install:
-    - travis_retry composer bin phpunit install -a;
     - if [[ "$DEPENDENCIES" = 'high' ]]; then
         travis_retry composer update $DEFAULT_COMPOSER_FLAGS;
       fi
@@ -43,6 +42,7 @@ install:
     - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.2' ]]; then
         travis_retry composer bin cs-fixer install -a --no-dev;
       fi
+    - travis_retry composer bin phpunit install -a;
 
 before_script:
     - composer install --prefer-source --no-interaction
