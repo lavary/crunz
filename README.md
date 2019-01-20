@@ -14,13 +14,14 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 |---|---|---|---|
 |stable (v1.10.1)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.10.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
 |beta (v1.11.0-rc.1)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.11.0-rc.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
-|v2 (master/v2.x-dev)|![7.1.3+](https://img.shields.io/badge/php-%5E7.1.3-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
-|v1 (v1.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|dev v2 (master/v2.x-dev)|![7.1.3+](https://img.shields.io/badge/php-%5E7.1.3-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|dev v1.12.x (v1.12.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.12.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.12.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|dev v1.11.x (v1.11.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.11.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.11.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
 ## Roadmap
 |Version|Release date|Active support until|Bug support until 
 |---|---|---|---|
-|v1 (v1.x-dev)|April 2016|April 2019|April 2020
+|v1 (v1.12.x)|April 2016|April 2019|April 2020
 |v2 (master/v2.x-dev)|April 2019|April 2021|April 2022
 
 ## Installation
@@ -755,8 +756,8 @@ vendor/bin/crunz make:task --help
 
 ### Which branch should I choose?
 
-In most cases you should target branch `1.x`, as this is active development branch.
-Branch `master` is for future release, but all bugs/features should go to `1.x` anyway.
+In most cases you should target branch `1.12.x`, as this is active development branch.
+Branch `master` is for future release, but all bugs/features should go to `1.11.x` anyway.
 
 ## If You Need Help
 
