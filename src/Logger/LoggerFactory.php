@@ -12,9 +12,23 @@ class LoggerFactory
     /** @var Configuration */
     private $configuration;
 
+    /**
+     * LoggerFactory constructor.
+     *
+     * @param Configuration $configuration
+     *
+     * @throws \Exception if the timezone supplied in configuration is not recognised as a valid timezone
+     */
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
+        $timezone = $configuration->get('timezone');
+        $timezoneLog = $configuration->get('timezone_log');
+        if ($timezoneLog and $timezone) {
+            MonologLogger::setTimezone(new \DateTimeZone($timezone));
+        } else {
+            MonologLogger::setTimezone(new \DateTimeZone('UTC'));
+        }
     }
 
     /**

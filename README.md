@@ -14,13 +14,14 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 |---|---|---|---|
 |stable (v1.10.1)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.10.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
 |beta (v1.11.0-rc.1)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v1.11.0-rc.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
-|v2 (master/v2.x-dev)|![7.1.3+](https://img.shields.io/badge/php-%5E7.1.3-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
-|v1 (v1.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|dev v2 (master/v2.x-dev)|![7.1.3+](https://img.shields.io/badge/php-%5E7.1.3-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|dev v1.12.x (v1.12.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.12.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.12.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|dev v1.11.x (v1.11.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.11.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.11.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
 ## Roadmap
 |Version|Release date|Active support until|Bug support until 
 |---|---|---|---|
-|v1 (v1.x-dev)|April 2016|April 2019|April 2020
+|v1 (v1.12.x)|April 2016|April 2019|April 2020
 |v2 (master/v2.x-dev)|April 2019|April 2021|April 2022
 
 ## Installation
@@ -54,7 +55,7 @@ return $schedule;
 To run the tasks, you only need to install an ordinary cron job (a crontab entry) which runs **every minute**, and delegates the responsibility to Crunz' event runner:
 
 ```bash
-* * * * * /project/vendor/bin/crunz schedule:run
+* * * * * cd /project && vendor/bin/crunz schedule:run
 ```
 
 The command `schedule:run` is responsible for collecting all the PHP task files and run the tasks which are due.
@@ -72,7 +73,7 @@ There are two ways to specify the source directory: 1) Configuration file  2) As
 We can explicitly set the source path by passing it to the event runner as a parameter:
 
 ```bash
-* * * * * /project/vendor/bin/crunz schedule:run /path/to/tasks/directory
+* * * * * cd /project && vendor/bin/crunz schedule:run /path/to/tasks/directory
 ```
 
 ### Creating a Simple Task
@@ -479,6 +480,11 @@ suffix: Tasks.php
 # and will result in exception in 2.0 version.
 timezone: ~
 
+# This option define which timezone should be used for log files
+# If false, system default timezone will be used
+# If true, the timezone in config file that is used to calculate task run time will be used
+timezone_log: false
+
 # By default the errors are not logged by Crunz
 # You may set the value to true for logging the errors
 log_errors: false
@@ -755,8 +761,8 @@ vendor/bin/crunz make:task --help
 
 ### Which branch should I choose?
 
-In most cases you should target branch `1.x`, as this is active development branch.
-Branch `master` is for future release, but all bugs/features should go to `1.x` anyway.
+In most cases you should target branch `1.12.x`, as this is active development branch.
+Branch `master` is for future release, but all bugs/features should go to `1.11.x` anyway.
 
 ## If You Need Help
 

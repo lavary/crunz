@@ -1,7 +1,10 @@
 FROM php:7.2-cli-alpine
 
 RUN apk add --no-cache \
+        shadow \
         su-exec && \
+    usermod --non-unique --uid 1000 www-data && \
+    apk del shadow && \
     docker-php-ext-install -j$(nproc) \
         opcache
 

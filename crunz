@@ -13,6 +13,11 @@
 |
 */
 
+// @TODO Remove in v2
+if (!\defined('CRUNZ_BIN_DIR')) {
+    \define('CRUNZ_BIN_DIR', __DIR__);
+}
+
 $generatePath = function (array $parts) {
     return \implode(DIRECTORY_SEPARATOR, $parts);
 };

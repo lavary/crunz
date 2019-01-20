@@ -30,7 +30,7 @@ class ClosureRunCommand extends Command
      * @param use Symfony\Component\Console\Input\InputInterface $input
      * @param use Symfony\Component\Console\Input\OutputIterface $output
      *
-     * @return null|int null or 0 if everything went fine, or an error code
+     * @return int|null null or 0 if everything went fine, or an error code
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

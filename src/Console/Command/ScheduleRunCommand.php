@@ -92,9 +92,10 @@ class ScheduleRunCommand extends Command
         $this->arguments = $input->getArguments();
         $this->options = $input->getOptions();
         $task = $this->options['task'];
-        $files = $this->taskCollection
-            ->all($this->arguments['source'])
-        ;
+        $files = $this->fallbackTaskSource(
+            $this->taskCollection
+                ->all($this->arguments['source'])
+        );
 
         if (!\count($files)) {
             $output->writeln('<comment>No task found! Please check your source path.</comment>');
@@ -159,5 +160,17 @@ class ScheduleRunCommand extends Command
         ;
 
         return 0;
+    }
+
+    /** @param iterable|array $tasks */
+    private function fallbackTaskSource($tasks)
+    {
+        $tasksCount = \count($tasks);
+        if (0 !== $tasksCount) {
+            return $tasks;
+        }
+
+        return $this->taskCollection
+            ->allLegacyPaths();
     }
 }

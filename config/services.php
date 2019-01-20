@@ -258,6 +258,11 @@ $container
     )
 ;
 
+$container
+    ->register(\Crunz\EnvFlags\EnvFlags::class, \Crunz\EnvFlags\EnvFlags::class)
+    ->setPublic(true)
+;
+
 foreach ($simpleServices as $id => $simpleService) {
     if (!\is_string($id)) {
         $id = $simpleService;
