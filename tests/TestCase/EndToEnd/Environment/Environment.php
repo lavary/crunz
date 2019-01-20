@@ -2,6 +2,7 @@
 
 namespace Crunz\Tests\TestCase\EndToEnd\Environment;
 
+use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
 use Symfony\Component\Process\Process;
@@ -19,6 +20,8 @@ final class Environment
     private $tasksDirectory;
     /** @var FilesystemInterface */
     private $filesystem;
+    /** @var EnvFlags */
+    private $envFlags;
 
     /**
      * @param string   $name
@@ -29,6 +32,7 @@ final class Environment
     public function __construct(
         FilesystemInterface $filesystem,
         Path $tasksDirectory,
+        EnvFlags $envFlags,
         array $config = [],
         array $tasks = []
     ) {
@@ -36,6 +40,7 @@ final class Environment
         $this->tasks = $tasks;
         $this->config = $config;
         $this->tasksDirectory = $tasksDirectory->toString();
+        $this->envFlags = $envFlags;
 
         $this->setUp();
     }
@@ -70,8 +75,10 @@ final class Environment
             ? $cwd
             : $this->rootDirectory()
         ;
+        $isWindows = DIRECTORY_SEPARATOR === '\\';
+        $windowsEnvsHack = $isWindows && !\method_exists(Process::class, 'inheritEnvironmentVariables');
         // On Windows do not add php binary path
-        $phpBinary = DIRECTORY_SEPARATOR === '\\'
+        $phpBinary = $isWindows
             ? ''
             : PHP_BINARY
         ;
@@ -83,11 +90,26 @@ final class Environment
                 "crunz {$command}",
             ]
         );
+        $deprecationHandlerEnabled = $this->envFlags
+            ->isDeprecationHandlerEnabled();
 
         $process = $this->createProcess($fullCommand->toString(), $cwd);
-        $process->setEnv(['CRUNZ_DEPRECATION_HANDLER' => '1']);
+
+        // @TODO Disable this hack in v2.
+        if ($windowsEnvsHack && !$deprecationHandlerEnabled) {
+            $this->envFlags
+                ->enableDeprecationHandler();
+        } else {
+            $process->setEnv([EnvFlags::DEPRECATION_HANDLER_FLAG => '1']);
+        }
+
         $process->start();
         $process->wait();
+
+        if ($windowsEnvsHack && !$deprecationHandlerEnabled) {
+            $this->envFlags
+                ->disableDeprecationHandler();
+        }
 
         return $process;
     }

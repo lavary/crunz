@@ -2,6 +2,7 @@
 
 namespace Crunz\Tests\TestCase\EndToEnd\Environment;
 
+use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
 
@@ -15,12 +16,15 @@ final class EnvironmentBuilder
     private $taskDirectory;
     /** @var FilesystemInterface */
     private $filesystem;
+    /** @var EnvFlags */
+    private $envFlags;
 
     /** @param string $name */
-    public function __construct(FilesystemInterface $filesystem)
+    public function __construct(FilesystemInterface $filesystem, EnvFlags $envFlags)
     {
         $this->taskDirectory = Path::fromStrings('tasks');
         $this->filesystem = $filesystem;
+        $this->envFlags = $envFlags;
     }
 
     /**
@@ -55,6 +59,7 @@ final class EnvironmentBuilder
         return new Environment(
             $this->filesystem,
             $this->taskDirectory,
+            $this->envFlags,
             $this->config,
             $this->tasks
         );

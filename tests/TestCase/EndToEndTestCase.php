@@ -2,6 +2,7 @@
 
 namespace Crunz\Tests\TestCase;
 
+use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\Filesystem;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Tests\TestCase\EndToEnd\Environment\EnvironmentBuilder;
@@ -11,6 +12,8 @@ abstract class EndToEndTestCase extends TestCase
 {
     /** @var FilesystemInterface */
     private $filesystem;
+    /** @var EnvFlags */
+    private $envFlags;
 
     /** @return EnvironmentBuilder */
     public function createEnvironmentBuilder()
@@ -19,6 +22,10 @@ abstract class EndToEndTestCase extends TestCase
             $this->filesystem = new Filesystem();
         }
 
-        return new EnvironmentBuilder($this->filesystem);
+        if (null === $this->envFlags) {
+            $this->envFlags = new EnvFlags();
+        }
+
+        return new EnvironmentBuilder($this->filesystem, $this->envFlags);
     }
 }
