@@ -55,7 +55,7 @@ return $schedule;
 To run the tasks, you only need to install an ordinary cron job (a crontab entry) which runs **every minute**, and delegates the responsibility to Crunz' event runner:
 
 ```bash
-* * * * * /project/vendor/bin/crunz schedule:run
+* * * * * cd /project && vendor/bin/crunz schedule:run
 ```
 
 The command `schedule:run` is responsible for collecting all the PHP task files and run the tasks which are due.
@@ -73,7 +73,7 @@ There are two ways to specify the source directory: 1) Configuration file  2) As
 We can explicitly set the source path by passing it to the event runner as a parameter:
 
 ```bash
-* * * * * /project/vendor/bin/crunz schedule:run /path/to/tasks/directory
+* * * * * cd /project && vendor/bin/crunz schedule:run /path/to/tasks/directory
 ```
 
 ### Creating a Simple Task
