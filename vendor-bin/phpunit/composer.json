@@ -1,0 +1,11 @@
+{
+    "require": {
+        "phpunit/phpunit": "^5.7",
+        "symfony/phpunit-bridge": "^3.4 || ^4.0"
+    },
+    "config": {
+        "platform": {
+            "php": "5.6"
+        }
+    }
+}

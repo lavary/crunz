@@ -40,12 +40,9 @@
         "symfony/yaml": "^2.7 || ^3.3 || ^4.0"
     },
     "require-dev": {
+        "ext-json": "*",
         "ext-mbstring": "*",
         "bamarni/composer-bin-plugin": "^1.2",
-        "phpdocumentor/reflection-docblock": "^2.0.1",
-        "phpunit/phpunit": "5.7.27",
-        "sebastian/comparator": "1.2.4",
-        "symfony/phpunit-bridge": "^3.4 || ^4.0",
         "symfony/var-dumper": "^3.4"
     },
     "autoload": {
@@ -71,5 +68,12 @@
         "crunz:analyze": "@php vendor/bin/php-cs-fixer fix --diff --dry-run -v",
         "crunz:link-changelog": "@php vendor/bin/changelog-linker dump-merges --dry-run --in-categories",
         "crunz:link-changelog:since": "@php vendor/bin/changelog-linker dump-merges --dry-run --in-categories --since-id"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev",
+            "dev-1.12.x": "1.12.x-dev",
+            "dev-1.11.x": "1.11.x-dev"
+        }
     }
 }
