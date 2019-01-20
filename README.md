@@ -20,7 +20,7 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 ## Roadmap
 |Version|Release date|Active support until|Bug support until 
 |---|---|---|---|
-|v1 (v1.x-dev)|April 2016|April 2019|April 2020
+|v1 (v1.12.x)|April 2016|April 2019|April 2020
 |v2 (master/v2.x-dev)|April 2019|April 2021|April 2022
 
 ## Installation
