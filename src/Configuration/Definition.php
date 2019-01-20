@@ -36,6 +36,11 @@ class Definition implements ConfigurationInterface
                     ->info('Timezone used to calculate task run date')
                 ->end()
 
+                ->booleanNode('timezone_log')
+                ->defaultFalse()
+                ->info('Whether configured timezone will be used for logs')
+                ->end()
+
                 ->booleanNode('log_errors')
                     ->defaultFalse()
                     ->info('Flag for logging errors' . PHP_EOL)
