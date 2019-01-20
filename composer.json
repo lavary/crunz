@@ -71,5 +71,12 @@
         "crunz:analyze": "@php vendor/bin/php-cs-fixer fix --diff --dry-run -v",
         "crunz:link-changelog": "@php vendor/bin/changelog-linker dump-merges --dry-run --in-categories",
         "crunz:link-changelog:since": "@php vendor/bin/changelog-linker dump-merges --dry-run --in-categories --since-id"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev",
+            "dev-1.12.x": "1.12.x-dev",
+            "dev-1.11.x": "1.11.x-dev"
+        }
     }
 }
