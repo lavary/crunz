@@ -91,6 +91,8 @@ class Application extends SymfonyApplication
     private function initializeContainer()
     {
         $containerCacheDirWritable = $this->createBaseCacheDirectory();
+        $isContainerDebugEnabled = $this->envFlags
+            ->isContainerDebugEnabled();
 
         if ($containerCacheDirWritable) {
             $class = 'CrunzContainer';
@@ -101,7 +103,7 @@ class Application extends SymfonyApplication
                     "{$class}.php",
                 ]
             );
-            $cache = new ConfigCache($cachePath->toString(), true);
+            $cache = new ConfigCache($cachePath->toString(), $isContainerDebugEnabled);
 
             if (!$cache->isFresh()) {
                 $containerBuilder = $this->buildContainer();
