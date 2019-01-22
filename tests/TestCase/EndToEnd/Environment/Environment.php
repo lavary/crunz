@@ -101,6 +101,8 @@ final class Environment
         $windowsEnvsHack = $isWindows && !$process->isInheritEnvVarsSupported();
         $deprecationHandlerEnabled = $this->envFlags
             ->isDeprecationHandlerEnabled();
+        $containerDebugEnabled = $this->envFlags
+            ->isContainerDebugEnabled();
 
         // @TODO Disable this hack in v2.
         if ($windowsEnvsHack && !$deprecationHandlerEnabled) {
@@ -110,12 +112,27 @@ final class Environment
             $process->setEnv([EnvFlags::DEPRECATION_HANDLER_FLAG => '1']);
         }
 
+        // @TODO Disable this hack in v2.
+        if ($windowsEnvsHack && $containerDebugEnabled) {
+            $this->envFlags
+                ->disableContainerDebug();
+        } else {
+            $process->setEnv([EnvFlags::CONTAINER_DEBUG_FLAG => '0']);
+        }
+
         $process->start();
         $process->wait();
 
+        // @TODO Remove this hack in v2.
         if ($windowsEnvsHack && !$deprecationHandlerEnabled) {
             $this->envFlags
                 ->disableDeprecationHandler();
+        }
+
+        // @TODO Remove this hack in v2.
+        if ($windowsEnvsHack && $containerDebugEnabled) {
+            $this->envFlags
+                ->enableContainerDebug();
         }
 
         return $process;
