@@ -49,9 +49,17 @@ final class Environment
     {
         $composerLock = Path::fromStrings('composer.lock');
         $composerJson = Path::fromStrings('composer.json');
+        $baseCacheDir = Path::create(
+            [
+                \sys_get_temp_dir(),
+                '.crunz',
+            ]
+        );
 
         $this->filesystem
             ->removeDirectory($this->rootDirectory(), [$composerLock, $composerJson]);
+        $this->filesystem
+            ->removeDirectory($baseCacheDir->toString());
     }
 
     private function setUp()
