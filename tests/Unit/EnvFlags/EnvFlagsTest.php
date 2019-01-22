@@ -25,7 +25,7 @@ final class EnvFlagsTest extends TestCase
         $envFlags = new EnvFlags();
         $envFlags->disableDeprecationHandler();
 
-        $this->assertFlagValue('0');
+        $this->assertFlagValue(EnvFlags::DEPRECATION_HANDLER_FLAG, '0');
     }
 
     /** @test */
@@ -34,7 +34,37 @@ final class EnvFlagsTest extends TestCase
         $envFlags = new EnvFlags();
         $envFlags->enableDeprecationHandler();
 
-        $this->assertFlagValue('1');
+        $this->assertFlagValue(EnvFlags::DEPRECATION_HANDLER_FLAG, '1');
+    }
+
+    /**
+     * @test
+     * @dataProvider containerDebugProvider
+     */
+    public function containerDebugFlagIsCorrect($flagValue, $expectedEnabled)
+    {
+        \putenv(EnvFlags::CONTAINER_DEBUG_FLAG . "={$flagValue}");
+
+        $envFlags = new EnvFlags();
+        $this->assertSame($expectedEnabled, $envFlags->isContainerDebugEnabled());
+    }
+
+    /** @test */
+    public function containerDebugCanBeDisabled()
+    {
+        $envFlags = new EnvFlags();
+        $envFlags->disableContainerDebug();
+
+        $this->assertFlagValue(EnvFlags::CONTAINER_DEBUG_FLAG, '0');
+    }
+
+    /** @test */
+    public function containerDebugCanBeEnabled()
+    {
+        $envFlags = new EnvFlags();
+        $envFlags->enableContainerDebug();
+
+        $this->assertFlagValue(EnvFlags::CONTAINER_DEBUG_FLAG, '1');
     }
 
     public function statusProvider()
@@ -50,9 +80,22 @@ final class EnvFlagsTest extends TestCase
         ];
     }
 
-    private function assertFlagValue($expectedValue)
+    public function containerDebugProvider()
     {
-        $actualValue = \getenv(EnvFlags::DEPRECATION_HANDLER_FLAG);
+        yield 'true' => [
+            '1',
+            true,
+        ];
+
+        yield 'false' => [
+            '0',
+            false,
+        ];
+    }
+
+    private function assertFlagValue($flag, $expectedValue)
+    {
+        $actualValue = \getenv($flag);
         $this->assertSame($expectedValue, $actualValue);
     }
 }
