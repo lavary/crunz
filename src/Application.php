@@ -49,6 +49,8 @@ class Application extends SymfonyApplication
 
     /** @var Container */
     private $container;
+    /** @var EnvFlags */
+    private $envFlags;
 
     /**
      * Instantiate the class.
@@ -56,6 +58,8 @@ class Application extends SymfonyApplication
     public function __construct($appName, $appVersion)
     {
         parent::__construct($appName, $appVersion);
+
+        $this->envFlags = new EnvFlags();
 
         $this->initializeContainer();
         $this->registerDeprecationHandler();
@@ -221,11 +225,10 @@ class Application extends SymfonyApplication
 
     private function registerDeprecationHandler()
     {
-        /** @var EnvFlags $envFlags */
-        $envFlags = $this->container
-            ->get(EnvFlags::class);
+        $isDeprecationHandlerEnabled = $this->envFlags
+            ->isDeprecationHandlerEnabled();
 
-        if (!$envFlags->isDeprecationHandlerEnabled()) {
+        if (!$isDeprecationHandlerEnabled) {
             return;
         }
 
