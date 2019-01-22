@@ -5,6 +5,8 @@ services:
         build:
             context: ./docker/php56
         working_dir: /var/www/html
+        environment:
+            CRUNZ_CONTAINER_DEBUG: 1
         command: >
             sh -c "
                 chown -R www-data:www-data /var/www/.composer \
@@ -20,6 +22,8 @@ services:
         build:
             context: ./docker/php71
         working_dir: /var/www/html
+        environment:
+            CRUNZ_CONTAINER_DEBUG: 1
         command: >
             sh -c "
                 chown -R www-data:www-data /var/www/.composer \
