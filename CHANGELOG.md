@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
+## [v1.11.0] - 2019-01-24
+
+### Fixed
+
+- [#181] Fix missing tasks source
+- [#180] Fix deprecation messages not showing
+
+### Deprecated
+
+- Relying on tasks' source/config file recognition related to Crunz bin 
+
 ## [v1.11.0-rc.1] - 2018-12-22
 
 ### Fixed
@@ -142,6 +153,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [#77] Fix high cpu usage
 
 
+[#181]: https://github.com/lavary/crunz/pull/181
+[#180]: https://github.com/lavary/crunz/pull/180
 [#173]: https://github.com/lavary/crunz/pull/173  
 [#171]: https://github.com/lavary/crunz/pull/171
 [#166]: https://github.com/lavary/crunz/pull/166
@@ -233,6 +246,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [v1.6.1]: https://github.com/lavary/crunz/compare/v1.6.0...v1.6.1
 [v1.6.0]: https://github.com/lavary/crunz/compare/v1.5.1...v1.6.0
 [v1.5.1]: https://github.com/lavary/crunz/compare/v1.5.0...v1.5.1
+[v1.11.0]: https://github.com/lavary/crunz/compare/v1.11.0-rc.1...v1.11.0
 [v1.11.0-rc.1]: https://github.com/lavary/crunz/compare/v1.11.0-beta.2...v1.11.0-rc.1
 [v1.11.0-beta.2]: https://github.com/lavary/crunz/compare/v1.11.0-beta.1...v1.11.0-beta.2
 [v1.11.0-beta.1]: https://github.com/lavary/crunz/compare/v1.10.1...v1.11.0-beta.1
