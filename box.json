@@ -1,0 +1,11 @@
+{
+    "compression": "GZ",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Php",
+        "KevinGH\\Box\\Compactor\\Json"
+    ],
+    "files": [
+        "crunz.yml",
+        "config/services.php"
+    ]
+}
