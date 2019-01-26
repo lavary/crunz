@@ -11,13 +11,13 @@ use Crunz\Logger\Logger;
 use Crunz\Path\Path;
 use Crunz\Pinger\PingableInterface;
 use Crunz\Pinger\PingableTrait;
+use Crunz\Process\Process;
 use SuperClosure\Serializer;
 use Symfony\Component\Lock\Exception\InvalidArgumentException;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Lock\Lock;
 use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\Lock\StoreInterface;
-use Symfony\Component\Process\Process;
 
 /**
  * @method self everyMinute() Run task every minute.
@@ -81,7 +81,7 @@ class Event implements PingableInterface
     /**
      * Process that runs the event.
      *
-     * @var \Symfony\Component\Process\Process
+     * @var Process
      */
     protected $process;
 
@@ -323,13 +323,7 @@ class Event implements PingableInterface
     public function start()
     {
         $command = $this->buildCommand();
-
-        if (\method_exists(Process::class, 'fromShellCommandline')) {
-            $process = Process::fromShellCommandline($command);
-        } else {
-            // BC layer for Symfony 4.1 and older
-            $process = new Process($command);
-        }
+        $process = Process::fromStringCommand($command);
 
         $this->setProcess($process);
         $this->getProcess()->start(
@@ -892,11 +886,11 @@ class Event implements PingableInterface
     /**
      * Set the event's process.
      *
-     * @param \Symfony\Component\Process\Process $process
+     * @param Process $process
      *
      * @return $this
      */
-    public function setProcess(\Symfony\Component\Process\Process $process = null)
+    public function setProcess(Process $process = null)
     {
         $this->process = $process;
 
@@ -906,7 +900,7 @@ class Event implements PingableInterface
     /**
      * Return the event's process.
      *
-     * @return \Symfony\Component\Process\Process $process
+     * @return Process $process
      */
     public function getProcess()
     {
