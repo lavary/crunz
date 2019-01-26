@@ -8,3 +8,4 @@ composer.phar
 .idea/
 var/
 .php_cs.cache
+/crunz.phar

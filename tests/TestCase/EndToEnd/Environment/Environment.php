@@ -7,7 +7,7 @@ namespace Crunz\Tests\TestCase\EndToEnd\Environment;
 use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
-use Symfony\Component\Process\Process;
+use Crunz\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 final class Environment
@@ -78,7 +78,6 @@ final class Environment
             : $this->rootDirectory()
         ;
         $isWindows = DIRECTORY_SEPARATOR === '\\';
-        $windowsEnvsHack = $isWindows && !\method_exists(Process::class, 'inheritEnvironmentVariables');
         // On Windows do not add php binary path
         $phpBinary = $isWindows
             ? ''
@@ -92,10 +91,10 @@ final class Environment
                 "crunz {$command}",
             ]
         );
+        $process = $this->createProcess($fullCommand->toString(), $cwd);
+        $windowsEnvsHack = $isWindows && !$process->isInheritEnvVarsSupported();
         $deprecationHandlerEnabled = $this->envFlags
             ->isDeprecationHandlerEnabled();
-
-        $process = $this->createProcess($fullCommand->toString(), $cwd);
 
         // @TODO Disable this hack in v2.
         if ($windowsEnvsHack && !$deprecationHandlerEnabled) {
@@ -213,10 +212,9 @@ final class Environment
     private function composerInstall()
     {
         $process = $this->createProcess('composer install -q --no-suggest', $this->rootDirectory());
-        $process->start();
-        $process->wait();
+        $process->startAndWait();
 
-        if (0 !== $process->getExitCode()) {
+        if (!$process->isSuccessful()) {
             throw new \RuntimeException('Composer install failed');
         }
     }
@@ -243,16 +241,6 @@ final class Environment
      */
     private function createProcess($command, $cwd = null)
     {
-        if (\method_exists(Process::class, 'fromShellCommandline')) {
-            $process = Process::fromShellCommandline($command, $cwd);
-        } else {
-            $process = new Process($command, $cwd);
-        }
-
-        if (\method_exists($process, 'inheritEnvironmentVariables')) {
-            $process->inheritEnvironmentVariables(true);
-        }
-
-        return $process;
+        return Process::fromStringCommand($command, $cwd);
     }
 }

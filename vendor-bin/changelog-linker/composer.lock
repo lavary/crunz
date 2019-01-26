@@ -1381,16 +1381,16 @@
         },
         {
             "name": "symplify/changelog-linker",
-            "version": "v5.3.9",
+            "version": "v5.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Symplify/ChangelogLinker.git",
-                "reference": "3fa13887e14bee3ac16e0c0d093b2cfb88932e50"
+                "reference": "01f9110582d5d38f2251d46d9d6aeb17eb312742"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Symplify/ChangelogLinker/zipball/3fa13887e14bee3ac16e0c0d093b2cfb88932e50",
-                "reference": "3fa13887e14bee3ac16e0c0d093b2cfb88932e50",
+                "url": "https://api.github.com/repos/Symplify/ChangelogLinker/zipball/01f9110582d5d38f2251d46d9d6aeb17eb312742",
+                "reference": "01f9110582d5d38f2251d46d9d6aeb17eb312742",
                 "shasum": ""
             },
             "require": {
@@ -1400,7 +1400,7 @@
                 "symfony/console": "^3.4|^4.1",
                 "symfony/http-kernel": "^3.4|^4.1",
                 "symfony/process": "^3.4|^4.1",
-                "symplify/package-builder": "^5.3.9",
+                "symplify/package-builder": "^5.3.12",
                 "thecodingmachine/safe": "^0.1.11"
             },
             "require-dev": {
@@ -1425,11 +1425,11 @@
                 "MIT"
             ],
             "description": "Generates beautiful CHANGELOG.md with links to PRs, versions and users grouped in Added/Changed/Fixed/Removed categories.",
-            "time": "2019-01-11T10:41:11+00:00"
+            "time": "2019-01-13T01:35:05+00:00"
         },
         {
             "name": "symplify/package-builder",
-            "version": "v5.3.9",
+            "version": "v5.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Symplify/PackageBuilder.git",
