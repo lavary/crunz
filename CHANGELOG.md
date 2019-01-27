@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v1.11.1] - 2019-01-27
+
+### Fixed
+
+- [#190] Fix Crunz bin path when running closures
+
 ## [v1.11.0] - 2019-01-24
 
 ### Fixed
@@ -148,6 +154,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [#77] Fix high cpu usage
 
 
+[#190]: https://github.com/lavary/crunz/pull/190
 [#181]: https://github.com/lavary/crunz/pull/181
 [#180]: https://github.com/lavary/crunz/pull/180
 [#173]: https://github.com/lavary/crunz/pull/173  
@@ -241,6 +248,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [v1.6.1]: https://github.com/lavary/crunz/compare/v1.6.0...v1.6.1
 [v1.6.0]: https://github.com/lavary/crunz/compare/v1.5.1...v1.6.0
 [v1.5.1]: https://github.com/lavary/crunz/compare/v1.5.0...v1.5.1
+[v1.11.1]: https://github.com/lavary/crunz/compare/v1.11.0...v1.11.1
 [v1.11.0]: https://github.com/lavary/crunz/compare/v1.11.0-rc.1...v1.11.0
 [v1.11.0-rc.1]: https://github.com/lavary/crunz/compare/v1.11.0-beta.2...v1.11.0-rc.1
 [v1.11.0-beta.2]: https://github.com/lavary/crunz/compare/v1.11.0-beta.1...v1.11.0-beta.2
