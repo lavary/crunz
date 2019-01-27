@@ -332,15 +332,22 @@ class EventTest extends TestCase
         $event->user('john');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @runInSeparateProcess
+     */
     public function closureCommandHaveFullBinaryPaths()
     {
+        if (!\defined('CRUNZ_BIN')) {
+            \define('CRUNZ_BIN', __FILE__);
+        }
+
         $closure = function () {
             return 0;
         };
         $serializedClosure = (new Serializer())->serialize($closure);
         $queryClosure = \http_build_query([$serializedClosure]);
-        $crunzBin = $this->buildPath([\getcwd(), 'crunz']);
+        $crunzBin = CRUNZ_BIN;
 
         $event = new Event($this->id, $closure);
 
