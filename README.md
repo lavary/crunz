@@ -756,6 +756,21 @@ vendor/bin/crunz make:task --help
 
 ```
 
+## Development ENV flags
+
+Below env flags should be used only while development.
+Typical end-users do not need to, and should not, change them.
+
+### `CRUNZ_CONTAINER_DEBUG`
+
+Flag used to enable/disable container debug mode, useful only for development.
+Enabled by default in `docker-compose`.
+
+### `CRUNZ_DEPRECATION_HANDLER`
+
+Flag used to enable/disable Crunz deprecation handler, useful only for integration tests.
+Disabled by default for tests.
+
 ## Contributing
 
 ### Which branch should I choose?

@@ -49,9 +49,17 @@ final class Environment
     {
         $composerLock = Path::fromStrings('composer.lock');
         $composerJson = Path::fromStrings('composer.json');
+        $baseCacheDir = Path::create(
+            [
+                \sys_get_temp_dir(),
+                '.crunz',
+            ]
+        );
 
         $this->filesystem
             ->removeDirectory($this->rootDirectory(), [$composerLock, $composerJson]);
+        $this->filesystem
+            ->removeDirectory($baseCacheDir->toString());
     }
 
     private function setUp()
@@ -91,21 +99,25 @@ final class Environment
         );
         $process = $this->createProcess($fullCommand->toString(), $cwd);
         $windowsEnvsHack = $isWindows && !$process->isInheritEnvVarsSupported();
-        $deprecationHandlerEnabled = $this->envFlags
-            ->isDeprecationHandlerEnabled();
 
         // @TODO Disable this hack in v2.
-        if ($windowsEnvsHack && !$deprecationHandlerEnabled) {
+        if ($windowsEnvsHack) {
             $this->envFlags
                 ->enableDeprecationHandler();
+            $this->envFlags
+                ->disableContainerDebug();
         } else {
             $process->setEnv([EnvFlags::DEPRECATION_HANDLER_FLAG => '1']);
+            $process->setEnv([EnvFlags::CONTAINER_DEBUG_FLAG => '0']);
         }
 
         $process->start();
         $process->wait();
 
-        if ($windowsEnvsHack && !$deprecationHandlerEnabled) {
+        // @TODO Remove this hack in v2.
+        if ($windowsEnvsHack) {
+            $this->envFlags
+                ->enableContainerDebug();
             $this->envFlags
                 ->disableDeprecationHandler();
         }
