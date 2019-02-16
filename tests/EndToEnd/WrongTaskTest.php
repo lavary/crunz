@@ -27,7 +27,10 @@ final class WrongTaskTest extends EndToEndTestCase
         );
         $normalizedOutput = $this->normalizeProcessOutput($process);
         $this->assertContains(
-            "[Deprecation] File '{$filePath->toString()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated sine v1.12 and will result in exception in v2.0+",
+            \sprintf(
+                '[Deprecation] File \'%s\' did not return \'\Crunz\Schedule\' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+',
+                $filePath->toString()
+            ),
             $normalizedOutput
         );
     }
