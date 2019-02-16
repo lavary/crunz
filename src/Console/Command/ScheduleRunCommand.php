@@ -112,7 +112,7 @@ class ScheduleRunCommand extends Command
             if (!$schedule instanceof Schedule) {
                 // @TODO throw exception in v2
                 @\trigger_error(
-                    "File '{$file->getRealPath()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated sine v1.12 and will result in exception in v2.0+",
+                    "File '{$file->getRealPath()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+",
                     E_USER_DEPRECATED
                 );
 
