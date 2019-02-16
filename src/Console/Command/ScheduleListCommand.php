@@ -83,6 +83,12 @@ class ScheduleListCommand extends Command
         foreach ($tasks as $taskFile) {
             $schedule = require $taskFile->getRealPath();
             if (!$schedule instanceof Schedule) {
+                // @TODO throw exception in v2
+                @\trigger_error(
+                    "File '{$taskFile->getRealPath()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated sine v1.12 and will result in exception in v2.0+",
+                    E_USER_DEPRECATED
+                );
+
                 continue;
             }
 
