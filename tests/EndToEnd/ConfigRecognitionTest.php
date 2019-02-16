@@ -7,19 +7,6 @@ use Crunz\Tests\TestCase\EndToEndTestCase;
 
 final class ConfigRecognitionTest extends EndToEndTestCase
 {
-    /** @var string */
-    private $originalCwd;
-
-    public function setUp()
-    {
-        $this->originalCwd = \getcwd();
-    }
-
-    protected function tearDown()
-    {
-        \chdir($this->originalCwd);
-    }
-
     /**
      * @test
      * @TODO Remove in v2
