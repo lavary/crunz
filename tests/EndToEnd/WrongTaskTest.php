@@ -26,6 +26,9 @@ final class WrongTaskTest extends EndToEndTestCase
             'WrongTasks.php'
         );
         $normalizedOutput = $this->normalizeProcessOutput($process);
+
+        dump($normalizedOutput, "[Deprecation] File '{$filePath->toString()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+");
+
         $this->assertContains(
             "[Deprecation] File '{$filePath->toString()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+",
             $normalizedOutput
