@@ -100,7 +100,7 @@ final class Environment
             $crunzBinPath->toString(),
             $command,
             // Force no ANSI as this break AppVeyor CI builds
-            '--no-ansi'
+            '--no-ansi',
         ];
         $fullCommand = \implode(' ', $commandParts);
         $process = $this->createProcess($fullCommand, $cwd);
