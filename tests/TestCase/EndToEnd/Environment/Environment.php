@@ -89,15 +89,21 @@ final class Environment
             ? ''
             : PHP_BINARY
         ;
-        $fullCommand = Path::create(
-            [
-                "{$phpBinary} {$this->rootDirectory()}",
-                'vendor',
-                'bin',
-                "crunz {$command}",
-            ]
+        $crunzBinPath = Path::fromStrings(
+            $this->rootDirectory(),
+            'vendor',
+            'bin',
+            'crunz'
         );
-        $process = $this->createProcess($fullCommand->toString(), $cwd);
+        $commandParts = [
+            $phpBinary,
+            $crunzBinPath->toString(),
+            $command,
+            // Force no ANSI as this break AppVeyor CI builds
+            '--no-ansi'
+        ];
+        $fullCommand = \implode(' ', $commandParts);
+        $process = $this->createProcess($fullCommand, $cwd);
         $windowsEnvsHack = $isWindows && !$process->isInheritEnvVarsSupported();
 
         // @TODO Disable this hack in v2.
