@@ -1,3 +1,32 @@
+# Upgrading from v1.11 to v1.12
+
+## Always return `\Crunz\Schedule` from task files
+
+Example of wrong task file:
+
+```php
+<?php
+
+return [];
+```
+
+Example of correct task file:
+```php
+<?php
+
+use Crunz\Schedule;
+
+$scheduler = new Schedule();
+
+$scheduler
+    ->run('php -v')
+    ->description('PHP version')
+    ->everyMinute();
+
+// Crunz\Schedule instance returned
+return $scheduler;
+```
+
 # Upgrading from v1.10 to v1.11
 
 ## Run `Crunz` in directory with your `crunz.yml`

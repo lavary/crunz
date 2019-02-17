@@ -7,19 +7,6 @@ use Crunz\Tests\TestCase\EndToEndTestCase;
 
 final class ConfigRecognitionTest extends EndToEndTestCase
 {
-    /** @var string */
-    private $originalCwd;
-
-    public function setUp()
-    {
-        $this->originalCwd = \getcwd();
-    }
-
-    protected function tearDown()
-    {
-        \chdir($this->originalCwd);
-    }
-
     /**
      * @test
      * @TODO Remove in v2
@@ -42,11 +29,7 @@ final class ConfigRecognitionTest extends EndToEndTestCase
         $environment = $environmentBuilder->createEnvironment();
 
         $process = $environment->runCrunzCommand('schedule:list', \sys_get_temp_dir());
-        $normalizedOutput = \preg_replace(
-            "/\s+/",
-            ' ',
-            $process->getOutput()
-        );
+        $normalizedOutput = $this->normalizeProcessOutput($process);
 
         $this->assertContains(
             '[Deprecation] Probably you are relying on legacy config file recognition which is deprecated.',
@@ -78,11 +61,7 @@ final class ConfigRecognitionTest extends EndToEndTestCase
         $environment = $environmentBuilder->createEnvironment();
 
         $process = $environment->runCrunzCommand('schedule:list');
-        $normalizedOutput = \preg_replace(
-            "/\s+/",
-            ' ',
-            $process->getOutput()
-        );
+        $normalizedOutput = $this->normalizeProcessOutput($process);
 
         $this->assertNotContains(
             '[Deprecation] Probably you are relying on legacy config file recognition which is deprecated.',
