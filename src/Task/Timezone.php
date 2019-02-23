@@ -9,10 +9,7 @@ use Crunz\Exception\EmptyTimezoneException;
 use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Timezone\ProviderInterface;
 
-/**
- * @internal
- */
-class Timezone
+final class Timezone
 {
     /** @var Configuration */
     private $configuration;
