@@ -60,7 +60,7 @@ final class Process
             ->wait();
     }
 
-    public function setEnv(array $env)
+    public function setEnv(array $env): void
     {
         $this->process
             ->setEnv($env);
