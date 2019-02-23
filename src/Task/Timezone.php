@@ -28,9 +28,7 @@ final class Timezone
         $this->consoleLogger = $consoleLogger;
     }
 
-    /**
-     * @throws EmptyTimezoneException
-     */
+    /** @throws EmptyTimezoneException */
     public function timezoneForComparisons(): \DateTimeZone
     {
         $newTimezone = $this->configuration
