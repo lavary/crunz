@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class EventRunnerTest extends TestCase
 {
     /** @test */
-    public function urlIsPingedBefore()
+    public function urlIsPingedBefore(): void
     {
         $url = 'https://ping-befo.re/';
         $output = $this->createMock(OutputInterface::class);
@@ -33,7 +33,7 @@ final class EventRunnerTest extends TestCase
     }
 
     /** @test */
-    public function urlIsPingedAfter()
+    public function urlIsPingedAfter(): void
     {
         $url = 'https://ping-aft.er/';
         $output = $this->createMock(OutputInterface::class);

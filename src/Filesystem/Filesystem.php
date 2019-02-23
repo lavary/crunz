@@ -30,7 +30,7 @@ final class Filesystem implements FilesystemInterface
     }
 
     /** {@inheritdoc} */
-    public function removeDirectory($directoryPath, $ignoredPaths = [])
+    public function removeDirectory($directoryPath, $ignoredPaths = []): void
     {
         $ignoredCount = 0;
         $ignored = [];
@@ -67,13 +67,13 @@ final class Filesystem implements FilesystemInterface
     }
 
     /** {@inheritdoc} */
-    public function dumpFile($filePath, $content)
+    public function dumpFile($filePath, $content): void
     {
         \file_put_contents($filePath, $content);
     }
 
     /** {@inheritdoc} */
-    public function createDirectory($directoryPath)
+    public function createDirectory($directoryPath): void
     {
         if ($this->fileExists($directoryPath)) {
             return;
@@ -94,7 +94,7 @@ final class Filesystem implements FilesystemInterface
      * @param string $sourceFile
      * @param string $targetFile
      */
-    public function copy($sourceFile, $targetFile)
+    public function copy($sourceFile, $targetFile): void
     {
         \copy($sourceFile, $targetFile);
     }

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class FilesystemTest extends TestCase
 {
     /** @test */
-    public function cwdIsCorrect()
+    public function cwdIsCorrect(): void
     {
         $filesystem = new Filesystem();
 
@@ -23,7 +23,7 @@ final class FilesystemTest extends TestCase
      * @dataProvider fileExistsProvider
      * @test
      */
-    public function fileExistsIsCorrect($path, $expectedExistence)
+    public function fileExistsIsCorrect($path, $expectedExistence): void
     {
         $filesystem = new Filesystem();
 
@@ -31,7 +31,7 @@ final class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function tempDirectoryReturnSystemTempDirectory()
+    public function tempDirectoryReturnSystemTempDirectory(): void
     {
         $filesystem = new Filesystem();
 
@@ -39,7 +39,7 @@ final class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function removeDirectoryRemovesDirectoriesRecursively()
+    public function removeDirectoryRemovesDirectoriesRecursively(): void
     {
         $filesystem = new Filesystem();
 
@@ -61,7 +61,7 @@ final class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function dumpFileWritesContentToFile()
+    public function dumpFileWritesContentToFile(): void
     {
         $content = 'Some content';
         $tempDir = \sys_get_temp_dir();
@@ -76,7 +76,7 @@ final class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function createDirectoryCreatesDirectoryRecursive()
+    public function createDirectoryCreatesDirectoryRecursive(): void
     {
         $tempDir = \sys_get_temp_dir();
         $rootDirectoryPath = Path::fromStrings($tempDir, 'crunz-test');
@@ -96,7 +96,7 @@ final class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function copyFiles()
+    public function copyFiles(): void
     {
         $content = 'Copy content';
         $tempDir = \sys_get_temp_dir();
@@ -116,7 +116,7 @@ final class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function projectRootDirectory()
+    public function projectRootDirectory(): void
     {
         $filesystem = new Filesystem();
 

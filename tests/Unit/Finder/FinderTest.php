@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class FinderTest extends TestCase
 {
     /** @test */
-    public function findReturnsSplFileInfoCollection()
+    public function findReturnsSplFileInfoCollection(): void
     {
         $path = Path::create([__DIR__, '*.php']);
         $globIterator = new \GlobIterator(

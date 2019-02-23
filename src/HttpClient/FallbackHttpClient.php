@@ -32,7 +32,7 @@ final class FallbackHttpClient implements HttpClientInterface
      *
      * @throws HttpClientException
      */
-    public function ping($url)
+    public function ping($url): void
     {
         $httpClient = $this->chooseHttpClient();
         $httpClient->ping($url);

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class ConfigProviderTest extends TestCase
 {
     /** @test */
-    public function configAlreadyExists()
+    public function configAlreadyExists(): void
     {
         $application = new Application('Crunz', '0.1.0-test.1');
         $command = $application->get('publish:config');

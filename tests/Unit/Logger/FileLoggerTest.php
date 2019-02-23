@@ -18,7 +18,7 @@ final class FileLoggerTest extends TestCase
     /**
      * @test
      */
-    public function invalidTimezoneThrowException()
+    public function invalidTimezoneThrowException(): void
     {
         $configuration = $this->createConfiguration(['timezone' => 'invalid_ts', 'timezone_log' => true]);
         $this->expectException(\Exception::class);
@@ -29,7 +29,7 @@ final class FileLoggerTest extends TestCase
     /**
      * @test
      */
-    public function crunzLoggerTimezoneIsConfiguredTimezone()
+    public function crunzLoggerTimezoneIsConfiguredTimezone(): void
     {
         $expectedTimezone = 'Asia/Tehran';
         $defaultTimezone = 'UTC';
@@ -46,7 +46,7 @@ final class FileLoggerTest extends TestCase
     /**
      * @test
      */
-    public function crunzLoggerTimezoneIsDefaultWhenTimezoneLogOptionIsFalse()
+    public function crunzLoggerTimezoneIsDefaultWhenTimezoneLogOptionIsFalse(): void
     {
         $expectedTimezone = 'Asia/Tehran';
         $defaultTimezone = 'UTC';

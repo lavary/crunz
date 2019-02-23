@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class StreamHttpClientTest extends TestCase
 {
     /** @test */
-    public function pingFailWithInvalidAddress()
+    public function pingFailWithInvalidAddress(): void
     {
         $this->expectException(HttpClientException::class);
         $this->expectExceptionMessage(

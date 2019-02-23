@@ -26,7 +26,6 @@ final class Environment
     private $envFlags;
 
     /**
-     * @param string   $name
      * @param string[] $tasks
      *
      * @throws \Exception
@@ -64,7 +63,7 @@ final class Environment
             ->removeDirectory($baseCacheDir->toString());
     }
 
-    private function setUp()
+    private function setUp(): void
     {
         $this->createRootDirectory();
         $this->dumpComposerJson();
@@ -73,13 +72,7 @@ final class Environment
         $this->dumpConfig();
     }
 
-    /**
-     * @param string      $command
-     * @param string|null $cwd
-     *
-     * @return Process
-     */
-    public function runCrunzCommand($command, $cwd = null)
+    public function runCrunzCommand(string $command, string $cwd = null): Process
     {
         $cwd = !empty($cwd)
             ? $cwd
@@ -100,29 +93,16 @@ final class Environment
             ]
         );
         $process = $this->createProcess($fullCommand->toString(), $cwd);
-        $windowsEnvsHack = $isWindows && !$process->isInheritEnvVarsSupported();
 
-        // @TODO Disable this hack in v2.
-        if ($windowsEnvsHack) {
-            $this->envFlags
-                ->enableDeprecationHandler();
-            $this->envFlags
-                ->disableContainerDebug();
-        } else {
-            $process->setEnv([EnvFlags::DEPRECATION_HANDLER_FLAG => '1']);
-            $process->setEnv([EnvFlags::CONTAINER_DEBUG_FLAG => '0']);
-        }
+        $process->setEnv(
+            [
+                EnvFlags::DEPRECATION_HANDLER_FLAG => '1',
+                EnvFlags::CONTAINER_DEBUG_FLAG => '0',
+            ]
+        );
 
         $process->start();
         $process->wait();
-
-        // @TODO Remove this hack in v2.
-        if ($windowsEnvsHack) {
-            $this->envFlags
-                ->enableContainerDebug();
-            $this->envFlags
-                ->disableDeprecationHandler();
-        }
 
         return $process;
     }
@@ -141,7 +121,7 @@ final class Environment
         return $this->rootDirectory;
     }
 
-    private function dumpConfig()
+    private function dumpConfig(): void
     {
         if (empty($this->config)) {
             return;
@@ -158,7 +138,7 @@ final class Environment
             ->dumpFile($configPath->toString(), $yamlConfig);
     }
 
-    private function copyTasks()
+    private function copyTasks(): void
     {
         $projectRoot = $this->filesystem
             ->projectRootDirectory();
@@ -193,7 +173,7 @@ final class Environment
         }
     }
 
-    private function dumpComposerJson()
+    private function dumpComposerJson(): void
     {
         $composerJson = Path::fromStrings($this->rootDirectory(), 'composer.json');
 
@@ -221,7 +201,7 @@ final class Environment
             ->dumpFile($composerJson->toString(), $content);
     }
 
-    private function composerInstall()
+    private function composerInstall(): void
     {
         $process = $this->createProcess('composer install -q --no-suggest', $this->rootDirectory());
         $process->startAndWait();
@@ -232,7 +212,7 @@ final class Environment
     }
 
     /** @throws \Exception */
-    private function createRootDirectory()
+    private function createRootDirectory(): void
     {
         $tempDirectory = $this->filesystem
             ->tempDir();

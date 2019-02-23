@@ -38,7 +38,7 @@ final class EnvFlags
     }
 
     /** @throws CrunzException When disabling deprecation handler fails */
-    public function disableContainerDebug()
+    public function disableContainerDebug(): void
     {
         if (false === \putenv(self::CONTAINER_DEBUG_FLAG . '=0')) {
             throw new CrunzException('Disabling container debug failed.');
@@ -46,7 +46,7 @@ final class EnvFlags
     }
 
     /** @throws CrunzException When enabling deprecation handler fails */
-    public function enableContainerDebug()
+    public function enableContainerDebug(): void
     {
         if (false === \putenv(self::CONTAINER_DEBUG_FLAG . '=1')) {
             throw new CrunzException('Enabling container debug failed.');
@@ -54,7 +54,7 @@ final class EnvFlags
     }
 
     /** @throws CrunzException When enabling deprecation handler fails */
-    public function enableDeprecationHandler()
+    public function enableDeprecationHandler(): void
     {
         if (false === \putenv(self::DEPRECATION_HANDLER_FLAG . '=1')) {
             throw new CrunzException('Enabling deprecation handler failed.');
@@ -62,7 +62,7 @@ final class EnvFlags
     }
 
     /** @throws CrunzException When disabling deprecation handler fails */
-    public function disableDeprecationHandler()
+    public function disableDeprecationHandler(): void
     {
         if (false === \putenv(self::DEPRECATION_HANDLER_FLAG . '=0')) {
             throw new CrunzException('Disabling deprecation handler failed.');

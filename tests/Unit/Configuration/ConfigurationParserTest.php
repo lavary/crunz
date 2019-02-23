@@ -9,14 +9,14 @@ use Crunz\Configuration\ConfigurationParser;
 use Crunz\Configuration\Definition;
 use Crunz\Configuration\FileParser;
 use Crunz\Filesystem\FilesystemInterface;
-use Crunz\Logger\ConsoleLoggerInterface;
+use Crunz\Tests\TestCase\Logger\NullLogger;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationParserTest extends TestCase
 {
     /** @test */
-    public function useEmptyConfigWhenConfigFileNotExists()
+    public function useEmptyConfigWhenConfigFileNotExists(): void
     {
         $this->addToAssertionCount(1);
 
@@ -31,7 +31,7 @@ final class ConfigurationParserTest extends TestCase
     }
 
     /** @test */
-    public function useParsedConfigWhenConfigFileExists()
+    public function useParsedConfigWhenConfigFileExists(): void
     {
         $this->addToAssertionCount(1);
 
@@ -66,7 +66,7 @@ final class ConfigurationParserTest extends TestCase
             $definition,
             $definitionProcessorMock,
             $fileParser,
-            $this->createMock(ConsoleLoggerInterface::class),
+            new NullLogger(),
             $filesystemMock
         );
     }

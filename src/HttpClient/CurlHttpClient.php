@@ -9,7 +9,7 @@ final class CurlHttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function ping($url)
+    public function ping($url): void
     {
         $curlResource = \curl_init();
         \curl_setopt(

@@ -15,7 +15,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesNormalOnlyWithSuitableVerbosity($ioVerbosity)
+    public function loggerWritesNormalOnlyWithSuitableVerbosity($ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_NORMAL) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);
@@ -32,7 +32,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesVerboseOnlyWithSuitableVerbosity($ioVerbosity)
+    public function loggerWritesVerboseOnlyWithSuitableVerbosity($ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_VERBOSE) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);
@@ -49,7 +49,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesVeryVerboseOnlyWithSuitableVerbosity($ioVerbosity)
+    public function loggerWritesVeryVerboseOnlyWithSuitableVerbosity($ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_VERY_VERBOSE) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);
@@ -66,7 +66,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesDebugOnlyWithSuitableVerbosity($ioVerbosity)
+    public function loggerWritesDebugOnlyWithSuitableVerbosity($ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_DEBUG) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);

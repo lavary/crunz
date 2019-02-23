@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class ScheduleFactoryTest extends TestCase
 {
     /** @test */
-    public function singleTaskSchedule()
+    public function singleTaskSchedule(): void
     {
         $factory = new ScheduleFactory();
 
@@ -30,7 +30,7 @@ class ScheduleFactoryTest extends TestCase
     }
 
     /** @test */
-    public function singleTaskScheduleThrowsExceptionOnWrongTaskNumber()
+    public function singleTaskScheduleThrowsExceptionOnWrongTaskNumber(): void
     {
         $factory = new ScheduleFactory();
 

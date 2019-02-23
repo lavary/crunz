@@ -20,7 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class ScheduleRunCommandTest extends TestCase
 {
     /** @test */
-    public function forceRunAllTasks()
+    public function forceRunAllTasks(): void
     {
         $tempFile = new TemporaryFile();
         $filename = $this->createTaskFile($this->taskContent(), $tempFile);
@@ -45,7 +45,7 @@ class ScheduleRunCommandTest extends TestCase
     }
 
     /** @test */
-    public function runSpecificTask()
+    public function runSpecificTask(): void
     {
         $tempFile1 = new TemporaryFile();
         $tempFile2 = new TemporaryFile();

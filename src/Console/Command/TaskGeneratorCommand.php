@@ -46,7 +46,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('make:task')

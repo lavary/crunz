@@ -13,7 +13,7 @@ class ProviderTest extends TestCase
      * @runInSeparateProcess
      * @test
      */
-    public function defaultTimezoneIsReturned()
+    public function defaultTimezoneIsReturned(): void
     {
         $timezoneName = 'Europe/Warsaw';
         \date_default_timezone_set($timezoneName);

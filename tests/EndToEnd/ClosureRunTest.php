@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Tests\EndToEnd;
 
 use Crunz\Tests\TestCase\EndToEndTestCase;
@@ -7,7 +9,7 @@ use Crunz\Tests\TestCase\EndToEndTestCase;
 final class ClosureRunTest extends EndToEndTestCase
 {
     /** @test */
-    public function closureTasks()
+    public function closureTasks(): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
         $envBuilder

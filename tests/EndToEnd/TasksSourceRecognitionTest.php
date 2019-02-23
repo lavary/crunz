@@ -13,7 +13,7 @@ final class TasksSourceRecognitionTest extends EndToEndTestCase
      * @test
      * @TODO Remove in v2
      */
-    public function tasksSourceRecognitionRelatedToCrunzBinIsDeprecated()
+    public function tasksSourceRecognitionRelatedToCrunzBinIsDeprecated(): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
         $envBuilder->addTask('PhpVersionTasks');
@@ -29,7 +29,7 @@ final class TasksSourceRecognitionTest extends EndToEndTestCase
     }
 
     /** @test */
-    public function searchTasksInCwd()
+    public function searchTasksInCwd(): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
         $envBuilder->addTask('PhpVersionTasks');
@@ -46,7 +46,7 @@ final class TasksSourceRecognitionTest extends EndToEndTestCase
     }
 
     /** @test */
-    public function searchTasksInCwdWithConfig()
+    public function searchTasksInCwdWithConfig(): void
     {
         $tasksPath = Path::fromStrings('app', 'tasks');
         $envBuilder = $this->createEnvironmentBuilder();
@@ -68,7 +68,7 @@ final class TasksSourceRecognitionTest extends EndToEndTestCase
     }
 
     /** @param string $output */
-    private function assertHasTask($output)
+    private function assertHasTask($output): void
     {
         $this->assertContains('PHP version', $output);
         $this->assertContains('php -v', $output);

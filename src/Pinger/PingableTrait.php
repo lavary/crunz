@@ -80,7 +80,7 @@ trait PingableTrait
      *
      * @throws PingableException
      */
-    private function checkUrl($url)
+    private function checkUrl($url): void
     {
         $type = \gettype($url);
 

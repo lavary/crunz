@@ -30,7 +30,7 @@ class ScheduleListCommand extends Command
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('schedule:list')
             ->setDescription('Displays the list of scheduled tasks.')

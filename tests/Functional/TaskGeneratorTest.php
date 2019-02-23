@@ -19,7 +19,7 @@ class TaskGeneratorTest extends TestCase
     /** @var string */
     private $outputDirectory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->outputDirectory = \sys_get_temp_dir();
         $this->fileName = 'CrunzTest';
@@ -33,13 +33,13 @@ class TaskGeneratorTest extends TestCase
         $this->clearTask();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->clearTask();
     }
 
     /** @test */
-    public function generateTaskFile()
+    public function generateTaskFile(): void
     {
         $application = new Application('Crunz', '0.1.0-test.1');
         $command = $application->get('make:task');
@@ -69,7 +69,7 @@ class TaskGeneratorTest extends TestCase
         return $stream;
     }
 
-    private function clearTask()
+    private function clearTask(): void
     {
         if (\file_exists($this->taskFilePath)) {
             \unlink($this->taskFilePath);
@@ -80,7 +80,7 @@ class TaskGeneratorTest extends TestCase
         $answer,
         CommandTester $commandTester,
         Command $command
-    ) {
+    ): void {
         if (\method_exists($commandTester, 'setInputs')) {
             $commandTester->setInputs([$answer]);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Crunz\Process;
 
 use Symfony\Component\Process\Process as SymfonyProcess;
@@ -38,19 +40,19 @@ final class Process
     /**
      * @param callable|null $callback
      */
-    public function start($callback = null)
+    public function start($callback = null): void
     {
         $this->process
             ->start($callback);
     }
 
-    public function wait()
+    public function wait(): void
     {
         $this->process
             ->wait();
     }
 
-    public function startAndWait()
+    public function startAndWait(): void
     {
         $this->process
             ->start();
@@ -58,7 +60,7 @@ final class Process
             ->wait();
     }
 
-    public function setEnv(array $env)
+    public function setEnv(array $env): void
     {
         $this->process
             ->setEnv($env);
