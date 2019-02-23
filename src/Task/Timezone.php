@@ -39,17 +39,7 @@ final class Timezone
             ->debug("Timezone from config: '<info>{$newTimezone}</info>'.");
 
         if (empty($newTimezone)) {
-            throw new EmptyTimezoneException(
-                'Timezone must be configured. Please add it to your config file.'
-            );
-
-            $newTimezone = $this->timezoneProvider
-                ->defaultTimezone()
-                ->getName()
-            ;
-
-            $this->consoleLogger
-                ->debug("Default timezone: '<info>{$newTimezone}</info>'.");
+            throw new EmptyTimezoneException('Timezone must be configured. Please add it to your config file.');
         }
 
         $this->consoleLogger
