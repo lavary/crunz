@@ -33,6 +33,7 @@
         "swiftmailer/swiftmailer": "^6.0",
         "symfony/config": "^3.4 || ^4.1",
         "symfony/console": "^3.4 || ^4.1",
+        "symfony/debug": "^3.4.22 || ^4.1",
         "symfony/dependency-injection": "^3.4 || ^4.1",
         "symfony/filesystem": "^3.4 || ^4.1",
         "symfony/lock": "^3.4 || ^4.0",
