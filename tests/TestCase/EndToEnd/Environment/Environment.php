@@ -72,13 +72,7 @@ final class Environment
         $this->dumpConfig();
     }
 
-    /**
-     * @param string      $command
-     * @param string|null $cwd
-     *
-     * @return Process
-     */
-    public function runCrunzCommand($command, $cwd = null)
+    public function runCrunzCommand(string $command, string $cwd = null): Process
     {
         $cwd = !empty($cwd)
             ? $cwd
@@ -99,29 +93,16 @@ final class Environment
             ]
         );
         $process = $this->createProcess($fullCommand->toString(), $cwd);
-        $windowsEnvsHack = $isWindows && !$process->isInheritEnvVarsSupported();
 
-        // @TODO Disable this hack in v2.
-        if ($windowsEnvsHack) {
-            $this->envFlags
-                ->enableDeprecationHandler();
-            $this->envFlags
-                ->disableContainerDebug();
-        } else {
-            $process->setEnv([EnvFlags::DEPRECATION_HANDLER_FLAG => '1']);
-            $process->setEnv([EnvFlags::CONTAINER_DEBUG_FLAG => '0']);
-        }
+        $process->setEnv(
+            [
+                EnvFlags::DEPRECATION_HANDLER_FLAG => '1',
+                EnvFlags::CONTAINER_DEBUG_FLAG => '0',
+            ]
+        );
 
         $process->start();
         $process->wait();
-
-        // @TODO Remove this hack in v2.
-        if ($windowsEnvsHack) {
-            $this->envFlags
-                ->enableContainerDebug();
-            $this->envFlags
-                ->disableDeprecationHandler();
-        }
 
         return $process;
     }
