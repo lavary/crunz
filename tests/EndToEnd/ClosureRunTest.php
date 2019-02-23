@@ -9,7 +9,7 @@ use Crunz\Tests\TestCase\EndToEndTestCase;
 final class ClosureRunTest extends EndToEndTestCase
 {
     /** @test */
-    public function closureTasks()
+    public function closureTasks(): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
         $envBuilder

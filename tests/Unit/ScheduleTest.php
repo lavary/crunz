@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ScheduleTest extends TestCase
 {
-    public function testRun()
+    public function testRun(): void
     {
         $escape = '\\' === DIRECTORY_SEPARATOR ? '"' : '\'';
         $escapeReal = '\\' === DIRECTORY_SEPARATOR ? '\\"' : '"';

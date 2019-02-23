@@ -13,7 +13,7 @@ final class EnvFlagsTest extends TestCase
      * @test
      * @dataProvider statusProvider
      */
-    public function deprecationHandlerStatusIsCorrect($flagValue, $expectedEnabled)
+    public function deprecationHandlerStatusIsCorrect($flagValue, $expectedEnabled): void
     {
         \putenv(EnvFlags::DEPRECATION_HANDLER_FLAG . "={$flagValue}");
 
@@ -22,7 +22,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function deprecationHandlerCanBeDisabled()
+    public function deprecationHandlerCanBeDisabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->disableDeprecationHandler();
@@ -31,7 +31,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function deprecationHandlerCanBeEnabled()
+    public function deprecationHandlerCanBeEnabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->enableDeprecationHandler();
@@ -43,7 +43,7 @@ final class EnvFlagsTest extends TestCase
      * @test
      * @dataProvider containerDebugProvider
      */
-    public function containerDebugFlagIsCorrect($flagValue, $expectedEnabled)
+    public function containerDebugFlagIsCorrect($flagValue, $expectedEnabled): void
     {
         \putenv(EnvFlags::CONTAINER_DEBUG_FLAG . "={$flagValue}");
 
@@ -52,7 +52,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function containerDebugCanBeDisabled()
+    public function containerDebugCanBeDisabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->disableContainerDebug();
@@ -61,7 +61,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function containerDebugCanBeEnabled()
+    public function containerDebugCanBeEnabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->enableContainerDebug();
@@ -95,7 +95,7 @@ final class EnvFlagsTest extends TestCase
         ];
     }
 
-    private function assertFlagValue($flag, $expectedValue)
+    private function assertFlagValue($flag, $expectedValue): void
     {
         $actualValue = \getenv($flag);
         $this->assertSame($expectedValue, $actualValue);

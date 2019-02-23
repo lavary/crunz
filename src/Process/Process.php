@@ -40,19 +40,19 @@ final class Process
     /**
      * @param callable|null $callback
      */
-    public function start($callback = null)
+    public function start($callback = null): void
     {
         $this->process
             ->start($callback);
     }
 
-    public function wait()
+    public function wait(): void
     {
         $this->process
             ->wait();
     }
 
-    public function startAndWait()
+    public function startAndWait(): void
     {
         $this->process
             ->start();

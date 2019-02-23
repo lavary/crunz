@@ -329,7 +329,7 @@ class Event implements PingableInterface
 
         $this->setProcess($process);
         $this->getProcess()->start(
-            function ($type, $content) {
+            function ($type, $content): void {
                 $this->wholeOutput[] = $content;
             }
         );
@@ -769,7 +769,7 @@ class Event implements PingableInterface
         });
 
         // Delete the lock file when the event is completed
-        $this->after(function () {
+        $this->after(function (): void {
             $this->releaseLock();
         });
 
@@ -1054,7 +1054,7 @@ class Event implements PingableInterface
     /**
      * If this event is prevented from overlapping, this method should be called regularly to refresh the lock.
      */
-    public function refreshLock()
+    public function refreshLock(): void
     {
         if (!$this->preventOverlapping) {
             return;
@@ -1097,7 +1097,7 @@ class Event implements PingableInterface
     /**
      * Release the lock after the command completed.
      */
-    protected function releaseLock()
+    protected function releaseLock(): void
     {
         $this->checkLockFactory();
 
@@ -1223,7 +1223,7 @@ class Event implements PingableInterface
     /**
      * Lock the event.
      */
-    protected function lock()
+    protected function lock(): void
     {
         $lock = $this->createLockObject();
         $lock->acquire();
@@ -1262,7 +1262,7 @@ class Event implements PingableInterface
         return 'crunz-' . \md5($this->buildCommand());
     }
 
-    private function checkLockFactory()
+    private function checkLockFactory(): void
     {
         if (null === $this->lockFactory) {
             throw new \BadMethodCallException(

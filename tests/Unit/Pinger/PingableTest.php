@@ -14,7 +14,7 @@ final class PingableTest extends TestCase
      * @test
      * @dataProvider nonStringProvider
      */
-    public function beforeUrlMustBeString($url)
+    public function beforeUrlMustBeString($url): void
     {
         $type = \gettype($url);
         $this->expectException(PingableException::class);
@@ -27,7 +27,7 @@ final class PingableTest extends TestCase
     /**
      * @test
      */
-    public function beforeUrlMustBeNonEmptyString()
+    public function beforeUrlMustBeNonEmptyString(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('Url cannot be empty.');
@@ -39,7 +39,7 @@ final class PingableTest extends TestCase
     /**
      * @test
      */
-    public function afterUrlMustBeNonEmptyString()
+    public function afterUrlMustBeNonEmptyString(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('Url cannot be empty.');
@@ -52,7 +52,7 @@ final class PingableTest extends TestCase
      * @test
      * @dataProvider nonStringProvider
      */
-    public function afterUrlMustBeString($url)
+    public function afterUrlMustBeString($url): void
     {
         $type = \gettype($url);
         $this->expectException(PingableException::class);
@@ -63,7 +63,7 @@ final class PingableTest extends TestCase
     }
 
     /** @test */
-    public function getPingBeforeWithoutUrlFails()
+    public function getPingBeforeWithoutUrlFails(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('PingBeforeUrl is empty.');
@@ -73,7 +73,7 @@ final class PingableTest extends TestCase
     }
 
     /** @test */
-    public function getPingAfterWithoutUrlFails()
+    public function getPingAfterWithoutUrlFails(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('PingAfterUrl is empty.');

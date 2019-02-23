@@ -22,7 +22,7 @@ final class HttpClientLoggerDecorator implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function ping($url)
+    public function ping($url): void
     {
         $this->logger
             ->verbose("Trying to ping <info>{$url}</info>.");

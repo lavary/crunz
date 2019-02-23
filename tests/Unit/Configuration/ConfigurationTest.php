@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 final class ConfigurationTest extends TestCase
 {
     /** @test */
-    public function getCanReturnPathSplitByDot()
+    public function getCanReturnPathSplitByDot(): void
     {
         $configuration = $this->createConfiguration(
             [
@@ -27,7 +27,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function getReturnDefaultValueIfPathNotExists()
+    public function getReturnDefaultValueIfPathNotExists(): void
     {
         $configuration = $this->createConfiguration();
 
@@ -36,7 +36,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function sourcePathIsRelativeToCwd()
+    public function sourcePathIsRelativeToCwd(): void
     {
         $cwd = \sys_get_temp_dir();
         $sourcePath = Path::fromStrings('app', 'tasks');
@@ -47,7 +47,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function sourcePathFallbackToTasksDirectory()
+    public function sourcePathFallbackToTasksDirectory(): void
     {
         $cwd = \sys_get_temp_dir();
         $expectedPath = Path::fromStrings($cwd, 'tasks');
@@ -61,7 +61,7 @@ final class ConfigurationTest extends TestCase
      *
      * @TODO Remove in v2
      */
-    public function legacySourcePathsAreRelativeToCrunzBin()
+    public function legacySourcePathsAreRelativeToCrunzBin(): void
     {
         \defined('CRUNZ_BIN_DIR') ?: \define('CRUNZ_BIN_DIR', \sys_get_temp_dir());
         $crunzBinDir = CRUNZ_BIN_DIR;

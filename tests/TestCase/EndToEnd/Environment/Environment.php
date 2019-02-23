@@ -63,7 +63,7 @@ final class Environment
             ->removeDirectory($baseCacheDir->toString());
     }
 
-    private function setUp()
+    private function setUp(): void
     {
         $this->createRootDirectory();
         $this->dumpComposerJson();
@@ -121,7 +121,7 @@ final class Environment
         return $this->rootDirectory;
     }
 
-    private function dumpConfig()
+    private function dumpConfig(): void
     {
         if (empty($this->config)) {
             return;
@@ -138,7 +138,7 @@ final class Environment
             ->dumpFile($configPath->toString(), $yamlConfig);
     }
 
-    private function copyTasks()
+    private function copyTasks(): void
     {
         $projectRoot = $this->filesystem
             ->projectRootDirectory();
@@ -173,7 +173,7 @@ final class Environment
         }
     }
 
-    private function dumpComposerJson()
+    private function dumpComposerJson(): void
     {
         $composerJson = Path::fromStrings($this->rootDirectory(), 'composer.json');
 
@@ -201,7 +201,7 @@ final class Environment
             ->dumpFile($composerJson->toString(), $content);
     }
 
-    private function composerInstall()
+    private function composerInstall(): void
     {
         $process = $this->createProcess('composer install -q --no-suggest', $this->rootDirectory());
         $process->startAndWait();
@@ -212,7 +212,7 @@ final class Environment
     }
 
     /** @throws \Exception */
-    private function createRootDirectory()
+    private function createRootDirectory(): void
     {
         $tempDirectory = $this->filesystem
             ->tempDir();

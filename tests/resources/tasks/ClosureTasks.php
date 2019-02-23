@@ -9,7 +9,7 @@ $x = 153;
 $scheduler = new Schedule();
 $scheduler
     ->run(
-        function () use ($x) {
+        function () use ($x): void {
             echo 'Closure output' . PHP_EOL;
             echo "Var: {$x}" . PHP_EOL;
         }

@@ -14,7 +14,7 @@ class ClosureRunCommand extends Command
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('closure:run')
             ->setDescription('Executes a closure as a process.')

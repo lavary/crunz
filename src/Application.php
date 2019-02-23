@@ -90,7 +90,7 @@ class Application extends SymfonyApplication
         return parent::run($input, $output);
     }
 
-    private function initializeContainer()
+    private function initializeContainer(): void
     {
         $containerCacheDirWritable = $this->createBaseCacheDirectory();
         $isContainerDebugEnabled = $this->envFlags
@@ -159,7 +159,7 @@ class Application extends SymfonyApplication
         ContainerBuilder $container,
         $class,
         $baseClass
-    ) {
+    ): void {
         $dumper = new PhpDumper($container);
 
         $content = $dumper->dump(
@@ -227,7 +227,7 @@ class Application extends SymfonyApplication
         return $containerCacheDir->toString();
     }
 
-    private function registerDeprecationHandler()
+    private function registerDeprecationHandler(): void
     {
         $isDeprecationHandlerEnabled = $this->envFlags
             ->isDeprecationHandlerEnabled();
@@ -245,7 +245,7 @@ class Application extends SymfonyApplication
                 $errorString,
                 $file,
                 $line
-            ) use ($io) {
+            ) use ($io): void {
                 $io->block(
                     "{$errorString} File {$file}, line {$line}",
                     'Deprecation',

@@ -28,7 +28,7 @@ class Mailer
      * @param string $subject
      * @param string $message
      */
-    public function send($subject, $message)
+    public function send($subject, $message): void
     {
         $this->getMailer()
             ->send(

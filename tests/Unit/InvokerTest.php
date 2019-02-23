@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class InvokerTest extends TestCase
 {
     /** @test */
-    public function callExecutesClosure()
+    public function callExecutesClosure(): void
     {
         $i = 1;
 
@@ -26,13 +26,13 @@ class InvokerTest extends TestCase
     }
 
     /** @test */
-    public function callExecutesClosureWithParams()
+    public function callExecutesClosureWithParams(): void
     {
         $i = 1;
 
         $invoker = new Invoker();
         $invoker->call(
-            function ($number) use (&$i) {
+            function ($number) use (&$i): void {
                 $i += $number;
             },
             [2]
@@ -42,11 +42,11 @@ class InvokerTest extends TestCase
     }
 
     /** @test */
-    public function callCanCatchOutput()
+    public function callCanCatchOutput(): void
     {
         $invoker = new Invoker();
         $result = $invoker->call(
-            function () {
+            function (): void {
                 echo 'Callback was called, nice.';
             },
             [],

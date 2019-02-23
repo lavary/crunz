@@ -37,7 +37,7 @@ class ConfigGeneratorCommand extends Command
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('publish:config')
@@ -128,7 +128,7 @@ class ConfigGeneratorCommand extends Command
         $destination,
         $src,
         $timezone
-    ) {
+    ): void {
         $this->symfonyFilesystem
             ->dumpFile(
                 $destination,

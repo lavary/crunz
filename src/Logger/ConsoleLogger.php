@@ -19,7 +19,7 @@ final class ConsoleLogger implements ConsoleLoggerInterface
     /**
      * @param string $message
      */
-    public function normal($message)
+    public function normal($message): void
     {
         $this->write($message, self::VERBOSITY_NORMAL);
     }
@@ -27,7 +27,7 @@ final class ConsoleLogger implements ConsoleLoggerInterface
     /**
      * @param string $message
      */
-    public function verbose($message)
+    public function verbose($message): void
     {
         $this->write($message, self::VERBOSITY_VERBOSE);
     }
@@ -35,7 +35,7 @@ final class ConsoleLogger implements ConsoleLoggerInterface
     /**
      * @param string $message
      */
-    public function veryVerbose($message)
+    public function veryVerbose($message): void
     {
         $this->write($message, self::VERBOSITY_VERY_VERBOSE);
     }
@@ -45,7 +45,7 @@ final class ConsoleLogger implements ConsoleLoggerInterface
      *
      * @param string $message
      */
-    public function debug($message)
+    public function debug($message): void
     {
         $this->write($message, self::VERBOSITY_DEBUG);
     }
@@ -54,7 +54,7 @@ final class ConsoleLogger implements ConsoleLoggerInterface
      * @param string $message
      * @param int    $verbosity
      */
-    private function write($message, $verbosity)
+    private function write($message, $verbosity): void
     {
         $ioVerbosity = $this->symfonyStyle
             ->getVerbosity();

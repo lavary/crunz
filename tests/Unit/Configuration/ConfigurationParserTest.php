@@ -16,7 +16,7 @@ use Symfony\Component\Config\Definition\Processor;
 final class ConfigurationParserTest extends TestCase
 {
     /** @test */
-    public function useEmptyConfigWhenConfigFileNotExists()
+    public function useEmptyConfigWhenConfigFileNotExists(): void
     {
         $this->addToAssertionCount(1);
 
@@ -31,7 +31,7 @@ final class ConfigurationParserTest extends TestCase
     }
 
     /** @test */
-    public function useParsedConfigWhenConfigFileExists()
+    public function useParsedConfigWhenConfigFileExists(): void
     {
         $this->addToAssertionCount(1);
 

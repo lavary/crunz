@@ -80,7 +80,7 @@ class EventRunner
     /**
      * Handle an array of Schedule objects.
      */
-    public function handle(OutputInterface $output, array $schedules = [])
+    public function handle(OutputInterface $output, array $schedules = []): void
     {
         $this->schedules = $schedules;
         $this->output = $output;
@@ -110,7 +110,7 @@ class EventRunner
      *
      * @param \Crunz\Event $event
      */
-    protected function start(Event $event)
+    protected function start(Event $event): void
     {
         // if sendOutputTo or appendOutputTo have been specified
         if (!$event->nullOutput()) {
@@ -144,7 +144,7 @@ class EventRunner
     /**
      * Manage the running processes.
      */
-    protected function manageStartedEvents()
+    protected function manageStartedEvents(): void
     {
         while ($this->schedules) {
             foreach ($this->schedules as $scheduleKey => $schedule) {
@@ -233,7 +233,7 @@ class EventRunner
      *
      * @param \Crunz\Event
      */
-    protected function handleOutput(Event $event)
+    protected function handleOutput(Event $event): void
     {
         $logged = false;
         $logOutput = $this->configuration
@@ -268,7 +268,7 @@ class EventRunner
      *
      * @param \Crunz\Event $event
      */
-    protected function handleError(Event $event)
+    protected function handleError(Event $event): void
     {
         $logErrors = $this->configuration
             ->get('log_errors')
@@ -337,7 +337,7 @@ class EventRunner
      *
      * @param string $output
      */
-    protected function display($output)
+    protected function display($output): void
     {
         $this->output
             ->write(\is_string($output) ? $output : '')
@@ -347,7 +347,7 @@ class EventRunner
     /**
      * @param PingableInterface $schedule
      */
-    private function pingBefore(PingableInterface $schedule)
+    private function pingBefore(PingableInterface $schedule): void
     {
         if (!$schedule->hasPingBefore()) {
             $this->consoleLogger
@@ -363,7 +363,7 @@ class EventRunner
     /**
      * @param PingableInterface $schedule
      */
-    private function pingAfter(PingableInterface $schedule)
+    private function pingAfter(PingableInterface $schedule): void
     {
         if (!$schedule->hasPingAfter()) {
             $this->consoleLogger

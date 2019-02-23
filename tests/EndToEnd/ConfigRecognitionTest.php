@@ -12,12 +12,12 @@ final class ConfigRecognitionTest extends EndToEndTestCase
     /** @var string */
     private $originalCwd;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->originalCwd = \getcwd();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         \chdir($this->originalCwd);
     }
@@ -26,7 +26,7 @@ final class ConfigRecognitionTest extends EndToEndTestCase
      * @test
      * @TODO Remove in v2
      */
-    public function configRecognitionRelatedToCrunzBinIsDeprecated()
+    public function configRecognitionRelatedToCrunzBinIsDeprecated(): void
     {
         $tasksSource = Path::fromStrings('resources', 'tasks');
         $environmentBuilder = $this->createEnvironmentBuilder();
@@ -62,7 +62,7 @@ final class ConfigRecognitionTest extends EndToEndTestCase
     }
 
     /** @test */
-    public function searchConfigInCwd()
+    public function searchConfigInCwd(): void
     {
         $tasksSource = Path::fromStrings('resources', 'tasks');
         $environmentBuilder = $this->createEnvironmentBuilder();
@@ -98,7 +98,7 @@ final class ConfigRecognitionTest extends EndToEndTestCase
     }
 
     /** @param string $output */
-    private function assertHasTask($output)
+    private function assertHasTask($output): void
     {
         $this->assertContains('PHP version', $output);
         $this->assertContains('php -v', $output);
