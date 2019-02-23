@@ -26,7 +26,6 @@ final class Environment
     private $envFlags;
 
     /**
-     * @param string   $name
      * @param string[] $tasks
      *
      * @throws \Exception
