@@ -7,24 +7,19 @@ namespace Crunz\Task;
 use Crunz\Configuration\Configuration;
 use Crunz\Exception\EmptyTimezoneException;
 use Crunz\Logger\ConsoleLoggerInterface;
-use Crunz\Timezone\ProviderInterface;
 
 class Timezone
 {
     /** @var Configuration */
     private $configuration;
-    /** @var ProviderInterface */
-    private $timezoneProvider;
     /** @var ConsoleLoggerInterface */
     private $consoleLogger;
 
     public function __construct(
         Configuration $configuration,
-        ProviderInterface $timezoneProvider,
         ConsoleLoggerInterface $consoleLogger
     ) {
         $this->configuration = $configuration;
-        $this->timezoneProvider = $timezoneProvider;
         $this->consoleLogger = $consoleLogger;
     }
 
