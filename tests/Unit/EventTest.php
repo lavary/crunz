@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Crunz\Tests\Unit;
 
 use Crunz\Event;
-use Crunz\Path\Path;
 use Crunz\Tests\TestCase\TestClock;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
@@ -431,10 +430,5 @@ final class EventTest extends TestCase
     private function isWindows()
     {
         return DIRECTORY_SEPARATOR === '\\';
-    }
-
-    private function buildPath(array $segments)
-    {
-        return Path::create($segments)->toString();
     }
 }
