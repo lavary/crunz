@@ -12,7 +12,7 @@ use SuperClosure\Serializer;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Lock\StoreInterface;
 
-class EventTest extends TestCase
+final class EventTest extends TestCase
 {
     /**
      * The default configuration timezone.
