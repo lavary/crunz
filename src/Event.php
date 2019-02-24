@@ -14,6 +14,7 @@ use Crunz\Path\Path;
 use Crunz\Pinger\PingableInterface;
 use Crunz\Pinger\PingableTrait;
 use Crunz\Process\Process;
+use Crunz\Task\TaskException;
 use SuperClosure\Serializer;
 use Symfony\Component\Lock\Exception\InvalidArgumentException;
 use Symfony\Component\Lock\Factory;
@@ -344,11 +345,9 @@ class Event implements PingableInterface
     /**
      * The Cron expression representing the event's frequency.
      *
-     * @param string $expression
-     *
-     * @return $this
+     * @throws TaskException
      */
-    public function cron($expression)
+    public function cron(string $expression): self
     {
         $parts = \preg_split(
             '/\s/',
@@ -357,12 +356,8 @@ class Event implements PingableInterface
             PREG_SPLIT_NO_EMPTY
         );
 
-        // @TODO Throw exception in v2
         if (\count($parts) > 5) {
-            @\trigger_error(
-                'Using cron expression with more than 5 parts is deprecated from v1.9 and will result in exception in v2.0. If you are using dragonmantank/cron-expression package be aware that passing more than five parts to this method will result in exception.',
-                E_USER_DEPRECATED
-            );
+            throw new TaskException("Expression '{$expression}' has more than five parts and this is not allowed.");
         }
 
         $this->expression = $expression;

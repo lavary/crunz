@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Crunz\Tests\Unit;
 
 use Crunz\Event;
-use Crunz\Path\Path;
+use Crunz\Task\TaskException;
 use Crunz\Tests\TestCase\TestClock;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Lock\StoreInterface;
 
-class EventTest extends TestCase
+final class EventTest extends TestCase
 {
     /**
      * The default configuration timezone.
@@ -72,8 +72,6 @@ class EventTest extends TestCase
      */
     public function testUnitMethods(): void
     {
-        $id = \uniqid();
-
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('0 * * * *', $e->hourly()->getExpression());
 
@@ -204,17 +202,14 @@ class EventTest extends TestCase
         $this->assertTrue($e->cron('* * * * *')->skip(function () { return false; })->isDue($timezone));
     }
 
-    /**
-     * @test
-     * @group legacy
-     * @expectedDeprecation Using cron expression with more than 5 parts is deprecated from v1.9 and will result in exception in v2.0. If you are using dragonmantank/cron-expression package be aware that passing more than five parts to this method will result in exception.
-     */
-    public function moreThanFivePartsInCronExpressionResultsInDeprecationNotice(): void
+    /** @test */
+    public function moreThanFivePartsInCronExpressionResultsInException(): void
     {
+        $this->expectException(TaskException::class);
+        $this->expectExceptionMessage("Expression '* * * * * *' has more than five parts and this is not allowed.");
+
         $e = new Event(1, 'php foo -v');
         $e->cron('* * * * * *');
-
-        $this->assertTrue(true);
     }
 
     public function testBuildCommand(): void
@@ -408,7 +403,7 @@ class EventTest extends TestCase
         $this->assertFalse($event2->isDue(new \DateTimeZone('UTC')));
     }
 
-    private function createPreventOverlappingEvent(StoreInterface $store = null)
+    private function createPreventOverlappingEvent(StoreInterface $store = null): Event
     {
         $command = "php -r 'sleep(2);'";
 
@@ -428,13 +423,8 @@ class EventTest extends TestCase
         $property->setValue($testClock);
     }
 
-    private function isWindows()
+    private function isWindows(): bool
     {
         return DIRECTORY_SEPARATOR === '\\';
-    }
-
-    private function buildPath(array $segments)
-    {
-        return Path::create($segments)->toString();
     }
 }
