@@ -71,8 +71,6 @@ final class EventTest extends TestCase
      */
     public function testUnitMethods(): void
     {
-        $id = \uniqid();
-
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('0 * * * *', $e->hourly()->getExpression());
 
@@ -407,7 +405,7 @@ final class EventTest extends TestCase
         $this->assertFalse($event2->isDue(new \DateTimeZone('UTC')));
     }
 
-    private function createPreventOverlappingEvent(StoreInterface $store = null)
+    private function createPreventOverlappingEvent(StoreInterface $store = null): Event
     {
         $command = "php -r 'sleep(2);'";
 
@@ -427,7 +425,7 @@ final class EventTest extends TestCase
         $property->setValue($testClock);
     }
 
-    private function isWindows()
+    private function isWindows(): bool
     {
         return DIRECTORY_SEPARATOR === '\\';
     }
