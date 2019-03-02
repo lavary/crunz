@@ -48,22 +48,13 @@ class ScheduleListCommand extends Command
             ->setHelp('This command displays the scheduled tasks in a tabular format.');
     }
 
-    /**
-     * Executes the current command.
-     *
-     * @param use Symfony\Component\Console\Input\InputInterface $input
-     * @param use Symfony\Component\Console\Input\OutputIterface $output
-     *
-     * @return int|null null or 0 if everything went fine, or an error code
-     */
+    /** {@inheritdoc} */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->options = $input->getOptions();
         $this->arguments = $input->getArguments();
-        $tasks = $this->fallbackTaskSource(
-            $this->taskCollection
-                ->all($this->arguments['source'])
-        );
+        $tasks = $this->taskCollection
+            ->all($this->arguments['source']);
 
         if (!\count($tasks)) {
             $output->writeln('<comment>No task found!</comment>');
@@ -104,17 +95,5 @@ class ScheduleListCommand extends Command
         $table->render();
 
         return 0;
-    }
-
-    /** @param iterable|array $tasks */
-    private function fallbackTaskSource($tasks)
-    {
-        $tasksCount = \count($tasks);
-        if (0 !== $tasksCount) {
-            return $tasks;
-        }
-
-        return $this->taskCollection
-            ->allLegacyPaths();
     }
 }

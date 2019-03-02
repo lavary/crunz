@@ -25,7 +25,13 @@ class ScheduleRunCommandTest extends TestCase
         $tempFile = new TemporaryFile();
         $filename = $this->createTaskFile($this->taskContent(), $tempFile);
 
-        $mockInput = $this->mockInput(['force' => true, 'task' => null]);
+        $mockInput = $this->mockInput(
+            [
+                'force' => true,
+                'task' => null,
+            ],
+            ['source' => '']
+        );
         $mockOutput = $this->createMock(OutputInterface::class);
         $mockTaskCollection = $this->mockTaskCollection($filename);
         $mockEventRunner = $this->mockEventRunner($mockOutput);
@@ -52,7 +58,13 @@ class ScheduleRunCommandTest extends TestCase
         $filename1 = $this->createTaskFile($this->phpVersionTaskContent(), $tempFile1);
         $filename2 = $this->createTaskFile($this->phpVersionTaskContent(), $tempFile2);
 
-        $mockInput = $this->mockInput(['force' => false, 'task' => '1']);
+        $mockInput = $this->mockInput(
+            [
+                'force' => false,
+                'task' => '1',
+            ],
+            ['source' => '']
+        );
         $mockOutput = $this->createMock(OutputInterface::class);
         $mockTaskCollection = $this->mockTaskCollection($filename1, $filename2);
         $mockEventRunner = $this->mockEventRunner($mockOutput);
@@ -126,12 +138,16 @@ class ScheduleRunCommandTest extends TestCase
         return $mockEventRunner;
     }
 
-    private function mockInput(array $options)
+    private function mockInput(array $options, array $arguments = []): InputInterface
     {
         $mockInput = $this->createMock(InputInterface::class);
         $mockInput
             ->method('getOptions')
             ->willReturn($options)
+        ;
+        $mockInput
+            ->method('getArguments')
+            ->willReturn($arguments)
         ;
 
         return $mockInput;

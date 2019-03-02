@@ -6,14 +6,9 @@ namespace Crunz\Configuration;
 
 use Crunz\Exception\CrunzException;
 
-class ConfigFileNotExistsException extends CrunzException
+final class ConfigFileNotExistsException extends CrunzException
 {
-    /**
-     * @param string $filePath
-     *
-     * @return ConfigFileNotExistsException
-     */
-    public static function fromFilePath($filePath)
+    public static function fromFilePath(string $filePath): self
     {
         return new self("Configuration file '{$filePath}' not exists.");
     }

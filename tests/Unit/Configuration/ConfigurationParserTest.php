@@ -54,7 +54,9 @@ final class ConfigurationParserTest extends TestCase
         $definitionProcessorMock = $this->createMock(Processor::class);
         $definitionProcessorMock
             ->method('processConfiguration')
-            ->with($definition, $expectedProcessedConfig);
+            ->with($definition, $expectedProcessedConfig)
+            ->willReturn([])
+        ;
 
         $filesystemMock = $this->createMock(FilesystemInterface::class);
         $filesystemMock

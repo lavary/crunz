@@ -17,14 +17,10 @@ class FileParser
     }
 
     /**
-     * @param string $configPath
-     *
-     * @return array
-     *
      * @throws ConfigFileNotExistsException
      * @throws ConfigFileNotReadableException
      */
-    public function parse($configPath)
+    public function parse(string $configPath): array
     {
         if (!\file_exists($configPath)) {
             throw ConfigFileNotExistsException::fromFilePath($configPath);

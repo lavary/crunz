@@ -13,11 +13,6 @@
 |
 */
 
-// @TODO Remove in v2
-if (!\defined('CRUNZ_BIN_DIR')) {
-    \define('CRUNZ_BIN_DIR', __DIR__);
-}
-
 if (!\defined('CRUNZ_BIN')) {
     \define('CRUNZ_BIN', __FILE__);
 }

@@ -16,8 +16,7 @@ final class TestClock implements ClockInterface
         $this->now = $now;
     }
 
-    /** @return \DateTimeImmutable */
-    public function now()
+    public function now(): \DateTimeImmutable
     {
         return $this->now;
     }
