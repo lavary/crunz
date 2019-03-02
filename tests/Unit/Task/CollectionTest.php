@@ -12,18 +12,6 @@ use PHPUnit\Framework\TestCase;
 
 final class CollectionTest extends TestCase
 {
-    /**
-     * @test
-     * @TODO Remove in v2
-     * @group legacy
-     * @@expectedDeprecation Probably you are relying on legacy tasks source recognition which is deprecated. Currently default source for tasks is relative to current working directory, make sure you changed it accordingly in your Cron task. Run your command with '-vvv' to check resolved paths. Legacy behavior will be removed in v2.
-     */
-    public function allLegacyPathsTriggerDeprecationWhenTasksFound(): void
-    {
-        $collection = $this->createCollection([\sys_get_temp_dir()], ['dsadsa']);
-        $collection->allLegacyPaths();
-    }
-
     /** @return Collection */
     private function createCollection(array $legacyPaths = [], array $tasks = [])
     {

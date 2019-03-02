@@ -56,44 +56,7 @@ final class ConfigurationTest extends TestCase
         $this->assertSame($expectedPath->toString(), $configuration->getSourcePath());
     }
 
-    /**
-     * @test
-     *
-     * @TODO Remove in v2
-     */
-    public function legacySourcePathsAreRelativeToCrunzBin(): void
-    {
-        \defined('CRUNZ_BIN_DIR') ?: \define('CRUNZ_BIN_DIR', \sys_get_temp_dir());
-        $crunzBinDir = CRUNZ_BIN_DIR;
-        $expectedPaths = [
-            Path::create(
-                [
-                    $crunzBinDir,
-                    '..',
-                    '..',
-                    'tasks',
-                ]
-            )->toString(),
-            Path::create(
-                [
-                    $crunzBinDir,
-                    '..',
-                    '..',
-                    '..',
-                    'tasks',
-                ]
-            )->toString(),
-        ];
-
-        $configuration = $this->createConfiguration(['source' => 'tasks']);
-
-        $paths = $configuration->binRelativeSourcePaths();
-
-        $this->assertSame($expectedPaths, $paths);
-    }
-
-    /** @return Configuration */
-    private function createConfiguration(array $config = [], $cwd = '')
+    private function createConfiguration(array $config = [], string $cwd = ''): Configuration
     {
         $mockConfigurationParser = $this->createMock(ConfigurationParserInterface::class);
         $mockConfigurationParser

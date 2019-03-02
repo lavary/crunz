@@ -30,7 +30,7 @@ class Configuration
      *
      * @return string
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
         if (null === $this->config) {
             $this->config = $this->configurationParser
@@ -55,8 +55,7 @@ class Configuration
         return $value;
     }
 
-    /** @return string */
-    public function getSourcePath()
+    public function getSourcePath(): string
     {
         $sourcePath = Path::create(
             [
@@ -67,42 +66,5 @@ class Configuration
         );
 
         return $sourcePath->toString();
-    }
-
-    /**
-     * @deprecated Since v1.11
-     *
-     * @todo Remove in v2
-     *
-     * @return string[]
-     */
-    public function binRelativeSourcePaths()
-    {
-        $vendorBin = Path::create(
-            [
-                '..',
-                '..',
-                $this->get('source', 'tasks'),
-            ]
-        );
-        $vendorCrunzBin = Path::create(
-            [
-                '..',
-                '..',
-                '..',
-                $this->get('source', 'tasks'),
-            ]
-        );
-        $paths = [
-            $vendorBin->toString(),
-            $vendorCrunzBin->toString(),
-        ];
-
-        return \array_map(
-            function ($relativePart) {
-                return Path::create([CRUNZ_BIN_DIR, $relativePart])->toString();
-            },
-            $paths
-        );
     }
 }
