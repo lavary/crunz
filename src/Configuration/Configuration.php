@@ -26,9 +26,9 @@ class Configuration
      * Return a parameter based on a key.
      *
      * @param string $key
-     * @param null   $default
+     * @param mixed  $default
      *
-     * @return string
+     * @return mixed
      */
     public function get(string $key, $default = null)
     {
