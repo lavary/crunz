@@ -46,7 +46,7 @@ class ScheduleListCommand extends Command
             ->setHelp('This command displays the scheduled tasks in a tabular format.');
     }
 
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->options = $input->getOptions();

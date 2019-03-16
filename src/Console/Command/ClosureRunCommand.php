@@ -22,7 +22,7 @@ class ClosureRunCommand extends Command
             ->setHelp('This command executes a closure as a separate process.');
     }
 
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $args = [];
