@@ -141,6 +141,6 @@ class Logger
             return $this->levels[$level];
         }
 
-        throw new InvalidArgumentException('Invalid log level.');
+        throw new \InvalidArgumentException('Invalid log level.');
     }
 }

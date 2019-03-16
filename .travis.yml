@@ -42,6 +42,10 @@ install:
     - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.2' ]]; then
         travis_retry composer bin cs-fixer install -a --no-dev;
       fi
+    - if [[ "$DEPENDENCIES" = 'low' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.2' ]]; then
+        travis_retry composer bin cs-fixer install -a;
+        travis_retry composer bin phpstan install -a;
+      fi
     - travis_retry composer bin phpunit install -a;
 
 before_script:
@@ -50,5 +54,8 @@ before_script:
 script:
     - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.2' ]]; then
         composer crunz:analyze;
+      fi
+    - if [[ "$DEPENDENCIES" = 'low' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.2' ]]; then
+        composer phpstan:check;
       fi
     - vendor/bin/phpunit
