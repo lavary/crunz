@@ -35,6 +35,14 @@ $autoloadPaths = [
             'autoload.php'
         ]
     ),
+    // Vendor/Bin
+    $generatePath(
+        [
+            __DIR__,
+            '..',
+            'autoload.php'
+        ]
+    ),
     // Local dev
     $generatePath(
         [
@@ -64,5 +72,5 @@ if ($autoloadFileFound === false) {
     );
 }
 
-$application = new Crunz\Application('Crunz Command Line Interface', 'v1.11.1');
+$application = new Crunz\Application('Crunz Command Line Interface', 'v1.11.2');
 $application->run();

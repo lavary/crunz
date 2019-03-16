@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v1.11.2] - 2019-03-16
+
+### Fixed
+
+- [#209], [#210] Composer installs crunz executable to vendor/bin instead of symlink
+
 ## [v1.11.1] - 2019-01-27
 
 ### Fixed
@@ -154,6 +160,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [#77] Fix high cpu usage
 
 
+[#210]: https://github.com/lavary/crunz/pull/210
+[#209]: https://github.com/lavary/crunz/pull/209
 [#190]: https://github.com/lavary/crunz/pull/190
 [#181]: https://github.com/lavary/crunz/pull/181
 [#180]: https://github.com/lavary/crunz/pull/180
@@ -248,6 +256,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [v1.6.1]: https://github.com/lavary/crunz/compare/v1.6.0...v1.6.1
 [v1.6.0]: https://github.com/lavary/crunz/compare/v1.5.1...v1.6.0
 [v1.5.1]: https://github.com/lavary/crunz/compare/v1.5.0...v1.5.1
+[v1.11.2]: https://github.com/lavary/crunz/compare/v1.11.1...v1.11.2
 [v1.11.1]: https://github.com/lavary/crunz/compare/v1.11.0...v1.11.1
 [v1.11.0]: https://github.com/lavary/crunz/compare/v1.11.0-rc.1...v1.11.0
 [v1.11.0-rc.1]: https://github.com/lavary/crunz/compare/v1.11.0-beta.2...v1.11.0-rc.1
