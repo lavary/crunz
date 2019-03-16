@@ -41,6 +41,7 @@ install:
       fi
     - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.3' ]]; then
         travis_retry composer bin cs-fixer install -a --no-dev;
+        travis_retry composer bin phpstan install -a;
       fi
     - if [[ "$DEPENDENCIES" = 'low' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.3' ]]; then
         travis_retry composer bin cs-fixer install -a;
