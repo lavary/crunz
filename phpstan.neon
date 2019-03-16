@@ -28,6 +28,11 @@ parameters:
         -
             message: '#Call to an undefined static method Swift_Message::newInstance\(\)#'
             path: src/Mailer.php
+        - '#Constant CRUNZ_BIN_DIR not found#'
+        - '#Constant CRUNZ_BIN not found#'
+        -
+            message: '#Variable \$configFile might not be defined#'
+            path: src/Configuration/ConfigurationParser.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
