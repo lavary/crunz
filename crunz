@@ -38,7 +38,7 @@ $autoloadPaths = [
     // Vendor/Bin
     $generatePath(
         [
-            _DIR_,
+            __DIR__,
             '..',
             'autoload.php'
         ]
