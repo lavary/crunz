@@ -9,11 +9,7 @@ use Monolog\Logger as MonologLogger;
 
 class Logger
 {
-    /**
-     * Instance of Psr\Log\LoggerInterface.
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
+    /** @var \Monolog\Logger */
     protected $logger;
 
     /**

@@ -6,11 +6,7 @@ use Crunz\Configuration\Configuration;
 
 class Mailer
 {
-    /**
-     * Mailer instance.
-     *
-     * @param \Swift_Mailer
-     */
+    /** @var \Swift_Mailer */
     protected $mailer;
     /** @var Configuration */
     private $configuration;

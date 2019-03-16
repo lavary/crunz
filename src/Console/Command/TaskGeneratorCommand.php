@@ -152,7 +152,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Ask a question.
      *
-     * @param string $quetion
+     * @param string $question
      *
      * @return string
      */

@@ -33,6 +33,12 @@ parameters:
         -
             message: '#Variable \$configFile might not be defined#'
             path: src/Configuration/ConfigurationParser.php
+        -
+            message: '#Call to an undefined method Crunz\\Event::DummyFrequency\(\)#'
+            path: src/Stubs/BasicTask.php
+        -
+            message: '#Call to an undefined method Crunz\\Event::every.*(Minutes|Hours)\(\)#'
+            path: tests/Unit/EventTest.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon

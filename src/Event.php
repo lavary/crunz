@@ -1162,7 +1162,7 @@ class Event implements PingableInterface
     /**
      * Check if time hasn't arrived.
      *
-     * @param string $time
+     * @param string $datetime
      *
      * @return bool
      */
@@ -1174,7 +1174,7 @@ class Event implements PingableInterface
     /**
      * Check if the time has passed.
      *
-     * @param string $time
+     * @param string $datetime
      *
      * @return bool
      */
