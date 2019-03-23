@@ -393,18 +393,18 @@ class Event implements PingableInterface
      */
     public function on($date)
     {
-        $date = \date_parse($date);
-        $segments = \array_intersect_key($date, $this->fieldsPosition);
+        $parsedDate = \date_parse($date);
+        $segments = \array_intersect_key($parsedDate, $this->fieldsPosition);
 
-        if ($date['year']) {
-            $this->skip(function () use ($date) {
-                return (int) date('Y') != $date['year'];
+        if ($parsedDate['year']) {
+            $this->skip(function () use ($parsedDate) {
+                return (int) date('Y') != $parsedDate['year'];
             });
         }
 
         foreach ($segments as $key => $value) {
             if (false !== $value) {
-                $this->spliceIntoPosition($this->fieldsPosition[$key], (int) $value);
+                $this->spliceIntoPosition($this->fieldsPosition[$key], (string) $value);
             }
         }
 
@@ -433,9 +433,16 @@ class Event implements PingableInterface
     public function dailyAt($time)
     {
         $segments = explode(':', $time);
+        $firstSegment = (int) $segments[0];
+        $secondSegment = \count($segments) > 1
+            ? (int) $segments[1]
+            : '0'
+        ;
 
-        return $this->spliceIntoPosition(2, (int) $segments[0])
-                    ->spliceIntoPosition(1, count($segments) > 1 ? (int) $segments[1] : '0');
+        return $this
+            ->spliceIntoPosition(2, (string) $firstSegment)
+            ->spliceIntoPosition(1, (string) $secondSegment)
+        ;
     }
 
     /**
@@ -483,8 +490,10 @@ class Event implements PingableInterface
     {
         $hours = $first . ',' . $second;
 
-        return $this->spliceIntoPosition(1, 0)
-                    ->spliceIntoPosition(2, $hours);
+        return $this
+            ->spliceIntoPosition(1, '0')
+            ->spliceIntoPosition(2, $hours)
+        ;
     }
 
     /**
@@ -580,8 +589,8 @@ class Event implements PingableInterface
     /**
      * Schedule the event to run weekly on a given day and time.
      *
-     * @param int    $day
-     * @param string $time
+     * @param int|string $day
+     * @param string     $time
      *
      * @return $this
      */
@@ -589,7 +598,7 @@ class Event implements PingableInterface
     {
         $this->dailyAt($time);
 
-        return $this->spliceIntoPosition(5, $day);
+        return $this->spliceIntoPosition(5, (string) $day);
     }
 
     /**
@@ -1124,11 +1133,9 @@ class Event implements PingableInterface
     /**
      * Convert closure to an executable command.
      *
-     * @param string $closure
-     *
      * @return string
      */
-    protected function serializeClosure($closure)
+    protected function serializeClosure(Closure $closure)
     {
         $closure = (new Serializer())->serialize($closure);
         $serializedClosure = \http_build_query([$closure]);

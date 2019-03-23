@@ -45,7 +45,7 @@ class Logger
      * Create a neaw stream handler.
      *
      * @param string $path
-     * @param int    $level
+     * @param string $level
      * @param bool   $bubble
      *
      * @return self
