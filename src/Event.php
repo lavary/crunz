@@ -53,7 +53,7 @@ class Event implements PingableInterface
     /**
      * Event generated output.
      *
-     * @var string
+     * @var string|null
      */
     public $outputStream;
 
@@ -71,11 +71,7 @@ class Event implements PingableInterface
      */
     protected $id;
 
-    /**
-     * The command string.
-     *
-     * @var string
-     */
+    /** @var string|Closure */
     protected $command;
 
     /**
@@ -178,7 +174,7 @@ class Event implements PingableInterface
     /**
      * Create a new event instance.
      *
-     * @param string $command
+     * @param string|Closure $command
      */
     public function __construct($id, $command)
     {
@@ -1022,7 +1018,7 @@ class Event implements PingableInterface
     /**
      * Return event's full output.
      *
-     * @return string
+     * @return string|null
      */
     public function getOutputStream()
     {

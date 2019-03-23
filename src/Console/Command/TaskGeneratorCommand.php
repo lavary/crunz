@@ -154,7 +154,7 @@ class TaskGeneratorCommand extends Command
      *
      * @param string $question
      *
-     * @return string
+     * @return ?string
      */
     protected function ask($question)
     {

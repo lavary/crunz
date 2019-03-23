@@ -322,7 +322,7 @@ class EventRunner
     /**
      * Display content.
      *
-     * @param string $output
+     * @param string|null $output
      */
     protected function display($output)
     {

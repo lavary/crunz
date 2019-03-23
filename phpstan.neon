@@ -45,6 +45,12 @@ parameters:
         - '#Method Crunz\\Schedule::thenPing\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
         - '#Method Crunz\\Tests\\Unit\\Pingable::pingBefore\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
         - '#Method Crunz\\Tests\\Unit\\Pingable::thenPing\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
+        -
+            message: "#Call to function method_exists\\(\\) with 'Swift([a-zA-Z_…]+)?' and 'newInstance' will always evaluate to false#"
+            path: src/Mailer.php
+        -
+            message: "#Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component…' and '(fromShellCommandline|inheritEnvironmentV…)' will always evaluate to false#"
+            path: src/Process/Process.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
