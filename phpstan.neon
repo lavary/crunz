@@ -39,12 +39,7 @@ parameters:
         -
             message: '#Call to an undefined method Crunz\\Event::every.*(Minutes|Hours)\(\)#'
             path: tests/Unit/EventTest.php
-        - '#Method Crunz\\Event::pingBefore\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
-        - '#Method Crunz\\Event::thenPing\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
-        - '#Method Crunz\\Schedule::pingBefore\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
-        - '#Method Crunz\\Schedule::thenPing\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
-        - '#Method Crunz\\Tests\\Unit\\Pingable::pingBefore\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
-        - '#Method Crunz\\Tests\\Unit\\Pingable::thenPing\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
+        - '#Method Crunz\\(Event|Schedule|Tests\\Unit\\Pingable)::(pingBefore|thenPing)\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
         -
             message: "#Call to function method_exists\\(\\) with 'Swift([a-zA-Z_…]+)?' and 'newInstance' will always evaluate to false#"
             path: src/Mailer.php
