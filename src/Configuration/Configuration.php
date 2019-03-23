@@ -9,7 +9,7 @@ class Configuration
 {
     /** @var array */
     private $config;
-    /** @var ConfigurationParser */
+    /** @var ConfigurationParserInterface */
     private $configurationParser;
     /** @var FilesystemInterface */
     private $filesystem;
@@ -24,9 +24,9 @@ class Configuration
      * Return a parameter based on a key.
      *
      * @param string $key
-     * @param null   $default
+     * @param mixed  $default
      *
-     * @return string
+     * @return ?string
      */
     public function get($key, $default = null)
     {

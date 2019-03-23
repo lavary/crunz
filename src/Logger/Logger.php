@@ -48,7 +48,7 @@ class Logger
      * @param int    $level
      * @param bool   $bubble
      *
-     * @return \Monolog\Handler\StreamHandler
+     * @return self
      */
     public function addStream($path, $level, $bubble = true)
     {

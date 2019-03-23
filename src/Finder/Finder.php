@@ -11,9 +11,12 @@ final class Finder implements FinderInterface
      */
     public function find(Path $path)
     {
-        return new \GlobIterator(
+        /** @var \SplFileInfo[] $globIterator */
+        $globIterator = new \GlobIterator(
             $path->toString(),
             \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS
         );
+
+        return $globIterator;
     }
 }

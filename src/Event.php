@@ -193,7 +193,7 @@ class Event implements PingableInterface
      * @param string $methodName
      * @param array  $params
      *
-     * @return $this
+     * @return self
      */
     public function __call($methodName, $params)
     {
@@ -217,7 +217,7 @@ class Event implements PingableInterface
      *
      * @param string $directory
      *
-     * @return $this
+     * @return self
      */
     public function in($directory)
     {
@@ -927,7 +927,7 @@ class Event implements PingableInterface
      * @param string $unit
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function every($unit = null, $value = null)
     {
@@ -1205,7 +1205,7 @@ class Event implements PingableInterface
      *
      * @param string $unit
      *
-     * @return string
+     * @return self
      */
     protected function applyMask($unit)
     {
