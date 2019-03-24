@@ -430,9 +430,4 @@ class EventTest extends TestCase
     {
         return DIRECTORY_SEPARATOR === '\\';
     }
-
-    private function buildPath(array $segments)
-    {
-        return Path::create($segments)->toString();
-    }
 }
