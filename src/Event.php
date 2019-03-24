@@ -895,13 +895,28 @@ class Event implements PingableInterface
     /**
      * Set the event's process.
      *
-     * @param Process $process
+     * @param Process|null $process
+     *
+     * @internal
      *
      * @return $this
      */
     public function setProcess(Process $process = null)
     {
-        $this->process = $process;
+        list(, $caller) = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $callerClass = $caller['class'];
+        $callerFunction = $caller['function'];
+
+        if (self::class !== $callerClass || 'start' !== $callerFunction) {
+            @\trigger_error(
+                "Using 'setProcess' method is deprecated, this method will become private in v2.0.",
+                \E_USER_DEPRECATED
+            );
+        }
+
+        if (null !== $process) {
+            $this->process = $process;
+        }
 
         return $this;
     }

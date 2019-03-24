@@ -1,3 +1,31 @@
+# Upgrading from v1.12 to v2.0
+
+## Stop using `\Crunz\Event::setProcess`
+
+If you, for some reason, use above method you should stop it.
+This method was intended to be `private` and will be in `v2.0`,
+which will lead to exception if you call it.
+
+Example of wrong usage
+
+```php
+<?php
+
+use Crunz\Schedule;
+
+$process = new \Symfony\Component\Process\Process('php -i');
+$scheduler = new Schedule();
+$task = $scheduler->run('php -v');
+$task
+    // setProcess is deprecated
+    ->setProcess($process)
+    ->description('PHP version')
+    ->everyMinute()
+;
+
+return $scheduler;
+``` 
+
 # Upgrading from v1.11 to v1.12
 
 ## Always return `\Crunz\Schedule` from task files
