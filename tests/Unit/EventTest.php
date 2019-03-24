@@ -3,7 +3,6 @@
 namespace Crunz\Tests\Unit;
 
 use Crunz\Event;
-use Crunz\Path\Path;
 use Crunz\Tests\TestCase\TestClock;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
