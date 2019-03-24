@@ -34,4 +34,10 @@ final class TemporaryFile
     {
         return $this->filePath;
     }
+
+    /** @param int $mode */
+    public function changePermissions($mode)
+    {
+        \chmod($this->filePath, $mode);
+    }
 }
