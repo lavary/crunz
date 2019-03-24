@@ -168,6 +168,7 @@ class Application extends SymfonyApplication
     ) {
         $dumper = new PhpDumper($container);
 
+        /** @var string $content */
         $content = $dumper->dump(
             [
                 'class' => $class,
@@ -242,6 +243,7 @@ class Application extends SymfonyApplication
             return;
         }
 
+        /** @var SymfonyStyle $io */
         $io = $this->container
             ->get(SymfonyStyle::class);
 

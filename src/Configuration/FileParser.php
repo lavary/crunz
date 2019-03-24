@@ -33,7 +33,12 @@ class FileParser
         }
 
         $yamlParser = $this->yamlParser;
+        $configContent = \file_get_contents($configPath);
 
-        return [$yamlParser::parse(\file_get_contents($configPath))];
+        if (false === $configContent) {
+            throw ConfigFileNotReadableException::fromFilePath($configPath);
+        }
+
+        return [$yamlParser::parse($configContent)];
     }
 }

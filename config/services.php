@@ -99,6 +99,7 @@ $container
     ->setArguments(
         [
             new Reference(Configuration::class),
+            new Reference(FilesystemInterface::class),
         ]
     )
 ;

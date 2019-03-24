@@ -103,7 +103,7 @@ class ScheduleListCommand extends Command
         return 0;
     }
 
-    /** @param iterable|array $tasks */
+    /** @param \SplFileInfo[] $tasks */
     private function fallbackTaskSource($tasks)
     {
         $tasksCount = \count($tasks);

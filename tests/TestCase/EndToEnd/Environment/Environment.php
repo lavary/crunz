@@ -220,6 +220,10 @@ final class Environment
             JSON_PRETTY_PRINT
         );
 
+        if (false === $content) {
+            throw new \RuntimeException("Unable to encode 'composer.json' content.");
+        }
+
         $this->filesystem
             ->dumpFile($composerJson->toString(), $content);
     }

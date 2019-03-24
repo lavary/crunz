@@ -12,7 +12,13 @@ final class Filesystem implements FilesystemInterface
     /** {@inheritdoc} */
     public function getCwd()
     {
-        return \getcwd();
+        $cwd = \getcwd();
+
+        if (false === $cwd) {
+            throw new \RuntimeException("Unable to get 'cwd'.");
+        }
+
+        return $cwd;
     }
 
     /** {@inheritdoc} */

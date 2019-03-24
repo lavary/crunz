@@ -257,9 +257,12 @@ class Event implements PingableInterface
             $command .= $this->sudo($this->user);
         }
 
-        $command .= $this->isClosure() ? $this->serializeClosure($this->command) : $this->command;
+        $command .= \is_string($this->command)
+            ? $this->command
+            : $this->serializeClosure($this->command)
+        ;
 
-        return trim($command, '& ');
+        return \trim($command, '& ');
     }
 
     /**
@@ -269,7 +272,7 @@ class Event implements PingableInterface
      */
     public function isClosure()
     {
-        return is_object($this->command) && ($this->command instanceof Closure);
+        return \is_object($this->command) && ($this->command instanceof Closure);
     }
 
     /**
@@ -344,6 +347,7 @@ class Event implements PingableInterface
      */
     public function cron($expression)
     {
+        /** @var array $parts */
         $parts = \preg_split(
             '/\s/',
             $expression,
@@ -1007,7 +1011,7 @@ class Event implements PingableInterface
     /**
      * Return the event's command.
      *
-     * @return string
+     * @return string|\Closure
      */
     public function getCommand()
     {
@@ -1156,7 +1160,17 @@ class Event implements PingableInterface
         $now = $now->setTimezone($timeZone);
 
         if ($this->timezone) {
-            $now = $now->setTimezone(new \DateTimeZone($this->timezone));
+            $taskTimeZone = \is_object($this->timezone) && $this->timezone instanceof \DateTimeZone
+                ? $this->timezone
+                    ->getName()
+                : $this->timezone
+            ;
+
+            $now = $now->setTimezone(
+                new \DateTimeZone(
+                    $taskTimeZone
+                )
+            );
         }
 
         return CronExpression::factory($this->expression)->isDue($now->format('Y-m-d H:i:s'));
@@ -1285,7 +1299,8 @@ class Event implements PingableInterface
     private function splitCamel($text)
     {
         $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        $segments = preg_split($pattern, $text);
+        /** @var array $segments */
+        $segments = \preg_split($pattern, $text);
 
         return \strtolower(
             \implode(
@@ -1349,13 +1364,10 @@ class Event implements PingableInterface
             ]
         );
 
+        /** @var array $matchedParts */
+        $matchedParts = \preg_split('/[\s-]+/', $data);
         // Coerce all tokens to numbers
-        $parts = \array_map(
-            function ($val) {
-                return (float) $val;
-            },
-            \preg_split('/[\s-]+/', $data)
-        );
+        $parts = \array_map('floatval', $matchedParts);
 
         $tmp = null;
         $sum = 0;

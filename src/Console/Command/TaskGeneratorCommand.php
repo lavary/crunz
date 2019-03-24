@@ -3,6 +3,7 @@
 namespace Crunz\Console\Command;
 
 use Crunz\Configuration\Configuration;
+use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,10 +34,13 @@ class TaskGeneratorCommand extends Command
     protected $stub;
     /** @var Configuration */
     private $config;
+    /** @var FilesystemInterface */
+    private $filesystem;
 
-    public function __construct(Configuration $nonSingletonConfiguration)
+    public function __construct(Configuration $configuration, FilesystemInterface $filesystem)
     {
-        $this->config = $nonSingletonConfiguration;
+        $this->config = $configuration;
+        $this->filesystem = $filesystem;
 
         parent::__construct();
     }
@@ -146,7 +150,7 @@ class TaskGeneratorCommand extends Command
     {
         $filename = Path::create([$this->outputPath(), $this->outputFile()]);
 
-        return \file_put_contents($filename->toString(), $this->stub);
+        return (bool) \file_put_contents($filename->toString(), $this->stub);
     }
 
     /**
@@ -205,7 +209,17 @@ class TaskGeneratorCommand extends Command
      */
     protected function getStub()
     {
-        return \file_get_contents(__DIR__ . '/../../Stubs/' . ucfirst($this->type() . 'Task.php'));
+        $projectRootDirectory = $this->filesystem
+            ->projectRootDirectory();
+        $path = Path::fromStrings(
+            $projectRootDirectory,
+            'src',
+            'Stubs',
+            \ucfirst($this->type() . 'Task.php')
+        );
+
+        return $this->filesystem
+            ->readContent($path->toString());
     }
 
     /**

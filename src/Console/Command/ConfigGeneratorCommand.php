@@ -135,7 +135,8 @@ class ConfigGeneratorCommand extends Command
                 \str_replace(
                     'timezone: ~',
                     "timezone: {$timezone}",
-                    \file_get_contents($src)
+                    $this->filesystem
+                        ->readContent($src)
                 )
             )
         ;

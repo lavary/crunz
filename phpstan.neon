@@ -46,6 +46,9 @@ parameters:
         -
             message: "#Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component…' and '(fromShellCommandline|inheritEnvironmentV…)' will always evaluate to false#"
             path: src/Process/Process.php
+        -
+            message: '#Parameter \#1 \$command of static method Symfony\\Component\\Process\\Process::fromShellCommandline\(\) expects string, array|string given#'
+            path: src/Process/Process.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
