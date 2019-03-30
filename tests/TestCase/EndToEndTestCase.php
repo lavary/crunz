@@ -32,12 +32,12 @@ abstract class EndToEndTestCase extends TestCase
 
     protected function normalizeProcessOutput(Process $process)
     {
-        return \trim(
-            \preg_replace(
-                "/\s+/",
-                ' ',
-                $process->getOutput()
-            )
+        $output = \preg_replace(
+            "/\s+/",
+            ' ',
+            $process->getOutput()
         );
+
+        return \trim((string) $output);
     }
 }

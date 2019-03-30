@@ -335,7 +335,11 @@ class Event implements PingableInterface
             $this->lock();
         }
 
-        return $this->getProcess()->getPid();
+        /** @var int $pid */
+        $pid = $this->getProcess()
+            ->getPid();
+
+        return $pid;
     }
 
     /**
@@ -401,7 +405,7 @@ class Event implements PingableInterface
         $segments = \array_intersect_key($parsedDate, $this->fieldsPosition);
 
         if ($parsedDate['year']) {
-            $this->skip(function () use ($parsedDate) {
+            $this->skip(static function () use ($parsedDate) {
                 return (int) date('Y') != $parsedDate['year'];
             });
         }
@@ -955,7 +959,7 @@ class Event implements PingableInterface
      */
     public function every($unit = null, $value = null)
     {
-        if (!isset($this->fieldsPosition[$unit])) {
+        if (null === $unit || !isset($this->fieldsPosition[$unit])) {
             return $this;
         }
 
@@ -1106,7 +1110,7 @@ class Event implements PingableInterface
     {
         $this->checkLockFactory();
 
-        if (null === $this->lock) {
+        if (null === $this->lock && null !== $this->lockFactory) {
             $ttl = 30;
 
             $this->lock = $this->lockFactory

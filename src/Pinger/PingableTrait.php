@@ -4,10 +4,10 @@ namespace Crunz\Pinger;
 
 trait PingableTrait
 {
-    /** @var ?string */
-    private $pingBeforeUrl;
-    /** @var ?string */
-    private $pingAfterUrl;
+    /** @var string */
+    private $pingBeforeUrl = '';
+    /** @var string */
+    private $pingAfterUrl = '';
 
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ trait PingableTrait
      */
     public function hasPingBefore()
     {
-        return null !== $this->pingBeforeUrl;
+        return '' !== $this->pingBeforeUrl;
     }
 
     /**
@@ -46,7 +46,7 @@ trait PingableTrait
      */
     public function hasPingAfter()
     {
-        return null !== $this->pingAfterUrl;
+        return '' !== $this->pingAfterUrl;
     }
 
     /**
@@ -80,13 +80,12 @@ trait PingableTrait
      */
     private function checkUrl($url)
     {
-        $type = \gettype($url);
-
         if (!\is_string($url)) {
+            $type = \gettype($url);
             throw new PingableException("Url must be of type string, '{$type}' given.");
         }
 
-        if (empty($url)) {
+        if ('' === $url) {
             throw new PingableException('Url cannot be empty.');
         }
     }
