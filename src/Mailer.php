@@ -126,14 +126,16 @@ class Mailer
     protected function getMessage($subject, $message)
     {
         $object = method_exists(\Swift_Message::class, 'newInstance')
-            ? \Swift_Message::newInstance()
-            : new \Swift_Message();
+            ? \Swift_Message::newInstance($subject, $message)
+            : new \Swift_Message($subject, $message)
+        ;
 
-        return  $object
-                 ->setBody($message)
-                 ->setSubject($subject)
-                 ->setFrom([$this->config('mailer.sender_email') => $this->config('mailer.sender_name')])
-                 ->setTo($this->config('mailer.recipients'));
+        $object
+            ->setFrom([$this->config('mailer.sender_email') => $this->config('mailer.sender_name')])
+            ->setTo($this->config('mailer.recipients'))
+        ;
+
+        return $object;
     }
 
     private function config($key)
