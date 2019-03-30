@@ -7,6 +7,7 @@ use Crunz\Path\Path;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -65,6 +66,7 @@ class Application extends SymfonyApplication
         $this->registerDeprecationHandler();
 
         foreach (self::COMMANDS as $commandClass) {
+            /** @var Command $command */
             $command = $this->container
                 ->get($commandClass)
             ;
@@ -76,13 +78,19 @@ class Application extends SymfonyApplication
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         if (null === $output) {
-            $output = $this->container
+            /** @var OutputInterface $outputObject */
+            $outputObject = $this->container
                 ->get(OutputInterface::class);
+
+            $output = $outputObject;
         }
 
         if (null === $input) {
-            $input = $this->container
+            /** @var InputInterface $inputObject */
+            $inputObject = $this->container
                 ->get(InputInterface::class);
+
+            $input = $inputObject;
         }
 
         return parent::run($input, $output);
@@ -160,6 +168,7 @@ class Application extends SymfonyApplication
     ) {
         $dumper = new PhpDumper($container);
 
+        /** @var string $content */
         $content = $dumper->dump(
             [
                 'class' => $class,
@@ -234,6 +243,7 @@ class Application extends SymfonyApplication
             return;
         }
 
+        /** @var SymfonyStyle $io */
         $io = $this->container
             ->get(SymfonyStyle::class);
 

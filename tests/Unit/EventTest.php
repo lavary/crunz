@@ -3,7 +3,6 @@
 namespace Crunz\Tests\Unit;
 
 use Crunz\Event;
-use Crunz\Path\Path;
 use Crunz\Tests\TestCase\TestClock;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
@@ -211,6 +210,19 @@ class EventTest extends TestCase
     {
         $e = new Event(1, 'php foo -v');
         $e->cron('* * * * * *');
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     * @group legacy
+     * @expectedDeprecation Using 'setProcess' method is deprecated, this method will become private in v2.0.
+     */
+    public function callingSetProcessIsDeprecated()
+    {
+        $event = new Event(1, 'php foo -v');
+        $event->setProcess();
 
         $this->assertTrue(true);
     }
@@ -429,10 +441,5 @@ class EventTest extends TestCase
     private function isWindows()
     {
         return DIRECTORY_SEPARATOR === '\\';
-    }
-
-    private function buildPath(array $segments)
-    {
-        return Path::create($segments)->toString();
     }
 }

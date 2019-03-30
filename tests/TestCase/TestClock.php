@@ -6,7 +6,7 @@ use Crunz\Clock\ClockInterface;
 
 final class TestClock implements ClockInterface
 {
-    /** @var \DateTimeInterface */
+    /** @var \DateTimeImmutable */
     private $now;
 
     public function __construct(\DateTimeImmutable $now)

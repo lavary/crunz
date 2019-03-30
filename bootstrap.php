@@ -5,7 +5,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 $envFlags = new \Crunz\EnvFlags\EnvFlags();
 $envFlags->disableDeprecationHandler();
 
-if (\strpos(\getcwd(), 'tests') !== false) {
+$filesystem = new \Crunz\Filesystem\Filesystem();
+
+if (\strpos($filesystem->getCwd(), 'tests') !== false) {
     return;
 }
 

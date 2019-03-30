@@ -40,8 +40,8 @@ class Schedule implements PingableInterface
     /**
      * Add a new event to the schedule object.
      *
-     * @param string $command
-     * @param array  $parameters
+     * @param string|\Closure $command
+     * @param array           $parameters
      *
      * @return \Crunz\Event
      */

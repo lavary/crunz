@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Deprecated
+
+- Using `\Crunz\Event::setProcess` is deprecated, this method was intended to be `private`,
+but for some reason is `public`.
+In `v2.0` this method will became private and result in exception if you call it.
+
 ## [v1.11.2] - 2019-03-16
 
 ### Fixed

@@ -5,6 +5,7 @@ namespace Crunz\Tests\Unit\Configuration;
 use Crunz\Configuration\ConfigFileNotExistsException;
 use Crunz\Configuration\ConfigFileNotReadableException;
 use Crunz\Configuration\FileParser;
+use Crunz\Tests\TestCase\TemporaryFile;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
@@ -29,9 +30,9 @@ class FileParserTest extends TestCase
             $this->markTestSkipped('Required Unix-based OS.');
         }
 
-        $file = tmpfile();
-        $filePath = stream_get_meta_data($file)['uri'];
-        chmod($filePath, 0200);
+        $tempFile = new TemporaryFile();
+        $tempFile->changePermissions(0200);
+        $filePath = $tempFile->filePath();
 
         $this->expectException(ConfigFileNotReadableException::class);
         $this->expectExceptionMessage("Config file '{$filePath}' is not readable.");
@@ -43,8 +44,8 @@ class FileParserTest extends TestCase
     /** @test */
     public function parseReturnsParsedFileContent()
     {
-        $file = tmpfile();
-        $filePath = stream_get_meta_data($file)['uri'];
+        $tempFile = new TemporaryFile();
+        $filePath = $tempFile->filePath();
         $configData = [
             'suffix' => 'Task.php',
             'source' => 'tasks',

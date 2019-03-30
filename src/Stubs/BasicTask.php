@@ -14,12 +14,12 @@
 use Crunz\Schedule;
 
 $scheduler = new Schedule();
-
 $scheduler->run('DummyCommand')
-          ->description('DummyDescription')
-          ->in('DummyPath')
-          ->DummyFrequency()
-          ->DummyConstraint()
-          ->preventOverlapping();
+    ->description('DummyDescription')
+    ->in('DummyPath')
+    ->preventOverlapping()
+    ->DummyFrequency()
+    ->DummyConstraint()
+;
 
 return $scheduler;

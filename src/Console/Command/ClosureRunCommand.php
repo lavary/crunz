@@ -22,14 +22,7 @@ class ClosureRunCommand extends Command
             ->setHelp('This command executes a closure as a separate process.');
     }
 
-    /**
-     * Executes the current command.
-     *
-     * @param use Symfony\Component\Console\Input\InputInterface $input
-     * @param use Symfony\Component\Console\Input\OutputIterface $output
-     *
-     * @return int|null null or 0 if everything went fine, or an error code
-     */
+    /** {@inheritdoc} */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $args = [];

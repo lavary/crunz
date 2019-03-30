@@ -34,9 +34,9 @@ final class FileLoggerTest extends TestCase
         $crunzLogger = $this->createCrunzLogger(['timezone' => $expectedTimezone, 'timezone_log' => true]);
         /** @var MonologLogger $monolog */
         $monologLogger = $this->readAttribute($crunzLogger, 'logger');
-        /** @var \DateTimeZone|null $loggerTimezone */
+        /** @var \DateTimeZone $loggerTimezone */
         $loggerTimezone = $this->readAttribute($monologLogger, 'timezone');
-
+        $this->assertNotNull($loggerTimezone);
         $this->assertSame($expectedTimezone, $loggerTimezone->getName());
         $this->assertNotSame($defaultTimezone, $loggerTimezone->getName());
     }
@@ -51,8 +51,9 @@ final class FileLoggerTest extends TestCase
         $crunzLogger = $this->createCrunzLogger(['timezone' => $expectedTimezone, 'timezone_log' => false]);
         /** @var MonologLogger $monolog */
         $monologLogger = $this->readAttribute($crunzLogger, 'logger');
-        /** @var \DateTimeZone|null $loggerTimezone */
+        /** @var \DateTimeZone $loggerTimezone */
         $loggerTimezone = $this->readAttribute($monologLogger, 'timezone');
+        $this->assertNotNull($loggerTimezone);
         $this->assertNotSame($expectedTimezone, $loggerTimezone->getName());
         $this->assertSame($defaultTimezone, $loggerTimezone->getName());
     }

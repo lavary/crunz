@@ -9,11 +9,7 @@ use Monolog\Logger as MonologLogger;
 
 class Logger
 {
-    /**
-     * Instance of Psr\Log\LoggerInterface.
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
+    /** @var \Monolog\Logger */
     protected $logger;
 
     /**
@@ -49,10 +45,10 @@ class Logger
      * Create a neaw stream handler.
      *
      * @param string $path
-     * @param int    $level
+     * @param string $level
      * @param bool   $bubble
      *
-     * @return \Monolog\Handler\StreamHandler
+     * @return self
      */
     public function addStream($path, $level, $bubble = true)
     {
@@ -141,6 +137,6 @@ class Logger
             return $this->levels[$level];
         }
 
-        throw new InvalidArgumentException('Invalid log level.');
+        throw new \InvalidArgumentException('Invalid log level.');
     }
 }

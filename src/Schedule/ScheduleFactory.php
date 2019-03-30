@@ -9,10 +9,10 @@ use Crunz\Task\TaskNumber;
 class ScheduleFactory
 {
     /**
-     * @param TaskNumber $taskNumber
-     * @param Schedule[] $schedules
+     * @param TaskNumber                 $taskNumber
+     * @param array<int,\Crunz\Schedule> $schedules
      *
-     * @return Schedule[]
+     * @return array<int,\Crunz\Schedule>
      *
      * @throws TaskNotExistException
      */

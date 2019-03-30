@@ -53,7 +53,7 @@ class Event implements PingableInterface
     /**
      * Event generated output.
      *
-     * @var string
+     * @var string|null
      */
     public $outputStream;
 
@@ -71,11 +71,7 @@ class Event implements PingableInterface
      */
     protected $id;
 
-    /**
-     * The command string.
-     *
-     * @var string
-     */
+    /** @var string|Closure */
     protected $command;
 
     /**
@@ -178,7 +174,7 @@ class Event implements PingableInterface
     /**
      * Create a new event instance.
      *
-     * @param string $command
+     * @param string|Closure $command
      */
     public function __construct($id, $command)
     {
@@ -193,7 +189,7 @@ class Event implements PingableInterface
      * @param string $methodName
      * @param array  $params
      *
-     * @return $this
+     * @return self
      */
     public function __call($methodName, $params)
     {
@@ -217,7 +213,7 @@ class Event implements PingableInterface
      *
      * @param string $directory
      *
-     * @return $this
+     * @return self
      */
     public function in($directory)
     {
@@ -261,9 +257,12 @@ class Event implements PingableInterface
             $command .= $this->sudo($this->user);
         }
 
-        $command .= $this->isClosure() ? $this->serializeClosure($this->command) : $this->command;
+        $command .= \is_string($this->command)
+            ? $this->command
+            : $this->serializeClosure($this->command)
+        ;
 
-        return trim($command, '& ');
+        return \trim($command, '& ');
     }
 
     /**
@@ -273,7 +272,7 @@ class Event implements PingableInterface
      */
     public function isClosure()
     {
-        return is_object($this->command) && ($this->command instanceof Closure);
+        return \is_object($this->command) && ($this->command instanceof Closure);
     }
 
     /**
@@ -336,7 +335,11 @@ class Event implements PingableInterface
             $this->lock();
         }
 
-        return $this->getProcess()->getPid();
+        /** @var int $pid */
+        $pid = $this->getProcess()
+            ->getPid();
+
+        return $pid;
     }
 
     /**
@@ -348,6 +351,7 @@ class Event implements PingableInterface
      */
     public function cron($expression)
     {
+        /** @var array $parts */
         $parts = \preg_split(
             '/\s/',
             $expression,
@@ -397,18 +401,18 @@ class Event implements PingableInterface
      */
     public function on($date)
     {
-        $date = \date_parse($date);
-        $segments = \array_intersect_key($date, $this->fieldsPosition);
+        $parsedDate = \date_parse($date);
+        $segments = \array_intersect_key($parsedDate, $this->fieldsPosition);
 
-        if ($date['year']) {
-            $this->skip(function () use ($date) {
-                return (int) date('Y') != $date['year'];
+        if ($parsedDate['year']) {
+            $this->skip(static function () use ($parsedDate) {
+                return (int) date('Y') != $parsedDate['year'];
             });
         }
 
         foreach ($segments as $key => $value) {
             if (false !== $value) {
-                $this->spliceIntoPosition($this->fieldsPosition[$key], (int) $value);
+                $this->spliceIntoPosition($this->fieldsPosition[$key], (string) $value);
             }
         }
 
@@ -437,9 +441,16 @@ class Event implements PingableInterface
     public function dailyAt($time)
     {
         $segments = explode(':', $time);
+        $firstSegment = (int) $segments[0];
+        $secondSegment = \count($segments) > 1
+            ? (int) $segments[1]
+            : '0'
+        ;
 
-        return $this->spliceIntoPosition(2, (int) $segments[0])
-                    ->spliceIntoPosition(1, count($segments) > 1 ? (int) $segments[1] : '0');
+        return $this
+            ->spliceIntoPosition(2, (string) $firstSegment)
+            ->spliceIntoPosition(1, (string) $secondSegment)
+        ;
     }
 
     /**
@@ -487,8 +498,10 @@ class Event implements PingableInterface
     {
         $hours = $first . ',' . $second;
 
-        return $this->spliceIntoPosition(1, 0)
-                    ->spliceIntoPosition(2, $hours);
+        return $this
+            ->spliceIntoPosition(1, '0')
+            ->spliceIntoPosition(2, $hours)
+        ;
     }
 
     /**
@@ -584,8 +597,8 @@ class Event implements PingableInterface
     /**
      * Schedule the event to run weekly on a given day and time.
      *
-     * @param int    $day
-     * @param string $time
+     * @param int|string $day
+     * @param string     $time
      *
      * @return $this
      */
@@ -593,7 +606,7 @@ class Event implements PingableInterface
     {
         $this->dailyAt($time);
 
-        return $this->spliceIntoPosition(5, $day);
+        return $this->spliceIntoPosition(5, (string) $day);
     }
 
     /**
@@ -886,13 +899,28 @@ class Event implements PingableInterface
     /**
      * Set the event's process.
      *
-     * @param Process $process
+     * @param Process|null $process
+     *
+     * @internal
      *
      * @return $this
      */
     public function setProcess(Process $process = null)
     {
-        $this->process = $process;
+        list(, $caller) = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $callerClass = $caller['class'];
+        $callerFunction = $caller['function'];
+
+        if (self::class !== $callerClass || 'start' !== $callerFunction) {
+            @\trigger_error(
+                "Using 'setProcess' method is deprecated, this method will become private in v2.0.",
+                \E_USER_DEPRECATED
+            );
+        }
+
+        if (null !== $process) {
+            $this->process = $process;
+        }
 
         return $this;
     }
@@ -927,11 +955,11 @@ class Event implements PingableInterface
      * @param string $unit
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function every($unit = null, $value = null)
     {
-        if (!isset($this->fieldsPosition[$unit])) {
+        if (null === $unit || !isset($this->fieldsPosition[$unit])) {
             return $this;
         }
 
@@ -1002,7 +1030,7 @@ class Event implements PingableInterface
     /**
      * Return the event's command.
      *
-     * @return string
+     * @return string|\Closure
      */
     public function getCommand()
     {
@@ -1022,7 +1050,7 @@ class Event implements PingableInterface
     /**
      * Return event's full output.
      *
-     * @return string
+     * @return string|null
      */
     public function getOutputStream()
     {
@@ -1082,7 +1110,7 @@ class Event implements PingableInterface
     {
         $this->checkLockFactory();
 
-        if (null === $this->lock) {
+        if (null === $this->lock && null !== $this->lockFactory) {
             $ttl = 30;
 
             $this->lock = $this->lockFactory
@@ -1128,11 +1156,9 @@ class Event implements PingableInterface
     /**
      * Convert closure to an executable command.
      *
-     * @param string $closure
-     *
      * @return string
      */
-    protected function serializeClosure($closure)
+    protected function serializeClosure(Closure $closure)
     {
         $closure = (new Serializer())->serialize($closure);
         $serializedClosure = \http_build_query([$closure]);
@@ -1153,7 +1179,17 @@ class Event implements PingableInterface
         $now = $now->setTimezone($timeZone);
 
         if ($this->timezone) {
-            $now = $now->setTimezone(new \DateTimeZone($this->timezone));
+            $taskTimeZone = \is_object($this->timezone) && $this->timezone instanceof \DateTimeZone
+                ? $this->timezone
+                    ->getName()
+                : $this->timezone
+            ;
+
+            $now = $now->setTimezone(
+                new \DateTimeZone(
+                    $taskTimeZone
+                )
+            );
         }
 
         return CronExpression::factory($this->expression)->isDue($now->format('Y-m-d H:i:s'));
@@ -1162,7 +1198,7 @@ class Event implements PingableInterface
     /**
      * Check if time hasn't arrived.
      *
-     * @param string $time
+     * @param string $datetime
      *
      * @return bool
      */
@@ -1174,7 +1210,7 @@ class Event implements PingableInterface
     /**
      * Check if the time has passed.
      *
-     * @param string $time
+     * @param string $datetime
      *
      * @return bool
      */
@@ -1205,7 +1241,7 @@ class Event implements PingableInterface
      *
      * @param string $unit
      *
-     * @return string
+     * @return self
      */
     protected function applyMask($unit)
     {
@@ -1282,7 +1318,8 @@ class Event implements PingableInterface
     private function splitCamel($text)
     {
         $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        $segments = preg_split($pattern, $text);
+        /** @var array $segments */
+        $segments = \preg_split($pattern, $text);
 
         return \strtolower(
             \implode(
@@ -1346,13 +1383,10 @@ class Event implements PingableInterface
             ]
         );
 
+        /** @var array $matchedParts */
+        $matchedParts = \preg_split('/[\s-]+/', $data);
         // Coerce all tokens to numbers
-        $parts = \array_map(
-            function ($val) {
-                return (float) $val;
-            },
-            \preg_split('/[\s-]+/', $data)
-        );
+        $parts = \array_map('floatval', $matchedParts);
 
         $tmp = null;
         $sum = 0;

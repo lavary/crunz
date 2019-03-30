@@ -226,11 +226,6 @@ class EventRunner
         return $output;
     }
 
-    /**
-     * Handle output.
-     *
-     * @param \Crunz\Event
-     */
     protected function handleOutput(Event $event)
     {
         $logged = false;
@@ -293,13 +288,7 @@ class EventRunner
         }
     }
 
-    /**
-     * Format the event output.
-     *
-     * @param  \Crunz\Event
-     *
-     * @return string
-     */
+    /** @return string */
     protected function formatEventOutput(Event $event)
     {
         return $event->description
@@ -333,7 +322,7 @@ class EventRunner
     /**
      * Display content.
      *
-     * @param string $output
+     * @param string|null $output
      */
     protected function display($output)
     {
