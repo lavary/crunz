@@ -149,6 +149,7 @@ $container
         [
             new Reference(Configuration::class),
             new Reference(Timezone::class),
+            new Reference(ConsoleLoggerInterface::class),
         ]
     )
 ;

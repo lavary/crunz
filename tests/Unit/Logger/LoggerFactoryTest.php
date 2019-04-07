@@ -8,6 +8,7 @@ use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Logger\Logger;
 use Crunz\Logger\LoggerFactory;
 use Crunz\Task\Timezone;
+use Crunz\Tests\TestCase\Logger\NullLogger;
 use Crunz\Tests\TestCase\TemporaryFile;
 use Monolog\Logger as MonologLogger;
 use PHPUnit\Framework\TestCase;
@@ -75,7 +76,11 @@ final class LoggerFactoryTest extends TestCase
             ->method('timezoneForComparisons')
             ->willReturn(new \DateTimeZone($timezoneName))
         ;
-        $loggerFactory = new LoggerFactory($configuration, $mockTimezone);
+        $loggerFactory = new LoggerFactory(
+            $configuration,
+            $mockTimezone,
+            new NullLogger()
+        );
         $tempFile = new TemporaryFile();
 
         return $loggerFactory->create(['debug' => $tempFile->filePath()]);
