@@ -30,6 +30,7 @@ class Timezone
         $this->consoleLogger = $consoleLogger;
     }
 
+    /** @return \DateTimeZone */
     public function timezoneForComparisons()
     {
         if (null !== $this->timezoneForComparisons) {
