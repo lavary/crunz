@@ -3,6 +3,7 @@
 namespace Crunz\Logger;
 
 use Crunz\Configuration\Configuration;
+use Crunz\Task\Timezone;
 use Monolog\Logger as MonologLogger;
 
 class LoggerFactory
@@ -11,21 +12,21 @@ class LoggerFactory
     private $configuration;
 
     /**
-     * LoggerFactory constructor.
-     *
-     * @param Configuration $configuration
-     *
      * @throws \Exception if the timezone supplied in configuration is not recognised as a valid timezone
      */
-    public function __construct(Configuration $configuration)
-    {
+    public function __construct(
+        Configuration $configuration,
+        Timezone $timezoneProvider,
+        ConsoleLoggerInterface $consoleLogger
+    ) {
         $this->configuration = $configuration;
-        $timezone = $configuration->get('timezone');
         $timezoneLog = $configuration->get('timezone_log');
-        if ($timezoneLog and $timezone) {
-            MonologLogger::setTimezone(new \DateTimeZone($timezone));
-        } else {
-            MonologLogger::setTimezone(new \DateTimeZone('UTC'));
+
+        if ($timezoneLog) {
+            $timezone = $timezoneProvider->timezoneForComparisons();
+            $consoleLogger->veryVerbose("Timezone for '<info>timezone_log</info>': '<info>{$timezone->getName()}</info>'");
+
+            MonologLogger::setTimezone($timezone);
         }
     }
 

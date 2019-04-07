@@ -37,8 +37,8 @@ class Definition implements ConfigurationInterface
                 ->end()
 
                 ->booleanNode('timezone_log')
-                ->defaultFalse()
-                ->info('Whether configured timezone will be used for logs')
+                    ->defaultFalse()
+                    ->info('Whether configured "timezone" will be used for logs')
                 ->end()
 
                 ->booleanNode('log_errors')
