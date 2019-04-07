@@ -148,6 +148,7 @@ $container
     ->setArguments(
         [
             new Reference(Configuration::class),
+            new Reference(Timezone::class),
         ]
     )
 ;
