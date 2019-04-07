@@ -46,7 +46,7 @@ final class LoggerFactoryTest extends TestCase
 
         /** @var MonologLogger $monolog */
         $monologLogger = $this->readAttribute($crunzLogger, 'logger');
-        /** @var \DateTimeZone $loggerTimezone */
+        /** @var \DateTimeZone|null $loggerTimezone */
         $loggerTimezone = $this->readAttribute($monologLogger, 'timezone');
         $this->assertNull($loggerTimezone);
     }
