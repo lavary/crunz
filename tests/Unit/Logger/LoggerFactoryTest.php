@@ -11,7 +11,7 @@ use Crunz\Tests\TestCase\TemporaryFile;
 use Monolog\Logger as MonologLogger;
 use PHPUnit\Framework\TestCase;
 
-final class FileLoggerTest extends TestCase
+final class LoggerFactoryTest extends TestCase
 {
     /**
      * @test
