@@ -17,6 +17,8 @@ class Timezone
     private $timezoneProvider;
     /** @var ConsoleLoggerInterface */
     private $consoleLogger;
+    /** @var \DateTimeZone|null */
+    private $timezoneForComparisons;
 
     public function __construct(
         Configuration $configuration,
@@ -30,6 +32,10 @@ class Timezone
 
     public function timezoneForComparisons()
     {
+        if (null !== $this->timezoneForComparisons) {
+            return $this->timezoneForComparisons;
+        }
+
         $newTimezone = $this->configuration
             ->get('timezone')
         ;
@@ -56,6 +62,8 @@ class Timezone
         $this->consoleLogger
             ->debug("Timezone for comparisons: '<info>{$newTimezone}</info>'.");
 
-        return new \DateTimeZone($newTimezone);
+        $this->timezoneForComparisons = new \DateTimeZone($newTimezone);
+
+        return $this->timezoneForComparisons;
     }
 }
