@@ -33,10 +33,15 @@ abstract class EndToEndTestCase extends TestCase
 
     protected function normalizeOutput(string $output): string
     {
+        $noNewLines = \str_replace(
+            ["\n", "\r"],
+            '',
+            $output
+        );
         $normalizedOutput = \preg_replace(
             "/\s+/",
             ' ',
-            $output
+            (string) $noNewLines
         );
 
         return \trim((string) $normalizedOutput);
