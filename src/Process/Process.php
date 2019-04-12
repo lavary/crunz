@@ -96,4 +96,10 @@ final class Process
         return $this->process
             ->getOutput();
     }
+
+    public function errorOutput(): string
+    {
+        return $this->process
+            ->getErrorOutput();
+    }
 }
