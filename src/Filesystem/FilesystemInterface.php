@@ -44,4 +44,11 @@ interface FilesystemInterface
 
     /** @return string */
     public function projectRootDirectory();
+
+    /**
+     * @param string $filePath
+     *
+     * @return string
+     */
+    public function readContent($filePath);
 }

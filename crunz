@@ -30,6 +30,14 @@ $autoloadPaths = [
             'autoload.php'
         ]
     ),
+    // Vendor/Bin
+    $generatePath(
+        [
+            __DIR__,
+            '..',
+            'autoload.php'
+        ]
+    ),
     // Local dev
     $generatePath(
         [

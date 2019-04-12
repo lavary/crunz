@@ -63,6 +63,11 @@ class TaskGeneratorTest extends TestCase
     private function getInputStream($input)
     {
         $stream = \fopen('php://memory', 'rb+', false);
+
+        if (false === $stream) {
+            throw new \RuntimeException("Unable to open 'php://memory' stream.");
+        }
+
         \fwrite($stream, $input);
         \rewind($stream);
 

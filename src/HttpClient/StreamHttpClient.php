@@ -35,8 +35,6 @@ final class StreamHttpClient implements HttpClientInterface
             throw new HttpClientException("Ping failed with message: \"{$errorMessage}\".");
         }
 
-        if ($resource) {
-            \fclose($resource);
-        }
+        \fclose($resource);
     }
 }

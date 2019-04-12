@@ -123,6 +123,27 @@ final class FilesystemTest extends TestCase
         $this->assertSame($this->findProjectRootDirectory(), $filesystem->projectRootDirectory());
     }
 
+    /** @test */
+    public function readContentReturnFileContent(): void
+    {
+        $filesystem = new Filesystem();
+        $content = $filesystem->readContent(__FILE__);
+
+        $this->assertContains('final class FilesystemTest extends TestCase', $content);
+    }
+
+    /** @test */
+    public function readContentThrowsExceptionWhenFileNotExists(): void
+    {
+        $path = Path::fromStrings(\sys_get_temp_dir(), 'wrong-file');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("File '{$path->toString()}' doesn't exists.");
+
+        $filesystem = new Filesystem();
+        $filesystem->readContent($path->toString());
+    }
+
     public function fileExistsProvider()
     {
         $tempFile = new TemporaryFile();

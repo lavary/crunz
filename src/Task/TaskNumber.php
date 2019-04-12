@@ -15,7 +15,7 @@ class TaskNumber
     /**
      * @throws WrongTaskNumberException
      *
-     * @param $number int
+     * @param int $number
      */
     private function __construct($number)
     {
@@ -27,7 +27,7 @@ class TaskNumber
     }
 
     /**
-     * @param $value string
+     * @param string $value
      *
      * @return TaskNumber
      *

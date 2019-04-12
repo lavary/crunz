@@ -92,7 +92,7 @@ final class ConsoleLoggerTest extends TestCase
     }
 
     /**
-     * @param $ioVerbosity
+     * @param int $ioVerbosity
      *
      * @return \PHPUnit_Framework_MockObject_MockObject|SymfonyStyle
      */

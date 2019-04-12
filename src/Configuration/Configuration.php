@@ -11,7 +11,7 @@ class Configuration
 {
     /** @var array */
     private $config;
-    /** @var ConfigurationParser */
+    /** @var ConfigurationParserInterface */
     private $configurationParser;
     /** @var FilesystemInterface */
     private $filesystem;

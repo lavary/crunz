@@ -28,11 +28,7 @@ final class ConfigRecognitionTest extends EndToEndTestCase
         $environment = $environmentBuilder->createEnvironment();
 
         $process = $environment->runCrunzCommand('schedule:list');
-        $normalizedOutput = \preg_replace(
-            "/\s+/",
-            ' ',
-            $process->getOutput()
-        );
+        $normalizedOutput = $this->normalizeProcessOutput($process);
 
         $this->assertNotContains(
             '[Deprecation] Probably you are relying on legacy config file recognition which is deprecated.',

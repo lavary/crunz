@@ -19,3 +19,4 @@ changelog-linker.yml export-ignore
 docker-compose.yml export-ignore
 /docker export-ignore
 box.json export-ignore
+phpstan.neon export-ignore

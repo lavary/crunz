@@ -14,7 +14,13 @@ final class Filesystem implements FilesystemInterface
     /** {@inheritdoc} */
     public function getCwd()
     {
-        return \getcwd();
+        $cwd = \getcwd();
+
+        if (false === $cwd) {
+            throw new \RuntimeException("Unable to get 'cwd'.");
+        }
+
+        return $cwd;
     }
 
     /** {@inheritdoc} */
@@ -118,5 +124,25 @@ final class Filesystem implements FilesystemInterface
         }
 
         return $this->projectRootDir;
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return string
+     */
+    public function readContent($filePath)
+    {
+        if (!$this->fileExists($filePath)) {
+            throw new \RuntimeException("File '{$filePath}' doesn't exists.");
+        }
+
+        $content = \file_get_contents($filePath);
+
+        if (false === $content) {
+            throw new \RuntimeException("Unable to get contents of file '{$filePath}'.");
+        }
+
+        return $content;
     }
 }

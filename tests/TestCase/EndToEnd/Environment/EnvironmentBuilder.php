@@ -21,7 +21,6 @@ final class EnvironmentBuilder
     /** @var EnvFlags */
     private $envFlags;
 
-    /** @param string $name */
     public function __construct(FilesystemInterface $filesystem, EnvFlags $envFlags)
     {
         $this->taskDirectory = Path::fromStrings('tasks');

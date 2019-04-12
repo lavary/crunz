@@ -17,8 +17,8 @@ final class Process
     }
 
     /**
-     * @param string      $command
-     * @param string|null $cwd
+     * @param array|string $command
+     * @param string|null  $cwd
      *
      * @return self
      */

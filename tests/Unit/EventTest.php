@@ -212,6 +212,19 @@ final class EventTest extends TestCase
         $e->cron('* * * * * *');
     }
 
+    /**
+     * @test
+     * @group legacy
+     * @expectedDeprecation Using 'setProcess' method is deprecated, this method will become private in v2.0.
+     */
+    public function callingSetProcessIsDeprecated(): void
+    {
+        $event = new Event(1, 'php foo -v');
+        $event->setProcess();
+
+        $this->assertTrue(true);
+    }
+
     public function testBuildCommand(): void
     {
         $e = new Event($this->id, 'php -i');

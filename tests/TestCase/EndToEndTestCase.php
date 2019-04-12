@@ -7,6 +7,7 @@ namespace Crunz\Tests\TestCase;
 use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\Filesystem;
 use Crunz\Filesystem\FilesystemInterface;
+use Crunz\Process\Process;
 use Crunz\Tests\TestCase\EndToEnd\Environment\EnvironmentBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -29,5 +30,16 @@ abstract class EndToEndTestCase extends TestCase
         }
 
         return new EnvironmentBuilder($this->filesystem, $this->envFlags);
+    }
+
+    protected function normalizeProcessOutput(Process $process)
+    {
+        $output = \preg_replace(
+            "/\s+/",
+            ' ',
+            $process->getOutput()
+        );
+
+        return \trim((string) $output);
     }
 }

@@ -11,6 +11,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed `Crunz\Output\VerbosityAwareOutput` class - PR
 [#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
 
+## [v1.12.0] - 2019-04-07
+
+### Added
+
+- [#178], [#217] `timezone_log` configuration option to decide whether
+configured `timezone` should be used for logs, thanks to [@SadeghPM]
+
+### Deprecated
+
+- Using `\Crunz\Event::setProcess` is deprecated, this method was intended to be `private`,
+but for some reason is `public`.
+In `v2.0` this method will became private and result in exception if you call it.
+- [#199] Not returning `\Crunz\Schedule` instance from your task is deprecated.
+In `v2` this will result in exception.
+
+## [v1.11.2] - 2019-03-16
+
+### Fixed
+
+- [#209], [#210] Composer installs crunz executable to vendor/bin instead of symlink
+
 ## [v1.11.1] - 2019-01-27
 
 ### Fixed
@@ -159,9 +180,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [#77] Fix high cpu usage
 
 
+[#217]: https://github.com/lavary/crunz/pull/217
+[#210]: https://github.com/lavary/crunz/pull/210
+[#209]: https://github.com/lavary/crunz/pull/209
+[#199]: https://github.com/lavary/crunz/pull/199
 [#190]: https://github.com/lavary/crunz/pull/190
 [#181]: https://github.com/lavary/crunz/pull/181
 [#180]: https://github.com/lavary/crunz/pull/180
+[#178]: https://github.com/lavary/crunz/pull/178
 [#173]: https://github.com/lavary/crunz/pull/173  
 [#171]: https://github.com/lavary/crunz/pull/171
 [#166]: https://github.com/lavary/crunz/pull/166
@@ -253,6 +279,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [v1.6.1]: https://github.com/lavary/crunz/compare/v1.6.0...v1.6.1
 [v1.6.0]: https://github.com/lavary/crunz/compare/v1.5.1...v1.6.0
 [v1.5.1]: https://github.com/lavary/crunz/compare/v1.5.0...v1.5.1
+[v1.11.2]: https://github.com/lavary/crunz/compare/v1.11.1...v1.11.2
 [v1.11.1]: https://github.com/lavary/crunz/compare/v1.11.0...v1.11.1
 [v1.11.0]: https://github.com/lavary/crunz/compare/v1.11.0-rc.1...v1.11.0
 [v1.11.0-rc.1]: https://github.com/lavary/crunz/compare/v1.11.0-beta.2...v1.11.0-rc.1
@@ -260,6 +287,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [v1.11.0-beta.1]: https://github.com/lavary/crunz/compare/v1.10.1...v1.11.0-beta.1
 [v1.10.1]: https://github.com/lavary/crunz/compare/v1.10.0...v1.10.1
 [v1.10.0]: https://github.com/lavary/crunz/compare/v1.9.0...v1.10.0
+[v1.12.0]: https://github.com/lavary/crunz/compare/v1.11.2...v1.12.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
@@ -274,3 +302,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [@TomasDuda]: https://github.com/TomasDuda
 [@PhilETaylor]: https://github.com/PhilETaylor
 [@FallDi]: https://github.com/FallDi
+[@SadeghPM]: https://github.com/SadeghPM
