@@ -371,20 +371,16 @@ class Event implements PingableInterface
 
     /**
      * Schedule the event to run hourly.
-     *
-     * @return $this
      */
-    public function hourly()
+    public function hourly(): self
     {
         return $this->cron('0 * * * *');
     }
 
     /**
      * Schedule the event to run daily.
-     *
-     * @return $this
      */
-    public function daily()
+    public function daily(): self
     {
         return $this->cron('0 0 * * *');
     }
@@ -420,10 +416,8 @@ class Event implements PingableInterface
      * Schedule the command at a given time.
      *
      * @param string $time
-     *
-     * @return $this
      */
-    public function at($time)
+    public function at($time): self
     {
         return $this->dailyAt($time);
     }
@@ -432,10 +426,8 @@ class Event implements PingableInterface
      * Schedule the event to run daily at a given time (10:00, 19:30, etc).
      *
      * @param string $time
-     *
-     * @return $this
      */
-    public function dailyAt($time)
+    public function dailyAt($time): self
     {
         $segments = \explode(':', $time);
         $firstSegment = (int) $segments[0];
@@ -488,10 +480,8 @@ class Event implements PingableInterface
      *
      * @param int $first
      * @param int $second
-     *
-     * @return $this
      */
-    public function twiceDaily($first = 1, $second = 13)
+    public function twiceDaily($first = 1, $second = 13): self
     {
         $hours = $first . ',' . $second;
 
@@ -503,90 +493,72 @@ class Event implements PingableInterface
 
     /**
      * Schedule the event to run only on weekdays.
-     *
-     * @return $this
      */
-    public function weekdays()
+    public function weekdays(): self
     {
         return $this->spliceIntoPosition(5, '1-5');
     }
 
     /**
      * Schedule the event to run only on Mondays.
-     *
-     * @return $this
      */
-    public function mondays()
+    public function mondays(): self
     {
         return $this->days(1);
     }
 
     /**
      * Schedule the event to run only on Tuesdays.
-     *
-     * @return $this
      */
-    public function tuesdays()
+    public function tuesdays(): self
     {
         return $this->days(2);
     }
 
     /**
      * Schedule the event to run only on Wednesdays.
-     *
-     * @return $this
      */
-    public function wednesdays()
+    public function wednesdays(): self
     {
         return $this->days(3);
     }
 
     /**
      * Schedule the event to run only on Thursdays.
-     *
-     * @return $this
      */
-    public function thursdays()
+    public function thursdays(): self
     {
         return $this->days(4);
     }
 
     /**
      * Schedule the event to run only on Fridays.
-     *
-     * @return $this
      */
-    public function fridays()
+    public function fridays(): self
     {
         return $this->days(5);
     }
 
     /**
      * Schedule the event to run only on Saturdays.
-     *
-     * @return $this
      */
-    public function saturdays()
+    public function saturdays(): self
     {
         return $this->days(6);
     }
 
     /**
      * Schedule the event to run only on Sundays.
-     *
-     * @return $this
      */
-    public function sundays()
+    public function sundays(): self
     {
         return $this->days(0);
     }
 
     /**
      * Schedule the event to run weekly.
-     *
-     * @return $this
      */
-    public function weekly()
+    public function weekly(): self
     {
         return $this->cron('0 0 * * 0');
     }
@@ -596,10 +568,8 @@ class Event implements PingableInterface
      *
      * @param int|string $day
      * @param string     $time
-     *
-     * @return $this
      */
-    public function weeklyOn($day, $time = '0:0')
+    public function weeklyOn($day, $time = '0:0'): self
     {
         $this->dailyAt($time);
 
@@ -608,30 +578,24 @@ class Event implements PingableInterface
 
     /**
      * Schedule the event to run monthly.
-     *
-     * @return $this
      */
-    public function monthly()
+    public function monthly(): self
     {
         return $this->cron('0 0 1 * *');
     }
 
     /**
      * Schedule the event to run quarterly.
-     *
-     * @return $this
      */
-    public function quarterly()
+    public function quarterly(): self
     {
         return $this->cron('0 0 1 */3 *');
     }
 
     /**
      * Schedule the event to run yearly.
-     *
-     * @return $this
      */
-    public function yearly()
+    public function yearly(): self
     {
         return $this->cron('0 0 1 1 *');
     }
@@ -640,10 +604,8 @@ class Event implements PingableInterface
      * Set the days of the week the command should run on.
      *
      * @param mixed $days
-     *
-     * @return $this
      */
-    public function days($days)
+    public function days($days): self
     {
         $days = \is_array($days) ? $days : \func_get_args();
 
@@ -654,10 +616,8 @@ class Event implements PingableInterface
      * Set hour for the cron job.
      *
      * @param mixed $value
-     *
-     * @return $this
      */
-    public function hour($value)
+    public function hour($value): self
     {
         $value = \is_array($value) ? $value : \func_get_args();
 
@@ -668,10 +628,8 @@ class Event implements PingableInterface
      * Set minute for the cron job.
      *
      * @param mixed $value
-     *
-     * @return $this
      */
-    public function minute($value)
+    public function minute($value): self
     {
         $value = \is_array($value) ? $value : \func_get_args();
 
@@ -682,10 +640,8 @@ class Event implements PingableInterface
      * Set hour for the cron job.
      *
      * @param mixed $value
-     *
-     * @return $this
      */
-    public function dayOfMonth($value)
+    public function dayOfMonth($value): self
     {
         $value = \is_array($value) ? $value : \func_get_args();
 
@@ -696,10 +652,8 @@ class Event implements PingableInterface
      * Set hour for the cron job.
      *
      * @param mixed $value
-     *
-     * @return $this
      */
-    public function month($value)
+    public function month($value): self
     {
         $value = \is_array($value) ? $value : \func_get_args();
 
@@ -710,10 +664,8 @@ class Event implements PingableInterface
      * Set hour for the cron job.
      *
      * @param mixed $value
-     *
-     * @return $this
      */
-    public function dayOfWeek($value)
+    public function dayOfWeek($value): self
     {
         $value = \is_array($value) ? $value : \func_get_args();
 
@@ -948,19 +900,14 @@ class Event implements PingableInterface
 
     /**
      * Another way to the frequency of the cron job.
-     *
-     * @param string $unit
-     * @param string $value
-     *
-     * @return self
      */
-    public function every($unit = null, $value = null)
+    public function every($unit = null, $value = null): self
     {
         if (null === $unit || !isset($this->fieldsPosition[$unit])) {
             return $this;
         }
 
-        $value = 1 === $value ? '*' : '*/' . $value;
+        $value = (1 === (int) $value) ? '*' : '*/' . $value;
 
         return $this->spliceIntoPosition($this->fieldsPosition[$unit], $value)
                     ->applyMask($unit);
@@ -1221,10 +1168,8 @@ class Event implements PingableInterface
      *
      * @param int    $position
      * @param string $value
-     *
-     * @return $this
      */
-    protected function spliceIntoPosition($position, $value)
+    protected function spliceIntoPosition($position, $value): self
     {
         $segments = \explode(' ', $this->expression);
 

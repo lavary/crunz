@@ -56,6 +56,7 @@ class ScheduleListCommand extends Command
     {
         $this->options = $input->getOptions();
         $this->arguments = $input->getArguments();
+        /** @var \SplFileInfo[] $tasks */
         $tasks = $this->taskCollection
             ->all($this->arguments['source']);
 

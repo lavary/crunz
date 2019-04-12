@@ -87,6 +87,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
      * @throws WrongTaskInstanceException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -94,6 +95,7 @@ class ScheduleRunCommand extends Command
         $this->arguments = $input->getArguments();
         $this->options = $input->getOptions();
         $task = $this->options['task'];
+        /** @var \SplFileInfo[] $files */
         $files = $this->taskCollection
             ->all($this->arguments['source']);
 
@@ -144,7 +146,7 @@ class ScheduleRunCommand extends Command
         );
         $schedules = \array_filter(
             $schedules,
-            function (Schedule $schedule) {
+            static function (Schedule $schedule) {
                 return \count($schedule->events());
             }
         );
