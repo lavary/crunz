@@ -31,14 +31,24 @@ abstract class EndToEndTestCase extends TestCase
         return new EnvironmentBuilder($this->filesystem, $this->envFlags);
     }
 
-    protected function normalizeProcessOutput(Process $process)
+    protected function normalizeOutput(string $output): string
     {
-        $output = \preg_replace(
+        $normalizedOutput = \preg_replace(
             "/\s+/",
             ' ',
-            $process->getOutput()
+            $output
         );
 
-        return \trim((string) $output);
+        return \trim((string) $normalizedOutput);
+    }
+
+    protected function normalizeProcessOutput(Process $process): string
+    {
+        return $this->normalizeOutput($process->getOutput());
+    }
+
+    protected function normalizeProcessErrorOutput(Process $process): string
+    {
+        return $this->normalizeOutput($process->errorOutput());
     }
 }
