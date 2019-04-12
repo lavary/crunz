@@ -27,7 +27,7 @@ final class WrongTaskTest extends EndToEndTestCase
 
         $this->assertFalse($process->isSuccessful());
         $this->assertRegExp(
-            "@Task at path '.*WrongTasks.php' returned 'array', but 'Crunz\\\\Schedule' instance is required\.@",
+            "@Task at path '.*WrongTasks\\.php' returned 'array', but 'C( ?)runz\\\\Schedule' instance is required\.@",
             $normalizedOutput
         );
     }
