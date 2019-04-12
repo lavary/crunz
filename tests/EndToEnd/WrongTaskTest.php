@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\EndToEnd;
 
-use Crunz\Path\Path;
 use Crunz\Tests\TestCase\EndToEndTestCase;
 
 final class WrongTaskTest extends EndToEndTestCase
@@ -12,25 +11,23 @@ final class WrongTaskTest extends EndToEndTestCase
     /**
      * @test
      * @dataProvider scheduleInstanceProvider
-     * @TODO Check for exception in v2
      */
     public function everyTaskMustReturnCrunzScheduleInstance(string $crunzCommand): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
-        $envBuilder->addTask('WrongTasks');
+        $envBuilder
+            ->addTask('WrongTasks')
+            ->withConfig(['timezone' => 'Europe/Warsaw'])
+        ;
 
         $environment = $envBuilder->createEnvironment();
 
         $process = $environment->runCrunzCommand($crunzCommand);
-        $filePath = Path::fromStrings(
-            $environment->rootDirectory(),
-            'tasks',
-            'WrongTasks.php'
-        );
-        $normalizedOutput = $this->normalizeProcessOutput($process);
+        $normalizedOutput = $this->normalizeProcessErrorOutput($process);
 
-        $this->assertContains(
-            "[Deprecation] File '{$filePath->toString()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+",
+        $this->assertFalse($process->isSuccessful());
+        $this->assertRegExp(
+            "@Task at path '.*(\/|\\\\)end2end-test-env(\/|\\\\)tasks(\/|\\\\)WrongTasks.php' returned 'array', but 'Crunz\\\\Schedule' instance is required\.@",
             $normalizedOutput
         );
     }
