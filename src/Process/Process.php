@@ -79,22 +79,19 @@ final class Process
         return \method_exists(SymfonyProcess::class, 'inheritEnvironmentVariables');
     }
 
-    /** @return bool */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return $this->process
             ->isRunning();
     }
 
-    /** @return bool */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->process
             ->isSuccessful();
     }
 
-    /** @return string */
-    public function getOutput()
+    public function getOutput(): string
     {
         return $this->process
             ->getOutput();

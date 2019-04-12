@@ -18,8 +18,7 @@ abstract class EndToEndTestCase extends TestCase
     /** @var EnvFlags */
     private $envFlags;
 
-    /** @return EnvironmentBuilder */
-    public function createEnvironmentBuilder()
+    public function createEnvironmentBuilder(): EnvironmentBuilder
     {
         if (null === $this->filesystem) {
             $this->filesystem = new Filesystem();

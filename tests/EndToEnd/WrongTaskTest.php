@@ -14,7 +14,7 @@ final class WrongTaskTest extends EndToEndTestCase
      * @dataProvider scheduleInstanceProvider
      * @TODO Check for exception in v2
      */
-    public function everyTaskMustReturnCrunzScheduleInstance($crunzCommand): void
+    public function everyTaskMustReturnCrunzScheduleInstance(string $crunzCommand): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
         $envBuilder->addTask('WrongTasks');
@@ -35,7 +35,7 @@ final class WrongTaskTest extends EndToEndTestCase
         );
     }
 
-    public function scheduleInstanceProvider()
+    public function scheduleInstanceProvider(): iterable
     {
         yield 'list' => ['schedule:list'];
         yield 'run' => ['schedule:run'];
