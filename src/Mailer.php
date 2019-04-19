@@ -7,7 +7,7 @@ namespace Crunz;
 use Crunz\Configuration\Configuration;
 use Crunz\Exception\MailerException;
 
-final class Mailer
+class Mailer
 {
     /** @var \Swift_Mailer|null */
     protected $mailer;
