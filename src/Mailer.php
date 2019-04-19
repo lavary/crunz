@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Crunz;
 
 use Crunz\Configuration\Configuration;
+use Crunz\Exception\MailerException;
 
 class Mailer
 {
@@ -52,8 +53,11 @@ class Mailer
             break;
 
             case 'mail':
-            $transport = $this->getMailTransport();
-            break;
+                throw new MailerException(
+                    "'mail' transport is no longer supported, please use 'smtp' or 'sendmail' transport."
+                );
+
+                break;
 
             default:
             $transport = $this->getSendMailTransport();
