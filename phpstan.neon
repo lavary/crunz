@@ -35,7 +35,6 @@ parameters:
         -
             message: '#Parameter \#1 \$transport of class Swift_Mailer constructor expects Swift_Transport#'
             path: src/Mailer.php
-        - '#Constant CRUNZ_BIN_DIR not found#'
         - '#Constant CRUNZ_BIN not found#'
         -
             message: '#Variable \$configFile might not be defined#'
