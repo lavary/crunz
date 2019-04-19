@@ -10,6 +10,7 @@ use Crunz\Schedule;
 use Crunz\Task\Collection;
 use Crunz\Task\TaskNumber;
 use Crunz\Task\Timezone;
+use Crunz\Task\WrongTaskInstanceException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -86,12 +87,15 @@ class ScheduleRunCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
+     * @throws WrongTaskInstanceException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->arguments = $input->getArguments();
         $this->options = $input->getOptions();
         $task = $this->options['task'];
+        /** @var \SplFileInfo[] $files */
         $files = $this->taskCollection
             ->all($this->arguments['source']);
 
@@ -110,12 +114,7 @@ class ScheduleRunCommand extends Command
         foreach ($files as $file) {
             $schedule = require $file->getRealPath();
             if (!$schedule instanceof Schedule) {
-                // @TODO throw exception in v2
-                @\trigger_error(
-                    "File '{$file->getRealPath()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+",
-                    E_USER_DEPRECATED
-                );
-
+                throw WrongTaskInstanceException::fromFilePath($file, $schedule);
                 continue;
             }
 
@@ -147,7 +146,7 @@ class ScheduleRunCommand extends Command
         );
         $schedules = \array_filter(
             $schedules,
-            function (Schedule $schedule) {
+            static function (Schedule $schedule) {
                 return \count($schedule->events());
             }
         );

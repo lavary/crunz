@@ -18,8 +18,7 @@ abstract class EndToEndTestCase extends TestCase
     /** @var EnvFlags */
     private $envFlags;
 
-    /** @return EnvironmentBuilder */
-    public function createEnvironmentBuilder()
+    public function createEnvironmentBuilder(): EnvironmentBuilder
     {
         if (null === $this->filesystem) {
             $this->filesystem = new Filesystem();
@@ -32,14 +31,29 @@ abstract class EndToEndTestCase extends TestCase
         return new EnvironmentBuilder($this->filesystem, $this->envFlags);
     }
 
-    protected function normalizeProcessOutput(Process $process)
+    protected function normalizeOutput(string $output): string
     {
-        $output = \preg_replace(
+        $noNewLines = \str_replace(
+            ["\n", "\r"],
+            '',
+            $output
+        );
+        $normalizedOutput = \preg_replace(
             "/\s+/",
             ' ',
-            $process->getOutput()
+            (string) $noNewLines
         );
 
-        return \trim((string) $output);
+        return \trim((string) $normalizedOutput);
+    }
+
+    protected function normalizeProcessOutput(Process $process): string
+    {
+        return $this->normalizeOutput($process->getOutput());
+    }
+
+    protected function normalizeProcessErrorOutput(Process $process): string
+    {
+        return $this->normalizeOutput($process->errorOutput());
     }
 }

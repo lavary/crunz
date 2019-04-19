@@ -25,13 +25,14 @@ class ClosureRunCommand extends Command
     }
 
     /** {@inheritdoc} */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $args = [];
         $this->arguments = $input->getArguments();
 
         \parse_str($this->arguments['closure'], $args);
         $serializer = new Serializer();
-        \call_user_func_array($serializer->unserialize($args[0]), []);
+
+        return (int) !((bool) \call_user_func_array($serializer->unserialize($args[0]), []));
     }
 }

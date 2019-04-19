@@ -7,6 +7,7 @@ namespace Crunz\Console\Command;
 use Crunz\Configuration\Configuration;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
+use Crunz\Task\WrongTaskInstanceException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,11 +49,14 @@ class ScheduleListCommand extends Command
             ->setHelp('This command displays the scheduled tasks in a tabular format.');
     }
 
-    /** {@inheritdoc} */
+    /** {@inheritdoc}
+     * @throws WrongTaskInstanceException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->options = $input->getOptions();
         $this->arguments = $input->getArguments();
+        /** @var \SplFileInfo[] $tasks */
         $tasks = $this->taskCollection
             ->all($this->arguments['source']);
 
@@ -76,12 +80,7 @@ class ScheduleListCommand extends Command
         foreach ($tasks as $taskFile) {
             $schedule = require $taskFile->getRealPath();
             if (!$schedule instanceof Schedule) {
-                // @TODO throw exception in v2
-                @\trigger_error(
-                    "File '{$taskFile->getRealPath()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+",
-                    E_USER_DEPRECATED
-                );
-
+                throw WrongTaskInstanceException::fromFilePath($taskFile, $schedule);
                 continue;
             }
 
