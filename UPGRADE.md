@@ -1,3 +1,11 @@
+# Upgrading from v1.12 to v2.0
+
+## Stop using `mail` transport for mailer
+
+As of `v6.0` SwiftMailer dropped support for `mail` transport,
+so `Crunz` `v2.0` won't support it either,
+please use `smtp` or `sendmail` transport.
+
 # Upgrading from v1.11 to v1.12
 
 ## Always return `\Crunz\Schedule` from task files
