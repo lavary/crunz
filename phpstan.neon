@@ -1,4 +1,5 @@
 parameters:
+    level: 7
     reportUnmatchedIgnoredErrors: false
     autoload_files:
         - vendor-bin/cs-fixer/vendor/autoload.php
@@ -34,7 +35,6 @@ parameters:
         -
             message: '#Parameter \#1 \$transport of class Swift_Mailer constructor expects Swift_Transport#'
             path: src/Mailer.php
-        - '#Constant CRUNZ_BIN_DIR not found#'
         - '#Constant CRUNZ_BIN not found#'
         -
             message: '#Variable \$configFile might not be defined#'
@@ -55,6 +55,9 @@ parameters:
         -
             message: '#Parameter \#1 \$command of static method Symfony\\Component\\Process\\Process::fromShellCommandline\(\) expects string, array|string given#'
             path: src/Process/Process.php
+        -
+            message: '#setProcess\(\)#'
+            path: tests/Unit/EventTest.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
