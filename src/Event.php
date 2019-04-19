@@ -199,7 +199,7 @@ class Event implements PingableInterface
         \preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);
 
         if (!\count($matches) || 'Zero' === $matches[1]) {
-            throw new \BadMethodCallException();
+            throw new \BadMethodCallException("Method '{$methodName}' is not supported.");
         }
 
         $amount = !empty($matches[1]) ? $this->wordToNumber($this->splitCamel($matches[1])) : 1;
@@ -846,35 +846,6 @@ class Event implements PingableInterface
     }
 
     /**
-     * Set the event's process.
-     *
-     * @param Process|null $process
-     *
-     * @internal
-     *
-     * @return $this
-     */
-    public function setProcess(Process $process = null)
-    {
-        [, $caller] = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        $callerClass = $caller['class'];
-        $callerFunction = $caller['function'];
-
-        if (self::class !== $callerClass || 'start' !== $callerFunction) {
-            @\trigger_error(
-                "Using 'setProcess' method is deprecated, this method will become private in v2.0.",
-                \E_USER_DEPRECATED
-            );
-        }
-
-        if (null !== $process) {
-            $this->process = $process;
-        }
-
-        return $this;
-    }
-
-    /**
      * Return the event's process.
      *
      * @return Process $process
@@ -1203,6 +1174,16 @@ class Event implements PingableInterface
     {
         $lock = $this->createLockObject();
         $lock->acquire();
+    }
+
+    /**
+     * Set the event's process.
+     *
+     * @param Process $process
+     */
+    private function setProcess(Process $process): void
+    {
+        $this->process = $process;
     }
 
     /**
