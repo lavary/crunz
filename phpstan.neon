@@ -55,6 +55,9 @@ parameters:
         -
             message: '#Parameter \#1 \$command of static method Symfony\\Component\\Process\\Process::fromShellCommandline\(\) expects string, array|string given#'
             path: src/Process/Process.php
+        -
+            message: '#setProcess\(\)#'
+            path: tests/Unit/EventTest.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
