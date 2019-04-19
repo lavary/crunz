@@ -1,4 +1,5 @@
 parameters:
+    level: 7
     reportUnmatchedIgnoredErrors: false
     autoload_files:
         - vendor-bin/cs-fixer/vendor/autoload.php
