@@ -343,6 +343,14 @@ $schedule->run('/usr/bin/php email.php')
 
 Based on our use cases, we can choose and combine the proper set of methods, which are easier to use.
 
+### Force run
+
+While development it may be useful to force run all tasks regardless of their actual run time,
+it can be archived by adding `--force` to `schedule:run`:
+
+```bash
+vendor/bin/crunz schedule:run --force
+```
 
 ## Changing Directories
 
