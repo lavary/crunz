@@ -32,4 +32,4 @@ services:
             "
         volumes:
             - .:/var/www/html
-            - ./docker/php71/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./docker/php72/php.ini:/usr/local/etc/php/php.ini:ro

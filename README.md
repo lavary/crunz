@@ -44,8 +44,8 @@ Here's a basic example:
 use Crunz\Schedule;
 
 $schedule = new Schedule();
-$schedule->run('cp project project-bk')       
-         ->daily();
+$task = $schedule->run('cp project project-bk');       
+$task->daily();
 
 return $schedule;
 ```
@@ -93,9 +93,10 @@ use Crunz\Schedule;
 
 $schedule = new Schedule();
 
-$schedule->run('cp project project-bk')       
-         ->daily()
-         ->description('Create a backup of the project directory.');
+$task = $schedule->run('cp project project-bk'); 
+$task
+    ->daily()
+    ->description('Create a backup of the project directory.');
 
 // ...
 
@@ -118,14 +119,15 @@ We can run **any** command or script by using `run()`. This method accepts two a
 
 ```php
 <?php
+
 use Crunz\Schedule;
 
 $schedule = new Schedule();
+$task = $schedule->run('/usr/bin/php backup.php', ['--destination' => 'path/to/destination']);
+$task
+    ->everyMinute()
+    ->description('Copying the project directory');
 
-$schedule->run('/usr/bin/php backup.php', ['--destination' => 'path/to/destination'])       
-         ->everyMinute()
-         ->description('Copying the project directory');
-         
 return $schedule;
 ```
 
@@ -137,17 +139,20 @@ We can also write a closure to instead of a command:
 
 ```php
 <?php
+
 use Crunz\Schedule;
 
 $schedule = new Schedule();
 
 $x = 12;
-$schedule->run(function() use ($x) { 
+$task = $schedule->run(function() use ($x) { 
    // Do some cool stuff in here 
-})       
-->everyMinute()
-->description('Copying the project directory');
-         
+});
+
+$task
+    ->everyMinute()
+    ->description('Copying the project directory');
+
 return $schedule;
 ```
 
@@ -162,8 +167,8 @@ There are a group of methods which specify a unit of time (bigger than minute) a
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php backup.php')       
-         ->daily();
+$task = $schedule->run('/usr/bin/php backup.php');    
+$task->daily();
 // ...
 ```
 
@@ -174,8 +179,8 @@ Here's another one, which runs on the **first day of each month**.
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php email.php')       
-         ->monthly();
+$task = $schedule->run('/usr/bin/php email.php');
+$task->monthly();
 // ...
 ```
 
@@ -199,7 +204,7 @@ With that said, the following methods are valid:
 * `everyMinute()`
 * `everyTwelveHours()`
 * `everyMonth`
-*  `everySixMonths()`
+* `everySixMonths()`
 * `everyFifteenDays()`
 * `everyFiveHundredThirtySevenMinutes()`
 * `everyThreeThousandAndFiveHundredFiftyNineMinutes()`
@@ -211,11 +216,11 @@ This is how it is used in a task file:
 <?php
 // ...
 
-$schedule->run('/usr/bin/php email.php')       
-         ->everyTenDays();
+$task = $schedule->run('/usr/bin/php email.php');
+$task->everyTenDays();
 
-$schedule->run('/usr/bin/php some_other_stuff.php')       
-         ->everyThirteenMinutes();
+$task = $schedule->run('/usr/bin/php some_other_stuff.php');
+$task->everyThirteenMinutes();
 // ...
 
 return $schedule;
@@ -228,8 +233,8 @@ To schedule one-off tasks, you may use `on()` method like this:
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php email.php')       
-         ->on('13:30 2016-03-01');
+$task = $schedule->run('/usr/bin/php email.php'); 
+$task->on('13:30 2016-03-01');
 // ...
 ```
 
@@ -242,9 +247,10 @@ To specify the time we use `at()` method:
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php script.php')       
-         ->daily()
-         ->at('13:30');
+$task = $schedule->run('/usr/bin/php email.php'); 
+$task
+    ->daily()
+    ->at('13:30');
 // ...
 ```
 
@@ -253,8 +259,8 @@ We can use `dailyAt()` to get the same result:
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php script.php')       
-         ->dailyAt('13:30');
+$task = $schedule->run('/usr/bin/php email.php');       
+$task->dailyAt('13:30');
 // ...
 ```
 
@@ -263,14 +269,16 @@ If we only pass time to `on()` method, it will have the same effect as using `at
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php email.php')       
-         ->mondays()
-         ->on('13:30');
+$task = $schedule->run('/usr/bin/php email.php');   
+$task
+    ->mondays()
+    ->on('13:30');
          
 // is the sames as
-$schedule->run('/usr/bin/php email.php')       
-         ->mondays()
-         ->at('13:30');
+$task = $schedule->run('/usr/bin/php email.php');       
+$task
+    ->mondays()
+    ->at('13:30');
 // ...
 ```
 
@@ -283,8 +291,8 @@ Consider the following example:
 ```php
 <?php
 // Cron equivalent:  * * * * 1
-$schedule->run('/usr/bin/php email.php')       
-         ->mondays();
+$task = $schedule->run('/usr/bin/php email.php');
+$task->mondays();
 ```
 
 At first glance, the task seems to run **every Monday**, but since it only modifies the "day of week" field of the cron job expression, the task  runs **every minute on Mondays**.
@@ -294,9 +302,10 @@ This is the correct way of using weekday methods:
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php email.php')       
-         ->everyThreeHours()
-         ->mondays();
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyThreeHours()
+    ->mondays();
 // ...
 ```
 
@@ -309,23 +318,25 @@ Crunz's methods are not limited to the ready-made methods explained. We can also
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php email.php')       
-         ->minute(['1-30', 45, 55])
-         ->hour('1-5', 7, 8)
-         ->dayOfMonth(12, 15)
-         ->month(1);
+$task = $schedule->run('/usr/bin/php email.php');
+$task       
+    ->minute(['1-30', 45, 55])
+    ->hour('1-5', 7, 8)
+    ->dayOfMonth(12, 15)
+    ->month(1);
 ```
-         
+
 Or:
 
 ```php
 <?php
 // ...
-$schedule->run('/usr/bin/php email.php')       
-         ->minute('30')
-         ->hour('13')
-         ->month([1,2])
-         ->dayofWeek('Mon', 'Fri', 'Sat');
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->minute('30')
+    ->hour('13')
+    ->month([1,2])
+    ->dayofWeek('Mon', 'Fri', 'Sat');
 
 // ...
 ```
@@ -336,13 +347,21 @@ We can also do the scheduling the old way, just like we do in a crontab file:
 
 ```php
 <?php
-$schedule->run('/usr/bin/php email.php')
-         ->cron('30 12 * 5-6,9 Mon,Fri');     
-        
+
+$task = $schedule->run('/usr/bin/php email.php');
+$task->cron('30 12 * 5-6,9 Mon,Fri');
 ```
 
 Based on our use cases, we can choose and combine the proper set of methods, which are easier to use.
 
+### Force run
+
+While development it may be useful to force run all tasks regardless of their actual run time,
+it can be archived by adding `--force` to `schedule:run`:
+
+```bash
+vendor/bin/crunz schedule:run --force
+```
 
 ## Changing Directories
 
@@ -353,17 +372,17 @@ You can use the `in()` method to change directory before running a command:
 
 // ...
 
-$schedule->run('./deploy.sh')
-         ->in('/home')
-         ->weekly()
-         ->sundays()
-         ->at('12:30')
-         ->appendOutputTo('/var/log/backup.log');
+$task = $schedule->run('./deploy.sh');
+$task
+    ->in('/home')
+    ->weekly()
+    ->sundays()
+    ->at('12:30')
+    ->appendOutputTo('/var/log/backup.log');
 
 // ...
 
 return $schedule;
-
 ```
 
 ## Task Life Time
@@ -373,10 +392,11 @@ In a crontab entry, we can not easily specify task's lifetime (the period of tim
 ```php
 <?php
 //
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->from('12:30 2016-03-04')
-         ->to('04:55 2016-03-10');
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->from('12:30 2016-03-04')
+    ->to('04:55 2016-03-10');
  //       
 ```
 Or alternatively we can use `between()` method to get the same result:
@@ -384,9 +404,10 @@ Or alternatively we can use `between()` method to get the same result:
 ```php
 <?php
 //
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->between('12:30 2016-03-04', '04:55 2016-03-10');
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->between('12:30 2016-03-04', '04:55 2016-03-10');
 
  //       
 ```
@@ -396,9 +417,10 @@ If we don't specify the date portion, the task will be active **every** day but 
 ```php
 <?php
 //
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->between('12:30', '04:55');
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+     ->everyFiveMinutes()
+     ->between('12:30', '04:55');
 
  //       
 ```
@@ -414,28 +436,36 @@ Consider the following code:
 ```php
 <?php
 //
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->between('12:30 2016-03-04', '04:55 2016-03-10')
-         ->when(function() {
-           if ($some_condition_here) { return true; }
-         });
-
- //       
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->between('12:30 2016-03-04', '04:55 2016-03-10')
+    ->when(function() {
+        if ((bool) (time() % 2)) {
+            return true;
+        }
+        
+        return false;
+    });
 ```
 
 Method `when()` accepts a callback,  which must return `TRUE` for the task to run. This is really useful when we need to check our resources before performing a resource-hungry task.
 
 We can also skip a task under certain conditions, by using `skip()` method. If the passed callback returns `TRUE`, the task will be skipped.
 
-```
+```php
 <?php
 //
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->between('12:30 2016-03-04', '04:55 2016-03-10')
-         ->skip(function() {
-             if ($some_condition_here) { return true; }  
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->between('12:30 2016-03-04', '04:55 2016-03-10')
+    ->skip(function() {
+        if ((bool) (time() % 2)) {
+            return true;
+        }
+        
+        return false;  
     });
 
  //       
@@ -547,9 +577,10 @@ To prevent critical tasks from overlapping each other, Crunz provides a locking 
 ```php
 <?php
 //
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->preventOverlapping();
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->preventOverlapping();
  //       
 ```
 
@@ -557,15 +588,15 @@ By default, crunz uses file based locking (if no parameters are passed to `preve
 
 ```php
 <?php
-//
 
 use Symfony\Component\Lock\Store\FlockStore;
 
-$store = new FlockStore(__DIR__ . '/locks);
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->preventOverlapping($store);
- //
+$store = new FlockStore(__DIR__ . '/locks');
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->preventOverlapping($store);
+
 ```
 
 ## Keeping the Output
@@ -580,7 +611,7 @@ We can also redirect the standard output to a physical file using `>` or `>>` op
 
 This sort of actions have been automated in Crunz. To automatically send each event's output to a log file, we can set `log_output` and `output_log_file` options in the configuration file accordingly:
 
-```yml
+```yaml
 # Configuration settings
 
 ## ...
@@ -596,9 +627,10 @@ If we need to log the outputs on an event-basis, We can use `appendOutputTo()` o
 ```php
 <?php
 //
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->appendOutputTo('/var/log/crunz/emails.log');
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->appendOutputTo('/var/log/crunz/emails.log');
 
  //       
 ```
@@ -619,16 +651,17 @@ You can set as many callbacks as needed to run in case of an error:
 <?php
 
 use Crunz\Schedule;
+
 $schedule = new Schedule();
 
-$schedule->add('command/to/run')
-         ->everyFiveMinutes();
+$task = $schedule->run('command/to/run');
+$task->everyFiveMinutes();
 
 $schedule
-->onError(function(){
+->onError(function() {
    // Send mail
 })
-->onError(function(){
+->onError(function() {
    // Do something else
 });
 
@@ -641,7 +674,7 @@ If there's an error the two defined callbacks will be executed.
 
 To log the possible errors during each run, we can set `log_error` and `error_log_file` settings in the configuration file as below:
 
-```yml
+```yaml
 # Configuration settings
 
 # ...
@@ -662,35 +695,34 @@ To do this, we use `before()` and `after()` on both `Event` and `Schedule` objec
 
 ```php
 <?php
-// ...
+
+use Crunz\Schedule;
 
 $schedule = new Schedule();
 
-$schedule->run('/usr/bin/php email.php')
-         ->everyFiveMinutes()
-         ->before(function() { 
-             // Do something before the task runs
-         })
-         ->before(function() { 
-                 // Do something else
-         })
-         ->after(function() {
-             // After the task is run
-         });
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->before(function() { 
+        // Do something before the task runs
+    })
+    ->before(function() { 
+        // Do something else
+    })
+    ->after(function() {
+        // After the task is run
+    });
  
 $schedule
-
-->before(function () {
-   // Do something before all events
-})
-->after(function () {
-   // Do something after all events are finished
-}
-->before(function () {
-   // Do something before all events
-});
-
-//  ...   
+    ->before(function () {
+       // Do something before all events
+    })
+    ->after(function () {
+       // Do something after all events are finished
+    })
+    ->before(function () {
+       // Do something before all events
+    });
 ```
 
 > We might need to use these methods as many times we need by chaining them.
@@ -727,7 +759,7 @@ There's also a useful command named `make:task`, which generates a task file ske
 
 For example, to create a task, which runs `/var/www/script.php` every hour on Mondays, we run the following command:
 
-```bash
+```text
 vendor/bin/crunz make:task exampleOne --run scripts.php --in /var/www --frequency everyHour --constraint mondays
 Where do you want to save the file? (Press enter for the current directory)
 ```
@@ -738,7 +770,7 @@ As a result, the event is defined in a file named `exampleOneTasks.php` within t
 
 To see if the event has been created successfully, we list the events:
 
-```bash
+```text
 crunz schedule:list
 
 +---+------------------+-------------+----------------+
@@ -752,7 +784,6 @@ To see all the options of `make:task` command with all the defaults, we run this
 
 ```bash
 vendor/bin/crunz make:task --help
-
 ```
 
 ## Development ENV flags
