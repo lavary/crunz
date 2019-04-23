@@ -23,11 +23,11 @@ use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\Lock\StoreInterface;
 
 /**
- * @method self everyMinute() Run task every minute.
+ * @method self everyMinute()      Run task every minute.
  * @method self everyFiveMinutes() Run task every five minutes.
- * @method self everyHour()   Run task every hour.
- * @method self everyDay()    Run task every day.
- * @method self everyMonth()  Run task every month.
+ * @method self everyHour()        Run task every hour.
+ * @method self everyDay()         Run task every day.
+ * @method self everyMonth()       Run task every month.
  */
 class Event implements PingableInterface
 {
