@@ -6,10 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.0.0] - 2019-04-24
+
+### Changed
+
+- [#101] Throw exception on empty timezone
+- [#204] More than five parts cron expressions will throw exception
+- [#221] Throw `Crunz\Task\WrongTaskInstanceException` when task is not `Schedule` instance
+- [#222] Make `\Crunz\Event::setProcess` private
+- [#225] Bump dependencies
+
 ### Removed
 
-- Removed `Crunz\Output\VerbosityAwareOutput` class - PR
-[#103](https://github.com/lavary/crunz/pull/103), [@PabloKowalczyk](https://github.com/PabloKowalczyk)
+- [#103] Removed `Crunz\Output\VerbosityAwareOutput` class
+- [#206] Remove legacy paths recognition
+- [#224] Remove `mail` transport
 
 ## [v1.12.0] - 2019-04-07
 
@@ -180,9 +191,15 @@ In `v2` this will result in exception.
 - [#77] Fix high cpu usage
 
 
+[#225]: https://github.com/lavary/crunz/pull/225
+[#224]: https://github.com/lavary/crunz/pull/224
+[#222]: https://github.com/lavary/crunz/pull/222
+[#221]: https://github.com/lavary/crunz/pull/221
 [#217]: https://github.com/lavary/crunz/pull/217
 [#210]: https://github.com/lavary/crunz/pull/210
 [#209]: https://github.com/lavary/crunz/pull/209
+[#206]: https://github.com/lavary/crunz/pull/206
+[#204]: https://github.com/lavary/crunz/pull/204
 [#199]: https://github.com/lavary/crunz/pull/199
 [#190]: https://github.com/lavary/crunz/pull/190
 [#181]: https://github.com/lavary/crunz/pull/181
@@ -288,6 +305,7 @@ In `v2` this will result in exception.
 [v1.10.1]: https://github.com/lavary/crunz/compare/v1.10.0...v1.10.1
 [v1.10.0]: https://github.com/lavary/crunz/compare/v1.9.0...v1.10.0
 [v1.12.0]: https://github.com/lavary/crunz/compare/v1.11.2...v1.12.0
+[v2.0.0]: https://github.com/lavary/crunz/compare/v1.12.0...v2.0.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
