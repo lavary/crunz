@@ -43,12 +43,9 @@ class Collection
         $suffix = $this->configuration
             ->get('suffix')
         ;
-        $sourcePath = Path::create(
-            [
-                $source,
-                "*{$suffix}",
-            ]
-        );
+
+        $this->consoleLogger
+            ->debug("Task finder suffix: '<info>{$suffix}</info>'");
 
         $realPath = \realpath($source);
         if (false !== $realPath) {
@@ -59,11 +56,8 @@ class Collection
                 ->verbose("Realpath resolve for '<info>{$source}</info>' failed.");
         }
 
-        $this->consoleLogger
-            ->debug("Task finder pattern '<info>{$sourcePath->toString()}</info>'");
-
         $tasks = $this->finder
-            ->find($sourcePath)
+            ->find(Path::fromStrings($source), $suffix)
         ;
         $tasksCount = \count($tasks);
 
