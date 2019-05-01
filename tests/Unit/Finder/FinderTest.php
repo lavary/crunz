@@ -9,39 +9,79 @@ use PHPUnit\Framework\TestCase;
 
 final class FinderTest extends TestCase
 {
-    /** @test */
-    public function findReturnsSplFileInfoCollection()
+    /** @var Filesystem */
+    private $filesystem;
+    /** @var Path */
+    private $tasksDirectory;
+
+    public function setUp()
     {
         $filesystem = new Filesystem();
-        $tasksDirectory = Path::fromStrings(
+        $this->filesystem = $filesystem;
+        $this->tasksDirectory = Path::fromStrings(
             $filesystem->tempDir(),
             '.crunz',
             'finder-test'
         );
+    }
 
-        $taskOne = Path::fromStrings($tasksDirectory->toString(), 'TestHere.php');
-        $taskTwo = Path::fromStrings(
-            $tasksDirectory->toString(),
-            'first-level',
-            'OtherTestHere.php'
-        );
+    public function tearDown()
+    {
+        $tasksDirectory = $this->tasksDirectory;
+        $this->filesystem
+            ->removeDirectory($tasksDirectory->toString());
+    }
+
+    /**
+     * @test
+     * @dataProvider tasksProvider
+     */
+    public function findReturnsSplFileInfoCollection($suffix, Path ...$files)
+    {
+        $this->createFiles(...$files);
+        $tasksDirectory = $this->tasksDirectory;
+
+        $finder = new Finder();
+        $foundFiles = $finder->find($tasksDirectory, $suffix);
+
+        $this->assertCount(\count($files), $foundFiles);
+        $this->assertContainsOnlyInstancesOf(\SplFileInfo::class, $foundFiles);
+    }
+
+    public function tasksProvider()
+    {
+        $suffix = 'Here.php';
+        $taskOne = Path::fromStrings('TestHere.php');
+        $taskTwo = Path::fromStrings('first-level', 'OtherTestHere.php');
         $taskThree = Path::fromStrings(
-            $tasksDirectory->toString(),
             'first-level',
             'second-level',
             'TestHere.php'
         );
 
-        $filesystem->dumpFile($taskOne->toString(), 'Some content here');
-        $filesystem->dumpFile($taskTwo->toString(), 'Some content here');
-        $filesystem->dumpFile($taskThree->toString(), 'Some content here');
+        yield 'flat' => [$suffix, $taskOne];
+        yield 'firstLevel' => [
+            $suffix,
+            $taskOne,
+            $taskTwo,
+        ];
+        yield 'secondLevel' => [
+            $suffix,
+            $taskOne,
+            $taskTwo,
+            $taskThree,
+        ];
+    }
 
-        $finder = new Finder();
-        $files = $finder->find($tasksDirectory, 'Here.php');
+    private function createFiles(Path ...$files)
+    {
+        $tasksDirectory = $this->tasksDirectory;
 
-        $this->assertCount(3, $files);
-        $this->assertContainsOnlyInstancesOf(\SplFileInfo::class, $files);
-
-        $filesystem->removeDirectory($tasksDirectory->toString());
+        foreach ($files as $file) {
+            $path = Path::fromStrings($tasksDirectory->toString(), $file->toString());
+            $content = \bin2hex(\random_bytes(8));
+            $this->filesystem
+                ->dumpFile($path->toString(), $content);
+        }
     }
 }
