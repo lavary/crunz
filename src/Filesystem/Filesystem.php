@@ -73,6 +73,9 @@ final class Filesystem implements FilesystemInterface
     /** {@inheritdoc} */
     public function dumpFile($filePath, $content)
     {
+        $directory = \pathinfo($filePath, \PATHINFO_DIRNAME);
+        $this->createDirectory($directory);
+
         \file_put_contents($filePath, $content);
     }
 
