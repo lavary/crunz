@@ -8,6 +8,10 @@ use Crunz\Path\Path;
 
 interface FinderInterface
 {
-    /** @return \SplFileInfo[] */
-    public function find(Path $path);
+    /**
+     * @param string $suffix
+     *
+     * @return \SplFileInfo[]
+     */
+    public function find(Path $directory, $suffix);
 }

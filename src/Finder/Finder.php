@@ -11,14 +11,26 @@ final class Finder implements FinderInterface
     /**
      * {@inheritdoc}
      */
-    public function find(Path $path)
+    public function find(Path $directory, $suffix)
     {
-        /** @var \SplFileInfo[] $globIterator */
-        $globIterator = new \GlobIterator(
-            $path->toString(),
-            \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS
+        $quotedSuffix = \preg_quote($suffix, '/');
+        $directoryIterator = new \RecursiveDirectoryIterator($directory->toString());
+        $recursiveIterator = new \RecursiveIteratorIterator($directoryIterator);
+
+        $regexIterator = new \RegexIterator(
+            $recursiveIterator,
+            "/^.+{$quotedSuffix}$/i",
+            \RecursiveRegexIterator::GET_MATCH
         );
 
-        return $globIterator;
+        /** @var \SplFileInfo[] $files */
+        $files = \array_map(
+            static function (array $file) {
+                return new \SplFileInfo(\reset($file));
+            },
+            \iterator_to_array($regexIterator)
+        );
+
+        return $files;
     }
 }

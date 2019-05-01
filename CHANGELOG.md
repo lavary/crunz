@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v1.12.1] - 2019-05-01
+
+### Fixed
+
+- [#229] Fix recursive tasks scan
+
 ## [v2.0.0] - 2019-04-24
 
 ### Changed
@@ -191,6 +197,7 @@ In `v2` this will result in exception.
 - [#77] Fix high cpu usage
 
 
+[#229]: https://github.com/lavary/crunz/pull/229
 [#225]: https://github.com/lavary/crunz/pull/225
 [#224]: https://github.com/lavary/crunz/pull/224
 [#222]: https://github.com/lavary/crunz/pull/222
@@ -305,6 +312,7 @@ In `v2` this will result in exception.
 [v1.10.1]: https://github.com/lavary/crunz/compare/v1.10.0...v1.10.1
 [v1.10.0]: https://github.com/lavary/crunz/compare/v1.9.0...v1.10.0
 [v1.12.0]: https://github.com/lavary/crunz/compare/v1.11.2...v1.12.0
+[v1.12.1]: https://github.com/lavary/crunz/compare/v1.12.0...v1.12.1
 [v2.0.0]: https://github.com/lavary/crunz/compare/v1.12.0...v2.0.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
