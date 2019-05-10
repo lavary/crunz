@@ -13,7 +13,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ConfigGeneratorCommand extends Command
+final class ConfigGeneratorCommand extends Command
 {
     public const CONFIG_FILE_NAME = 'crunz.yml';
 
