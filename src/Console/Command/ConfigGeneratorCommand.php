@@ -56,7 +56,7 @@ class ConfigGeneratorCommand extends Command
         $symfonyStyleIo = new SymfonyStyle($input, $output);
         $cwd = $this->filesystem
             ->getCwd();
-        $path = Path::create([$cwd, 'crunz.yml'])->toString();
+        $path = Path::create([$cwd, self::CONFIG_FILE_NAME])->toString();
         $destination = \realpath($path) ?: $path;
         $configExists = $this->filesystem
             ->fileExists($destination)
