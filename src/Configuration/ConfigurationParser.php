@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Configuration;
 
+use Crunz\Console\Command\ConfigGeneratorCommand;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Path\Path;
@@ -76,7 +77,7 @@ final class ConfigurationParser implements ConfigurationParserInterface
     {
         $cwd = $this->filesystem
             ->getCwd();
-        $configPath = Path::fromStrings($cwd, 'crunz.yml')->toString();
+        $configPath = Path::fromStrings($cwd, ConfigGeneratorCommand::CONFIG_FILE_NAME)->toString();
         $configExists = $this->filesystem
             ->fileExists($configPath);
 

@@ -13,8 +13,10 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ConfigGeneratorCommand extends Command
+final class ConfigGeneratorCommand extends Command
 {
+    public const CONFIG_FILE_NAME = 'crunz.yml';
+
     /** @var ProviderInterface */
     private $timezoneProvider;
     /** @var Filesystem */
@@ -54,7 +56,7 @@ class ConfigGeneratorCommand extends Command
         $symfonyStyleIo = new SymfonyStyle($input, $output);
         $cwd = $this->filesystem
             ->getCwd();
-        $path = Path::create([$cwd, 'crunz.yml'])->toString();
+        $path = Path::create([$cwd, self::CONFIG_FILE_NAME])->toString();
         $destination = \realpath($path) ?: $path;
         $configExists = $this->filesystem
             ->fileExists($destination)
@@ -73,7 +75,15 @@ class ConfigGeneratorCommand extends Command
             return 0;
         }
 
-        $src = __DIR__ . '/../../../crunz.yml';
+        $projectRoot = $this->filesystem
+            ->projectRootDirectory();
+        $srcPath = Path::fromStrings(
+            $projectRoot,
+            'resources',
+            'config',
+            self::CONFIG_FILE_NAME
+        );
+        $src = $srcPath->toString();
         $output->writeln(
             "<info>Source config file: '{$src}'.</info>",
             OutputInterface::VERBOSITY_VERBOSE
@@ -110,7 +120,7 @@ class ConfigGeneratorCommand extends Command
         );
         $question->setAutocompleterValues(\DateTimeZone::listIdentifiers());
         $question->setValidator(
-            function ($answer) {
+            static function ($answer) {
                 try {
                     new \DateTimeZone($answer);
                 } catch (\Exception $exception) {

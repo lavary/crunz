@@ -9,3 +9,4 @@ composer.phar
 var/
 .php_cs.cache
 /crunz.phar
+/crunz.yml
