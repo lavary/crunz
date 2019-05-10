@@ -5,7 +5,7 @@
         "KevinGH\\Box\\Compactor\\Json"
     ],
     "files": [
-        "crunz.yml",
+        "resources/config/crunz.yml",
         "config/services.php"
     ]
 }

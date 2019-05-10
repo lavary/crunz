@@ -75,7 +75,15 @@ final class ConfigGeneratorCommand extends Command
             return 0;
         }
 
-        $src = __DIR__ . '/../../../crunz.yml';
+        $projectRoot = $this->filesystem
+            ->projectRootDirectory();
+        $srcPath = Path::fromStrings(
+            $projectRoot,
+            'resources',
+            'config',
+            self::CONFIG_FILE_NAME
+        );
+        $src = $srcPath->toString();
         $output->writeln(
             "<info>Source config file: '{$src}'.</info>",
             OutputInterface::VERBOSITY_VERBOSE
