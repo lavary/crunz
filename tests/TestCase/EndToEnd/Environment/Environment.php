@@ -97,6 +97,8 @@ final class Environment
             $command,
             // Force no ANSI as this break AppVeyor CI builds
             '--no-ansi',
+            // Force non-interaction
+            '--no-interaction',
         ];
         $fullCommand = \implode(' ', $commandParts);
         $process = $this->createProcess($fullCommand, $cwd);
