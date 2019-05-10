@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\TestCase\EndToEnd\Environment;
 
+use Crunz\Console\Command\ConfigGeneratorCommand;
 use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
@@ -135,7 +136,7 @@ final class Environment
 
         $configPath = Path::fromStrings(
             $this->rootDirectory,
-            'crunz.yml'
+            ConfigGeneratorCommand::CONFIG_FILE_NAME
         );
 
         $yamlConfig = Yaml::dump($this->config);

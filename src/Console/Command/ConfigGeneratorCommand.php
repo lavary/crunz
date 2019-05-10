@@ -15,6 +15,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigGeneratorCommand extends Command
 {
+    public const CONFIG_FILE_NAME = 'crunz.yml';
+
     /** @var ProviderInterface */
     private $timezoneProvider;
     /** @var Filesystem */
