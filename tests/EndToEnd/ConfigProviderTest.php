@@ -17,11 +17,12 @@ final class ConfigProviderTest extends EndToEndTestCase
     {
         $environmentBuilder = $this->createEnvironmentBuilder();
         $environment = $environmentBuilder->createEnvironment();
-        $environment->runCrunzCommand('publish:config');
+        $process = $environment->runCrunzCommand('publish:config');
 
         $configPath = Path::fromStrings($environment->rootDirectory(), ConfigGeneratorCommand::CONFIG_FILE_NAME);
         $filesystem = new Filesystem();
 
+        $this->assertTrue($process->isSuccessful(), "Process output: {$process->getOutput()}{$process->errorOutput()}");
         $this->assertFileExists($configPath->toString());
         $this->assertIsArray(
             Yaml::parse(
