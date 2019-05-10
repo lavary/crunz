@@ -112,7 +112,7 @@ class ConfigGeneratorCommand extends Command
         );
         $question->setAutocompleterValues(\DateTimeZone::listIdentifiers());
         $question->setValidator(
-            function ($answer) {
+            static function ($answer) {
                 try {
                     new \DateTimeZone($answer);
                 } catch (\Exception $exception) {
