@@ -116,11 +116,15 @@ class Logger
             ->get('log_allow_line_breaks')
         ;
 
+        $ignoreEmptyContext = $this->configuration
+            ->get('log_ignore_empty_context')
+        ;
+
         return new LineFormatter(
             null,
             null,
             $allowLinebreaks,
-            false
+            $ignoreEmptyContext
         );
     }
 

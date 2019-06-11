@@ -535,6 +535,10 @@ output_log_file:
 # Set the value to true to allow them.
 log_allow_line_breaks: false
 
+# By default empty context arrays are shown in the log.
+# Set the value to true to remove them.
+log_ignore_empty_context: false
+
 # This option determines whether the output should be emailed or not.
 email_output: false
 

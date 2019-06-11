@@ -7,6 +7,7 @@ errors_log_file: ~
 log_output: false
 output_log_file: ~
 log_allow_line_breaks: false
+log_ignore_empty_context: false
 email_output: false
 email_errors: false
 mailer:

@@ -68,6 +68,11 @@ class Definition implements ConfigurationInterface
                     ->info('Flag for line breaks in logs' . PHP_EOL)
                 ->end()
 
+                ->scalarNode('log_ignore_empty_context')
+                    ->defaultFalse()
+                    ->info('Flag for empty context in logs' . PHP_EOL)
+                ->end()
+
                 ->scalarNode('email_output')
                     ->defaultFalse()
                     ->info('Email the event\'s output' . PHP_EOL)
