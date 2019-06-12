@@ -239,7 +239,7 @@ class EventRunner
             $event->logger->info($this->formatEventOutput($event));
             $logged = true;
         }
-        
+
         if ($logOutput && !$logged) {
             $this->logger->info($this->formatEventOutput($event));
             $logged = true;
