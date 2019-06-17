@@ -29,11 +29,11 @@ To install it:
 ```bash
 composer require lavary/crunz
 ```
-If the installation is successful, a command-line utility named **crunz** is symlinked to `vendor/bin` directory of your project. 
+If the installation is successful, a command-line utility named **crunz** is symlinked to the `vendor/bin` directory of your project. 
 
 ## How It Works?
 
-The idea is very simple: instead of a installing cron jobs in a crontab file, we define them in one or several PHP files, by using the Crunz interface. 
+The idea is very simple: instead of installing cron jobs in a crontab file, we define them in one or several PHP files, by using the Crunz interface. 
 
 Here's a basic example:
 
@@ -62,9 +62,9 @@ The command `schedule:run` is responsible for collecting all the PHP task files 
 
 Task files resemble crontab files. Just like crontab files they can contain one or more tasks.
 
-Normally we create our task files in `tasks/` directory within the project's root directory. 
+Normally we create our task files in the `tasks/` directory within the project's root directory. 
 
-> By default, Crunz assumes all the task files reside in `tasks/` directory within the project's root directory.
+> By default, Crunz assumes all the task files reside in the `tasks/` directory within the project's root directory.
 
 There are two ways to specify the source directory: 1) Configuration file  2) As a parameter to the event runner command.
  
@@ -135,7 +135,7 @@ In the above example, `--destination` is an option supported by `backup.php` scr
 
 ### Closures
 
-We can also write a closure to instead of a command:
+We can also write to a closure instead of a command:
 
 ```php
 <?php
@@ -264,7 +264,7 @@ $task->dailyAt('13:30');
 // ...
 ```
 
-If we only pass time to `on()` method, it will have the same effect as using `at()`
+If we only pass a time to the `on()` method, it will have the same effect as using `at()`
 
 ```php
 <?php
@@ -356,8 +356,8 @@ Based on our use cases, we can choose and combine the proper set of methods, whi
 
 ### Force run
 
-While development it may be useful to force run all tasks regardless of their actual run time,
-it can be archived by adding `--force` to `schedule:run`:
+While in development it may be useful to force run all tasks regardless of their actual run time,
+which can be achieved by adding `--force` to `schedule:run`:
 
 ```bash
 vendor/bin/crunz schedule:run --force
@@ -387,7 +387,7 @@ return $schedule;
 
 ## Task Life Time
 
-In a crontab entry, we can not easily specify task's lifetime (the period of time when the task is active). However, it's been made easy in Crunz:
+In a crontab entry, we can not easily specify a task's lifetime (the period of time when the task is active). However, it's been made easy in Crunz:
 
 ```php
 <?php
@@ -399,7 +399,7 @@ $task
     ->to('04:55 2016-03-10');
  //       
 ```
-Or alternatively we can use `between()` method to get the same result:
+Or alternatively we can use the `between()` method to accomplish the same result:
 
 ```php
 <?php
@@ -476,7 +476,7 @@ We can use these methods **several** times for a single task. They are evaluated
 
 ## Configuration
 
-There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have our own copy of the configuration file, instead modifying the original one. 
+There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one. 
 
 To create a copy of the configuration file, first we need to publish the configuration file:
 
@@ -568,9 +568,9 @@ Each time we run Crunz commands, it will look into the project's root directory 
 
 ## Parallelism and the Locking Mechanism
 
-Crunz runs the scheduled events in parallel (in separate processes), so all the events which have the same frequency of execution, will run at the same time asynchronously. To achieve this, Crunz utilizes [symfony/Process](http://symfony.com/doc/current/components/process.html) library for running the tasks in sub-processes.
+Crunz runs the scheduled events in parallel (in separate processes), so all the events which have the same frequency of execution, will run at the same time asynchronously. To achieve this, Crunz utilizes the [symfony/Process](http://symfony.com/doc/current/components/process.html) library for running the tasks in sub-processes.
 
-If the execution of a task lasts until the next interval or even beyond that, we say that the same instances of a task are overlapping. In some cases, this is a not a problem, but there are times when these tasks are modifying database data or files, which might cause unexpected behaviors, or even data loss.
+If the execution of a task lasts until the next interval or even beyond that, we say that the same instances of a task are overlapping. In some cases, this is a not a problem. But there are times, when these tasks are modifying database data or files, which might cause unexpected behaviors, or even data loss.
 
 To prevent critical tasks from overlapping each other, Crunz provides a locking mechanism through `preventOverlapping()` method, which, ensures no task runs if the previous instance is already running. 
 
@@ -601,7 +601,7 @@ $task
 
 ## Keeping the Output
 
-Cron jobs usually have outputs, which is normally emailed to the owner of the crontab file, or the user or users set by `MAILTO` environment variable inside the crontab file.
+Cron jobs usually have outputs, which is normally emailed to the owner of the crontab file, or the user(s) set by the `MAILTO` environment variable inside the crontab file.
 
 We can also redirect the standard output to a physical file using `>` or `>>` operators:
 
@@ -609,7 +609,7 @@ We can also redirect the standard output to a physical file using `>` or `>>` op
 * * * * * /command/to/run >> /var/log/crons/cron.log
 ```
 
-This sort of actions have been automated in Crunz. To automatically send each event's output to a log file, we can set `log_output` and `output_log_file` options in the configuration file accordingly:
+This kind of output logging has been automated in Crunz. To automatically send each event's output to a log file, we can set `log_output` and `output_log_file` options in the configuration file accordingly:
 
 ```yaml
 # Configuration settings
@@ -622,7 +622,7 @@ output_log_file: /var/log/crunz.log
 
 This will send the events' output (if executed successfully) to `/var/log/crunz.log` file. However, we need to make sure we are permitted to write to the respective file.
 
-If we need to log the outputs on an event-basis, We can use `appendOutputTo()` or `sendOutputTo()` methods like this:
+If we need to log the outputs on an event-basis, we can use `appendOutputTo()` or `sendOutputTo()` methods like this:
 
 ```php
 <?php
@@ -731,7 +731,7 @@ Post-execution callbacks are only called if the execution of the event has been 
 
 ## Other Useful Commands
 
-We've already used a few of  `crunz` commands like  `schedule:run` and `publish:config`. 
+We've already used a few of `crunz` commands like `schedule:run` and `publish:config`. 
 
 To see all the valid options and arguments of `crunz`, we can run the following command:
 
@@ -755,7 +755,7 @@ vendor/bin/crunz schedule:list
 
 ### Generating Tasks
 
-There's also a useful command named `make:task`, which generates a task file skeleton with all the defaults, so we won't have to write them from scratch. We can modify the output file later based on our requirements. 
+There is also a useful command named `make:task`, which generates a task file skeleton with all the defaults, so we won't have to write them from scratch. We can modify the output file later based on our requirements. 
 
 For example, to create a task, which runs `/var/www/script.php` every hour on Mondays, we run the following command:
 
@@ -788,7 +788,7 @@ vendor/bin/crunz make:task --help
 
 ## Development ENV flags
 
-Below env flags should be used only while development.
+The following environment flags should be used only while in development.
 Typical end-users do not need to, and should not, change them.
 
 ### `CRUNZ_CONTAINER_DEBUG`
