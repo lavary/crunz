@@ -26,9 +26,9 @@
     },
     "require": {
         "php": "^7.2",
+        "dragonmantank/cron-expression": "^2.3",
         "jeremeamia/superclosure": "^2.2",
         "monolog/monolog": "^1.19",
-        "mtdowling/cron-expression": "^1.1",
         "nikic/php-parser": "^3.0 || ^4.0",
         "swiftmailer/swiftmailer": "^6.0",
         "symfony/config": "^3.4 || ^4.2",
