@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Fixed
+
+- [#244] Fix AppVeyor CI
+
 ## [v1.12.1] - 2019-05-01
 
 ### Fixed
@@ -181,6 +185,7 @@ In `v2` this will result in exception.
 - [#77] Fix high cpu usage
 
 
+[#244]: https://github.com/lavary/crunz/pull/244
 [#229]: https://github.com/lavary/crunz/pull/229
 [#217]: https://github.com/lavary/crunz/pull/217
 [#210]: https://github.com/lavary/crunz/pull/210
