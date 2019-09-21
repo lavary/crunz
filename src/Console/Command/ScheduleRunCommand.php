@@ -16,12 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ScheduleRunCommand extends Command
 {
-    /**
-     * Running tasks.
-     *
-     * @var array
-     */
-    protected $runningEvents = [];
     /** @var Collection */
     private $taskCollection;
     /** @var Configuration */
