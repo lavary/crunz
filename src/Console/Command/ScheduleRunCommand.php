@@ -6,6 +6,7 @@ use Crunz\Configuration\Configuration;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
+use Crunz\Task\LoaderInterface;
 use Crunz\Task\TaskNumber;
 use Crunz\Task\Timezone;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,19 +32,23 @@ class ScheduleRunCommand extends Command
     private $taskTimezone;
     /** @var Schedule\ScheduleFactory */
     private $scheduleFactory;
+    /** @var LoaderInterface */
+    private $taskLoader;
 
     public function __construct(
         Collection $taskCollection,
         Configuration $configuration,
         EventRunner $eventRunner,
         Timezone $taskTimezone,
-        Schedule\ScheduleFactory $scheduleFactory
+        Schedule\ScheduleFactory $scheduleFactory,
+        LoaderInterface $taskLoader
     ) {
         $this->taskCollection = $taskCollection;
         $this->configuration = $configuration;
         $this->eventRunner = $eventRunner;
         $this->taskTimezone = $taskTimezone;
         $this->scheduleFactory = $scheduleFactory;
+        $this->taskLoader = $taskLoader;
 
         parent::__construct();
     }
@@ -102,27 +107,12 @@ class ScheduleRunCommand extends Command
         }
 
         // List of schedules
-        $schedules = [];
+        $schedules = $this->taskLoader
+            ->load(...\array_values($files))
+        ;
         $tasksTimezone = $this->taskTimezone
             ->timezoneForComparisons()
         ;
-
-        foreach ($files as $file) {
-            $schedule = require $file->getRealPath();
-            if (!$schedule instanceof Schedule) {
-                // @TODO throw exception in v2
-                @\trigger_error(
-                    "File '{$file->getRealPath()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+",
-                    E_USER_DEPRECATED
-                );
-
-                continue;
-            }
-
-            if (\count($schedule->events())) {
-                $schedules[] = $schedule;
-            }
-        }
 
         // Is specified task should be invoked?
         if (\is_string($task)) {

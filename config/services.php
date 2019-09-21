@@ -68,6 +68,7 @@ $container
             new Reference(EventRunner::class),
             new Reference(Timezone::class),
             new Reference(ScheduleFactory::class),
+            new Reference(LoaderInterface::class),
         ]
     )
 ;
