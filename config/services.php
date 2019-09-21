@@ -94,6 +94,7 @@ $container
         [
             new Reference(Configuration::class),
             new Reference(Collection::class),
+            new Reference(LoaderInterface::class),
         ]
     )
 ;
