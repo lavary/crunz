@@ -34,8 +34,8 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\crunz
-    - IF %dependencies%==low appveyor-retry composer update --prefer-lowest --no-progress -n
-    - IF %dependencies%==high appveyor-retry composer update --no-progress -n
+    - IF %dependencies%==low appveyor-retry composer update --prefer-lowest --no-progress -n --no-suggest
+    - IF %dependencies%==high appveyor-retry composer update --no-progress -n --no-suggest
     - appveyor-retry composer bin phpunit install -a --no-progress
     - composer show
 
