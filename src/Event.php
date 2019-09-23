@@ -1323,8 +1323,8 @@ class Event implements PingableInterface
 
         return \strtolower(
             \implode(
-                $segments,
-                ' '
+                ' ',
+                $segments
             )
         );
     }
