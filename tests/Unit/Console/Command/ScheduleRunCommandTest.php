@@ -115,12 +115,16 @@ class ScheduleRunCommandTest extends TestCase
         return $mockEventRunner;
     }
 
-    private function mockInput(array $options)
+    private function mockInput(array $options, array $arguments = ['source' => ''])
     {
         $mockInput = $this->createMock(InputInterface::class);
         $mockInput
             ->method('getOptions')
             ->willReturn($options)
+        ;
+        $mockInput
+            ->method('getArguments')
+            ->willReturn($arguments)
         ;
 
         return $mockInput;
