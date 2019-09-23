@@ -3,8 +3,8 @@
 namespace Crunz\Console\Command;
 
 use Crunz\Configuration\Configuration;
-use Crunz\Schedule;
 use Crunz\Task\Collection;
+use Crunz\Task\LoaderInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,11 +16,17 @@ class ScheduleListCommand extends Command
     private $configuration;
     /** @var Collection */
     private $taskCollection;
+    /** @var LoaderInterface */
+    private $taskLoader;
 
-    public function __construct(Configuration $configuration, Collection $taskCollection)
-    {
+    public function __construct(
+        Configuration $configuration,
+        Collection $taskCollection,
+        LoaderInterface $taskLoader
+    ) {
         $this->configuration = $configuration;
         $this->taskCollection = $taskCollection;
+        $this->taskLoader = $taskLoader;
 
         parent::__construct();
     }
@@ -73,18 +79,11 @@ class ScheduleListCommand extends Command
         );
         $row = 0;
 
-        foreach ($tasks as $taskFile) {
-            $schedule = require $taskFile->getRealPath();
-            if (!$schedule instanceof Schedule) {
-                // @TODO throw exception in v2
-                @\trigger_error(
-                    "File '{$taskFile->getRealPath()}' didn't return '\Crunz\Schedule' instance, this behavior is deprecated since v1.12 and will result in exception in v2.0+",
-                    E_USER_DEPRECATED
-                );
+        $schedules = $this->taskLoader
+            ->load(...\array_values($tasks))
+        ;
 
-                continue;
-            }
-
+        foreach ($schedules as $schedule) {
             $events = $schedule->events();
             foreach ($events as $event) {
                 $table->addRow(
