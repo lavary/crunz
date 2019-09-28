@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Crunz\Console\Command;
 
 use Crunz\Configuration\Configuration;
-use Crunz\Schedule;
 use Crunz\Task\Collection;
+use Crunz\Task\LoaderInterface;
 use Crunz\Task\WrongTaskInstanceException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,11 +19,17 @@ class ScheduleListCommand extends Command
     private $configuration;
     /** @var Collection */
     private $taskCollection;
+    /** @var LoaderInterface */
+    private $taskLoader;
 
-    public function __construct(Configuration $configuration, Collection $taskCollection)
-    {
+    public function __construct(
+        Configuration $configuration,
+        Collection $taskCollection,
+        LoaderInterface $taskLoader
+    ) {
         $this->configuration = $configuration;
         $this->taskCollection = $taskCollection;
+        $this->taskLoader = $taskLoader;
 
         parent::__construct();
     }
@@ -49,7 +55,9 @@ class ScheduleListCommand extends Command
             ->setHelp('This command displays the scheduled tasks in a tabular format.');
     }
 
-    /** {@inheritdoc}
+    /**
+     * {@inheritdoc}
+     *
      * @throws WrongTaskInstanceException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -77,13 +85,11 @@ class ScheduleListCommand extends Command
         );
         $row = 0;
 
-        foreach ($tasks as $taskFile) {
-            $schedule = require $taskFile->getRealPath();
-            if (!$schedule instanceof Schedule) {
-                throw WrongTaskInstanceException::fromFilePath($taskFile, $schedule);
-                continue;
-            }
+        $schedules = $this->taskLoader
+            ->load(...\array_values($tasks))
+        ;
 
+        foreach ($schedules as $schedule) {
             $events = $schedule->events();
             foreach ($events as $event) {
                 $table->addRow(

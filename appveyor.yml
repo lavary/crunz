@@ -6,9 +6,9 @@ clone_folder: c:\projects\crunz
 environment:
     matrix:
         - dependencies: low
-          php_ver_target: 7.2
+          php_ver_target: 7.2.23
         - dependencies: high
-          php_ver_target: 7.2
+          php_ver_target: 7.2.23
 
 init:
     - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
@@ -18,7 +18,7 @@ init:
 
 install:
     - IF EXIST c:\tools\php (SET PHP=0) # Checks for the PHP install being cached
-    - ps: appveyor-retry cinst --params '""/InstallDir:C:\tools\php""' --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $env:php_ver_target | sort { [version]($_ -split '\|' | select -last 1) } -Descending | Select-Object -first 1) -replace '[php|]','')
+    - ps: appveyor-retry choco install php --version $env:php_ver_target -y --no-progress --package-parameters='"/InstallDir:C:\tools\php"'
     - cd c:\tools\php
     - IF %PHP%==1 copy php.ini-production php.ini /Y
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
@@ -30,8 +30,8 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\crunz
-    - IF %dependencies%==low appveyor-retry composer update --prefer-lowest --no-progress --profile -n
-    - IF %dependencies%==high appveyor-retry composer update --no-progress --profile -n
+    - IF %dependencies%==low appveyor-retry composer update --prefer-lowest --no-progress -n --no-suggest
+    - IF %dependencies%==high appveyor-retry composer update --no-progress -n --no-suggest
     - appveyor-retry composer bin phpunit install -a --no-progress
     - composer show
 
