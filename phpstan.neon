@@ -55,6 +55,12 @@ parameters:
         -
             message: '#Parameter \#1 \$command of static method Symfony\\Component\\Process\\Process::fromShellCommandline\(\) expects string, array|string given#'
             path: src/Process/Process.php
+        -
+            message: '#.+#'
+            path: tests/resources/patches/php-mock-object-71.php
+        -
+            message: '#.+#'
+            path: tests/resources/patches/php-mock-object-org.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
