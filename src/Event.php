@@ -1247,8 +1247,8 @@ class Event implements PingableInterface
 
         return \mb_strtolower(
             \implode(
-                $segments,
-                ' '
+                ' ',
+                $segments
             )
         );
     }

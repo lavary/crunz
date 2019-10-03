@@ -8,6 +8,7 @@ use Crunz\Configuration\Configuration;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
+use Crunz\Task\LoaderInterface;
 use Crunz\Task\TaskNumber;
 use Crunz\Task\Timezone;
 use Crunz\Task\WrongTaskInstanceException;
@@ -18,12 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ScheduleRunCommand extends Command
 {
-    /**
-     * Running tasks.
-     *
-     * @var array
-     */
-    protected $runningEvents = [];
     /** @var Collection */
     private $taskCollection;
     /** @var Configuration */
@@ -34,19 +29,23 @@ class ScheduleRunCommand extends Command
     private $taskTimezone;
     /** @var Schedule\ScheduleFactory */
     private $scheduleFactory;
+    /** @var LoaderInterface */
+    private $taskLoader;
 
     public function __construct(
         Collection $taskCollection,
         Configuration $configuration,
         EventRunner $eventRunner,
         Timezone $taskTimezone,
-        Schedule\ScheduleFactory $scheduleFactory
+        Schedule\ScheduleFactory $scheduleFactory,
+        LoaderInterface $taskLoader
     ) {
         $this->taskCollection = $taskCollection;
         $this->configuration = $configuration;
         $this->eventRunner = $eventRunner;
         $this->taskTimezone = $taskTimezone;
         $this->scheduleFactory = $scheduleFactory;
+        $this->taskLoader = $taskLoader;
 
         parent::__construct();
     }
@@ -106,22 +105,12 @@ class ScheduleRunCommand extends Command
         }
 
         // List of schedules
-        $schedules = [];
+        $schedules = $this->taskLoader
+            ->load(...\array_values($files))
+        ;
         $tasksTimezone = $this->taskTimezone
             ->timezoneForComparisons()
         ;
-
-        foreach ($files as $file) {
-            $schedule = require $file->getRealPath();
-            if (!$schedule instanceof Schedule) {
-                throw WrongTaskInstanceException::fromFilePath($file, $schedule);
-                continue;
-            }
-
-            if (\count($schedule->events())) {
-                $schedules[] = $schedule;
-            }
-        }
 
         // Is specified task should be invoked?
         if (\is_string($task)) {

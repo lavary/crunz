@@ -30,6 +30,8 @@ use Crunz\Mailer;
 use Crunz\Output\OutputFactory;
 use Crunz\Schedule\ScheduleFactory;
 use Crunz\Task\Collection;
+use Crunz\Task\Loader;
+use Crunz\Task\LoaderInterface;
 use Crunz\Task\Timezone;
 use Crunz\Timezone\Provider;
 use Crunz\Timezone\ProviderInterface;
@@ -55,6 +57,7 @@ $simpleServices = [
     CurlHttpClient::class,
     FilesystemInterface::class => CrunzFilesystem::class,
     FinderInterface::class => Finder::class,
+    LoaderInterface::class => Loader::class,
 ];
 
 $container
@@ -67,6 +70,7 @@ $container
             new Reference(EventRunner::class),
             new Reference(Timezone::class),
             new Reference(ScheduleFactory::class),
+            new Reference(LoaderInterface::class),
         ]
     )
 ;
@@ -92,6 +96,7 @@ $container
         [
             new Reference(Configuration::class),
             new Reference(Collection::class),
+            new Reference(LoaderInterface::class),
         ]
     )
 ;

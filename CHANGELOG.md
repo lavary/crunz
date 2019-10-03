@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Fixed
+
+- [#244] Fix AppVeyor CI
+- [#243] Sandbox task loading
+
 ## [v2.0.1] - 2019-05-10
 
 ### Fixed
@@ -202,7 +207,8 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
-
+[#244]: https://github.com/lavary/crunz/pull/244
+[#243]: https://github.com/lavary/crunz/pull/243
 [#229]: https://github.com/lavary/crunz/pull/229
 [#225]: https://github.com/lavary/crunz/pull/225
 [#224]: https://github.com/lavary/crunz/pull/224

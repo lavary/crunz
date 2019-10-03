@@ -10,6 +10,8 @@ use Crunz\Event;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
+use Crunz\Task\Loader;
+use Crunz\Task\LoaderInterface;
 use Crunz\Task\Timezone;
 use Crunz\Tests\TestCase\TemporaryFile;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +43,8 @@ class ScheduleRunCommandTest extends TestCase
             $this->mockConfiguration(),
             $mockEventRunner,
             $this->createMock(Timezone::class),
-            $this->createMock(Schedule\ScheduleFactory::class)
+            $this->createMock(Schedule\ScheduleFactory::class),
+            $this->createTaskLoader()
         );
 
         $command->run(
@@ -74,7 +77,8 @@ class ScheduleRunCommandTest extends TestCase
             $this->mockConfiguration(),
             $mockEventRunner,
             $this->mockTimezoneProvider(),
-            $this->mockScheduleFactory()
+            $this->mockScheduleFactory(),
+            $this->createTaskLoader()
         );
 
         $command->run(
@@ -138,7 +142,7 @@ class ScheduleRunCommandTest extends TestCase
         return $mockEventRunner;
     }
 
-    private function mockInput(array $options, array $arguments = []): InputInterface
+    private function mockInput(array $options, array $arguments = [])
     {
         $mockInput = $this->createMock(InputInterface::class);
         $mockInput
@@ -228,5 +232,10 @@ $schedule->run('php -v')
 
 return $schedule;
 PHP;
+    }
+
+    private function createTaskLoader(): LoaderInterface
+    {
+        return new Loader();
     }
 }
