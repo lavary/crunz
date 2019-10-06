@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v1.12.2] - 2019-10-05
+
 ### Fixed
 
-- [#244] Fix AppVeyor CI
 - [#243] Sandbox task loading
+- [#245] Fix PHP 7.4 compatibility
 
 ## [v2.0.1] - 2019-05-10
 
@@ -207,7 +209,7 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
-[#244]: https://github.com/lavary/crunz/pull/244
+[#245]: https://github.com/lavary/crunz/pull/245
 [#243]: https://github.com/lavary/crunz/pull/243
 [#229]: https://github.com/lavary/crunz/pull/229
 [#225]: https://github.com/lavary/crunz/pull/225
@@ -325,6 +327,7 @@ In `v2` this will result in exception.
 [v1.10.0]: https://github.com/lavary/crunz/compare/v1.9.0...v1.10.0
 [v1.12.0]: https://github.com/lavary/crunz/compare/v1.11.2...v1.12.0
 [v1.12.1]: https://github.com/lavary/crunz/compare/v1.12.0...v1.12.1
+[v1.12.2]: https://github.com/lavary/crunz/compare/v1.12.1...v1.12.2
 [v2.0.0]: https://github.com/lavary/crunz/compare/v1.12.0...v2.0.0
 [v2.0.1]: https://github.com/lavary/crunz/compare/v2.0.0...v2.0.1
 [@vinkla]: https://github.com/vinkla
