@@ -308,6 +308,24 @@ $task
 
 The above task runs **every five minutes** between **12:30 pm** and **4:55 pm** every day.
 
+An example of restricting a task from running only during a certain range of minutes each hour can be achieved as follows:
+
+```php
+<?php
+//
+
+$hour = date('H');
+
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+     ->hourly()
+     ->between($hour.':30', $hour.':55');
+
+ //       
+```
+
+The above task runs **every hour** between **minutes 30 to 55**
+
 ### Weekdays
 
 Crunz also provides a set of methods which specify a certain day in the week. 
