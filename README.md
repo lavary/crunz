@@ -185,6 +185,36 @@ $task->monthly();
 // ...
 ```
 
+### Weekdays
+
+Crunz also provides a set of methods which specify a certain day in the week. These methods have been designed to be used as a constraint and should not be used alone. The reason is that weekday methods just modify the `Day of Week` field of a cron job expression.
+
+Consider the following example:
+
+```php
+<?php
+// Cron equivalent:  * * * * 1
+$task = $schedule->run('/usr/bin/php email.php');
+$task->mondays();
+```
+
+At first glance, the task seems to run **every Monday**, but since it only modifies the "day of week" field of the cron job expression, the task  runs **every minute on Mondays**.
+
+This is the correct way of using weekday methods:
+
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php email.php');
+$task    
+    ->mondays();
+    ->at('13:30');
+
+// ...
+```
+
+In the above task, we use `mondays()` as a constraint to run the task **at 13:30 on Mondays**.
+
 ### Dynamic Methods
 
 Dynamic methods give us a wide variety of frequency options on the fly. We just need to follow this pattern:
@@ -225,90 +255,7 @@ $task->everyThirteenMinutes();
 return $schedule;
 ```
 
-### Running Events at Certain Times
 
-To schedule one-off tasks, you may use `on()` method like this:
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php'); 
-$task->on('13:30 2016-03-01');
-// ...
-```
-
-The above the task will run on the first of march 2016 at 01:30 pm. 
-
-> `On()` accepts any date format parsed by PHP's [strtotime](http://php.net/manual/en/function.strtotime.php) function.
-
-To specify the time we use `at()` method:
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php'); 
-$task
-    ->daily()
-    ->at('13:30');
-// ...
-```
-
-We can use `dailyAt()` to get the same result:
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php');       
-$task->dailyAt('13:30');
-// ...
-```
-
-If we only pass a time to the `on()` method, it will have the same effect as using `at()`
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php');   
-$task
-    ->mondays()
-    ->on('13:30');
-         
-// is the sames as
-$task = $schedule->run('/usr/bin/php email.php');       
-$task
-    ->mondays()
-    ->at('13:30');
-// ...
-```
-
-### Weekdays
-
-Crunz also provides a set of methods which specify a certain day in the week. These methods have been designed to be used as a constraint and should not be used alone. The reason is that weekday methods just modify the `Day of Week` field of a cron job expression.
-
-Consider the following example:
-
-```php
-<?php
-// Cron equivalent:  * * * * 1
-$task = $schedule->run('/usr/bin/php email.php');
-$task->mondays();
-```
-
-At first glance, the task seems to run **every Monday**, but since it only modifies the "day of week" field of the cron job expression, the task  runs **every minute on Mondays**.
-
-This is the correct way of using weekday methods:
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php');
-$task
-    ->everyThreeHours()
-    ->mondays();
-// ...
-```
-
-In the above task, we use `mondays()` as a constraint to run the task **every three hours on Mondays**.
 
 ### Setting Individual Fields
 
