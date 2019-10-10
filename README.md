@@ -220,14 +220,49 @@ If we only pass a time to the `on()` method, it will have the same effect as usi
 // ...
 $task = $schedule->run('/usr/bin/php email.php');   
 $task
-    ->mondays()
+    ->daily()
     ->on('13:30');
          
 // is the sames as
 $task = $schedule->run('/usr/bin/php email.php');       
 $task
-    ->mondays()
+    ->daily()
     ->at('13:30');
+// ...
+```
+
+We can combine the `ly's` eg. daily(), monthly() with the at() or on() constraint in a single statement if we wish.
+
+The following task will be run every hour at the 15th minute
+
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php feedmecookie.php'); 
+$task
+    ->hourlyAt('15')
+// ...
+```
+hourlyOn('15') could have been used instead of hourlyAt('15') with the same result
+
+The following task will be run Monday at 13:30
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php startofwork.php'); 
+$task
+    ->weeklyOn(0,'13:30')
+// ...
+```
+In the case above Monday is considered day 0 of the week. If we wished for the task to run on Tuesday (day 1 of the week) we would have used ->weeklyOn(1,'09:00').
+
+The following task will be run on the second of the month at 20:00
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php datenight.php'); 
+$task
+    ->MonthlyOn(2, '20:00')
 // ...
 ```
 
@@ -240,7 +275,7 @@ Consider the following example:
 ```php
 <?php
 // Cron equivalent:  * * * * 1
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run('/usr/bin/php startofwork.php');
 $task->mondays();
 ```
 
@@ -251,15 +286,15 @@ This is the correct way of using weekday methods:
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run('/usr/bin/php startofwork.php');
 $task    
     ->mondays();
     ->at('13:30');
 
 // ...
 ```
+This has the same result as using "->weeklyOn(0,'13:30')" as per the example previously above, but might be easier to read.
 
-In the above task, we use `mondays()` as a constraint to run the task **at 13:30 on Mondays**.
 
 ### Dynamic Methods
 
