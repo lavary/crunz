@@ -277,8 +277,9 @@ With that said, the following methods are valid:
 
 * `everyFiveMinutes()`
 * `everyMinute()`
+* `everyHour()`     (same result as `hourly()`)
 * `everyTwelveHours()`
-* `everyMonth`
+* `everyMonth`      (same result as `monthly()`)
 * `everySixMonths()`
 * `everyFifteenDays()`
 * `everyFiveHundredThirtySevenMinutes()`
