@@ -163,6 +163,9 @@ There are a variety of ways to specify **when** and **how often** a task should 
 ### Units of Time
 
 There are a group of methods which specify a unit of time (bigger than minute) as frequency. They usually end with `ly` suffix, as in `hourly()`, `daily()`, `weekly`, `monthly()`, `quarterly()`, and  `yearly` .
+All the events scheduled with this set of methods happen at the **beginning** of that time unit. For example `weekly()` will run the event on Sundays, and `monthly()` will run it on the first day of each month.
+
+The task below will run **daily at midnight** (start of that the daily time period).
 
 ```php
 <?php
@@ -171,8 +174,6 @@ $task = $schedule->run('/usr/bin/php backup.php');
 $task->daily();
 // ...
 ```
-
-The above task will run **daily at midnight**.
 
 Here's another one, which runs on the **first day of each month**.
 
@@ -183,8 +184,6 @@ $task = $schedule->run('/usr/bin/php email.php');
 $task->monthly();
 // ...
 ```
-
-> All the events scheduled with this set of methods happen at the **beginning** of that time unit. For example `weekly()` will run the event on Sundays, and `monthly()` will run it on the first day of each month.
 
 ### Dynamic Methods
 
