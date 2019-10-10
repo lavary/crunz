@@ -344,7 +344,16 @@ $task->everyThirteenMinutes();
 return $schedule;
 ```
 
+### The Classic Way
 
+We can also do the scheduling the old way, just like we do in a crontab file:
+
+```php
+<?php
+
+$task = $schedule->run('/usr/bin/php email.php');
+$task->cron('30 12 * 5-6,9 Mon,Fri');
+```
 
 ### Setting Individual Fields
 
@@ -374,17 +383,6 @@ $task
     ->dayofWeek('Mon', 'Fri', 'Sat');
 
 // ...
-```
-
-### The Classic Way
-
-We can also do the scheduling the old way, just like we do in a crontab file:
-
-```php
-<?php
-
-$task = $schedule->run('/usr/bin/php email.php');
-$task->cron('30 12 * 5-6,9 Mon,Fri');
 ```
 
 Based on our use cases, we can choose and combine the proper set of methods, which are easier to use.
