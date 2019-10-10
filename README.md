@@ -266,6 +266,48 @@ $task
 // ...
 ```
 
+## Task Life Time
+
+In a crontab entry, we can not easily specify a task's lifetime (the period of time when the task is active). However, it's been made easy in Crunz:
+
+```php
+<?php
+//
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->from('12:30 2016-03-04')
+    ->to('04:55 2016-03-10');
+ //       
+```
+Or alternatively we can use the `between()` method to accomplish the same result:
+
+```php
+<?php
+//
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->everyFiveMinutes()
+    ->between('12:30 2016-03-04', '04:55 2016-03-10');
+
+ //       
+```
+
+If we don't specify the date portion, the task will be active **every** day but only within the specified duration:
+
+```php
+<?php
+//
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+     ->everyFiveMinutes()
+     ->between('12:30', '04:55');
+
+ //       
+```
+
+The above task runs **every five minutes** between **12:30 pm** and **4:55 pm** every day.
+
 ### Weekdays
 
 Crunz also provides a set of methods which specify a certain day in the week. 
@@ -357,7 +399,7 @@ $task->cron('30 12 * 5-6,9 Mon,Fri');
 
 ### Setting Individual Fields
 
-Crunz's methods are not limited to the ready-made methods explained. We can also set individual fields to compose our custom frequencies. These methods either accept an array of values, or list arguments separated by commas:
+Crunz's methods are not limited to the ready-made methods explained. We can also set individual fields to compose custom frequencies similar to how a classic crontab would be created. These methods either accept an array of values, or list arguments separated by commas:
 
 ```php
 <?php
@@ -417,48 +459,6 @@ $task
 
 return $schedule;
 ```
-
-## Task Life Time
-
-In a crontab entry, we can not easily specify a task's lifetime (the period of time when the task is active). However, it's been made easy in Crunz:
-
-```php
-<?php
-//
-$task = $schedule->run('/usr/bin/php email.php');
-$task
-    ->everyFiveMinutes()
-    ->from('12:30 2016-03-04')
-    ->to('04:55 2016-03-10');
- //       
-```
-Or alternatively we can use the `between()` method to accomplish the same result:
-
-```php
-<?php
-//
-$task = $schedule->run('/usr/bin/php email.php');
-$task
-    ->everyFiveMinutes()
-    ->between('12:30 2016-03-04', '04:55 2016-03-10');
-
- //       
-```
-
-If we don't specify the date portion, the task will be active **every** day but only within the specified duration:
-
-```php
-<?php
-//
-$task = $schedule->run('/usr/bin/php email.php');
-$task
-     ->everyFiveMinutes()
-     ->between('12:30', '04:55');
-
- //       
-```
-
-The above task runs **every five minutes** between **12:30 pm** and **4:55 pm** every day.
 
 ## Running Conditions
 
