@@ -201,7 +201,7 @@ The above the task will run on the first of march 2016 at 01:30 pm.
 
 > `On()` accepts any date format parsed by PHP's [strtotime](http://php.net/manual/en/function.strtotime.php) function.
 
-To specify the time we use `at()` method:
+To specify the time of a task we use `at()` method:
 
 ```php
 <?php
@@ -210,16 +210,6 @@ $task = $schedule->run('/usr/bin/php email.php');
 $task
     ->daily()
     ->at('13:30');
-// ...
-```
-
-We can use `dailyAt()` to get the same result:
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php');       
-$task->dailyAt('13:30');
 // ...
 ```
 
