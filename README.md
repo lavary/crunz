@@ -268,7 +268,14 @@ $task
 
 ### Weekdays
 
-Crunz also provides a set of methods which specify a certain day in the week. These methods have been designed to be used as a constraint and should not be used alone. The reason is that weekday methods just modify the `Day of Week` field of a cron job expression.
+Crunz also provides a set of methods which specify a certain day in the week. 
+* `mondays()`
+* `tuesdays()`
+* ...
+* `sundays()`
+* `weekedays()`
+* `weekends()`
+These methods have been designed to be used as a constraint and should not be used alone. The reason is that weekday methods just modify the `Day of Week` field of a cron job expression.
 
 Consider the following example:
 
@@ -293,7 +300,7 @@ $task
 
 // ...
 ```
-This has the same result as using "->weeklyOn(0,'13:30')" as per the example previously above, but might be easier to read.
+This has the same result as using "->weeklyOn(0,'13:30')" as per the example previously above, but is an alternative that might be easier to read.
 
 
 ### Dynamic Methods
