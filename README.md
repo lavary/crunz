@@ -449,15 +449,6 @@ $task
 
 Based on our use cases, we can choose and combine the proper set of methods, which are easier to use.
 
-### Force run
-
-While in development it may be useful to force run all tasks regardless of their actual run time,
-which can be achieved by adding `--force` to `schedule:run`:
-
-```bash
-vendor/bin/crunz schedule:run --force
-```
-
 ## Running Conditions
 
 Another thing that we cannot do very easily in a traditional crontab file is to make conditions for running the tasks. This has been made easy by `when()` and `skip()` methods.
@@ -711,6 +702,21 @@ vendor/bin/crunz schedule:list
 +---+---------------+-------------+--------------------+
 | 1 | Sample Task   | * * * * 1 * | command/to/execute |
 +---+---------------+-------------+--------------------+
+```
+
+### Force run
+
+While in development it may be useful to force run all tasks regardless of their actual run time,
+which can be achieved by adding `--force` to `schedule:run`:
+
+```bash
+vendor/bin/crunz schedule:run --force
+```
+
+To force run a single task, use the schedule:list command above to determine the Task number and run as follows:
+
+```bash
+vendor/bin/crunz schedule:run --task 1 --force
 ```
 
 ### Generating Tasks
