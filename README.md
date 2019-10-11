@@ -526,98 +526,6 @@ $task
 return $schedule;
 ```
 
-## Configuration
-
-There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one. 
-
-To create a copy of the configuration file, first we need to publish the configuration file:
-
-```bash
-/project/vendor/bin/crunz publish:config
-The configuration file was generated successfully
-```
-
-As a result, a copy of the configuration file will be created within our project's root directory.
-
- The configuration file looks like this:
-
-```yaml
-# Crunz Configuration Settings
-
-# This option defines where the task files and
-# directories reside.
-# The path is relative to the project's root directory,
-# where the Crunz is installed (Trailing slashes will be ignored).
-source: tasks
-
-# The suffix is meant to target the task files inside the ":source" directory.
-# Please note if you change this value, you need
-# to make sure all the existing tasks files are renamed accordingly.
-suffix: Tasks.php
-
-# Timezone is used to calculate task run time
-# This option is very important and not setting it is deprecated
-# and will result in exception in 2.0 version.
-timezone: ~
-
-# This option define which timezone should be used for log files
-# If false, system default timezone will be used
-# If true, the timezone in config file that is used to calculate task run time will be used
-timezone_log: false
-
-# By default the errors are not logged by Crunz
-# You may set the value to true for logging the errors
-log_errors: false
-
-# This is the absolute path to the errors' log file
-# You need to make sure you have the required permission to write to this file though.
-errors_log_file:
-
-# By default the output is not logged as they are redirected to the
-# null output.
-# Set this to true if you want to keep the outputs
-log_output: false
-
-# This is the absolute path to the global output log file
-# The events which have dedicated log files (defined with them), won't be
-# logged to this file though.
-output_log_file:
-
-# By default line breaks in logs aren't allowed.
-# Set the value to true to allow them.
-log_allow_line_breaks: false
-
-# This option determines whether the output should be emailed or not.
-email_output: false
-
-# This option determines whether the error messages should be emailed or not.
-email_errors: false
-
-# Global Swift Mailer settings
-#
-mailer:
-    # Possible values: smtp, mail, and sendmail
-    transport: smtp
-    recipients:
-    sender_name:
-    sender_email:
-
-
-# SMTP settings
-#
-smtp:
-    host:
-    port:
-    username:
-    password:
-    encryption:
-```
-
-As you can see there are a few options like `source` which is used to specify the source tasks directory. The other options are used for error/output logging/emailing purposes.
-
-Each time we run Crunz commands, it will look into the project's root directory to see if there's any user-modified configuration file. If the configuration file doesn't exists, it will use the one shipped with the package.
-
-
 ## Parallelism and the Locking Mechanism
 
 Crunz runs the scheduled events in parallel (in separate processes), so all the events which have the same frequency of execution, will run at the same time asynchronously. To achieve this, Crunz utilizes the [symfony/Process](http://symfony.com/doc/current/components/process.html) library for running the tasks in sub-processes.
@@ -837,6 +745,98 @@ To see all the options of `make:task` command with all the defaults, we run this
 ```bash
 vendor/bin/crunz make:task --help
 ```
+
+## Configuration
+
+There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one. 
+
+To create a copy of the configuration file, first we need to publish the configuration file:
+
+```bash
+/project/vendor/bin/crunz publish:config
+The configuration file was generated successfully
+```
+
+As a result, a copy of the configuration file will be created within our project's root directory.
+
+ The configuration file looks like this:
+
+```yaml
+# Crunz Configuration Settings
+
+# This option defines where the task files and
+# directories reside.
+# The path is relative to the project's root directory,
+# where the Crunz is installed (Trailing slashes will be ignored).
+source: tasks
+
+# The suffix is meant to target the task files inside the ":source" directory.
+# Please note if you change this value, you need
+# to make sure all the existing tasks files are renamed accordingly.
+suffix: Tasks.php
+
+# Timezone is used to calculate task run time
+# This option is very important and not setting it is deprecated
+# and will result in exception in 2.0 version.
+timezone: ~
+
+# This option define which timezone should be used for log files
+# If false, system default timezone will be used
+# If true, the timezone in config file that is used to calculate task run time will be used
+timezone_log: false
+
+# By default the errors are not logged by Crunz
+# You may set the value to true for logging the errors
+log_errors: false
+
+# This is the absolute path to the errors' log file
+# You need to make sure you have the required permission to write to this file though.
+errors_log_file:
+
+# By default the output is not logged as they are redirected to the
+# null output.
+# Set this to true if you want to keep the outputs
+log_output: false
+
+# This is the absolute path to the global output log file
+# The events which have dedicated log files (defined with them), won't be
+# logged to this file though.
+output_log_file:
+
+# By default line breaks in logs aren't allowed.
+# Set the value to true to allow them.
+log_allow_line_breaks: false
+
+# This option determines whether the output should be emailed or not.
+email_output: false
+
+# This option determines whether the error messages should be emailed or not.
+email_errors: false
+
+# Global Swift Mailer settings
+#
+mailer:
+    # Possible values: smtp, mail, and sendmail
+    transport: smtp
+    recipients:
+    sender_name:
+    sender_email:
+
+
+# SMTP settings
+#
+smtp:
+    host:
+    port:
+    username:
+    password:
+    encryption:
+```
+
+As you can see there are a few options like `source` which is used to specify the source tasks directory. The other options are used for error/output logging/emailing purposes.
+
+Each time we run Crunz commands, it will look into the project's root directory to see if there's any user-modified configuration file. If the configuration file doesn't exists, it will use the one shipped with the package.
+
 
 ## Development ENV flags
 
