@@ -163,9 +163,10 @@ There are a variety of ways to specify **when** and **how often** a task should 
 ### Units of Time
 
 There are a group of methods which specify a unit of time (bigger than minute) as frequency. They usually end with `ly` suffix, as in `hourly()`, `daily()`, `weekly`, `monthly()`, `quarterly()`, and  `yearly` .
-All the events scheduled with this set of methods happen at the **beginning** of that time unit. For example `weekly()` will run the event on Sundays, and `monthly()` will run it on the first day of each month.
 
-The task below will run **daily at midnight** (start of that the daily time period).
+All the events scheduled with this set of methods happen at the **beginning** of that time unit. For example `weekly()` will run the event on Sundays, and `monthly()` will run on the first day of each month.
+
+The task below will run **daily at midnight** (start of the daily time period).
 
 ```php
 <?php
@@ -197,7 +198,7 @@ $task->on('13:30 2016-03-01');
 // ...
 ```
 
-The above the task will run on the first of march 2016 at 01:30 pm. 
+The above task will run on the first of march 2016 at 01:30 pm. 
 
 > `On()` accepts any date format parsed by PHP's [strtotime](http://php.net/manual/en/function.strtotime.php) function.
 
@@ -231,7 +232,7 @@ $task
 // ...
 ```
 
-We can combine the `ly's` eg. daily(), monthly() with the at() or on() constraint in a single statement if we wish.
+We can combine the "Unit of Time" methods eg. daily(), monthly() with the at() or on() constraint in a single statement if we wish.
 
 The following task will be run every hour at the 15th minute
 
@@ -243,7 +244,7 @@ $task
     ->hourlyAt('15')
 // ...
 ```
-hourlyOn('15') could have been used instead of hourlyAt('15') with the same result
+>hourlyOn('15') could have been used instead of hourlyAt('15') with the same result
 
 The following task will be run Monday at 13:30
 ```php
