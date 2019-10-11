@@ -257,7 +257,7 @@ $task
 ```
 >Sunday is considered day 0 of the week. 
 
-If we wished for the task to run on Tuesday (day 2 of the week) we would have used:
+If we wished for the task to run on Tuesday (day 2 of the week) at 09:00 we would have used:
 ```php
 <?php
 // ...
