@@ -315,16 +315,18 @@ An example of restricting a task from running only during a certain range of min
 //
 
 $hour = date('H');
+$startminute = $hour.':05';
+$endminute = $hour.':15';
 
 $task = $schedule->run('/usr/bin/php email.php');
 $task
      ->hourly()
-     ->between($hour.':30', $hour.':55');
+     ->between($startminute, $endminute);
 
  //       
 ```
 
-The above task runs **every hour** between **minutes 30 to 55**
+The above task runs **every hour** between **minutes 5 to 15**
 
 ### Weekdays
 
@@ -417,7 +419,7 @@ $task->cron('30 12 * 5-6,9 Mon,Fri');
 
 ### Setting Individual Fields
 
-Crunz's methods are not limited to the ready-made methods explained. We can also set individual fields to compose custom frequencies similar to how a classic crontab would be created. These methods either accept an array of values, or list arguments separated by commas:
+Crunz's methods are not limited to the ready-made methods explained. We can also set individual fields to compose custom frequencies similar to how a classic crontab would composed them. These methods either accept an array of values, or list arguments separated by commas:
 
 ```php
 <?php
@@ -454,28 +456,6 @@ which can be achieved by adding `--force` to `schedule:run`:
 
 ```bash
 vendor/bin/crunz schedule:run --force
-```
-
-## Changing Directories
-
-You can use the `in()` method to change directory before running a command:
-
-```php
-<?php
-
-// ...
-
-$task = $schedule->run('./deploy.sh');
-$task
-    ->in('/home')
-    ->weekly()
-    ->sundays()
-    ->at('12:30')
-    ->appendOutputTo('/var/log/backup.log');
-
-// ...
-
-return $schedule;
 ```
 
 ## Running Conditions
@@ -524,6 +504,27 @@ $task
 
 We can use these methods **several** times for a single task. They are evaluated sequentially.
 
+## Changing Directories
+
+You can use the `in()` method to change directory before running a command:
+
+```php
+<?php
+
+// ...
+
+$task = $schedule->run('./deploy.sh');
+$task
+    ->in('/home')
+    ->weekly()
+    ->sundays()
+    ->at('12:30')
+    ->appendOutputTo('/var/log/backup.log');
+
+// ...
+
+return $schedule;
+```
 
 ## Configuration
 
