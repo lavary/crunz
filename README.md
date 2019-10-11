@@ -252,10 +252,20 @@ The following task will be run Monday at 13:30
 // ...
 $task = $schedule->run('/usr/bin/php startofwork.php'); 
 $task
-    ->weeklyOn(0,'13:30')
+    ->weeklyOn(1,'13:30')
 // ...
 ```
-In the case above Monday is considered day 0 of the week. If we wished for the task to run on Tuesday (day 1 of the week) we would have used ->weeklyOn(1,'09:00').
+>Sunday is considered day 0 of the week. 
+
+If we wished for the task to run on Tuesday (day 2 of the week) we would have used:
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php startofwork.php'); 
+$task
+    ->weeklyOn(2,'09:00')
+// ...
+```
 
 The following task will be run on the second of the month at 20:00
 ```php
@@ -338,6 +348,7 @@ Crunz also provides a set of methods which specify a certain day in the week.
 * `sundays()`
 * `weekedays()`
 * `weekends()`
+
 These methods have been designed to be used as a constraint and should not be used alone. The reason is that weekday methods just modify the `Day of Week` field of a cron job expression.
 
 Consider the following example:
@@ -363,7 +374,7 @@ $task
 
 // ...
 ```
-This has the same result as using "->weeklyOn(0,'13:30')" as per the example previously above, but is an alternative that might be easier to read.
+>(An easier to read alternative with a similar result ->weeklyOn(0,'13:30') to that shown in a previously example above)
 
 
 ### Dynamic Methods
