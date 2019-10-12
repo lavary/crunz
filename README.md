@@ -123,7 +123,7 @@ We can run **any** command or script by using `run()`. This method accepts two a
 use Crunz\Schedule;
 
 $schedule = new Schedule();
-$task = $schedule->run('/usr/bin/php backup.php', ['--destination' => 'path/to/destination']);
+$task = $schedule->run(PHP_BINARY . ' backup.php', ['--destination' => 'path/to/destination']);
 $task
     ->everyMinute()
     ->description('Copying the project directory');
@@ -171,7 +171,7 @@ The task below will run **daily at midnight** (start of the daily time period).
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php backup.php');    
+$task = $schedule->run(PHP_BINARY . ' backup.php');    
 $task->daily();
 // ...
 ```
@@ -181,7 +181,7 @@ Here's another one, which runs on the **first day of each month**.
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task->monthly();
 // ...
 ```
@@ -193,7 +193,7 @@ To schedule a one-off tasks, you may use `on()` method like this:
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php'); 
+$task = $schedule->run(PHP_BINARY . ' email.php'); 
 $task->on('13:30 2016-03-01');
 // ...
 ```
@@ -207,7 +207,7 @@ To specify the time of a task we use `at()` method:
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php'); 
+$task = $schedule->run(PHP_BINARY . ' email.php'); 
 $task
     ->daily()
     ->at('13:30');
@@ -219,13 +219,13 @@ If we only pass a time to the `on()` method, it will have the same effect as usi
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php');   
+$task = $schedule->run(PHP_BINARY . ' email.php');   
 $task
     ->daily()
     ->on('13:30');
          
 // is the sames as
-$task = $schedule->run('/usr/bin/php email.php');       
+$task = $schedule->run(PHP_BINARY . ' email.php');       
 $task
     ->daily()
     ->at('13:30');
@@ -239,7 +239,7 @@ The following task will be run every hour at the 15th minute
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php feedmecookie.php'); 
+$task = $schedule->run(PHP_BINARY . ' feedmecookie.php'); 
 $task
     ->hourlyAt('15')
 // ...
@@ -250,7 +250,7 @@ The following task will be run Monday at 13:30
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php startofwork.php'); 
+$task = $schedule->run(PHP_BINARY . ' startofwork.php'); 
 $task
     ->weeklyOn(1,'13:30')
 // ...
@@ -261,7 +261,7 @@ If we wished for the task to run on Tuesday (day 2 of the week) at 09:00 we woul
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php startofwork.php'); 
+$task = $schedule->run(PHP_BINARY . ' startofwork.php'); 
 $task
     ->weeklyOn(2,'09:00')
 // ...
@@ -271,7 +271,7 @@ The following task will be run on the second of the month at 20:00
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php datenight.php'); 
+$task = $schedule->run(PHP_BINARY . ' datenight.php'); 
 $task
     ->MonthlyOn(2, '20:00')
 // ...
@@ -284,7 +284,7 @@ In a crontab entry, we can not easily specify a task's lifetime (the period of t
 ```php
 <?php
 //
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->from('12:30 2016-03-04')
@@ -296,7 +296,7 @@ Or alternatively we can use the `between()` method to accomplish the same result
 ```php
 <?php
 //
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->between('12:30 2016-03-04', '04:55 2016-03-10');
@@ -309,7 +309,7 @@ If we don't specify the date portion, the task will be active **every** day but 
 ```php
 <?php
 //
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
      ->everyFiveMinutes()
      ->between('12:30', '04:55');
@@ -329,7 +329,7 @@ $hour = date('H');
 $startminute = $hour.':05';
 $endminute = $hour.':15';
 
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
      ->hourly()
      ->between($startminute, $endminute);
@@ -356,7 +356,7 @@ Consider the following example:
 ```php
 <?php
 // Cron equivalent:  * * * * 1
-$task = $schedule->run('/usr/bin/php startofwork.php');
+$task = $schedule->run(PHP_BINARY . ' startofwork.php');
 $task->mondays();
 ```
 
@@ -367,7 +367,7 @@ This is the correct way of using weekday methods:
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php startofwork.php');
+$task = $schedule->run(PHP_BINARY . ' startofwork.php');
 $task    
     ->mondays();
     ->at('13:30');
@@ -408,10 +408,10 @@ This is how it is used in a task file:
 <?php
 // ...
 
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task->everyTenDays();
 
-$task = $schedule->run('/usr/bin/php some_other_stuff.php');
+$task = $schedule->run(PHP_BINARY . ' some_other_stuff.php');
 $task->everyThirteenMinutes();
 // ...
 
@@ -425,7 +425,7 @@ We can also do the scheduling the old way, just like we do in a crontab file:
 ```php
 <?php
 
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task->cron('30 12 * 5-6,9 Mon,Fri');
 ```
 
@@ -436,7 +436,7 @@ Crunz's methods are not limited to the ready-made methods explained. We can also
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task       
     ->minute(['1-30', 45, 55])
     ->hour('1-5', 7, 8)
@@ -449,7 +449,7 @@ Or:
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->minute('30')
     ->hour('13')
@@ -470,7 +470,7 @@ Consider the following code:
 ```php
 <?php
 //
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->between('12:30 2016-03-04', '04:55 2016-03-10')
@@ -490,7 +490,7 @@ We can also skip a task under certain conditions, by using `skip()` method. If t
 ```php
 <?php
 //
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->between('12:30 2016-03-04', '04:55 2016-03-10')
@@ -540,7 +540,7 @@ To prevent critical tasks from overlapping each other, Crunz provides a locking 
 ```php
 <?php
 //
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->preventOverlapping();
@@ -555,7 +555,7 @@ By default, crunz uses file based locking (if no parameters are passed to `preve
 use Symfony\Component\Lock\Store\FlockStore;
 
 $store = new FlockStore(__DIR__ . '/locks');
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->preventOverlapping($store);
@@ -590,7 +590,7 @@ If we need to log the outputs on an event-basis, we can use `appendOutputTo()` o
 ```php
 <?php
 //
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->appendOutputTo('/var/log/crunz/emails.log');
@@ -663,7 +663,7 @@ use Crunz\Schedule;
 
 $schedule = new Schedule();
 
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->before(function() { 
