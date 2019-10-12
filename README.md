@@ -164,6 +164,10 @@ There are a variety of ways to specify **when** and **how often** a task should 
 
 There are a group of methods which specify a unit of time (bigger than minute) as frequency. They usually end with `ly` suffix, as in `hourly()`, `daily()`, `weekly`, `monthly()`, `quarterly()`, and  `yearly` .
 
+All the events scheduled with this set of methods happen at the **beginning** of that time unit. For example `weekly()` will run the event on Sundays, and `monthly()` will run on the first day of each month.
+
+The task below will run **daily at midnight** (start of the daily time period).
+
 ```php
 <?php
 // ...
@@ -171,8 +175,6 @@ $task = $schedule->run('/usr/bin/php backup.php');
 $task->daily();
 // ...
 ```
-
-The above task will run **daily at midnight**.
 
 Here's another one, which runs on the **first day of each month**.
 
@@ -184,51 +186,9 @@ $task->monthly();
 // ...
 ```
 
-> All the events scheduled with this set of methods happen at the **beginning** of that time unit. For example `weekly()` will run the event on Sundays, and `monthly()` will run it on the first day of each month.
-
-### Dynamic Methods
-
-Dynamic methods give us a wide variety of frequency options on the fly. We just need to follow this pattern:
-
-```php
-every[NumberInCamelCaseWords]Minute|Hour|Day|Months?
-```
-
-As we can see, the method should start with the word `every`, followed by a number in camel-case words, ending with one of these units of time: **minute, hour, day, and month**. 
-
-The `s` at the end is optional and it's just used for grammar's sake.
-
-With that said, the following methods are valid:
-
-* `everyFiveMinutes()`
-* `everyMinute()`
-* `everyTwelveHours()`
-* `everyMonth`
-* `everySixMonths()`
-* `everyFifteenDays()`
-* `everyFiveHundredThirtySevenMinutes()`
-* `everyThreeThousandAndFiveHundredFiftyNineMinutes()`
-* ...
-
-This is how it is used in a task file:
-
-```php
-<?php
-// ...
-
-$task = $schedule->run('/usr/bin/php email.php');
-$task->everyTenDays();
-
-$task = $schedule->run('/usr/bin/php some_other_stuff.php');
-$task->everyThirteenMinutes();
-// ...
-
-return $schedule;
-```
-
 ### Running Events at Certain Times
 
-To schedule one-off tasks, you may use `on()` method like this:
+To schedule a one-off tasks, you may use `on()` method like this:
 
 ```php
 <?php
@@ -238,11 +198,11 @@ $task->on('13:30 2016-03-01');
 // ...
 ```
 
-The above the task will run on the first of march 2016 at 01:30 pm. 
+The above task will run on the first of march 2016 at 01:30 pm. 
 
 > `On()` accepts any date format parsed by PHP's [strtotime](http://php.net/manual/en/function.strtotime.php) function.
 
-To specify the time we use `at()` method:
+To specify the time of a task we use `at()` method:
 
 ```php
 <?php
@@ -254,16 +214,6 @@ $task
 // ...
 ```
 
-We can use `dailyAt()` to get the same result:
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php');       
-$task->dailyAt('13:30');
-// ...
-```
-
 If we only pass a time to the `on()` method, it will have the same effect as using `at()`
 
 ```php
@@ -271,118 +221,60 @@ If we only pass a time to the `on()` method, it will have the same effect as usi
 // ...
 $task = $schedule->run('/usr/bin/php email.php');   
 $task
-    ->mondays()
+    ->daily()
     ->on('13:30');
          
 // is the sames as
 $task = $schedule->run('/usr/bin/php email.php');       
 $task
-    ->mondays()
+    ->daily()
     ->at('13:30');
 // ...
 ```
 
-### Weekdays
+We can combine the "Unit of Time" methods eg. daily(), monthly() with the at() or on() constraint in a single statement if we wish.
 
-Crunz also provides a set of methods which specify a certain day in the week. These methods have been designed to be used as a constraint and should not be used alone. The reason is that weekday methods just modify the `Day of Week` field of a cron job expression.
-
-Consider the following example:
-
-```php
-<?php
-// Cron equivalent:  * * * * 1
-$task = $schedule->run('/usr/bin/php email.php');
-$task->mondays();
-```
-
-At first glance, the task seems to run **every Monday**, but since it only modifies the "day of week" field of the cron job expression, the task  runs **every minute on Mondays**.
-
-This is the correct way of using weekday methods:
+The following task will be run every hour at the 15th minute
 
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run('/usr/bin/php feedmecookie.php'); 
 $task
-    ->everyThreeHours()
-    ->mondays();
+    ->hourlyAt('15')
 // ...
 ```
+>hourlyOn('15') could have been used instead of hourlyAt('15') with the same result
 
-In the above task, we use `mondays()` as a constraint to run the task **every three hours on Mondays**.
-
-### Setting Individual Fields
-
-Crunz's methods are not limited to the ready-made methods explained. We can also set individual fields to compose our custom frequencies. These methods either accept an array of values, or list arguments separated by commas:
-
+The following task will be run Monday at 13:30
 ```php
 <?php
 // ...
-$task = $schedule->run('/usr/bin/php email.php');
-$task       
-    ->minute(['1-30', 45, 55])
-    ->hour('1-5', 7, 8)
-    ->dayOfMonth(12, 15)
-    ->month(1);
-```
-
-Or:
-
-```php
-<?php
-// ...
-$task = $schedule->run('/usr/bin/php email.php');
+$task = $schedule->run('/usr/bin/php startofwork.php'); 
 $task
-    ->minute('30')
-    ->hour('13')
-    ->month([1,2])
-    ->dayofWeek('Mon', 'Fri', 'Sat');
-
+    ->weeklyOn(1,'13:30')
 // ...
 ```
+>Sunday is considered day 0 of the week. 
 
-### The Classic Way
-
-We can also do the scheduling the old way, just like we do in a crontab file:
-
+If we wished for the task to run on Tuesday (day 2 of the week) at 09:00 we would have used:
 ```php
 <?php
-
-$task = $schedule->run('/usr/bin/php email.php');
-$task->cron('30 12 * 5-6,9 Mon,Fri');
-```
-
-Based on our use cases, we can choose and combine the proper set of methods, which are easier to use.
-
-### Force run
-
-While in development it may be useful to force run all tasks regardless of their actual run time,
-which can be achieved by adding `--force` to `schedule:run`:
-
-```bash
-vendor/bin/crunz schedule:run --force
-```
-
-## Changing Directories
-
-You can use the `in()` method to change directory before running a command:
-
-```php
-<?php
-
 // ...
-
-$task = $schedule->run('./deploy.sh');
+$task = $schedule->run('/usr/bin/php startofwork.php'); 
 $task
-    ->in('/home')
-    ->weekly()
-    ->sundays()
-    ->at('12:30')
-    ->appendOutputTo('/var/log/backup.log');
-
+    ->weeklyOn(2,'09:00')
 // ...
+```
 
-return $schedule;
+The following task will be run on the second of the month at 20:00
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php datenight.php'); 
+$task
+    ->MonthlyOn(2, '20:00')
+// ...
 ```
 
 ## Task Life Time
@@ -426,6 +318,148 @@ $task
 ```
 
 The above task runs **every five minutes** between **12:30 pm** and **4:55 pm** every day.
+
+An example of restricting a task from running only during a certain range of minutes each hour can be achieved as follows:
+
+```php
+<?php
+//
+
+$hour = date('H');
+$startminute = $hour.':05';
+$endminute = $hour.':15';
+
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+     ->hourly()
+     ->between($startminute, $endminute);
+
+ //       
+```
+
+The above task runs **every hour** between **minutes 5 to 15**
+
+### Weekdays
+
+Crunz also provides a set of methods which specify a certain day in the week. 
+* `mondays()`
+* `tuesdays()`
+* ...
+* `sundays()`
+* `weekedays()`
+* `weekends()`
+
+These methods have been designed to be used as a constraint and should not be used alone. The reason is that weekday methods just modify the `Day of Week` field of a cron job expression.
+
+Consider the following example:
+
+```php
+<?php
+// Cron equivalent:  * * * * 1
+$task = $schedule->run('/usr/bin/php startofwork.php');
+$task->mondays();
+```
+
+At first glance, the task seems to run **every Monday**, but since it only modifies the "day of week" field of the cron job expression, the task  runs **every minute on Mondays**.
+
+This is the correct way of using weekday methods:
+
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php startofwork.php');
+$task    
+    ->mondays();
+    ->at('13:30');
+
+// ...
+```
+>(An easier to read alternative with a similar result ->weeklyOn(0,'13:30') to that shown in a previously example above)
+
+
+### Dynamic Methods
+
+Dynamic methods give us a wide variety of frequency options on the fly. We just need to follow this pattern:
+
+```php
+every[NumberInCamelCaseWords]Minute|Hour|Day|Months?
+```
+
+As we can see, the method should start with the word `every`, followed by a number in camel-case words, ending with one of these units of time: **minute, hour, day, and month**. 
+
+The `s` at the end is optional and it's just used for grammar's sake.
+
+With that said, the following methods are valid:
+
+* `everyFiveMinutes()`
+* `everyMinute()`
+* `everyHour()`     (same result as `hourly()`)
+* `everyTwelveHours()`
+* `everyMonth`      (same result as `monthly()`)
+* `everySixMonths()`
+* `everyFifteenDays()`
+* `everyFiveHundredThirtySevenMinutes()`
+* `everyThreeThousandAndFiveHundredFiftyNineMinutes()`
+* ...
+
+This is how it is used in a task file:
+
+```php
+<?php
+// ...
+
+$task = $schedule->run('/usr/bin/php email.php');
+$task->everyTenDays();
+
+$task = $schedule->run('/usr/bin/php some_other_stuff.php');
+$task->everyThirteenMinutes();
+// ...
+
+return $schedule;
+```
+
+### The Classic Way
+
+We can also do the scheduling the old way, just like we do in a crontab file:
+
+```php
+<?php
+
+$task = $schedule->run('/usr/bin/php email.php');
+$task->cron('30 12 * 5-6,9 Mon,Fri');
+```
+
+### Setting Individual Fields
+
+Crunz's methods are not limited to the ready-made methods explained. We can also set individual fields to compose custom frequencies similar to how a classic crontab would composed them. These methods either accept an array of values, or list arguments separated by commas:
+
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php email.php');
+$task       
+    ->minute(['1-30', 45, 55])
+    ->hour('1-5', 7, 8)
+    ->dayOfMonth(12, 15)
+    ->month(1);
+```
+
+Or:
+
+```php
+<?php
+// ...
+$task = $schedule->run('/usr/bin/php email.php');
+$task
+    ->minute('30')
+    ->hour('13')
+    ->month([1,2])
+    ->dayofWeek('Mon', 'Fri', 'Sat');
+
+// ...
+```
+
+Based on our use cases, we can choose and combine the proper set of methods, which are easier to use.
 
 ## Running Conditions
 
@@ -473,98 +507,27 @@ $task
 
 We can use these methods **several** times for a single task. They are evaluated sequentially.
 
+## Changing Directories
 
-## Configuration
+You can use the `in()` method to change directory before running a command:
 
-There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one. 
+```php
+<?php
 
-To create a copy of the configuration file, first we need to publish the configuration file:
+// ...
 
-```bash
-/project/vendor/bin/crunz publish:config
-The configuration file was generated successfully
+$task = $schedule->run('./deploy.sh');
+$task
+    ->in('/home')
+    ->weekly()
+    ->sundays()
+    ->at('12:30')
+    ->appendOutputTo('/var/log/backup.log');
+
+// ...
+
+return $schedule;
 ```
-
-As a result, a copy of the configuration file will be created within our project's root directory.
-
- The configuration file looks like this:
-
-```yaml
-# Crunz Configuration Settings
-
-# This option defines where the task files and
-# directories reside.
-# The path is relative to the project's root directory,
-# where the Crunz is installed (Trailing slashes will be ignored).
-source: tasks
-
-# The suffix is meant to target the task files inside the ":source" directory.
-# Please note if you change this value, you need
-# to make sure all the existing tasks files are renamed accordingly.
-suffix: Tasks.php
-
-# Timezone is used to calculate task run time
-# This option is very important and not setting it is deprecated
-# and will result in exception in 2.0 version.
-timezone: ~
-
-# This option define which timezone should be used for log files
-# If false, system default timezone will be used
-# If true, the timezone in config file that is used to calculate task run time will be used
-timezone_log: false
-
-# By default the errors are not logged by Crunz
-# You may set the value to true for logging the errors
-log_errors: false
-
-# This is the absolute path to the errors' log file
-# You need to make sure you have the required permission to write to this file though.
-errors_log_file:
-
-# By default the output is not logged as they are redirected to the
-# null output.
-# Set this to true if you want to keep the outputs
-log_output: false
-
-# This is the absolute path to the global output log file
-# The events which have dedicated log files (defined with them), won't be
-# logged to this file though.
-output_log_file:
-
-# By default line breaks in logs aren't allowed.
-# Set the value to true to allow them.
-log_allow_line_breaks: false
-
-# This option determines whether the output should be emailed or not.
-email_output: false
-
-# This option determines whether the error messages should be emailed or not.
-email_errors: false
-
-# Global Swift Mailer settings
-#
-mailer:
-    # Possible values: smtp, mail, and sendmail
-    transport: smtp
-    recipients:
-    sender_name:
-    sender_email:
-
-
-# SMTP settings
-#
-smtp:
-    host:
-    port:
-    username:
-    password:
-    encryption:
-```
-
-As you can see there are a few options like `source` which is used to specify the source tasks directory. The other options are used for error/output logging/emailing purposes.
-
-Each time we run Crunz commands, it will look into the project's root directory to see if there's any user-modified configuration file. If the configuration file doesn't exists, it will use the one shipped with the package.
-
 
 ## Parallelism and the Locking Mechanism
 
@@ -753,6 +716,21 @@ vendor/bin/crunz schedule:list
 +---+---------------+-------------+--------------------+
 ```
 
+### Force run
+
+While in development it may be useful to force run all tasks regardless of their actual run time,
+which can be achieved by adding `--force` to `schedule:run`:
+
+```bash
+vendor/bin/crunz schedule:run --force
+```
+
+To force run a single task, use the schedule:list command above to determine the Task number and run as follows:
+
+```bash
+vendor/bin/crunz schedule:run --task 1 --force
+```
+
 ### Generating Tasks
 
 There is also a useful command named `make:task`, which generates a task file skeleton with all the defaults, so we won't have to write them from scratch. We can modify the output file later based on our requirements. 
@@ -785,6 +763,98 @@ To see all the options of `make:task` command with all the defaults, we run this
 ```bash
 vendor/bin/crunz make:task --help
 ```
+
+## Configuration
+
+There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one. 
+
+To create a copy of the configuration file, first we need to publish the configuration file:
+
+```bash
+/project/vendor/bin/crunz publish:config
+The configuration file was generated successfully
+```
+
+As a result, a copy of the configuration file will be created within our project's root directory.
+
+ The configuration file looks like this:
+
+```yaml
+# Crunz Configuration Settings
+
+# This option defines where the task files and
+# directories reside.
+# The path is relative to the project's root directory,
+# where the Crunz is installed (Trailing slashes will be ignored).
+source: tasks
+
+# The suffix is meant to target the task files inside the ":source" directory.
+# Please note if you change this value, you need
+# to make sure all the existing tasks files are renamed accordingly.
+suffix: Tasks.php
+
+# Timezone is used to calculate task run time
+# This option is very important and not setting it is deprecated
+# and will result in exception in 2.0 version.
+timezone: ~
+
+# This option define which timezone should be used for log files
+# If false, system default timezone will be used
+# If true, the timezone in config file that is used to calculate task run time will be used
+timezone_log: false
+
+# By default the errors are not logged by Crunz
+# You may set the value to true for logging the errors
+log_errors: false
+
+# This is the absolute path to the errors' log file
+# You need to make sure you have the required permission to write to this file though.
+errors_log_file:
+
+# By default the output is not logged as they are redirected to the
+# null output.
+# Set this to true if you want to keep the outputs
+log_output: false
+
+# This is the absolute path to the global output log file
+# The events which have dedicated log files (defined with them), won't be
+# logged to this file though.
+output_log_file:
+
+# By default line breaks in logs aren't allowed.
+# Set the value to true to allow them.
+log_allow_line_breaks: false
+
+# This option determines whether the output should be emailed or not.
+email_output: false
+
+# This option determines whether the error messages should be emailed or not.
+email_errors: false
+
+# Global Swift Mailer settings
+#
+mailer:
+    # Possible values: smtp, mail, and sendmail
+    transport: smtp
+    recipients:
+    sender_name:
+    sender_email:
+
+
+# SMTP settings
+#
+smtp:
+    host:
+    port:
+    username:
+    password:
+    encryption:
+```
+
+As you can see there are a few options like `source` which is used to specify the source tasks directory. The other options are used for error/output logging/emailing purposes.
+
+Each time we run Crunz commands, it will look into the project's root directory to see if there's any user-modified configuration file. If the configuration file doesn't exists, it will use the one shipped with the package.
+
 
 ## Development ENV flags
 
