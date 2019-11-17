@@ -12,6 +12,7 @@ use Crunz\Mailer;
 use Crunz\Schedule;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\StoreInterface;
 
 final class EventRunnerTest extends TestCase
 {
@@ -45,6 +46,22 @@ final class EventRunnerTest extends TestCase
         $eventRunner->handle($output, [$schedule]);
     }
 
+    public function testLockIsReleasedOnError()
+    {
+        $output = $this->createMock(OutputInterface::class);
+        $mockStore = $this->createMock(StoreInterface::class);
+        $mockStore
+            ->expects($this->once())
+            ->method('delete')
+        ;
+        $schedule = new Schedule();
+        $event = $schedule->run('wrong-command');
+        $event->preventOverlapping($mockStore);
+
+        $eventRunner = $this->createEventRunner(true);
+        $eventRunner->handle($output, [$schedule]);
+    }
+
     /**
      * @param string $url
      *
@@ -64,6 +81,33 @@ final class EventRunnerTest extends TestCase
             ->method('ping')
             ->with($url)
         ;
+
+        return new EventRunner(
+            $invoker,
+            $configuration,
+            $mailer,
+            $loggerFactory,
+            $httpClient,
+            $consoleLogger
+        );
+    }
+
+    /**
+     * @param bool $realInvoker
+     *
+     * @return EventRunner
+     */
+    private function createEventRunner($realInvoker = false)
+    {
+        $invoker = true === $realInvoker
+            ? new Invoker()
+            : $this->createMock(Invoker::class)
+        ;
+        $configuration = $this->createMock(Configuration::class);
+        $mailer = $this->createMock(Mailer::class);
+        $loggerFactory = $this->createMock(LoggerFactory::class);
+        $httpClient = $this->createMock(HttpClientInterface::class);
+        $consoleLogger = $this->createMock(ConsoleLoggerInterface::class);
 
         return new EventRunner(
             $invoker,
