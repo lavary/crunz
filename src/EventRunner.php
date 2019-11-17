@@ -176,6 +176,9 @@ class EventRunner
                         $this->handleOutput($event);
                     } else {
                         $runStatus = '<error>fail</error>';
+
+                        // Invoke error callbacks
+                        $this->invoke($event->errorCallbacks());
                         // Calling registered error callbacks with an instance of $event as argument
                         $this->invoke($schedule->errorCallbacks(), [$event]);
                         $this->handleError($event);
