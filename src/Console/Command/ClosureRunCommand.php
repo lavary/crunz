@@ -33,6 +33,8 @@ class ClosureRunCommand extends Command
         \parse_str($this->arguments['closure'], $args);
         $serializer = new Serializer();
 
-        return (int) !((bool) \call_user_func_array($serializer->unserialize($args[0]), []));
+        \call_user_func_array($serializer->unserialize($args[0]), []);
+
+        return 0;
     }
 }

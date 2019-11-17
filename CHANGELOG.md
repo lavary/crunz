@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.0.3] - 2019-11-17
+
+### Fixed
+
+- [#261] Release lock on error
+- [#264] Revert converting closure result to `int`
+
+## [v1.12.3] - 2019-11-17
+
+### Fixed
+
+- [#261] Release lock on error
+
 ## [v2.0.2] - 2019-10-06
 
 ### Fixed
@@ -215,6 +228,8 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#264]: https://github.com/lavary/crunz/pull/264
+[#261]: https://github.com/lavary/crunz/pull/261
 [#251]: https://github.com/lavary/crunz/pull/251
 [#245]: https://github.com/lavary/crunz/pull/245
 [#243]: https://github.com/lavary/crunz/pull/243
@@ -335,9 +350,11 @@ In `v2` this will result in exception.
 [v1.12.0]: https://github.com/lavary/crunz/compare/v1.11.2...v1.12.0
 [v1.12.1]: https://github.com/lavary/crunz/compare/v1.12.0...v1.12.1
 [v1.12.2]: https://github.com/lavary/crunz/compare/v1.12.1...v1.12.2
+[v1.12.3]: https://github.com/lavary/crunz/compare/v1.12.2...v1.12.3
 [v2.0.0]: https://github.com/lavary/crunz/compare/v1.12.0...v2.0.0
 [v2.0.1]: https://github.com/lavary/crunz/compare/v2.0.0...v2.0.1
 [v2.0.2]: https://github.com/lavary/crunz/compare/v2.0.1...v2.0.2
+[v2.0.3]: https://github.com/lavary/crunz/compare/v2.0.2...v2.0.3
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere

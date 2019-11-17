@@ -174,6 +174,8 @@ class Event implements PingableInterface
     private $wholeOutput = [];
     /** @var Lock */
     private $lock;
+    /** @var \Closure[] */
+    private $errorCallbacks = [];
 
     /**
      * Create a new event instance.
@@ -729,10 +731,14 @@ class Event implements PingableInterface
             return !$lock->isAcquired();
         });
 
-        // Delete the lock file when the event is completed
-        $this->after(function (): void {
+        $releaseCallback = function (): void {
             $this->releaseLock();
-        });
+        };
+
+        // Delete the lock file when the event is completed
+        $this->after($releaseCallback);
+        // Or on error
+        $this->addErrorCallback($releaseCallback);
 
         return $this;
     }
@@ -993,6 +999,12 @@ class Event implements PingableInterface
         return $this->afterCallbacks;
     }
 
+    /** @return \Closure[] */
+    public function errorCallbacks()
+    {
+        return $this->errorCallbacks;
+    }
+
     /**
      * If this event is prevented from overlapping, this method should be called regularly to refresh the lock.
      */
@@ -1175,6 +1187,11 @@ class Event implements PingableInterface
     {
         $lock = $this->createLockObject();
         $lock->acquire();
+    }
+
+    private function addErrorCallback(Closure $closure): void
+    {
+        $this->errorCallbacks[] = $closure;
     }
 
     /**
