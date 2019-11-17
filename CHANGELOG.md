@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v1.12.3] - 2019-11-17
+
+### Fixed
+
+- [#261] Release lock on error
+
 ## [v1.12.2] - 2019-10-05
 
 ### Fixed
@@ -187,6 +193,7 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#261]: https://github.com/lavary/crunz/pull/261
 [#245]: https://github.com/lavary/crunz/pull/245
 [#243]: https://github.com/lavary/crunz/pull/243
 [#229]: https://github.com/lavary/crunz/pull/229
@@ -300,6 +307,7 @@ In `v2` this will result in exception.
 [v1.12.0]: https://github.com/lavary/crunz/compare/v1.11.2...v1.12.0
 [v1.12.1]: https://github.com/lavary/crunz/compare/v1.12.0...v1.12.1
 [v1.12.2]: https://github.com/lavary/crunz/compare/v1.12.1...v1.12.2
+[v1.12.3]: https://github.com/lavary/crunz/compare/v1.12.2...v1.12.3
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
