@@ -12,10 +12,11 @@ use Symfony\Component\Console\Output\NullOutput;
 
 final class ClosureRunCommandTest extends TestCase
 {
-    public function testReturnValueOfClosureIsOmitted(): void
+    /** @dataProvider closureValueProvider */
+    public function testReturnValueOfClosureIsOmitted(int $returnValue): void
     {
-        $closure = static function (): int {
-            return 0;
+        $closure = static function () use ($returnValue): int {
+            return $returnValue;
         };
         $command = new ClosureRunCommand();
         $input = $this->createInput($closure);
@@ -25,6 +26,12 @@ final class ClosureRunCommandTest extends TestCase
             0,
             $command->run($input, $output)
         );
+    }
+
+    public function closureValueProvider(): iterable
+    {
+        yield '0' => [0];
+        yield '1' => [1];
     }
 
     private function createInput(\Closure $closure): ArrayInput
