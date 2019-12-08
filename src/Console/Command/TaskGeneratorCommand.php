@@ -141,6 +141,8 @@ class TaskGeneratorCommand extends Command
         } else {
             $output->writeln('<comment>There was a problem when generating the file. Please check your command.</comment>');
         }
+
+        return 0;
     }
 
     /**

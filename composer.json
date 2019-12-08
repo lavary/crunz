@@ -31,20 +31,21 @@
         "monolog/monolog": "^1.19",
         "nikic/php-parser": "^3.0 || ^4.0",
         "swiftmailer/swiftmailer": "^6.0",
-        "symfony/config": "^3.4 || ^4.2",
-        "symfony/console": "^3.4 || ^4.2",
-        "symfony/dependency-injection": "^3.4 || ^4.2",
-        "symfony/filesystem": "^3.4 || ^4.2",
-        "symfony/lock": "^3.4 || ^4.2",
-        "symfony/process": "^3.4 || ^4.2",
-        "symfony/yaml": "^3.4 || ^4.2"
+        "symfony/config": "^3.4.5 || ^4.2",
+        "symfony/console": "^3.4.5 || ^4.2",
+        "symfony/dependency-injection": "^3.4.5 || ^4.2",
+        "symfony/filesystem": "^3.4.5 || ^4.2",
+        "symfony/lock": "^3.4.5 || ^4.2",
+        "symfony/process": "^3.4.5 || ^4.2",
+        "symfony/yaml": "^3.4.5 || ^4.2"
     },
     "require-dev": {
         "ext-json": "*",
         "ext-mbstring": "*",
         "bamarni/composer-bin-plugin": "^1.2",
-        "symfony/debug": "^3.4.22 || ^4.2",
-        "symfony/var-dumper": "^3.4 || ^4.2"
+        "phpunit/phpunit": "^7.5.18",
+        "symfony/error-handler": "^4.4",
+        "symfony/phpunit-bridge": "^3.4.5 || ^4.2"
     },
     "autoload": {
         "psr-4": {
