@@ -42,7 +42,6 @@ install:
         travis_retry composer bin cs-fixer install -a;
         travis_retry composer bin phpstan install -a;
       fi
-    - travis_retry composer bin phpunit install -a;
 
 before_script:
     - composer install --prefer-source --no-interaction
