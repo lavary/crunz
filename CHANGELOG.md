@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v1.12.4] - 2019-12-08
+
+### Fixed
+
+- [#268] Fix Symfony 4.4 deprecations
+
 ## [v2.0.3] - 2019-11-17
 
 ### Fixed
@@ -228,6 +234,7 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#268]: https://github.com/lavary/crunz/pull/268
 [#264]: https://github.com/lavary/crunz/pull/264
 [#261]: https://github.com/lavary/crunz/pull/261
 [#251]: https://github.com/lavary/crunz/pull/251
@@ -351,6 +358,7 @@ In `v2` this will result in exception.
 [v1.12.1]: https://github.com/lavary/crunz/compare/v1.12.0...v1.12.1
 [v1.12.2]: https://github.com/lavary/crunz/compare/v1.12.1...v1.12.2
 [v1.12.3]: https://github.com/lavary/crunz/compare/v1.12.2...v1.12.3
+[v1.12.4]: https://github.com/lavary/crunz/compare/v1.12.3...v1.12.4
 [v2.0.0]: https://github.com/lavary/crunz/compare/v1.12.0...v2.0.0
 [v2.0.1]: https://github.com/lavary/crunz/compare/v2.0.0...v2.0.1
 [v2.0.2]: https://github.com/lavary/crunz/compare/v2.0.1...v2.0.2

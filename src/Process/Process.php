@@ -8,6 +8,8 @@ use Symfony\Component\Process\Process as SymfonyProcess;
 
 final class Process
 {
+    /** @var bool */
+    private static $needsInheritEnvVars;
     /** @var SymfonyProcess */
     private $process;
 
@@ -30,7 +32,7 @@ final class Process
             $process = new SymfonyProcess($command, $cwd);
         }
 
-        if (\method_exists(SymfonyProcess::class, 'inheritEnvironmentVariables')) {
+        if (self::needsInheritEnvVars()) {
             $process->inheritEnvironmentVariables(true);
         }
 
@@ -76,7 +78,7 @@ final class Process
     /** @return bool */
     public function isInheritEnvVarsSupported()
     {
-        return \method_exists(SymfonyProcess::class, 'inheritEnvironmentVariables');
+        return self::needsInheritEnvVars();
     }
 
     public function isRunning(): bool
@@ -101,5 +103,29 @@ final class Process
     {
         return $this->process
             ->getErrorOutput();
+    }
+
+    /** bool */
+    private static function needsInheritEnvVars()
+    {
+        if (null === self::$needsInheritEnvVars) {
+            $methodName = 'inheritEnvironmentVariables';
+            $symfonyProcessReflection = new \ReflectionClass(SymfonyProcess::class);
+
+            if (!$symfonyProcessReflection->hasMethod($methodName)) {
+                self::$needsInheritEnvVars = false;
+            } else {
+                $inheritMethodReflection = $symfonyProcessReflection->getMethod($methodName);
+                $docs = $inheritMethodReflection->getDocComment();
+                $docs = false !== $docs
+                    ? $docs
+                    : ''
+                ;
+
+                self::$needsInheritEnvVars = false === \mb_strpos($docs, '@deprecated');
+            }
+        }
+
+        return self::$needsInheritEnvVars;
     }
 }
