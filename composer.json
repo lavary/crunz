@@ -43,8 +43,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "bamarni/composer-bin-plugin": "^1.2",
-        "symfony/debug": "^3.4.22 || ^4.2",
-        "symfony/var-dumper": "^3.4 || ^4.2"
+        "symfony/error-handler": "^4.4"
     },
     "autoload": {
         "psr-4": {
