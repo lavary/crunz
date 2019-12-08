@@ -1,4 +1,10 @@
 language: php
+sudo: false
+dist: xenial
+
+cache:
+    directories:
+        - $HOME/.composer/cache
 
 git:
     depth: 1
@@ -6,21 +12,32 @@ git:
 php:
     - 7.2
     - 7.3
-    - 7.4snapshot
+    - 7.4
+
+env:
+    matrix:
+        - SYMFONY_VERSION="^v3.4.5" PHPUNIT_BRIDGE_VERSION="^v3.4.5" DEPENDENCIES="high"
+        - SYMFONY_VERSION="^v3.4.5" PHPUNIT_BRIDGE_VERSION="^v3.4.5" DEPENDENCIES="low"
+        - SYMFONY_VERSION="~v4.2.0" DEPENDENCIES="high"
+        - SYMFONY_VERSION="~v4.2.0" DEPENDENCIES="low"
+        - SYMFONY_VERSION="~v4.3.0" DEPENDENCIES="high"
+        - SYMFONY_VERSION="~v4.3.0" DEPENDENCIES="low"
+        - SYMFONY_VERSION="~v4.4.0" DEPENDENCIES="high"
+        - SYMFONY_VERSION="~v4.4.0" DEPENDENCIES="low"
+    global:
+        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --no-suggest --prefer-dist"
+        - PHPUNIT_BRIDGE_VERSION="~v4.4.0"
 
 matrix:
     fast_finish: true
 
-env:
-    matrix:
-        - DEPENDENCIES="high"
-        - DEPENDENCIES="low"
-    global:
-        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --no-suggest --prefer-dist"
-
-cache:
-    directories:
-        - $HOME/.composer/cache
+jobs:
+    include:
+        - php: 7.3
+          env:
+              - STATIC_CHECKS=1
+              - SYMFONY_VERSION="~v4.4.0"
+              - DEPENDENCIES="high"
 
 before_install:
     - phpenv config-rm xdebug.ini || return 0;
@@ -28,29 +45,16 @@ before_install:
     - composer global require hirak/prestissimo -a
 
 install:
-    - if [[ "$DEPENDENCIES" = 'high' ]]; then
-        travis_retry composer update $DEFAULT_COMPOSER_FLAGS;
-      fi
-    - if [[ "$DEPENDENCIES" = 'low' ]]; then
-        travis_retry composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest;
-      fi
-    - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.3' ]]; then
+    - php ./composer-install.php "$SYMFONY_VERSION" "$DEPENDENCIES" "$DEFAULT_COMPOSER_FLAGS" "$PHPUNIT_BRIDGE_VERSION"
+    - composer show
+    - if [[ "$STATIC_CHECKS" = '1' ]]; then
         travis_retry composer bin cs-fixer install -a --no-dev;
         travis_retry composer bin phpstan install -a;
       fi
-    - if [[ "$DEPENDENCIES" = 'low' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.3' ]]; then
-        travis_retry composer bin cs-fixer install -a;
-        travis_retry composer bin phpstan install -a;
-      fi
-
-before_script:
-    - composer install --prefer-source --no-interaction
 
 script:
-    - if [[ "$DEPENDENCIES" = 'high' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.3' ]]; then
+    - if [[ "$STATIC_CHECKS" = '1' ]]; then
         composer crunz:analyze;
-      fi
-    - if [[ "$DEPENDENCIES" = 'low' ]] && [[ "$TRAVIS_PHP_VERSION" = '7.3' ]]; then
         composer phpstan:check;
       fi
     - vendor/bin/phpunit
