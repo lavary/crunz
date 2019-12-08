@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.0.4] - 2019-12-08
+
+### Fixed
+
+- [#268] Fix Symfony 4.4 deprecations
+
 ## [v1.12.4] - 2019-12-08
 
 ### Fixed
@@ -363,6 +369,7 @@ In `v2` this will result in exception.
 [v2.0.1]: https://github.com/lavary/crunz/compare/v2.0.0...v2.0.1
 [v2.0.2]: https://github.com/lavary/crunz/compare/v2.0.1...v2.0.2
 [v2.0.3]: https://github.com/lavary/crunz/compare/v2.0.2...v2.0.3
+[v2.0.4]: https://github.com/lavary/crunz/compare/v2.0.3...v2.0.4
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
