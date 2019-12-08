@@ -31,13 +31,13 @@
         "mtdowling/cron-expression": "^1.1",
         "nikic/php-parser": "^3.0 || ^4.0",
         "swiftmailer/swiftmailer": "^6.0",
-        "symfony/config": "^3.4 || ^4.2",
-        "symfony/console": "^3.4 || ^4.2",
-        "symfony/dependency-injection": "^3.4 || ^4.2",
-        "symfony/filesystem": "^3.4 || ^4.2",
-        "symfony/lock": "^3.4 || ^4.2",
-        "symfony/process": "^3.4 || ^4.2",
-        "symfony/yaml": "^3.4 || ^4.2"
+        "symfony/config": "^3.4.5 || ^4.2",
+        "symfony/console": "^3.4.5 || ^4.2",
+        "symfony/dependency-injection": "^3.4.5 || ^4.2",
+        "symfony/filesystem": "^3.4.5 || ^4.2",
+        "symfony/lock": "^3.4.5 || ^4.2",
+        "symfony/process": "^3.4.5 || ^4.2",
+        "symfony/yaml": "^3.4.5 || ^4.2"
     },
     "require-dev": {
         "ext-json": "*",
