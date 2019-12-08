@@ -3,7 +3,6 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     autoload_files:
         - vendor-bin/cs-fixer/vendor/autoload.php
-        - vendor-bin/phpunit/vendor/autoload.php
     ignoreErrors:
         -
             message: '#Undefined variable: \$container#'
