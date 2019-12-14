@@ -16,9 +16,11 @@ use Crunz\Pinger\PingableTrait;
 use Crunz\Process\Process;
 use Crunz\Task\TaskException;
 use SuperClosure\Serializer;
+use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\Exception\InvalidArgumentException;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Lock\Lock;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\Lock\StoreInterface;
 
@@ -713,15 +715,29 @@ class Event implements PingableInterface
      * By default, the lock is acquired through file system locks. Alternatively, you can pass a symfony lock store
      * that will be responsible for the locking.
      *
-     * @param StoreInterface $store
+     * @param StoreInterface|BlockingStoreInterface $store
      *
      * @return $this
      */
-    public function preventOverlapping(StoreInterface $store = null)
+    public function preventOverlapping(object $store = null)
     {
+        if (null !== $store && !($store instanceof BlockingStoreInterface || $store instanceof StoreInterface)) {
+            $legacyClass = StoreInterface::class;
+            $newClass = BlockingStoreInterface::class;
+            $actualClass = \get_class($store);
+
+            throw new \RuntimeException(
+                "Instance of '{$newClass}' or '{$legacyClass}' is expected, '{$actualClass}' provided"
+            );
+        }
+
+        /** @param  $store */
         $lockStore = $store ?: $this->createDefaultLockStore();
         $this->preventOverlapping = true;
-        $this->lockFactory = new Factory($lockStore);
+        $this->lockFactory = \class_exists(Factory::class)
+            ? new Factory($lockStore)
+            : new LockFactory($lockStore)
+        ;
 
         // Skip the event if it's locked (processing)
         $this->skip(function () {

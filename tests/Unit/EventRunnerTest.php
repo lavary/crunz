@@ -14,6 +14,7 @@ use Crunz\Mailer;
 use Crunz\Schedule;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\StoreInterface;
 
 final class EventRunnerTest extends TestCase
@@ -51,7 +52,13 @@ final class EventRunnerTest extends TestCase
     public function testLockIsReleasedOnError(): void
     {
         $output = $this->createMock(OutputInterface::class);
-        $mockStore = $this->createMock(StoreInterface::class);
+
+        if (\interface_exists(StoreInterface::class)) {
+            $mockStore = $this->createMock(StoreInterface::class);
+        } else {
+            $mockStore = $this->createMock(BlockingStoreInterface::class);
+        }
+
         $mockStore
             ->expects($this->once())
             ->method('delete')

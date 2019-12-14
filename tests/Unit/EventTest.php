@@ -9,6 +9,7 @@ use Crunz\Task\TaskException;
 use Crunz\Tests\TestCase\TestClock;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
+use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Lock\StoreInterface;
 
@@ -403,7 +404,8 @@ final class EventTest extends TestCase
         $this->assertPreventOverlapping(new SemaphoreStore());
     }
 
-    private function assertPreventOverlapping(StoreInterface $store = null): void
+    /** @param StoreInterface|BlockingStoreInterface $store */
+    private function assertPreventOverlapping($store = null): void
     {
         $event = $this->createPreventOverlappingEvent($store);
         $event2 = $this->createPreventOverlappingEvent($store);
@@ -413,7 +415,8 @@ final class EventTest extends TestCase
         $this->assertFalse($event2->isDue(new \DateTimeZone('UTC')));
     }
 
-    private function createPreventOverlappingEvent(StoreInterface $store = null): Event
+    /** @param StoreInterface|BlockingStoreInterface $store */
+    private function createPreventOverlappingEvent($store = null): Event
     {
         $command = "php -r 'sleep(2);'";
 
