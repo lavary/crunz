@@ -8,9 +8,6 @@ parameters:
             message: '#Undefined variable: \$container#'
             path: config/services.php
         -
-            message: '#Class Symfony\\Component\\Config\\Definition\\Builder\\TreeBuilder does not have a constructor#'
-            path: src/Configuration/Definition.php
-        -
             message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)#'
             path: src/Configuration/Definition.php
         - '#Constant CRUNZ_BIN not found#'
