@@ -731,7 +731,6 @@ class Event implements PingableInterface
             );
         }
 
-        /** @param  $store */
         $lockStore = $store ?: $this->createDefaultLockStore();
         $this->preventOverlapping = true;
         $this->lockFactory = \class_exists(Factory::class)
