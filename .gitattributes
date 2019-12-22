@@ -14,7 +14,6 @@ phpunit.xml export-ignore
 .php_cs.dist export-ignore
 /.github export-ignore
 .php_cs.dist export-ignore
-changelog-linker.yml export-ignore
 docker-compose.yml export-ignore
 /docker export-ignore
 box.json export-ignore
