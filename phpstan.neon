@@ -30,6 +30,9 @@ parameters:
         -
             message: '#setProcess\(\)#'
             path: tests/Unit/EventTest.php
+        -
+            message: '#Result of#'
+            path: src/Event.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
