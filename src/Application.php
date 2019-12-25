@@ -250,12 +250,12 @@ class Application extends SymfonyApplication
             ->get(SymfonyStyle::class);
 
         \set_error_handler(
-            function (
-                $errorNumber,
-                $errorString,
-                $file,
-                $line
-            ) use ($io): void {
+            static function (
+                int $errorNumber,
+                string $errorString,
+                string $file,
+                int $line
+            ) use ($io): bool {
                 $io->block(
                     "{$errorString} File {$file}, line {$line}",
                     'Deprecation',
@@ -263,6 +263,8 @@ class Application extends SymfonyApplication
                     ' ',
                     true
                 );
+
+                return true;
             },
             E_USER_DEPRECATED
         );
