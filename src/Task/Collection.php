@@ -29,8 +29,6 @@ class Collection
     }
 
     /**
-     * @param string $source
-     *
      * @return \SplFileInfo[]
      */
     public function all(string $source): iterable

@@ -2,7 +2,7 @@ parameters:
     level: 7
     reportUnmatchedIgnoredErrors: false
     autoload_files:
-        - vendor-bin/cs-fixer/vendor/autoload.php
+        - vendor-bin/phpstan/vendor/autoload.php
     ignoreErrors:
         -
             message: '#Undefined variable: \$container#'
@@ -33,6 +33,9 @@ parameters:
         -
             message: '#Result of#'
             path: src/Event.php
+        -
+            message: '#CrunzContainer#'
+            path: src/Application.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon

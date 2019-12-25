@@ -25,8 +25,7 @@ class Configuration
     /**
      * Return a parameter based on a key.
      *
-     * @param string $key
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
