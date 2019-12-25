@@ -1,5 +1,5 @@
 parameters:
-    level: 7
+    level: 8
     reportUnmatchedIgnoredErrors: false
     autoload_files:
         - vendor-bin/phpstan/vendor/autoload.php
