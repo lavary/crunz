@@ -11,7 +11,6 @@ use Crunz\Task\TaskNumber;
 class ScheduleFactory
 {
     /**
-     * @param TaskNumber                 $taskNumber
      * @param array<int,\Crunz\Schedule> $schedules
      *
      * @return array<int,\Crunz\Schedule>

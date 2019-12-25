@@ -43,7 +43,6 @@ class Schedule implements PingableInterface
      * Add a new event to the schedule object.
      *
      * @param string|\Closure $command
-     * @param array           $parameters
      *
      * @return \Crunz\Event
      */
@@ -61,8 +60,6 @@ class Schedule implements PingableInterface
     /**
      * Register a callback to be called before the operation.
      *
-     * @param \Closure $callback
-     *
      * @return $this
      */
     public function before(\Closure $callback)
@@ -75,8 +72,6 @@ class Schedule implements PingableInterface
     /**
      * Register a callback to be called after the operation.
      *
-     * @param \Closure $callback
-     *
      * @return $this
      */
     public function after(\Closure $callback)
@@ -86,8 +81,6 @@ class Schedule implements PingableInterface
 
     /**
      * Register a callback to be called after the operation.
-     *
-     * @param \Closure $callback
      *
      * @return $this
      */
@@ -100,8 +93,6 @@ class Schedule implements PingableInterface
 
     /**
      * Register a callback to call in case of an error.
-     *
-     * @param \Closure $callback
      *
      * @return $this
      */
@@ -204,8 +195,6 @@ class Schedule implements PingableInterface
 
     /**
      * Compile parameters for a command.
-     *
-     * @param array $parameters
      *
      * @return string
      */

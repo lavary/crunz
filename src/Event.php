@@ -761,8 +761,6 @@ class Event implements PingableInterface
     /**
      * Register a callback to further filter the schedule.
      *
-     * @param \Closure $callback
-     *
      * @return $this
      */
     public function when(Closure $callback)
@@ -774,8 +772,6 @@ class Event implements PingableInterface
 
     /**
      * Register a callback to further filter the schedule.
-     *
-     * @param \Closure $callback
      *
      * @return $this
      */
@@ -818,8 +814,6 @@ class Event implements PingableInterface
     /**
      * Register a callback to be called before the operation.
      *
-     * @param \Closure $callback
-     *
      * @return $this
      */
     public function before(\Closure $callback)
@@ -832,8 +826,6 @@ class Event implements PingableInterface
     /**
      * Register a callback to be called after the operation.
      *
-     * @param \Closure $callback
-     *
      * @return $this
      */
     public function after(Closure $callback)
@@ -843,8 +835,6 @@ class Event implements PingableInterface
 
     /**
      * Register a callback to be called after the operation.
-     *
-     * @param \Closure $callback
      *
      * @return $this
      */
@@ -1211,8 +1201,6 @@ class Event implements PingableInterface
 
     /**
      * Set the event's process.
-     *
-     * @param Process $process
      */
     private function setProcess(Process $process): void
     {

@@ -34,8 +34,6 @@ class Logger
 
     /**
      * Initialize the logger instance.
-     *
-     * @param \Monolog\Logger $logger
      */
     public function __construct(\Monolog\Logger $logger, Configuration $configuration)
     {

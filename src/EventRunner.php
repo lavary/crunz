@@ -107,7 +107,6 @@ class EventRunner
     /**
      * Run an event process.
      *
-     *
      * @param \Crunz\Event $event
      */
     protected function start(Event $event): void
@@ -214,9 +213,6 @@ class EventRunner
 
     /**
      * Invoke an array of callables.
-     *
-     * @param array $callbacks
-     * @param array $parameters
      *
      * @return string
      */
@@ -336,9 +332,6 @@ class EventRunner
         ;
     }
 
-    /**
-     * @param PingableInterface $schedule
-     */
     private function pingBefore(PingableInterface $schedule): void
     {
         if (!$schedule->hasPingBefore()) {
@@ -352,9 +345,6 @@ class EventRunner
             ->ping($schedule->getPingBeforeUrl());
     }
 
-    /**
-     * @param PingableInterface $schedule
-     */
     private function pingAfter(PingableInterface $schedule): void
     {
         if (!$schedule->hasPingAfter()) {
