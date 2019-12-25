@@ -1,6 +1,7 @@
 parameters:
     level: 8
     reportUnmatchedIgnoredErrors: false
+    inferPrivatePropertyTypeFromConstructor: true
     autoload_files:
         - vendor-bin/phpstan/vendor/autoload.php
     ignoreErrors:
