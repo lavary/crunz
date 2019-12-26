@@ -28,6 +28,7 @@ final class ClosureRunCommandTest extends TestCase
         );
     }
 
+    /** @return iterable<string,array<int>> */
     public function closureValueProvider(): iterable
     {
         yield '0' => [0];

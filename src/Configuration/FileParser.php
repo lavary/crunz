@@ -19,6 +19,8 @@ class FileParser
     /**
      * @throws ConfigFileNotExistsException
      * @throws ConfigFileNotReadableException
+     *
+     * @return array<array>
      */
     public function parse(string $configPath): array
     {

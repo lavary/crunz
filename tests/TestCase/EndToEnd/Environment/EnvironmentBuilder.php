@@ -4,63 +4,53 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\TestCase\EndToEnd\Environment;
 
-use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
 
 final class EnvironmentBuilder
 {
-    /** @var array */
+    /** @var array<string> */
     private $tasks = [];
-    /** @var array */
+    /** @var array<string,mixed> */
     private $config = [];
     /** @var Path */
     private $taskDirectory;
     /** @var FilesystemInterface */
     private $filesystem;
-    /** @var EnvFlags */
-    private $envFlags;
 
-    public function __construct(FilesystemInterface $filesystem, EnvFlags $envFlags)
+    public function __construct(FilesystemInterface $filesystem)
     {
         $this->taskDirectory = Path::fromStrings('tasks');
         $this->filesystem = $filesystem;
-        $this->envFlags = $envFlags;
     }
 
-    /**
-     * @param string $taskName
-     *
-     * @return $this
-     */
-    public function addTask($taskName)
+    public function addTask(string $taskName): self
     {
         $this->tasks[] = $taskName;
 
         return $this;
     }
 
-    public function changeTaskDirectory(Path $path)
+    public function changeTaskDirectory(Path $path): self
     {
         $this->taskDirectory = $path;
 
         return $this;
     }
 
-    public function withConfig(array $config)
+    /** @param array<string,mixed> $config */
+    public function withConfig(array $config): self
     {
         $this->config = $config;
 
         return $this;
     }
 
-    /** @return Environment */
-    public function createEnvironment()
+    public function createEnvironment(): Environment
     {
         return new Environment(
             $this->filesystem,
             $this->taskDirectory,
-            $this->envFlags,
             $this->config,
             $this->tasks
         );

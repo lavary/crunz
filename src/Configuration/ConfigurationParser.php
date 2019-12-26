@@ -38,6 +38,7 @@ final class ConfigurationParser implements ConfigurationParserInterface
         $this->filesystem = $filesystem;
     }
 
+    /** {@inheritdoc} */
     public function parseConfig(): array
     {
         $parsedConfig = [];
@@ -77,7 +78,7 @@ final class ConfigurationParser implements ConfigurationParserInterface
     {
         $cwd = $this->filesystem
             ->getCwd();
-        $configPath = Path::fromStrings($cwd, ConfigGeneratorCommand::CONFIG_FILE_NAME)->toString();
+        $configPath = Path::fromStrings($cwd ?? '', ConfigGeneratorCommand::CONFIG_FILE_NAME)->toString();
         $configExists = $this->filesystem
             ->fileExists($configPath);
 

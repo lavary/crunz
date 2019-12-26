@@ -14,28 +14,28 @@ class Schedule implements PingableInterface
     /**
      * All of the events on the schedule.
      *
-     * @var array
+     * @var Event[]
      */
     protected $events = [];
 
     /**
      * The array of callbacks to be run before all the events are finished.
      *
-     * @var array
+     * @var \Closure[]
      */
     protected $beforeCallbacks = [];
 
     /**
      * The array of callbacks to be run after all the event is finished.
      *
-     * @var array
+     * @var \Closure[]
      */
     protected $afterCallbacks = [];
 
     /**
      * The array of callbacks to call in case of an error.
      *
-     * @var array
+     * @var \Closure[]
      */
     protected $errorCallbacks = [];
 
@@ -43,6 +43,7 @@ class Schedule implements PingableInterface
      * Add a new event to the schedule object.
      *
      * @param string|\Closure $command
+     * @param string[]        $parameters
      *
      * @return \Crunz\Event
      */
@@ -106,7 +107,7 @@ class Schedule implements PingableInterface
     /**
      * Return all registered before callbacks.
      *
-     * @return array
+     * @return \Closure[]
      */
     public function beforeCallbacks()
     {
@@ -116,7 +117,7 @@ class Schedule implements PingableInterface
     /**
      * Return all registered after callbacks.
      *
-     * @return array
+     * @return \Closure[]
      */
     public function afterCallbacks()
     {
@@ -126,7 +127,7 @@ class Schedule implements PingableInterface
     /**
      * Return all registered error callbacks.
      *
-     * @return array
+     * @return \Closure[]
      */
     public function errorCallbacks()
     {
@@ -136,7 +137,7 @@ class Schedule implements PingableInterface
     /**
      * Get or set the events of the schedule object.
      *
-     * @param array $events
+     * @param Event[] $events
      *
      * @return Event[]
      */
@@ -152,13 +153,13 @@ class Schedule implements PingableInterface
     /**
      * Get all of the events on the schedule that are due.
      *
-     * @return array
+     * @return Event[]
      */
     public function dueEvents(\DateTimeZone $timeZone)
     {
         return \array_filter(
             $this->events,
-            function (Event $event) use ($timeZone) {
+            static function (Event $event) use ($timeZone) {
                 return $event->isDue($timeZone);
             }
         );
@@ -195,6 +196,8 @@ class Schedule implements PingableInterface
 
     /**
      * Compile parameters for a command.
+     *
+     * @param string[] $parameters
      *
      * @return string
      */

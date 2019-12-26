@@ -50,6 +50,11 @@ final class FinderTest extends TestCase
         $this->assertContainsOnlyInstancesOf(\SplFileInfo::class, $foundFiles);
     }
 
+    /**
+     * @return iterable<string,array>
+     *
+     * @throws \Crunz\Exception\CrunzException
+     */
     public function tasksProvider(): iterable
     {
         $suffix = 'Here.php';

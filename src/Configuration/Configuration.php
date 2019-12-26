@@ -9,7 +9,7 @@ use Crunz\Path\Path;
 
 class Configuration
 {
-    /** @var array */
+    /** @var array<string,mixed> */
     private $config;
     /** @var ConfigurationParserInterface */
     private $configurationParser;

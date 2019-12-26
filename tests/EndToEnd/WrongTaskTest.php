@@ -32,6 +32,7 @@ final class WrongTaskTest extends EndToEndTestCase
         );
     }
 
+    /** @return iterable<string,array> */
     public function scheduleInstanceProvider(): iterable
     {
         yield 'list' => ['schedule:list'];

@@ -12,6 +12,8 @@ class TaskNumberTest extends TestCase
 {
     /**
      * @dataProvider nonStringValueProvider
+     *
+     * @param mixed $value
      * @test
      */
     public function canNotCreateTaskNumberWithNonStringValueByFromString($value): void
@@ -26,7 +28,7 @@ class TaskNumberTest extends TestCase
      * @test
      * @dataProvider nonNumericProvider
      */
-    public function taskNumberCanNotBeNonNumericString($value): void
+    public function taskNumberCanNotBeNonNumericString(string $value): void
     {
         $this->expectException(WrongTaskNumberException::class);
         $this->expectExceptionMessage("Task number '{$value}' is not numeric.");
@@ -38,7 +40,7 @@ class TaskNumberTest extends TestCase
      * @test
      * @dataProvider numericValueProvider
      */
-    public function taskNumberCanBeCreatedWithNumericStringValue($value, $expectedNumber): void
+    public function taskNumberCanBeCreatedWithNumericStringValue(string $value, int $expectedNumber): void
     {
         $taskNumber = TaskNumber::fromString($value);
 
@@ -53,7 +55,8 @@ class TaskNumberTest extends TestCase
         $this->assertSame(13, $taskNumber->asArrayIndex());
     }
 
-    public function nonStringValueProvider()
+    /** @return iterable<string,array> */
+    public function nonStringValueProvider(): iterable
     {
         yield 'null' => [null];
         yield 'float' => [3.14];
@@ -62,7 +65,8 @@ class TaskNumberTest extends TestCase
         yield 'object' => [new \stdClass()];
     }
 
-    public function numericValueProvider()
+    /** @return iterable<string,array> */
+    public function numericValueProvider(): iterable
     {
         yield 'int' => [
             '155',
@@ -74,7 +78,8 @@ class TaskNumberTest extends TestCase
         ];
     }
 
-    public function nonNumericProvider()
+    /** @return iterable<string,array> */
+    public function nonNumericProvider(): iterable
     {
         yield 'chars' => ['abc'];
         yield 'charsWithNumber' => ['1a2b3'];

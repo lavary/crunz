@@ -12,6 +12,8 @@ final class PingableTest extends TestCase
 {
     /**
      * @test
+     *
+     * @param mixed $url
      * @dataProvider nonStringProvider
      */
     public function beforeUrlMustBeString($url): void
@@ -50,6 +52,8 @@ final class PingableTest extends TestCase
 
     /**
      * @test
+     *
+     * @param mixed $url
      * @dataProvider nonStringProvider
      */
     public function afterUrlMustBeString($url): void
@@ -82,10 +86,8 @@ final class PingableTest extends TestCase
         $pingable->getPingAfterUrl();
     }
 
-    /**
-     * @return \Generator
-     */
-    public function nonStringProvider()
+    /** @return iterable<string,array> */
+    public function nonStringProvider(): iterable
     {
         yield 'null' => [null];
         yield 'array' => [[]];

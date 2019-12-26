@@ -60,7 +60,8 @@ class TaskGeneratorTest extends TestCase
         $this->assertFileExists($this->taskFilePath);
     }
 
-    private function getInputStream($input)
+    /** @return resource */
+    private function getInputStream(string $input)
     {
         $stream = \fopen('php://memory', 'rb+', false);
 
@@ -82,7 +83,7 @@ class TaskGeneratorTest extends TestCase
     }
 
     private function provideAnswer(
-        $answer,
+        string $answer,
         CommandTester $commandTester,
         Command $command
     ): void {

@@ -33,6 +33,8 @@ class LoggerFactory
     }
 
     /**
+     * @param array<string,string> $streams
+     *
      * @return Logger
      */
     public function create(array $streams = [])

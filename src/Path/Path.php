@@ -8,19 +8,22 @@ use Crunz\Exception\CrunzException;
 
 final class Path
 {
+    /** @var string */
     private $path;
 
-    private function __construct($path)
+    private function __construct(string $path)
     {
         $this->path = $path;
     }
 
     /**
+     * @param string[] $parts
+     *
      * @return Path
      *
      * @throws CrunzException
      */
-    public static function create(array $parts)
+    public static function create(array $parts): self
     {
         if (0 === \count($parts)) {
             throw new CrunzException('At least one part expected.');
@@ -36,18 +39,16 @@ final class Path
     }
 
     /**
-     * @param string ...$parts
-     *
      * @return Path
      *
      * @throws CrunzException
      */
-    public static function fromStrings(...$parts)
+    public static function fromStrings(string ...$parts): self
     {
         return self::create($parts);
     }
 
-    public function toString()
+    public function toString(): string
     {
         return $this->path;
     }

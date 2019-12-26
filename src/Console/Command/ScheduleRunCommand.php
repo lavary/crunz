@@ -118,9 +118,10 @@ class ScheduleRunCommand extends Command
                 ->singleTaskSchedule(TaskNumber::fromString($task), ...$schedules);
         }
 
+        $forceRun = \filter_var($this->options['force'] ?? false, FILTER_VALIDATE_BOOLEAN);
         $schedules = \array_map(
-            function (Schedule $schedule) use ($tasksTimezone) {
-                if (false === $this->options['force']) {
+            static function (Schedule $schedule) use ($tasksTimezone, $forceRun) {
+                if (false === $forceRun) {
                     // We keep the events which are due and dismiss the rest.
                     $schedule->events(
                         $schedule->dueEvents(

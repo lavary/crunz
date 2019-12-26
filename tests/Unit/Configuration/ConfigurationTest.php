@@ -56,6 +56,7 @@ final class ConfigurationTest extends TestCase
         $this->assertSame($expectedPath->toString(), $configuration->getSourcePath());
     }
 
+    /** @param array<string,string|array> $config */
     private function createConfiguration(array $config = [], string $cwd = ''): Configuration
     {
         $mockConfigurationParser = $this->createMock(ConfigurationParserInterface::class);

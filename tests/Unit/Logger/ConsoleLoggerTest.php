@@ -6,6 +6,7 @@ namespace Crunz\Tests\Unit\Logger;
 
 use Crunz\Logger\ConsoleLogger;
 use Crunz\Logger\ConsoleLoggerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -15,7 +16,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesNormalOnlyWithSuitableVerbosity($ioVerbosity): void
+    public function loggerWritesNormalOnlyWithSuitableVerbosity(int $ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_NORMAL) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);
@@ -32,7 +33,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesVerboseOnlyWithSuitableVerbosity($ioVerbosity): void
+    public function loggerWritesVerboseOnlyWithSuitableVerbosity(int $ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_VERBOSE) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);
@@ -49,7 +50,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesVeryVerboseOnlyWithSuitableVerbosity($ioVerbosity): void
+    public function loggerWritesVeryVerboseOnlyWithSuitableVerbosity(int $ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_VERY_VERBOSE) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);
@@ -66,7 +67,7 @@ final class ConsoleLoggerTest extends TestCase
      * @test
      * @dataProvider verbosityProvider
      */
-    public function loggerWritesDebugOnlyWithSuitableVerbosity($ioVerbosity): void
+    public function loggerWritesDebugOnlyWithSuitableVerbosity(int $ioVerbosity): void
     {
         $expectedCalls = ($ioVerbosity >= ConsoleLoggerInterface::VERBOSITY_DEBUG) ? 1 : 0;
         $mockSymfonyStyle = $this->mockSymfonyStyle($ioVerbosity);
@@ -79,10 +80,8 @@ final class ConsoleLoggerTest extends TestCase
         $consoleLogger->debug('Some message');
     }
 
-    /**
-     * @return \Generator
-     */
-    public function verbosityProvider()
+    /** @return iterable<string,array<int>> */
+    public function verbosityProvider(): iterable
     {
         yield 'quiet' => [ConsoleLoggerInterface::VERBOSITY_QUIET];
         yield 'normal' => [ConsoleLoggerInterface::VERBOSITY_NORMAL];
@@ -91,12 +90,8 @@ final class ConsoleLoggerTest extends TestCase
         yield 'debug' => [ConsoleLoggerInterface::VERBOSITY_DEBUG];
     }
 
-    /**
-     * @param int $ioVerbosity
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|SymfonyStyle
-     */
-    private function mockSymfonyStyle($ioVerbosity)
+    /** @return MockObject|SymfonyStyle */
+    private function mockSymfonyStyle(int $ioVerbosity)
     {
         $mock = $this->createMock(SymfonyStyle::class);
 

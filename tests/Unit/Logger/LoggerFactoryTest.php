@@ -29,7 +29,7 @@ final class LoggerFactoryTest extends TestCase
             ['timezone' => $expectedTimezone, 'timezone_log' => true],
             $expectedTimezone
         );
-        /** @var MonologLogger $monolog */
+        /** @var MonologLogger $monologLogger */
         $monologLogger = $this->readAttribute($crunzLogger, 'logger');
         /** @var \DateTimeZone $loggerTimezone */
         $loggerTimezone = $this->readAttribute($monologLogger, 'timezone');
@@ -47,15 +47,15 @@ final class LoggerFactoryTest extends TestCase
         $expectedTimezone = 'Asia/Tehran';
         $crunzLogger = $this->createCrunzLogger(['timezone' => $expectedTimezone, 'timezone_log' => false]);
 
-        /** @var MonologLogger $monolog */
+        /** @var MonologLogger $monologLogger */
         $monologLogger = $this->readAttribute($crunzLogger, 'logger');
         /** @var \DateTimeZone|null $loggerTimezone */
         $loggerTimezone = $this->readAttribute($monologLogger, 'timezone');
         $this->assertNull($loggerTimezone);
     }
 
-    /** @return Configuration */
-    private function createConfiguration(array $config = [])
+    /** @param array<string,array> $config */
+    private function createConfiguration(array $config = []): Configuration
     {
         $mockConfigurationParser = $this->createMock(ConfigurationParserInterface::class);
         $mockConfigurationParser
@@ -69,8 +69,12 @@ final class LoggerFactoryTest extends TestCase
         );
     }
 
-    /** @return Logger */
-    private function createCrunzLogger(array $config = [], $timezoneName = 'UTC')
+    /**
+     * @param array<string,mixed> $config
+     *
+     * @throws \Crunz\Exception\CrunzException
+     */
+    private function createCrunzLogger(array $config = [], string $timezoneName = 'UTC'): Logger
     {
         $configuration = $this->createConfiguration($config);
         $mockTimezone = $this->createMock(Timezone::class);
