@@ -56,7 +56,7 @@ class ProcessUtils
 
             $escapedArgument = '';
             $quote = false;
-            /** @var array $parts */
+            /** @var string[] $parts */
             $parts = \preg_split('/(")/', $argument, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 
             foreach ($parts as $part) {
@@ -122,7 +122,7 @@ class ProcessUtils
         return $input;
     }
 
-    private static function isSurroundedBy($arg, $char)
+    private static function isSurroundedBy(string $arg, string $char): bool
     {
         return 2 < \mb_strlen($arg) && $char === $arg[0] && $char === $arg[\mb_strlen($arg) - 1];
     }

@@ -23,7 +23,7 @@ final class FilesystemTest extends TestCase
      * @dataProvider fileExistsProvider
      * @test
      */
-    public function fileExistsIsCorrect($path, $expectedExistence): void
+    public function fileExistsIsCorrect(string $path, bool $expectedExistence): void
     {
         $filesystem = new Filesystem();
 
@@ -144,7 +144,12 @@ final class FilesystemTest extends TestCase
         $filesystem->readContent($path->toString());
     }
 
-    public function fileExistsProvider()
+    /**
+     * @return iterable<string,array>
+     *
+     * @throws \Crunz\Exception\CrunzException
+     */
+    public function fileExistsProvider(): iterable
     {
         $tempFile = new TemporaryFile();
 
@@ -161,7 +166,7 @@ final class FilesystemTest extends TestCase
         ];
     }
 
-    private function findProjectRootDirectory()
+    private function findProjectRootDirectory(): string
     {
         $dir = $rootDir = \dirname(__DIR__);
         $path = Path::fromStrings($dir, 'composer.json');

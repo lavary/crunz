@@ -52,7 +52,7 @@ class Event implements PingableInterface
     /**
      * The human readable description of the event.
      *
-     * @var string
+     * @var string|null
      */
     public $description;
 
@@ -73,7 +73,7 @@ class Event implements PingableInterface
     /**
      * The event's unique identifier.
      *
-     * @var string
+     * @var string|int
      */
     protected $id;
 
@@ -111,28 +111,28 @@ class Event implements PingableInterface
     /**
      * The array of filter callbacks.
      *
-     * @var array
+     * @var \Closure[]
      */
     protected $filters = [];
 
     /**
      * The array of reject callbacks.
      *
-     * @var array
+     * @var \Closure[]
      */
     protected $rejects = [];
 
     /**
      * The array of callbacks to be run before the event is started.
      *
-     * @var array
+     * @var \Closure[]
      */
     protected $beforeCallbacks = [];
 
     /**
      * The array of callbacks to be run after the event is finished.
      *
-     * @var array
+     * @var \Closure[]
      */
     protected $afterCallbacks = [];
 
@@ -146,7 +146,7 @@ class Event implements PingableInterface
     /**
      * Position of cron fields.
      *
-     * @var array
+     * @var array<string,int>
      */
     protected $fieldsPosition = [
         'minute' => 1,
@@ -183,6 +183,7 @@ class Event implements PingableInterface
      * Create a new event instance.
      *
      * @param string|Closure $command
+     * @param string|int     $id
      */
     public function __construct($id, $command)
     {
@@ -194,8 +195,8 @@ class Event implements PingableInterface
     /**
      * Handling dynamic frequency methods.
      *
-     * @param string $methodName
-     * @param array  $params
+     * @param string             $methodName
+     * @param array<mixed,mixed> $params
      *
      * @return self
      */
@@ -317,6 +318,7 @@ class Event implements PingableInterface
         return true;
     }
 
+    /** @return string */
     public function wholeOutput()
     {
         return \implode('', $this->wholeOutput);
@@ -357,7 +359,7 @@ class Event implements PingableInterface
      */
     public function cron(string $expression): self
     {
-        /** @var array $parts */
+        /** @var string[] $parts */
         $parts = \preg_split(
             '/\s/',
             $expression,
@@ -449,6 +451,11 @@ class Event implements PingableInterface
 
     /**
      * Set Working period.
+     *
+     * @param string $from
+     * @param string $to
+     *
+     * @return self
      */
     public function between($from, $to)
     {
@@ -460,6 +467,8 @@ class Event implements PingableInterface
      * Check if event should be on.
      *
      * @param string $datetime
+     *
+     * @return self
      */
     public function from($datetime)
     {
@@ -472,6 +481,8 @@ class Event implements PingableInterface
      * Check if event should be off.
      *
      * @param string $datetime
+     *
+     * @return self
      */
     public function to($datetime)
     {
@@ -883,6 +894,9 @@ class Event implements PingableInterface
 
     /**
      * Another way to the frequency of the cron job.
+     *
+     * @param string         $unit
+     * @param float|int|null $value
      */
     public function every($unit = null, $value = null): self
     {
@@ -899,7 +913,7 @@ class Event implements PingableInterface
     /**
      * Return the event's command.
      *
-     * @return string
+     * @return string|int
      */
     public function getId()
     {
@@ -987,7 +1001,7 @@ class Event implements PingableInterface
     /**
      * Return all registered before callbacks.
      *
-     * @return array
+     * @return \Closure[]
      */
     public function beforeCallbacks()
     {
@@ -997,7 +1011,7 @@ class Event implements PingableInterface
     /**
      * Return all registered after callbacks.
      *
-     * @return array
+     * @return \Closure[]
      */
     public function afterCallbacks()
     {
@@ -1249,8 +1263,7 @@ class Event implements PingableInterface
         }
     }
 
-    /** @return ClockInterface */
-    private function getClock()
+    private function getClock(): ClockInterface
     {
         if (null === self::$clock) {
             self::$clock = new Clock();
@@ -1259,10 +1272,10 @@ class Event implements PingableInterface
         return self::$clock;
     }
 
-    private function splitCamel($text)
+    private function splitCamel(string $text): string
     {
         $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        /** @var array $segments */
+        /** @var string[] $segments */
         $segments = \preg_split($pattern, $text);
 
         return \mb_strtolower(
@@ -1273,7 +1286,7 @@ class Event implements PingableInterface
         );
     }
 
-    private function isWindows()
+    private function isWindows(): bool
     {
         $osCode = \mb_substr(
             PHP_OS,
@@ -1284,7 +1297,7 @@ class Event implements PingableInterface
         return 'WIN' === $osCode;
     }
 
-    private function wordToNumber($text)
+    private function wordToNumber(string $text): float
     {
         $data = \strtr(
             $text,
@@ -1327,7 +1340,7 @@ class Event implements PingableInterface
             ]
         );
 
-        /** @var array $matchedParts */
+        /** @var string[] $matchedParts */
         $matchedParts = \preg_split('/[\s-]+/', $data);
         // Coerce all tokens to numbers
         $parts = \array_map('floatval', $matchedParts);

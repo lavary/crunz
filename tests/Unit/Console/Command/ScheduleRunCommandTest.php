@@ -14,6 +14,7 @@ use Crunz\Task\Loader;
 use Crunz\Task\LoaderInterface;
 use Crunz\Task\Timezone;
 use Crunz\Tests\TestCase\TemporaryFile;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -116,7 +117,8 @@ class ScheduleRunCommandTest extends TestCase
         return $mockConfiguration;
     }
 
-    private function mockEventRunner(OutputInterface $output)
+    /** @return EventRunner|MockObject */
+    private function mockEventRunner(OutputInterface $output): EventRunner
     {
         $mockEventRunner = $this->createMock(EventRunner::class);
         $mockEventRunner
@@ -142,7 +144,13 @@ class ScheduleRunCommandTest extends TestCase
         return $mockEventRunner;
     }
 
-    private function mockInput(array $options, array $arguments = [])
+    /**
+     * @param array<string,bool|string|null> $options
+     * @param array<string,bool|string|null> $arguments
+     *
+     * @return MockObject|InputInterface
+     */
+    private function mockInput(array $options, array $arguments = []): InputInterface
     {
         $mockInput = $this->createMock(InputInterface::class);
         $mockInput
@@ -157,17 +165,16 @@ class ScheduleRunCommandTest extends TestCase
         return $mockInput;
     }
 
-    /**
-     * @return Timezone|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function mockTimezoneProvider()
+    /** @return Timezone|MockObject */
+    private function mockTimezoneProvider(): Timezone
     {
         $timeZone = new \DateTimeZone('UTC');
 
         return $this->createConfiguredMock(Timezone::class, ['timezoneForComparisons' => $timeZone]);
     }
 
-    private function mockTaskCollection(...$taskFiles)
+    /** @return Collection|MockObject */
+    private function mockTaskCollection(string ...$taskFiles): Collection
     {
         $mockTaskCollection = $this->createMock(Collection::class);
 
@@ -186,7 +193,7 @@ class ScheduleRunCommandTest extends TestCase
         return $mockTaskCollection;
     }
 
-    private function createTaskFile($taskContent, TemporaryFile $file)
+    private function createTaskFile(string $taskContent, TemporaryFile $file): string
     {
         $filesystem = new Filesystem();
 
@@ -197,7 +204,7 @@ class ScheduleRunCommandTest extends TestCase
         return $filename;
     }
 
-    private function taskContent()
+    private function taskContent(): string
     {
         return <<<'PHP'
 <?php
@@ -209,14 +216,14 @@ $schedule = new Schedule();
 $schedule->run('php -v')
     ->description('Show PHP version')
     // Always skip
-    ->skip(function () {return true;})
+    ->skip(static function () {return true;})
 ;
 
 return $schedule;
 PHP;
     }
 
-    private function phpVersionTaskContent()
+    private function phpVersionTaskContent(): string
     {
         return <<<'PHP'
 <?php

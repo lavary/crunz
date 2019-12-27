@@ -135,9 +135,9 @@ final class ConfigGeneratorCommand extends Command
     }
 
     private function updateTimezone(
-        $destination,
-        $src,
-        $timezone
+        string $destination,
+        string $src,
+        string $timezone
     ): void {
         $this->symfonyFilesystem
             ->dumpFile(

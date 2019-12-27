@@ -9,7 +9,11 @@ class Invoker
     /**
      * Call the given Closure with buffering support.
      *
-     * @param callable $closure
+     * @param callable           $closure
+     * @param bool               $buffer
+     * @param array<mixed,mixed> $parameters
+     *
+     * @return mixed
      */
     public function call($closure, array $parameters = [], $buffer = false)
     {

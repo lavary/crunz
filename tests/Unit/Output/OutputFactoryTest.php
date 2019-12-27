@@ -16,7 +16,7 @@ final class OutputFactoryTest extends TestCase
      * @test
      * @dataProvider inputProvider
      */
-    public function inputDefinesOutputVerbosity(InputInterface $input, $expectedVerbosity): void
+    public function inputDefinesOutputVerbosity(InputInterface $input, int $expectedVerbosity): void
     {
         $factory = new OutputFactory($input);
 
@@ -25,7 +25,8 @@ final class OutputFactoryTest extends TestCase
         $this->assertSame($expectedVerbosity, $output->getVerbosity());
     }
 
-    public function inputProvider()
+    /** @return iterable<string,array> */
+    public function inputProvider(): iterable
     {
         yield 'quietShort' => [
             $this->createInput('-q'),
@@ -58,7 +59,7 @@ final class OutputFactoryTest extends TestCase
         ];
     }
 
-    private function createInput($option)
+    private function createInput(string $option): InputInterface
     {
         return new ArgvInput(['', $option]);
     }

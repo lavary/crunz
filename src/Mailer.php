@@ -57,8 +57,6 @@ class Mailer
                     "'mail' transport is no longer supported, please use 'smtp' or 'sendmail' transport."
                 );
 
-                break;
-
             default:
                 $transport = $this->getSendMailTransport();
         }
@@ -107,7 +105,8 @@ class Mailer
         return $messageObject;
     }
 
-    private function config($key)
+    /** @return mixed */
+    private function config(string $key)
     {
         return $this->configuration
             ->get($key)

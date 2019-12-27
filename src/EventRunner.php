@@ -79,6 +79,8 @@ class EventRunner
 
     /**
      * Handle an array of Schedule objects.
+     *
+     * @param Schedule[] $schedules
      */
     public function handle(OutputInterface $output, array $schedules = []): void
     {
@@ -213,6 +215,9 @@ class EventRunner
 
     /**
      * Invoke an array of callables.
+     *
+     * @param \Closure[]         $callbacks
+     * @param array<mixed,mixed> $parameters
      *
      * @return string
      */

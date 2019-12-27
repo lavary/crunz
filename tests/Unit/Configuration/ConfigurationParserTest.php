@@ -47,8 +47,11 @@ final class ConfigurationParserTest extends TestCase
         $configurationParser->parseConfig();
     }
 
-    private function createConfigurationParser(FileParser $fileParser, array $expectedProcessedConfig)
-    {
+    /** @param array<string,string> $expectedProcessedConfig */
+    private function createConfigurationParser(
+        FileParser $fileParser,
+        array $expectedProcessedConfig
+    ): ConfigurationParser {
         $definition = new Definition();
 
         $definitionProcessorMock = $this->createMock(Processor::class);

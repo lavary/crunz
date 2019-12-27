@@ -13,7 +13,7 @@ final class EnvFlagsTest extends TestCase
      * @test
      * @dataProvider statusProvider
      */
-    public function deprecationHandlerStatusIsCorrect($flagValue, $expectedEnabled): void
+    public function deprecationHandlerStatusIsCorrect(string $flagValue, bool $expectedEnabled): void
     {
         \putenv(EnvFlags::DEPRECATION_HANDLER_FLAG . "={$flagValue}");
 
@@ -43,7 +43,7 @@ final class EnvFlagsTest extends TestCase
      * @test
      * @dataProvider containerDebugProvider
      */
-    public function containerDebugFlagIsCorrect($flagValue, $expectedEnabled): void
+    public function containerDebugFlagIsCorrect(string $flagValue, bool $expectedEnabled): void
     {
         \putenv(EnvFlags::CONTAINER_DEBUG_FLAG . "={$flagValue}");
 
@@ -69,7 +69,8 @@ final class EnvFlagsTest extends TestCase
         $this->assertFlagValue(EnvFlags::CONTAINER_DEBUG_FLAG, '1');
     }
 
-    public function statusProvider()
+    /** @return iterable<string,array> */
+    public function statusProvider(): iterable
     {
         yield 'true' => [
             '1',
@@ -82,7 +83,8 @@ final class EnvFlagsTest extends TestCase
         ];
     }
 
-    public function containerDebugProvider()
+    /** @return iterable<string,array> */
+    public function containerDebugProvider(): iterable
     {
         yield 'true' => [
             '1',
@@ -95,7 +97,7 @@ final class EnvFlagsTest extends TestCase
         ];
     }
 
-    private function assertFlagValue($flag, $expectedValue): void
+    private function assertFlagValue(string $flag, string $expectedValue): void
     {
         $actualValue = \getenv($flag);
         $this->assertSame($expectedValue, $actualValue);

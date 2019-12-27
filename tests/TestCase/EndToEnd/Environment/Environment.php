@@ -15,26 +15,24 @@ final class Environment
 {
     /** @var string */
     private $rootDirectory = '';
-    /** @var array */
+    /** @var string[] */
     private $tasks;
-    /** @var array */
+    /** @var array<string,mixed> */
     private $config;
     /** @var string */
     private $tasksDirectory;
     /** @var FilesystemInterface */
     private $filesystem;
-    /** @var EnvFlags */
-    private $envFlags;
 
     /**
-     * @param string[] $tasks
+     * @param string[]            $tasks
+     * @param array<string,mixed> $config
      *
      * @throws \Exception
      */
     public function __construct(
         FilesystemInterface $filesystem,
         Path $tasksDirectory,
-        EnvFlags $envFlags,
         array $config = [],
         array $tasks = []
     ) {
@@ -42,7 +40,6 @@ final class Environment
         $this->tasks = $tasks;
         $this->config = $config;
         $this->tasksDirectory = $tasksDirectory->toString();
-        $this->envFlags = $envFlags;
 
         $this->setUp();
     }
@@ -116,8 +113,7 @@ final class Environment
         return $process;
     }
 
-    /** @return string */
-    public function rootDirectory()
+    public function rootDirectory(): string
     {
         if ('' === $this->rootDirectory) {
             $tempDir = $this->filesystem
@@ -238,13 +234,7 @@ final class Environment
             ->createDirectory($this->rootDirectory());
     }
 
-    /**
-     * @param string      $command
-     * @param string|null $cwd
-     *
-     * @return Process
-     */
-    private function createProcess($command, $cwd = null)
+    private function createProcess(string $command, ?string $cwd = null): Process
     {
         return Process::fromStringCommand($command, $cwd);
     }

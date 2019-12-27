@@ -25,22 +25,22 @@ interface FilesystemInterface
      * @param string $directoryPath
      * @param Path[] $ignoredPaths
      */
-    public function removeDirectory($directoryPath, $ignoredPaths = []);
+    public function removeDirectory($directoryPath, $ignoredPaths = []): void;
 
     /**
      * @param string $filePath
      * @param string $content
      */
-    public function dumpFile($filePath, $content);
+    public function dumpFile($filePath, $content): void;
 
     /** @param string $directoryPath */
-    public function createDirectory($directoryPath);
+    public function createDirectory($directoryPath): void;
 
     /**
      * @param string $sourceFile
      * @param string $targetFile
      */
-    public function copy($sourceFile, $targetFile);
+    public function copy($sourceFile, $targetFile): void;
 
     /** @return string */
     public function projectRootDirectory();

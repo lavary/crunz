@@ -6,25 +6,22 @@ namespace Crunz\Process;
 
 use Symfony\Component\Process\Process as SymfonyProcess;
 
+/** @internal */
 final class Process
 {
     /** @var bool */
     private static $needsInheritEnvVars;
-    /** @var SymfonyProcess */
+    /** @var SymfonyProcess|string[] */
     private $process;
 
+    /** @param SymfonyProcess|string[] $process */
     private function __construct(SymfonyProcess $process)
     {
         $this->process = $process;
     }
 
-    /**
-     * @param array|string $command
-     * @param string|null  $cwd
-     *
-     * @return self
-     */
-    public static function fromStringCommand($command, $cwd = null)
+    /** @param string[]|string $command */
+    public static function fromStringCommand($command, ?string $cwd = null): self
     {
         if (\method_exists(SymfonyProcess::class, 'fromShellCommandline')) {
             $process = SymfonyProcess::fromShellCommandline($command, $cwd);
@@ -39,9 +36,7 @@ final class Process
         return new self($process);
     }
 
-    /**
-     * @param callable|null $callback
-     */
+    /** @param callable|null $callback */
     public function start($callback = null): void
     {
         $this->process
@@ -62,23 +57,17 @@ final class Process
             ->wait();
     }
 
+    /** @param array<string,string> $env */
     public function setEnv(array $env): void
     {
         $this->process
             ->setEnv($env);
     }
 
-    /** @return int|null */
-    public function getPid()
+    public function getPid(): ?int
     {
         return $this->process
             ->getPid();
-    }
-
-    /** @return bool */
-    public function isInheritEnvVarsSupported()
-    {
-        return self::needsInheritEnvVars();
     }
 
     public function isRunning(): bool
@@ -105,8 +94,7 @@ final class Process
             ->getErrorOutput();
     }
 
-    /** bool */
-    private static function needsInheritEnvVars()
+    private static function needsInheritEnvVars(): bool
     {
         if (null === self::$needsInheritEnvVars) {
             $methodName = 'inheritEnvironmentVariables';

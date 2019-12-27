@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\TestCase;
 
-use Crunz\EnvFlags\EnvFlags;
 use Crunz\Filesystem\Filesystem;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Process\Process;
@@ -15,8 +14,6 @@ abstract class EndToEndTestCase extends TestCase
 {
     /** @var FilesystemInterface */
     private $filesystem;
-    /** @var EnvFlags */
-    private $envFlags;
 
     public function createEnvironmentBuilder(): EnvironmentBuilder
     {
@@ -24,11 +21,7 @@ abstract class EndToEndTestCase extends TestCase
             $this->filesystem = new Filesystem();
         }
 
-        if (null === $this->envFlags) {
-            $this->envFlags = new EnvFlags();
-        }
-
-        return new EnvironmentBuilder($this->filesystem, $this->envFlags);
+        return new EnvironmentBuilder($this->filesystem);
     }
 
     protected function normalizeOutput(string $output): string

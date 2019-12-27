@@ -236,7 +236,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Replace frequency.
      */
-    protected function replaceFrequency()
+    protected function replaceFrequency(): self
     {
         $this->stub = \str_replace('DummyFrequency', \rtrim($this->options['frequency'], '()'), $this->stub);
 
@@ -246,7 +246,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Replace constraint.
      */
-    protected function replaceConstraint()
+    protected function replaceConstraint(): self
     {
         $this->stub = \str_replace('DummyConstraint', \rtrim($this->options['constraint'], '()'), $this->stub);
 
@@ -256,7 +256,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Replace command.
      */
-    protected function replaceCommand()
+    protected function replaceCommand(): self
     {
         $this->stub = \str_replace('DummyCommand', $this->options['run'], $this->stub);
 
@@ -266,7 +266,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Replace path.
      */
-    protected function replacePath()
+    protected function replacePath(): self
     {
         $this->stub = \str_replace('DummyPath', $this->options['in'], $this->stub);
 
@@ -276,7 +276,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Replace description.
      */
-    protected function replaceDescription()
+    protected function replaceDescription(): self
     {
         $this->stub = \str_replace('DummyDescription', $this->options['description'], $this->stub);
 

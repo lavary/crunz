@@ -11,14 +11,14 @@ class Command extends BaseCommand
     /**
      * Command arguments.
      *
-     * @var array
+     * @var array<string,string>
      */
     protected $arguments;
 
     /**
      * Command options.
      *
-     * @var array
+     * @var array<string,string>
      */
     protected $options;
 

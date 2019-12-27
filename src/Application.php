@@ -55,10 +55,7 @@ class Application extends SymfonyApplication
     /** @var EnvFlags */
     private $envFlags;
 
-    /**
-     * Instantiate the class.
-     */
-    public function __construct($appName, $appVersion)
+    public function __construct(string $appName, string $appVersion)
     {
         parent::__construct($appName, $appVersion);
 
@@ -165,8 +162,8 @@ class Application extends SymfonyApplication
     private function dumpContainer(
         ConfigCache $cache,
         ContainerBuilder $container,
-        $class,
-        $baseClass
+        string $class,
+        string $baseClass
     ): void {
         $dumper = new PhpDumper($container);
 

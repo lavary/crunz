@@ -6,5 +6,6 @@ namespace Crunz\Configuration;
 
 interface ConfigurationParserInterface
 {
+    /** @return array<string,int|string|array> */
     public function parseConfig(): array;
 }
