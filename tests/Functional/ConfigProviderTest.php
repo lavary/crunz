@@ -20,6 +20,6 @@ class ConfigProviderTest extends TestCase
         $returnCode = $commandTester->execute([]);
 
         $this->assertSame(0, $returnCode);
-        $this->assertContains('The configuration file already exists at', $commandTester->getDisplay());
+        $this->assertStringContainsString('The configuration file already exists at', $commandTester->getDisplay());
     }
 }

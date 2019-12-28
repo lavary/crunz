@@ -20,6 +20,6 @@ class ScheduleRunTest extends TestCase
         $returnCode = $commandTester->execute([]);
 
         $this->assertSame(0, $returnCode);
-        $this->assertContains(PHP_VERSION, $commandTester->getDisplay());
+        $this->assertStringContainsString(PHP_VERSION, $commandTester->getDisplay());
     }
 }
