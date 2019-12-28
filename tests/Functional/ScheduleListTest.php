@@ -20,6 +20,6 @@ class ScheduleListTest extends TestCase
         $returnCode = $commandTester->execute([]);
 
         $this->assertSame(0, $returnCode);
-        $this->assertContains('Show PHP version', $commandTester->getDisplay());
+        $this->assertStringContainsString('Show PHP version', $commandTester->getDisplay());
     }
 }

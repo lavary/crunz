@@ -89,7 +89,7 @@ class ScheduleRunCommandTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Schedule\ScheduleFactory
+     * @return MockObject|Schedule\ScheduleFactory
      */
     private function mockScheduleFactory()
     {

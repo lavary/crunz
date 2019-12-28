@@ -376,12 +376,12 @@ final class EventTest extends TestCase
 
         $wholeOutput = $event->wholeOutput();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Test output',
             $wholeOutput,
             'Missing standard output'
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Exception output',
             $wholeOutput,
             'Missing error output'

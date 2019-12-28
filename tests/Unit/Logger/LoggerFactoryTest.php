@@ -30,9 +30,9 @@ final class LoggerFactoryTest extends TestCase
             $expectedTimezone
         );
         /** @var MonologLogger $monologLogger */
-        $monologLogger = $this->readAttribute($crunzLogger, 'logger');
+        $monologLogger = $this->getObjectProperty($crunzLogger, 'logger');
         /** @var \DateTimeZone $loggerTimezone */
-        $loggerTimezone = $this->readAttribute($monologLogger, 'timezone');
+        $loggerTimezone = $this->getObjectProperty($monologLogger, 'timezone');
         $this->assertNotNull($loggerTimezone);
         $this->assertSame($expectedTimezone, $loggerTimezone->getName());
         $this->assertNotSame($defaultTimezone, $loggerTimezone->getName());
@@ -48,9 +48,9 @@ final class LoggerFactoryTest extends TestCase
         $crunzLogger = $this->createCrunzLogger(['timezone' => $expectedTimezone, 'timezone_log' => false]);
 
         /** @var MonologLogger $monologLogger */
-        $monologLogger = $this->readAttribute($crunzLogger, 'logger');
+        $monologLogger = $this->getObjectProperty($crunzLogger, 'logger');
         /** @var \DateTimeZone|null $loggerTimezone */
-        $loggerTimezone = $this->readAttribute($monologLogger, 'timezone');
+        $loggerTimezone = $this->getObjectProperty($monologLogger, 'timezone');
         $this->assertNull($loggerTimezone);
     }
 
@@ -90,5 +90,15 @@ final class LoggerFactoryTest extends TestCase
         $tempFile = new TemporaryFile();
 
         return $loggerFactory->create(['debug' => $tempFile->filePath()]);
+    }
+
+    /** @return mixed */
+    private function getObjectProperty(object $object, string $propertyName)
+    {
+        $reflectionClass = new \ReflectionClass($object);
+        $reflectionProperty = $reflectionClass->getProperty($propertyName);
+        $reflectionProperty->setAccessible(true);
+
+        return $reflectionProperty->getValue($object);
     }
 }

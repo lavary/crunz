@@ -129,7 +129,7 @@ final class FilesystemTest extends TestCase
         $filesystem = new Filesystem();
         $content = $filesystem->readContent(__FILE__);
 
-        $this->assertContains('final class FilesystemTest extends TestCase', $content);
+        $this->assertStringContainsString('final class FilesystemTest extends TestCase', $content);
     }
 
     /** @test */

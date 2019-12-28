@@ -21,7 +21,7 @@ final class ClosureRunTest extends EndToEndTestCase
 
         $process = $environment->runCrunzCommand('schedule:run');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Closure output Var: 153',
             \str_replace(
                 PHP_EOL,
