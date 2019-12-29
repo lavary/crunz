@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Crunz\Tests\Unit\Console\Command;
+namespace Crunz\Tests\Unit\UserInterface\Cli;
 
-use Crunz\Console\Command\ClosureRunCommand;
+use Crunz\UserInterface\Cli\ClosureRunCommand;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -26,6 +26,14 @@ final class ClosureRunCommandTest extends TestCase
             0,
             $command->run($input, $output)
         );
+    }
+
+    /** @test */
+    public function commandIsHidden(): void
+    {
+        $command = new ClosureRunCommand();
+
+        $this->assertTrue($command->isHidden());
     }
 
     /** @return iterable<string,array<int>> */

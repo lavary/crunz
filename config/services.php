@@ -7,7 +7,7 @@ use Crunz\Configuration\ConfigurationParser;
 use Crunz\Configuration\ConfigurationParserInterface;
 use Crunz\Configuration\Definition;
 use Crunz\Configuration\FileParser;
-use Crunz\Console\Command\ClosureRunCommand;
+use Crunz\UserInterface\Cli\ClosureRunCommand;
 use Crunz\Console\Command\ConfigGeneratorCommand;
 use Crunz\Console\Command\ScheduleListCommand;
 use Crunz\Console\Command\ScheduleRunCommand;
