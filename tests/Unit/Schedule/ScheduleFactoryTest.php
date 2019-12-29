@@ -11,7 +11,7 @@ use Crunz\Schedule\ScheduleFactory;
 use Crunz\Task\TaskNumber;
 use PHPUnit\Framework\TestCase;
 
-class ScheduleFactoryTest extends TestCase
+final class ScheduleFactoryTest extends TestCase
 {
     /** @test */
     public function singleTaskSchedule(): void
@@ -31,6 +31,21 @@ class ScheduleFactoryTest extends TestCase
     }
 
     /** @test */
+    public function singleTask(): void
+    {
+        $factory = new ScheduleFactory();
+
+        $event1 = new Event(1, 'php -v');
+        $event2 = new Event(2, 'php -v');
+        $schedule = new Schedule();
+        $schedule->events([$event1, $event2]);
+
+        $event = $factory->singleTask(TaskNumber::fromString('1'), $schedule);
+
+        $this->assertSame($event1, $event);
+    }
+
+    /** @test */
     public function singleTaskScheduleThrowsExceptionOnWrongTaskNumber(): void
     {
         $factory = new ScheduleFactory();
@@ -40,8 +55,23 @@ class ScheduleFactoryTest extends TestCase
         $schedule->events([$event1]);
 
         $this->expectException(TaskNotExistException::class);
-        $this->expectExceptionMessage("Task with id '2' not found. Last task id is '1'.");
+        $this->expectExceptionMessage("Task with id '2' was not found. Last task id is '1'.");
 
         $factory->singleTaskSchedule(TaskNumber::fromString('2'), $schedule);
+    }
+
+    /** @test */
+    public function singleTaskThrowsExceptionOnWrongTaskNumber(): void
+    {
+        $factory = new ScheduleFactory();
+
+        $event1 = new Event(1, 'php -v');
+        $schedule = new Schedule();
+        $schedule->events([$event1]);
+
+        $this->expectException(TaskNotExistException::class);
+        $this->expectExceptionMessage("Task with id '2' was not found. Last task id is '1'.");
+
+        $factory->singleTask(TaskNumber::fromString('2'), $schedule);
     }
 }
