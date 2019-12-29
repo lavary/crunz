@@ -37,6 +37,9 @@ parameters:
         -
             message: '#CrunzContainer#'
             path: src/Application.php
+        -
+            message: '#Parameter \#2 \$currentTime#'
+            path: src/Infrastructure/Dragonmantank/CronExpression/DragonmantankCronExpression.php
 
 includes:
     - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
