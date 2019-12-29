@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Crunz\Console\Command;
+namespace Crunz\UserInterface\Cli;
 
+use Crunz\Console\Command\Command;
 use SuperClosure\Serializer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

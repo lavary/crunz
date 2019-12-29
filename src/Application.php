@@ -47,7 +47,7 @@ class Application extends SymfonyApplication
 
         // This command is used by Crunz itself for running serialized closures
         // It accepts an argument which is the serialized form of the closure to run.
-        \Crunz\Console\Command\ClosureRunCommand::class,
+        UserInterface\Cli\ClosureRunCommand::class,
     ];
 
     /** @var Container */

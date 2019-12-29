@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Crunz\Tests\Unit\Console\Command;
+namespace Crunz\Tests\Unit\UserInterface\Cli;
 
-use Crunz\Console\Command\ClosureRunCommand;
+use Crunz\UserInterface\Cli\ClosureRunCommand;
 use PHPUnit\Framework\TestCase;
 use SuperClosure\Serializer;
 use Symfony\Component\Console\Input\ArrayInput;
