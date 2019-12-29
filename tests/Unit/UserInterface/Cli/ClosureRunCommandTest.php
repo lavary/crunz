@@ -28,6 +28,14 @@ final class ClosureRunCommandTest extends TestCase
         );
     }
 
+    /** @test */
+    public function commandIsHidden(): void
+    {
+        $command = new ClosureRunCommand();
+
+        $this->assertTrue($command->isHidden());
+    }
+
     /** @return iterable<string,array<int>> */
     public function closureValueProvider(): iterable
     {
