@@ -78,8 +78,8 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.x-dev",
-            "dev-1.12.x": "1.12.x-dev",
-            "dev-1.11.x": "1.11.x-dev"
+            "dev-2.1.x": "v2.1.x-dev",
+            "dev-1.12.x": "1.12.x-dev"
         }
     }
 }

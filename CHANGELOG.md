@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.1.0] - 2020-02-02
+
+### Added
+
+- [#274] Symfony 5 support
+
+### Changed
+
+- [#240] cron-expression package, thanks to [@mareksuscak]
+- [#280] Hide `closure:run` command
+
 ## [v2.0.4] - 2019-12-08
 
 ### Fixed
@@ -240,12 +251,15 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#280]: https://github.com/lavary/crunz/pull/280
+[#274]: https://github.com/lavary/crunz/pull/274
 [#268]: https://github.com/lavary/crunz/pull/268
 [#264]: https://github.com/lavary/crunz/pull/264
 [#261]: https://github.com/lavary/crunz/pull/261
 [#251]: https://github.com/lavary/crunz/pull/251
 [#245]: https://github.com/lavary/crunz/pull/245
 [#243]: https://github.com/lavary/crunz/pull/243
+[#240]: https://github.com/lavary/crunz/pull/240
 [#229]: https://github.com/lavary/crunz/pull/229
 [#225]: https://github.com/lavary/crunz/pull/225
 [#224]: https://github.com/lavary/crunz/pull/224
@@ -370,6 +384,7 @@ In `v2` this will result in exception.
 [v2.0.2]: https://github.com/lavary/crunz/compare/v2.0.1...v2.0.2
 [v2.0.3]: https://github.com/lavary/crunz/compare/v2.0.2...v2.0.3
 [v2.0.4]: https://github.com/lavary/crunz/compare/v2.0.3...v2.0.4
+[v2.1.0]: https://github.com/lavary/crunz/compare/v2.0.4...v2.1.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
@@ -385,3 +400,4 @@ In `v2` this will result in exception.
 [@PhilETaylor]: https://github.com/PhilETaylor
 [@FallDi]: https://github.com/FallDi
 [@SadeghPM]: https://github.com/SadeghPM
+[@mareksuscak]: https://github.com/mareksuscak
