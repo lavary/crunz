@@ -764,6 +764,36 @@ To see all the options of `make:task` command with all the defaults, we run this
 vendor/bin/crunz make:task --help
 ```
 
+### Debugging tasks
+
+To show basic information about task run:
+
+```bash
+vendor/bin/crunz task:debug 1
+```
+
+Above command should output something like this:
+
+```text
++----------------------+-----------------------------------+
+| Debug information for task '1'                           |
++----------------------+-----------------------------------+
+| Command to run       | php -v                            |
+| Description          | Inner task                        |
+| Prevent overlapping  | No                                |
++----------------------+-----------------------------------+
+| Cron expression      | * * * * *                         |
+| Comparisons timezone | Europe/Warsaw (from config)       |
++----------------------+-----------------------------------+
+| Example run dates                                        |
+| #1                   | 2020-03-08 09:27:00 Europe/Warsaw |
+| #2                   | 2020-03-08 09:28:00 Europe/Warsaw |
+| #3                   | 2020-03-08 09:29:00 Europe/Warsaw |
+| #4                   | 2020-03-08 09:30:00 Europe/Warsaw |
+| #5                   | 2020-03-08 09:31:00 Europe/Warsaw |
++----------------------+-----------------------------------+
+```
+
 ## Configuration
 
 There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one. 
