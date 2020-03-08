@@ -25,7 +25,7 @@ class Application extends SymfonyApplication
      *
      * @var array
      */
-    const COMMANDS = [
+    private const COMMANDS = [
         // This command starts the event runner (vendor/bin/crunz schedule:run)
         // It takes an optional argument which is the source directory for tasks
         // If the argument is not provided, the default in the configuratrion file
@@ -48,6 +48,9 @@ class Application extends SymfonyApplication
         // This command is used by Crunz itself for running serialized closures
         // It accepts an argument which is the serialized form of the closure to run.
         UserInterface\Cli\ClosureRunCommand::class,
+
+        // Debug task command
+        \Crunz\UserInterface\Cli\DebugTaskCommand::class,
     ];
 
     /** @var Container */

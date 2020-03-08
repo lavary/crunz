@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
+use Crunz\Application\Cron\CronExpressionFactoryInterface;
+use Crunz\Application\Query\TaskInformation\TaskInformationHandler;
 use Crunz\Configuration\Configuration;
 use Crunz\Configuration\ConfigurationParser;
 use Crunz\Configuration\ConfigurationParserInterface;
 use Crunz\Configuration\Definition;
 use Crunz\Configuration\FileParser;
-use Crunz\UserInterface\Cli\ClosureRunCommand;
 use Crunz\Console\Command\ConfigGeneratorCommand;
 use Crunz\Console\Command\ScheduleListCommand;
 use Crunz\Console\Command\ScheduleRunCommand;
@@ -22,6 +23,7 @@ use Crunz\HttpClient\FallbackHttpClient;
 use Crunz\HttpClient\HttpClientInterface;
 use Crunz\HttpClient\HttpClientLoggerDecorator;
 use Crunz\HttpClient\StreamHttpClient;
+use Crunz\Infrastructure\Dragonmantank\CronExpression\DragonmantankCronExpressionFactory;
 use Crunz\Invoker;
 use Crunz\Logger\ConsoleLogger;
 use Crunz\Logger\ConsoleLoggerInterface;
@@ -35,6 +37,8 @@ use Crunz\Task\LoaderInterface;
 use Crunz\Task\Timezone;
 use Crunz\Timezone\Provider;
 use Crunz\Timezone\ProviderInterface;
+use Crunz\UserInterface\Cli\ClosureRunCommand;
+use Crunz\UserInterface\Cli\DebugTaskCommand;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,6 +62,7 @@ $simpleServices = [
     FilesystemInterface::class => CrunzFilesystem::class,
     FinderInterface::class => Finder::class,
     LoaderInterface::class => Loader::class,
+    CronExpressionFactoryInterface::class => DragonmantankCronExpressionFactory::class,
 ];
 
 $container
@@ -107,6 +112,15 @@ $container
         [
             new Reference(Configuration::class),
             new Reference(FilesystemInterface::class),
+        ]
+    )
+;
+$container
+    ->register(DebugTaskCommand::class, DebugTaskCommand::class)
+    ->setPublic(true)
+    ->setArguments(
+        [
+            new Reference(TaskInformationHandler::class),
         ]
     )
 ;
@@ -261,6 +275,21 @@ $container
             new Reference(FileParser::class),
             new Reference(ConsoleLoggerInterface::class),
             new Reference(FilesystemInterface::class),
+        ]
+    )
+;
+
+$container
+    ->register(TaskInformationHandler::class, TaskInformationHandler::class)
+    ->setPublic(false)
+    ->setArguments(
+        [
+            new Reference(Timezone::class),
+            new Reference(Configuration::class),
+            new Reference(Collection::class),
+            new Reference(LoaderInterface::class),
+            new Reference(ScheduleFactory::class),
+            new Reference(CronExpressionFactoryInterface::class),
         ]
     )
 ;

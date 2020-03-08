@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Schedule;
 
+use Crunz\Event;
 use Crunz\Exception\TaskNotExistException;
 use Crunz\Schedule;
 use Crunz\Task\TaskNumber;
@@ -11,16 +12,27 @@ use Crunz\Task\TaskNumber;
 class ScheduleFactory
 {
     /**
-     * @param array<int,\Crunz\Schedule> $schedules
+     * @param array<int,Schedule> $schedules
      *
-     * @return array<int,\Crunz\Schedule>
+     * @return Schedule[]
      *
      * @throws TaskNotExistException
      */
-    public function singleTaskSchedule(TaskNumber $taskNumber, Schedule ...$schedules)
+    public function singleTaskSchedule(TaskNumber $taskNumber, Schedule ...$schedules): array
+    {
+        $event = $this->singleTask($taskNumber, ...$schedules);
+
+        $schedule = new Schedule();
+        $schedule->events([$event]);
+
+        return [$schedule];
+    }
+
+    /** @throws TaskNotExistException */
+    public function singleTask(TaskNumber $taskNumber, Schedule ...$schedules): Event
     {
         $events = \array_map(
-            function (Schedule $schedule) {
+            static function (Schedule $schedule) {
                 return $schedule->events();
             },
             $schedules
@@ -30,14 +42,11 @@ class ScheduleFactory
 
         if (!isset($flattenEvents[$taskNumber->asArrayIndex()])) {
             $tasksCount = \count($flattenEvents);
-            throw new TaskNotExistException("Task with id '{$taskNumber->asInt()}' not found. Last task id is '{$tasksCount}'.");
+            throw new TaskNotExistException(
+                "Task with id '{$taskNumber->asInt()}' was not found. Last task id is '{$tasksCount}'."
+            );
         }
 
-        $event = $flattenEvents[$taskNumber->asArrayIndex()];
-
-        $schedule = new Schedule();
-        $schedule->events([$event]);
-
-        return [$schedule];
+        return $flattenEvents[$taskNumber->asArrayIndex()];
     }
 }
