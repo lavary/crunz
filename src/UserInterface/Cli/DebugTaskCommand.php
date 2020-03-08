@@ -18,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class DebugTaskCommand extends Command
 {
+    /** @var string */
     protected static $defaultName = 'task:debug';
 
     /** @var TaskInformationHandler */
@@ -45,7 +46,9 @@ final class DebugTaskCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $taskNumber = TaskNumber::fromString((string) $input->getArgument('taskNumber'));
+        /** @var string|null $rawTaskNumber */
+        $rawTaskNumber = $input->getArgument('taskNumber');
+        $taskNumber = TaskNumber::fromString((string) $rawTaskNumber);
         $taskInformationView = $this->taskInformationHandler
             ->handle(new TaskInformation($taskNumber))
         ;

@@ -45,7 +45,7 @@ final class DebugTaskTest extends EndToEndTestCase
         }
     }
 
-    /** @return array<int,array<string,string>> */
+    /** @return array<string,string> */
     private function extractContentLines(string $output): array
     {
         $outputArray = \explode(PHP_EOL, $output);
@@ -84,6 +84,7 @@ final class DebugTaskTest extends EndToEndTestCase
         return $contentLines;
     }
 
+    /** @param array<string,string> $lines */
     private function assertHeader(string $header, array $lines): void
     {
         $this->assertArrayHasKey($header, $lines);

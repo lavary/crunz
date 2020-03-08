@@ -48,6 +48,7 @@ final class TaskInformationHandler
         $source = $this->configuration
             ->getSourcePath()
         ;
+        /** @var \SplFileInfo[] $files */
         $files = $this->taskCollection
             ->all($source)
         ;

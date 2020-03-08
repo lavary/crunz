@@ -21,6 +21,7 @@ final class TaskInformationView
     /** @var bool */
     private $preventOverlapping;
 
+    /** @param string|object $command */
     public function __construct(
         $command,
         string $description,
@@ -39,6 +40,7 @@ final class TaskInformationView
         $this->preventOverlapping = $preventOverlapping;
     }
 
+    /** @return string|object */
     public function command()
     {
         return $this->command;

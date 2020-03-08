@@ -46,6 +46,7 @@ final class TaskInformationHandlerTest extends TestCase
         $this->assertEquals($expectedEventTimeZone, $taskInformation->timeZone());
     }
 
+    /** @return iterable<string, array> */
     public function taskInformationProvider(): iterable
     {
         $id = (string) \random_int(1, 9999);
