@@ -1,5 +1,5 @@
 language: php
-sudo: false
+os: linux
 dist: xenial
 
 cache:
@@ -30,10 +30,8 @@ env:
         - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --no-suggest --prefer-dist"
         - PHPUNIT_BRIDGE_VERSION="~v4.4.0"
 
-matrix:
-    fast_finish: true
-
 jobs:
+    fast_finish: true
     include:
         - php: 7.3
           env:
