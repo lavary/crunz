@@ -23,6 +23,7 @@ class TaskGeneratorCommand extends Command
     const DEFAULTS = [
         'frequency' => 'everyThirtyMinutes',
         'constraint' => 'weekdays',
+        'no-constraint' => false,
         'in' => 'path/to/your/command',
         'run' => 'command/to/execute',
         'description' => 'Task description',
@@ -75,6 +76,13 @@ class TaskGeneratorCommand extends Command
                         InputOption::VALUE_OPTIONAL,
                         "The task's constraint",
                         self::DEFAULTS['constraint']
+                    ),
+                    new InputOption(
+                        'no-constraint',
+                        'nc',
+                        InputOption::VALUE_OPTIONAL,
+                        "Remove constraint from task",
+                        self::DEFAULTS['no-constraint']
                     ),
                     new InputOption(
                         'in',
@@ -248,7 +256,20 @@ class TaskGeneratorCommand extends Command
      */
     protected function replaceConstraint(): self
     {
-        $this->stub = \str_replace('DummyConstraint', \rtrim($this->options['constraint'], '()'), $this->stub);
+
+        if ($this->getNoConstraint() === false) {
+            $this->stub = \str_replace(
+                'DummyConstraint', 
+                \rtrim($this->options['constraint'], '()'), 
+                $this->stub
+            );
+        } else {
+            $this->stub = \preg_replace(
+                "/^[\s\t]{0,}->DummyConstraint\(\)\n/m", 
+                "", 
+                $this->stub
+            );
+        }
 
         return $this;
     }
@@ -282,4 +303,21 @@ class TaskGeneratorCommand extends Command
 
         return $this;
     }
+
+    /**
+     * Return single value for no-constraint option
+     */
+    protected function getNoConstraint()
+    {
+        // for stylistic purposes providing "--no-constraint" returns true
+        if ($this->options['no-constraint'] === null) {
+            return true;
+        }
+
+        return filter_var(
+            $this->options['no-constraint'], 
+            FILTER_VALIDATE_BOOLEAN
+        );
+    }
 }
+
