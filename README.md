@@ -562,6 +562,26 @@ $task
 
 ```
 
+As of Symfony 5.0 the `StoreInterface` has been split into `BlockingStoreInterface` and `PersistingStoreInterface`. To use any of the persistent locks (Redis, PDO, etc) they need to be decorated by the `RetryTillSaveStore`.
+
+```php
+<?php
+
+use Symfony\Component\Lock\Store\RedisStore;
+use Symfony\Component\Lock\Store\RetryTillSaveStore;
+
+$redis = new Redis();
+$redis->connect('localhost');
+$persistingStore = new RedisStore($redis);
+$blockingStore = new RetryTillSaveStore($persistingStore);
+
+$task = $schedule->run(PHP_BINARY . ' email.php');
+$task
+    ->everyFiveMinutes()
+    ->preventOverlapping($blockingStore);
+
+```
+
 ## Keeping the Output
 
 Cron jobs usually have outputs, which is normally emailed to the owner of the crontab file, or the user(s) set by the `MAILTO` environment variable inside the crontab file.
