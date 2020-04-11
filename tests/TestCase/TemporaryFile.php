@@ -39,6 +39,8 @@ final class TemporaryFile
     /** @param int $mode */
     public function changePermissions($mode): void
     {
+        $this->checkFileExists();
+
         \chmod($this->filePath, $mode);
     }
 
