@@ -13,29 +13,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EventRunner
 {
-    /**
-     * Schedule objects.
-     *
-     * @var Schedule[]
-     */
+    /** @var Schedule[] */
     protected $schedules = [];
-    /**
-     * Instance of the invoker class.
-     *
-     * @var \Crunz\Invoker
-     */
+    /** @var \Crunz\Invoker */
     protected $invoker;
-    /**
-     * The Logger.
-     *
-     * @var \Crunz\Logger\Logger
-     */
+    /** @var \Crunz\Logger\Logger */
     protected $logger;
-    /**
-     * The Mailer.
-     *
-     * @var \Crunz\Mailer
-     */
+    /** @var \Crunz\Mailer */
     protected $mailer;
     /** @var OutputInterface */
     private $output;
@@ -48,9 +32,6 @@ class EventRunner
     /** @var ConsoleLoggerInterface */
     private $consoleLogger;
 
-    /**
-     * Instantiate the event runner.
-     */
     public function __construct(
         Invoker $invoker,
         ConfigurationInterface $configuration,
@@ -77,11 +58,7 @@ class EventRunner
         $this->consoleLogger = $consoleLogger;
     }
 
-    /**
-     * Handle an array of Schedule objects.
-     *
-     * @param Schedule[] $schedules
-     */
+    /* @param Schedule[] $schedules */
     public function handle(OutputInterface $output, array $schedules = []): void
     {
         $this->schedules = $schedules;
@@ -106,11 +83,6 @@ class EventRunner
         $this->manageStartedEvents();
     }
 
-    /**
-     * Run an event process.
-     *
-     * @param \Crunz\Event $event
-     */
     protected function start(Event $event): void
     {
         // if sendOutputTo or appendOutputTo have been specified
@@ -142,9 +114,6 @@ class EventRunner
         $event->start();
     }
 
-    /**
-     * Manage the running processes.
-     */
     protected function manageStartedEvents(): void
     {
         while ($this->schedules) {
@@ -214,8 +183,6 @@ class EventRunner
     }
 
     /**
-     * Invoke an array of callables.
-     *
      * @param \Closure[]         $callbacks
      * @param array<mixed,mixed> $parameters
      *
@@ -262,11 +229,6 @@ class EventRunner
         }
     }
 
-    /**
-     * Handle errors.
-     *
-     * @param \Crunz\Event $event
-     */
     protected function handleError(Event $event): void
     {
         $logErrors = $this->configuration
@@ -307,13 +269,7 @@ class EventRunner
             . PHP_EOL;
     }
 
-    /**
-     * Format the event error message.
-     *
-     * @param \Crunz\Event $event
-     *
-     * @return string
-     */
+    /** @return string */
     protected function formatEventError(Event $event)
     {
         return $event->description
@@ -325,11 +281,7 @@ class EventRunner
             . PHP_EOL;
     }
 
-    /**
-     * Display content.
-     *
-     * @param string|null $output
-     */
+    /** @param string|null $output */
     protected function display($output): void
     {
         $this->output
