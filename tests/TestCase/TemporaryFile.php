@@ -42,4 +42,18 @@ final class TemporaryFile
     {
         \chmod($this->filePath, $mode);
     }
+
+    public function contents(): string
+    {
+        $this->checkFileExists();
+
+        return \file_get_contents($this->filePath);
+    }
+
+    private function checkFileExists(): void
+    {
+        if (!\file_exists($this->filePath)) {
+            throw new CrunzException("Temporary file '{$this->filePath}' no longer exists.");
+        }
+    }
 }
