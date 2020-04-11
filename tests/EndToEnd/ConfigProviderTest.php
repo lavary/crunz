@@ -12,10 +12,10 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ConfigProviderTest extends EndToEndTestCase
 {
-    /** @test */
-    public function configWillBePublishedToCwd(): void
+    public function test_config_can_be_published(): void
     {
         $environmentBuilder = $this->createEnvironmentBuilder();
+        $environmentBuilder->withConfig(['timezone' => null]);
         $environment = $environmentBuilder->createEnvironment();
         $process = $environment->runCrunzCommand('publish:config');
 
