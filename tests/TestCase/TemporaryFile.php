@@ -31,8 +31,7 @@ final class TemporaryFile
         \unlink($this->filePath);
     }
 
-    /** @return string */
-    public function filePath()
+    public function filePath(): string
     {
         return $this->filePath;
     }
