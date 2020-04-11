@@ -17,7 +17,7 @@ class EventRunner
     protected $schedules = [];
     /** @var \Crunz\Invoker */
     protected $invoker;
-    /** @var \Crunz\Logger\Logger */
+    /** @var \Crunz\Logger\Logger|null */
     protected $logger;
     /** @var \Crunz\Mailer */
     protected $mailer;
@@ -40,16 +40,6 @@ class EventRunner
         HttpClientInterface $httpClient,
         ConsoleLoggerInterface $consoleLogger
     ) {
-        $outputLogFile = $configuration->get('output_log_file');
-        $errorLogFile = $configuration->get('errors_log_file');
-
-        $this->logger = $loggerFactory->create(
-            [
-                // Logging streams
-                'info' => $outputLogFile,
-                'error' => $errorLogFile,
-            ]
-        );
         $this->invoker = $invoker;
         $this->mailer = $mailer;
         $this->configuration = $configuration;
@@ -85,6 +75,23 @@ class EventRunner
 
     protected function start(Event $event): void
     {
+        $outputLogFile = $this->configuration
+            ->get('output_log_file')
+        ;
+        $errorLogFile = $this->configuration
+            ->get('errors_log_file')
+        ;
+
+        $this->logger = $this->loggerFactory
+            ->create(
+                [
+                    // Logging streams
+                    'info' => $outputLogFile,
+                    'error' => $errorLogFile,
+                ]
+            )
+        ;
+
         // if sendOutputTo or appendOutputTo have been specified
         if (!$event->nullOutput()) {
             // if sendOutputTo then truncate the log file if it exists
