@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit\Console\Command;
 
-use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Console\Command\ScheduleRunCommand;
 use Crunz\Event;
 use Crunz\EventRunner;
@@ -13,6 +12,7 @@ use Crunz\Task\Collection;
 use Crunz\Task\Loader;
 use Crunz\Task\LoaderInterface;
 use Crunz\Task\Timezone;
+use Crunz\Tests\TestCase\FakeConfiguration;
 use Crunz\Tests\TestCase\TemporaryFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +41,7 @@ class ScheduleRunCommandTest extends TestCase
 
         $command = new ScheduleRunCommand(
             $mockTaskCollection,
-            $this->mockConfiguration(),
+            new FakeConfiguration(['source' => '']),
             $mockEventRunner,
             $this->createMock(Timezone::class),
             $this->createMock(Schedule\ScheduleFactory::class),
@@ -75,7 +75,7 @@ class ScheduleRunCommandTest extends TestCase
 
         $command = new ScheduleRunCommand(
             $mockTaskCollection,
-            $this->mockConfiguration(),
+            new FakeConfiguration(['source' => '']),
             $mockEventRunner,
             $this->mockTimezoneProvider(),
             $this->mockScheduleFactory(),
@@ -103,18 +103,6 @@ class ScheduleRunCommandTest extends TestCase
         ;
 
         return $mockScheduleFactory;
-    }
-
-    private function mockConfiguration(): ConfigurationInterface
-    {
-        $mockConfiguration = $this->createMock(ConfigurationInterface::class);
-        $mockConfiguration
-            ->method('get')
-            ->with('source')
-            ->willReturn('')
-        ;
-
-        return $mockConfiguration;
     }
 
     /** @return EventRunner|MockObject */
