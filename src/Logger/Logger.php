@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Logger;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
@@ -29,13 +29,13 @@ class Logger
         'alert' => MonologLogger::ALERT,
         'emergency' => MonologLogger::EMERGENCY,
     ];
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
 
     /**
      * Initialize the logger instance.
      */
-    public function __construct(\Monolog\Logger $logger, Configuration $configuration)
+    public function __construct(\Monolog\Logger $logger, ConfigurationInterface $configuration)
     {
         $this->logger = $logger;
         $this->configuration = $configuration;

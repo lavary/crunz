@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Crunz\Application\Cron\CronExpressionFactoryInterface;
 use Crunz\Application\Query\TaskInformation\TaskInformationHandler;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Configuration\Configuration;
 use Crunz\Configuration\ConfigurationParser;
 use Crunz\Configuration\ConfigurationParserInterface;
@@ -45,6 +46,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -65,13 +67,15 @@ $simpleServices = [
     CronExpressionFactoryInterface::class => DragonmantankCronExpressionFactory::class,
 ];
 
+/* @var ContainerBuilder $container */
+
 $container
     ->register(ScheduleRunCommand::class, ScheduleRunCommand::class)
     ->setPublic(true)
     ->setArguments(
         [
             new Reference(Collection::class),
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(EventRunner::class),
             new Reference(Timezone::class),
             new Reference(ScheduleFactory::class),
@@ -99,7 +103,7 @@ $container
     ->setPublic(true)
     ->setArguments(
         [
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(Collection::class),
             new Reference(LoaderInterface::class),
         ]
@@ -110,7 +114,7 @@ $container
     ->setPublic(true)
     ->setArguments(
         [
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(FilesystemInterface::class),
         ]
     )
@@ -129,7 +133,7 @@ $container
     ->setPublic(false)
     ->setArguments(
         [
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(FinderInterface::class),
             new Reference(ConsoleLoggerInterface::class),
         ]
@@ -145,7 +149,7 @@ $container
     )
 ;
 $container
-    ->register(Configuration::class, Configuration::class)
+    ->register(ConfigurationInterface::class, Configuration::class)
     ->setPublic(false)
     ->setArguments(
         [
@@ -159,7 +163,7 @@ $container
     ->setPublic(false)
     ->setArguments(
         [
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
         ]
     )
 ;
@@ -168,7 +172,7 @@ $container
     ->setPublic(false)
     ->setArguments(
         [
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(Timezone::class),
             new Reference(ConsoleLoggerInterface::class),
         ]
@@ -180,7 +184,7 @@ $container
     ->setArguments(
         [
             new Reference(Invoker::class),
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(Mailer::class),
             new Reference(LoggerFactory::class),
             new Reference(HttpClientInterface::class),
@@ -193,7 +197,7 @@ $container
     ->setPublic(false)
     ->setArguments(
         [
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(ConsoleLoggerInterface::class),
         ]
     )
@@ -285,7 +289,7 @@ $container
     ->setArguments(
         [
             new Reference(Timezone::class),
-            new Reference(Configuration::class),
+            new Reference(ConfigurationInterface::class),
             new Reference(Collection::class),
             new Reference(LoaderInterface::class),
             new Reference(ScheduleFactory::class),

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit;
 
-use Crunz\Configuration\Configuration;
 use Crunz\EventRunner;
 use Crunz\HttpClient\HttpClientInterface;
 use Crunz\Invoker;
@@ -12,6 +11,7 @@ use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Logger\LoggerFactory;
 use Crunz\Mailer;
 use Crunz\Schedule;
+use Crunz\Tests\TestCase\FakeConfiguration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Lock\BlockingStoreInterface;
@@ -79,7 +79,6 @@ final class EventRunnerTest extends TestCase
     private function createEventRunnerForPing($url)
     {
         $invoker = $this->createMock(Invoker::class);
-        $configuration = $this->createMock(Configuration::class);
         $mailer = $this->createMock(Mailer::class);
         $loggerFactory = $this->createMock(LoggerFactory::class);
         $httpClient = $this->createMock(HttpClientInterface::class);
@@ -93,7 +92,7 @@ final class EventRunnerTest extends TestCase
 
         return new EventRunner(
             $invoker,
-            $configuration,
+            new FakeConfiguration(),
             $mailer,
             $loggerFactory,
             $httpClient,
@@ -107,7 +106,6 @@ final class EventRunnerTest extends TestCase
             ? new Invoker()
             : $this->createMock(Invoker::class)
         ;
-        $configuration = $this->createMock(Configuration::class);
         $mailer = $this->createMock(Mailer::class);
         $loggerFactory = $this->createMock(LoggerFactory::class);
         $httpClient = $this->createMock(HttpClientInterface::class);
@@ -115,7 +113,7 @@ final class EventRunnerTest extends TestCase
 
         return new EventRunner(
             $invoker,
-            $configuration,
+            new FakeConfiguration(),
             $mailer,
             $loggerFactory,
             $httpClient,

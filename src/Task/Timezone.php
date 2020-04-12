@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Crunz\Task;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Exception\EmptyTimezoneException;
 use Crunz\Logger\ConsoleLoggerInterface;
 
 class Timezone
 {
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
     /** @var ConsoleLoggerInterface */
     private $consoleLogger;
@@ -18,7 +18,7 @@ class Timezone
     private $timezoneForComparisons;
 
     public function __construct(
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         ConsoleLoggerInterface $consoleLogger
     ) {
         $this->configuration = $configuration;

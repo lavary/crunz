@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Crunz\Logger;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Task\Timezone;
 use Monolog\Logger as MonologLogger;
 
 class LoggerFactory
 {
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
 
     /**
      * @throws \Exception if the timezone supplied in configuration is not recognised as a valid timezone
      */
     public function __construct(
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         Timezone $timezoneProvider,
         ConsoleLoggerInterface $consoleLogger
     ) {

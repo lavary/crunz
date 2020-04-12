@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Crunz\Application\Query\TaskInformation;
 
 use Crunz\Application\Cron\CronExpressionFactoryInterface;
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Event;
 use Crunz\Schedule\ScheduleFactory;
 use Crunz\Task\Collection;
@@ -16,7 +16,7 @@ final class TaskInformationHandler
 {
     /** @var Timezone */
     private $timezone;
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
     /** @var Collection */
     private $taskCollection;
@@ -29,7 +29,7 @@ final class TaskInformationHandler
 
     public function __construct(
         Timezone $timezone,
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         Collection $taskCollection,
         LoaderInterface $taskLoader,
         ScheduleFactory $scheduleFactory,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,12 +34,12 @@ class TaskGeneratorCommand extends Command
      * @var string
      */
     protected $stub;
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $config;
     /** @var FilesystemInterface */
     private $filesystem;
 
-    public function __construct(Configuration $configuration, FilesystemInterface $filesystem)
+    public function __construct(ConfigurationInterface $configuration, FilesystemInterface $filesystem)
     {
         $this->config = $configuration;
         $this->filesystem = $filesystem;

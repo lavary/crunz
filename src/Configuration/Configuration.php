@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Crunz\Configuration;
 
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
 
-class Configuration
+final class Configuration implements ConfigurationInterface
 {
     /** @var array<string,mixed> */
     private $config;
