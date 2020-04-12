@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Crunz\Application\Service;
 
-use Crunz\Configuration\Configuration;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -12,5 +11,5 @@ use Psr\Log\LoggerInterface;
  */
 interface LoggerFactoryInterface
 {
-    public function create(Configuration $configuration): LoggerInterface;
+    public function create(ConfigurationInterface $configuration): LoggerInterface;
 }

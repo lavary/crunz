@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Crunz\Infrastructure\Psr\Logger;
 
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Application\Service\LoggerFactoryInterface;
 use Crunz\Clock\ClockInterface;
-use Crunz\Configuration\Configuration;
 use Crunz\Task\Timezone;
 use Psr\Log\LoggerInterface;
 
@@ -23,7 +23,7 @@ final class PsrStreamLoggerFactory implements LoggerFactoryInterface
         $this->clock = $clock;
     }
 
-    public function create(Configuration $configuration): LoggerInterface
+    public function create(ConfigurationInterface $configuration): LoggerInterface
     {
         $timezone = $this->timezoneProvider
             ->timezoneForComparisons()
