@@ -8,7 +8,7 @@ use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Filesystem\FilesystemInterface;
 use Crunz\Path\Path;
 
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
     /** @var array<string,mixed> */
     private $config;
