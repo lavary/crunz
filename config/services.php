@@ -46,6 +46,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -65,6 +66,8 @@ $simpleServices = [
     LoaderInterface::class => Loader::class,
     CronExpressionFactoryInterface::class => DragonmantankCronExpressionFactory::class,
 ];
+
+/* @var ContainerBuilder $container */
 
 $container
     ->register(ScheduleRunCommand::class, ScheduleRunCommand::class)
