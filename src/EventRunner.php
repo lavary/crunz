@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\HttpClient\HttpClientInterface;
 use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Logger\LoggerFactory;
@@ -39,7 +39,7 @@ class EventRunner
     protected $mailer;
     /** @var OutputInterface */
     private $output;
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
     /** @var LoggerFactory */
     private $loggerFactory;
@@ -53,7 +53,7 @@ class EventRunner
      */
     public function __construct(
         Invoker $invoker,
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         Mailer $mailer,
         LoggerFactory $loggerFactory,
         HttpClientInterface $httpClient,

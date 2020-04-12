@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Crunz\Task;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Finder\FinderInterface;
 use Crunz\Logger\ConsoleLoggerInterface;
 use Crunz\Path\Path;
 
 class Collection
 {
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
     /** @var FinderInterface */
     private $finder;
@@ -19,7 +19,7 @@ class Collection
     private $consoleLogger;
 
     public function __construct(
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         FinderInterface $finder,
         ConsoleLoggerInterface $consoleLogger
     ) {

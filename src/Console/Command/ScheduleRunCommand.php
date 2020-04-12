@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Console\Command;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\EventRunner;
 use Crunz\Schedule;
 use Crunz\Task\Collection;
@@ -21,7 +21,7 @@ class ScheduleRunCommand extends Command
 {
     /** @var Collection */
     private $taskCollection;
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
     /** @var EventRunner */
     private $eventRunner;
@@ -34,7 +34,7 @@ class ScheduleRunCommand extends Command
 
     public function __construct(
         Collection $taskCollection,
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         EventRunner $eventRunner,
         Timezone $taskTimezone,
         Schedule\ScheduleFactory $scheduleFactory,

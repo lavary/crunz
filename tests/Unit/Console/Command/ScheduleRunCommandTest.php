@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit\Console\Command;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Console\Command\ScheduleRunCommand;
 use Crunz\Event;
 use Crunz\EventRunner;
@@ -105,9 +105,9 @@ class ScheduleRunCommandTest extends TestCase
         return $mockScheduleFactory;
     }
 
-    private function mockConfiguration(): Configuration
+    private function mockConfiguration(): ConfigurationInterface
     {
-        $mockConfiguration = $this->createMock(Configuration::class);
+        $mockConfiguration = $this->createMock(ConfigurationInterface::class);
         $mockConfiguration
             ->method('get')
             ->with('source')

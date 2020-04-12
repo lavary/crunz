@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Crunz;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Exception\MailerException;
 
 class Mailer
 {
     /** @var \Swift_Mailer|null */
     protected $mailer;
-    /** @var Configuration */
+    /** @var ConfigurationInterface */
     private $configuration;
 
-    public function __construct(Configuration $configuration)
+    public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
     }

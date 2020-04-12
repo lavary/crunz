@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit\Logger;
 
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Configuration\Configuration;
 use Crunz\Configuration\ConfigurationParserInterface;
 use Crunz\Filesystem\FilesystemInterface;
@@ -55,7 +56,7 @@ final class LoggerFactoryTest extends TestCase
     }
 
     /** @param array<string,array> $config */
-    private function createConfiguration(array $config = []): Configuration
+    private function createConfiguration(array $config = []): ConfigurationInterface
     {
         $mockConfigurationParser = $this->createMock(ConfigurationParserInterface::class);
         $mockConfigurationParser

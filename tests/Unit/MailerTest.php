@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Exception\MailerException;
 use Crunz\Mailer;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +23,7 @@ final class MailerTest extends TestCase
 
     private function createMailer(string $transport): Mailer
     {
-        $configurationMock = $this->createMock(Configuration::class);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
         $configurationMock
             ->method('get')
             ->with('mailer.transport')

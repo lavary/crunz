@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\EventRunner;
 use Crunz\HttpClient\HttpClientInterface;
 use Crunz\Invoker;
@@ -79,7 +79,7 @@ final class EventRunnerTest extends TestCase
     private function createEventRunnerForPing($url)
     {
         $invoker = $this->createMock(Invoker::class);
-        $configuration = $this->createMock(Configuration::class);
+        $configuration = $this->createMock(ConfigurationInterface::class);
         $mailer = $this->createMock(Mailer::class);
         $loggerFactory = $this->createMock(LoggerFactory::class);
         $httpClient = $this->createMock(HttpClientInterface::class);
@@ -107,7 +107,7 @@ final class EventRunnerTest extends TestCase
             ? new Invoker()
             : $this->createMock(Invoker::class)
         ;
-        $configuration = $this->createMock(Configuration::class);
+        $configuration = $this->createMock(ConfigurationInterface::class);
         $mailer = $this->createMock(Mailer::class);
         $loggerFactory = $this->createMock(LoggerFactory::class);
         $httpClient = $this->createMock(HttpClientInterface::class);

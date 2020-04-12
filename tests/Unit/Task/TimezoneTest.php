@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit\Task;
 
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Exception\EmptyTimezoneException;
 use Crunz\Task\Timezone;
 use Crunz\Tests\TestCase\Logger\NullLogger;
@@ -15,7 +15,7 @@ final class TimezoneTest extends TestCase
     /** @test */
     public function configuredTimezoneCannotBeEmpty(): void
     {
-        $mockConfiguration = $this->createMock(Configuration::class);
+        $mockConfiguration = $this->createMock(ConfigurationInterface::class);
 
         $this->expectException(EmptyTimezoneException::class);
 

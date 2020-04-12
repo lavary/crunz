@@ -6,7 +6,7 @@ namespace Crunz\Tests\Unit\Application\Query\TaskInformation;
 
 use Crunz\Application\Query\TaskInformation\TaskInformation;
 use Crunz\Application\Query\TaskInformation\TaskInformationHandler;
-use Crunz\Configuration\Configuration;
+use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Event;
 use Crunz\Infrastructure\Dragonmantank\CronExpression\DragonmantankCronExpressionFactory;
 use Crunz\Schedule\ScheduleFactory;
@@ -129,7 +129,7 @@ final class TaskInformationHandlerTest extends TestCase
 
         return new TaskInformationHandler(
             $timezoneProviderMock,
-            $this->createMock(Configuration::class),
+            $this->createMock(ConfigurationInterface::class),
             $taskCollectionMock,
             $this->createMock(LoaderInterface::class),
             $scheduleFactoryMock,
