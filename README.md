@@ -242,7 +242,7 @@ The following task will be run every hour at the 15th minute
 // ...
 $task = $schedule->run(PHP_BINARY . ' feedmecookie.php'); 
 $task
-    ->hourlyAt('15')
+    ->hourlyAt('15');
 // ...
 ```
 >hourlyOn('15') could have been used instead of hourlyAt('15') with the same result
@@ -253,7 +253,7 @@ The following task will be run Monday at 13:30
 // ...
 $task = $schedule->run(PHP_BINARY . ' startofwork.php'); 
 $task
-    ->weeklyOn(1,'13:30')
+    ->weeklyOn(1,'13:30');
 // ...
 ```
 >Sunday is considered day 0 of the week. 
@@ -264,7 +264,7 @@ If we wished for the task to run on Tuesday (day 2 of the week) at 09:00 we woul
 // ...
 $task = $schedule->run(PHP_BINARY . ' startofwork.php'); 
 $task
-    ->weeklyOn(2,'09:00')
+    ->weeklyOn(2,'09:00');
 // ...
 ```
 
@@ -274,7 +274,7 @@ The following task will be run on the second of the month at 20:00
 // ...
 $task = $schedule->run(PHP_BINARY . ' datenight.php'); 
 $task
-    ->MonthlyOn(2, '20:00')
+    ->MonthlyOn(2, '20:00');
 // ...
 ```
 
@@ -370,7 +370,7 @@ This is the correct way of using weekday methods:
 // ...
 $task = $schedule->run(PHP_BINARY . ' startofwork.php');
 $task    
-    ->mondays();
+    ->mondays()
     ->at('13:30');
 
 // ...
@@ -382,7 +382,7 @@ $task
 
 Dynamic methods give us a wide variety of frequency options on the fly. We just need to follow this pattern:
 
-```php
+```text
 every[NumberInCamelCaseWords]Minute|Hour|Day|Months?
 ```
 
@@ -727,7 +727,7 @@ vendor/bin/crunz --help
 
 One of these commands is `crunz schedule:list`, which lists the defined tasks (in collected `*.Tasks.php` files) in a tabular format.
 
-```php
+```text
 vendor/bin/crunz schedule:list
 
 +---+---------------+-------------+--------------------+
