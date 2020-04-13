@@ -671,6 +671,48 @@ As a result, if the execution of an event is unsuccessful for some reasons, the 
 
 It is also possible to send the errors as emails to a group of recipients by setting `email_error` and `mailer` settings in the configuration file.
 
+## Custom logger
+
+To use your own logger create class implementing `\Crunz\Application\Service\LoggerFactoryInterface`, for example:
+
+```php
+<?php
+
+namespace Vendor\Package;
+
+use Crunz\Application\Service\ConfigurationInterface;
+use Crunz\Application\Service\LoggerFactoryInterface;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+
+final class MyEchoLoggerFactory implements LoggerFactoryInterface
+{
+    public function create(ConfigurationInterface $configuration): LoggerInterface
+    {
+        return new class extends AbstractLogger {
+            /** @inheritDoc */
+            public function log(
+                $level,
+                $message,
+                array $context = array()
+            ) {
+                echo "crunz.{$level}: {$message}";   
+            }
+        };
+    }
+}
+```
+
+then use this class name in config: 
+
+```yaml
+# ./crunz.yml file
+ 
+logger_factory: 'Vendor\Package\MyEchoLoggerFactory'
+```
+
+Done.
+
 ## Pre-Process and Post-Process Hooks
 
 There are times when we want to do some kind of operations before and after an event. This is possible by attaching pre-process and post-process callbacks to the respective event.
