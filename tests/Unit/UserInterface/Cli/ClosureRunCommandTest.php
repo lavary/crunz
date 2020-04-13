@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Crunz\Tests\Unit\UserInterface\Cli;
 
+use Crunz\Tests\TestCase\UnitTestCase;
 use Crunz\UserInterface\Cli\ClosureRunCommand;
-use PHPUnit\Framework\TestCase;
-use SuperClosure\Serializer;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-final class ClosureRunCommandTest extends TestCase
+final class ClosureRunCommandTest extends UnitTestCase
 {
     /** @dataProvider closureValueProvider */
     public function testReturnValueOfClosureIsOmitted(int $returnValue): void
@@ -18,7 +17,7 @@ final class ClosureRunCommandTest extends TestCase
         $closure = static function () use ($returnValue): int {
             return $returnValue;
         };
-        $command = new ClosureRunCommand();
+        $command = $this->createCommand();
         $input = $this->createInput($closure);
         $output = new NullOutput();
 
@@ -31,7 +30,7 @@ final class ClosureRunCommandTest extends TestCase
     /** @test */
     public function commandIsHidden(): void
     {
-        $command = new ClosureRunCommand();
+        $command = $this->createCommand();
 
         $this->assertTrue($command->isHidden());
     }
@@ -45,7 +44,7 @@ final class ClosureRunCommandTest extends TestCase
 
     private function createInput(\Closure $closure): ArrayInput
     {
-        $closureSerializer = new Serializer();
+        $closureSerializer = $this->createClosureSerializer();
 
         return new ArrayInput(
             [
@@ -56,5 +55,10 @@ final class ClosureRunCommandTest extends TestCase
                 ),
             ]
         );
+    }
+
+    private function createCommand(): ClosureRunCommand
+    {
+        return new ClosureRunCommand($this->createClosureSerializer());
     }
 }

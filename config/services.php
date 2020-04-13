@@ -88,6 +88,11 @@ $container
 ;
 $container
     ->register(ClosureRunCommand::class, ClosureRunCommand::class)
+    ->setArguments(
+        [
+            new Reference(ClosureSerializerInterface::class),
+        ]
+    )
     ->setPublic(true)
 ;
 $container

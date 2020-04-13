@@ -7,13 +7,12 @@ namespace Crunz\Tests\Unit;
 use Crunz\Event;
 use Crunz\Task\TaskException;
 use Crunz\Tests\TestCase\TestClock;
-use PHPUnit\Framework\TestCase;
-use SuperClosure\Serializer;
+use Crunz\Tests\TestCase\UnitTestCase;
 use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Lock\StoreInterface;
 
-final class EventTest extends TestCase
+final class EventTest extends UnitTestCase
 {
     /**
      * The default configuration timezone.
@@ -351,7 +350,8 @@ final class EventTest extends TestCase
         $closure = function () {
             return 0;
         };
-        $serializedClosure = (new Serializer())->serialize($closure);
+        $closureSerializer = $this->createClosureSerializer();
+        $serializedClosure = $closureSerializer->serialize($closure);
         $queryClosure = \http_build_query([$serializedClosure]);
         $crunzBin = CRUNZ_BIN;
 

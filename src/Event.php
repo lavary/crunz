@@ -9,13 +9,13 @@ use Cron\CronExpression;
 use Crunz\Clock\Clock;
 use Crunz\Clock\ClockInterface;
 use Crunz\Exception\NotImplementedException;
+use Crunz\Infrastructure\Opis\Closure\OpisClosureSerializer;
 use Crunz\Logger\Logger;
 use Crunz\Path\Path;
 use Crunz\Pinger\PingableInterface;
 use Crunz\Pinger\PingableTrait;
 use Crunz\Process\Process;
 use Crunz\Task\TaskException;
-use SuperClosure\Serializer;
 use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\Exception\InvalidArgumentException;
 use Symfony\Component\Lock\Factory;
@@ -1107,7 +1107,7 @@ class Event implements PingableInterface
      */
     protected function serializeClosure(Closure $closure)
     {
-        $closure = (new Serializer())->serialize($closure);
+        $closure = (new OpisClosureSerializer())->serialize($closure);
         $serializedClosure = \http_build_query([$closure]);
         $crunzRoot = CRUNZ_BIN;
 
