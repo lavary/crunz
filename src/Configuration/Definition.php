@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Crunz\Configuration;
 
+use Crunz\Infrastructure\Psr\Logger\PsrStreamLoggerFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -41,6 +42,12 @@ class Definition implements ConfigurationInterface
                 ->booleanNode('timezone_log')
                     ->defaultFalse()
                     ->info('Whether configured "timezone" will be used for logs')
+                ->end()
+
+                ->scalarNode('logger_factory')
+                    ->defaultValue(PsrStreamLoggerFactory::class)
+                    ->cannotBeEmpty()
+                    ->info("Class name implementing 'LoggerFactoryInterface'. Use it to provider your own logger.")
                 ->end()
 
                 ->booleanNode('log_errors')

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Crunz\Tests\TestCase;
 
 use Crunz\Application\Service\ConfigurationInterface;
+use Crunz\Infrastructure\Psr\Logger\PsrStreamLoggerFactory;
 
 final class FakeConfiguration implements ConfigurationInterface
 {
@@ -15,6 +16,7 @@ final class FakeConfiguration implements ConfigurationInterface
         'timezone_log' => false,
         'log_errors' => false,
         'errors_log_file' => null,
+        'logger_factory' => PsrStreamLoggerFactory::class,
         'log_output' => false,
         'output_log_file' => null,
         'log_allow_line_breaks' => false,
