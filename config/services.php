@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Crunz\Application\Cron\CronExpressionFactoryInterface;
 use Crunz\Application\Query\TaskInformation\TaskInformationHandler;
+use Crunz\Application\Service\ClosureSerializerInterface;
 use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Configuration\Configuration;
 use Crunz\Configuration\ConfigurationParser;
@@ -25,6 +26,7 @@ use Crunz\HttpClient\HttpClientInterface;
 use Crunz\HttpClient\HttpClientLoggerDecorator;
 use Crunz\HttpClient\StreamHttpClient;
 use Crunz\Infrastructure\Dragonmantank\CronExpression\DragonmantankCronExpressionFactory;
+use Crunz\Infrastructure\Opis\Closure\OpisClosureSerializer;
 use Crunz\Invoker;
 use Crunz\Logger\ConsoleLogger;
 use Crunz\Logger\ConsoleLoggerInterface;
@@ -65,6 +67,7 @@ $simpleServices = [
     FinderInterface::class => Finder::class,
     LoaderInterface::class => Loader::class,
     CronExpressionFactoryInterface::class => DragonmantankCronExpressionFactory::class,
+    ClosureSerializerInterface::class => OpisClosureSerializer::class,
 ];
 
 /* @var ContainerBuilder $container */
@@ -85,6 +88,11 @@ $container
 ;
 $container
     ->register(ClosureRunCommand::class, ClosureRunCommand::class)
+    ->setArguments(
+        [
+            new Reference(ClosureSerializerInterface::class),
+        ]
+    )
     ->setPublic(true)
 ;
 $container
