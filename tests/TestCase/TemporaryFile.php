@@ -48,7 +48,13 @@ final class TemporaryFile
     {
         $this->checkFileExists();
 
-        return \file_get_contents($this->filePath);
+        $content = \file_get_contents($this->filePath);
+
+        if (false === $content) {
+            throw new CrunzException("Unable to read from temporary file '{$this->filePath}'.");
+        }
+
+        return $content;
     }
 
     private function checkFileExists(): void

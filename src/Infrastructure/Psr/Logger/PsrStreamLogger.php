@@ -41,8 +41,8 @@ final class PsrStreamLogger extends AbstractLogger
         bool $timezoneLog = false,
         bool $allowLineBreaks = false
     ) {
-        $this->outputStreamPath = $outputStreamPath;
-        $this->errorStreamPath = $errorStreamPath;
+        $this->outputStreamPath = $outputStreamPath ?? '';
+        $this->errorStreamPath = $errorStreamPath ?? '';
         $this->ignoreEmptyContext = $ignoreEmptyContext;
         $this->timezoneLog = $timezoneLog;
         $this->allowLineBreaks = $allowLineBreaks;
@@ -145,6 +145,7 @@ final class PsrStreamLogger extends AbstractLogger
         return $handler;
     }
 
+    /** @param resource|null $stream */
     private function closeStream($stream): void
     {
         if (!\is_resource($stream)) {
@@ -173,13 +174,20 @@ final class PsrStreamLogger extends AbstractLogger
         return null;
     }
 
+    /** @param array<mixed,mixed> $data */
     private function formatContext(array $data): string
     {
         if ($this->ignoreEmptyContext && empty($data)) {
             return '';
         }
 
-        return \json_encode($data);
+        $encodedData = \json_encode($data);
+
+        if (false === $encodedData) {
+            throw new CrunzException('Unable to encode context data.');
+        }
+
+        return $encodedData;
     }
 
     private function formatDate(): string

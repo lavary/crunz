@@ -33,6 +33,7 @@ final class LoggerFactoryTest extends TestCase
         $loggerFactory->create();
     }
 
+    /** @param array<string,mixed> $configuration */
     private function createLoggerFactory(array $configuration = []): LoggerFactory
     {
         $fakeConfiguration = new FakeConfiguration($configuration);

@@ -7,6 +7,7 @@ namespace Crunz;
 use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\HttpClient\HttpClientInterface;
 use Crunz\Logger\ConsoleLoggerInterface;
+use Crunz\Logger\Logger;
 use Crunz\Logger\LoggerFactory;
 use Crunz\Pinger\PingableInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,7 +49,7 @@ class EventRunner
         $this->consoleLogger = $consoleLogger;
     }
 
-    /* @param Schedule[] $schedules */
+    /** @param Schedule[] $schedules */
     public function handle(OutputInterface $output, array $schedules = []): void
     {
         $this->schedules = $schedules;
@@ -196,7 +197,9 @@ class EventRunner
         ;
 
         if ($logOutput) {
-            $this->logger->info($this->formatEventOutput($event));
+            $this->logger()
+                ->info($this->formatEventOutput($event))
+            ;
             $logged = true;
         }
         if (!$event->nullOutput()) {
@@ -228,7 +231,9 @@ class EventRunner
         ;
 
         if ($logErrors) {
-            $this->logger->error($this->formatEventError($event));
+            $this->logger()
+                ->error($this->formatEventError($event))
+            ;
         } else {
             $output = $event->wholeOutput();
 
@@ -302,5 +307,16 @@ class EventRunner
 
         $this->httpClient
             ->ping($schedule->getPingAfterUrl());
+    }
+
+    private function logger(): Logger
+    {
+        if (null === $this->logger) {
+            $this->logger = $this->loggerFactory
+                ->create()
+            ;
+        }
+
+        return $this->logger;
     }
 }

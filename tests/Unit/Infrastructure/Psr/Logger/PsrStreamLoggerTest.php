@@ -153,12 +153,14 @@ final class PsrStreamLoggerTest extends TestCase
         );
     }
 
+    /** @return iterable<string,string[]> */
     public function supportedLevelsProvider(): iterable
     {
         yield 'info' => ['info'];
         yield 'error' => ['error'];
     }
 
+    /** @return iterable<string,string[]> */
     public function unsupportedLevelsProvider(): iterable
     {
         yield 'emergency' => ['emergency'];
@@ -204,11 +206,11 @@ final class PsrStreamLoggerTest extends TestCase
             $context = ' ';
         }
 
-        if (true === $timeZoneLog && null === $timeZone) {
-            throw new CrunzException("TimeZone must be specified to use 'timeZoneLog'.");
-        }
-
         if (true === $timeZoneLog) {
+            if (null === $timeZone) {
+                throw new CrunzException("TimeZone must be specified to use 'timeZoneLog'.");
+            }
+
             $date = $date->setTimezone($timeZone);
         }
 
