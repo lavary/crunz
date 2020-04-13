@@ -75,21 +75,8 @@ class EventRunner
 
     protected function start(Event $event): void
     {
-        $outputLogFile = $this->configuration
-            ->get('output_log_file')
-        ;
-        $errorLogFile = $this->configuration
-            ->get('errors_log_file')
-        ;
-
         $this->logger = $this->loggerFactory
-            ->create(
-                [
-                    // Logging streams
-                    'info' => $outputLogFile,
-                    'error' => $errorLogFile,
-                ]
-            )
+            ->create()
         ;
 
         // if sendOutputTo or appendOutputTo have been specified
@@ -103,12 +90,7 @@ class EventRunner
                 }
             }
             // Create an instance of the Logger specific to the event
-            $event->logger = $this->loggerFactory->create(
-                [
-                    // Logging streams
-                    'info' => $event->output,
-                ]
-            );
+            $event->logger = $this->loggerFactory->create();
         }
 
         $this->consoleLogger
