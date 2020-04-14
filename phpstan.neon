@@ -21,7 +21,6 @@ parameters:
         -
             message: '#Call to an undefined method Crunz\\Event::every.*(Minutes|Hours)\(\)#'
             path: tests/Unit/EventTest.php
-        - '#Method Crunz\\(Event|Schedule|Tests\\Unit\\Pingable)::(pingBefore|thenPing)\(\) should return \$this\(Crunz\\Pinger\\PingableInterface\)#'
         -
             message: "#Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component…' and '(fromShellCommandline|inheritEnvironmentV…)' will always evaluate to false#"
             path: src/Process/Process.php
