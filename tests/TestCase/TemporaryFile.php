@@ -28,6 +28,15 @@ final class TemporaryFile
             return;
         }
 
+        $streams = \get_resources('stream');
+        foreach ($streams as $stream) {
+            $uri = \stream_get_meta_data($stream)['uri'] ?? '';
+
+            if ($uri === $this->filePath) {
+                \fclose($stream);
+            }
+        }
+
         \unlink($this->filePath);
     }
 
