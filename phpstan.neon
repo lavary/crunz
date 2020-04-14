@@ -25,7 +25,10 @@ parameters:
             message: "#Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component…' and '(fromShellCommandline|inheritEnvironmentV…)' will always evaluate to false#"
             path: src/Process/Process.php
         -
-            message: '#Parameter \#1 \$command of static method Symfony\\Component\\Process\\Process::fromShellCommandline\(\) expects string, array|string given#'
+            message: '#Parameter \#1 \$command of static method Symfony\\Component\\Process\\Process::fromShellCommandline\(\) expects string#'
+            path: src/Process/Process.php
+        -
+            message: '#Parameter \#1 \$command of class Symfony\\Component\\Process\\Process constructor expects#'
             path: src/Process/Process.php
         -
             message: '#setProcess\(\)#'
