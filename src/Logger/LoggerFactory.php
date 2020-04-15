@@ -5,13 +5,24 @@ declare(strict_types=1);
 namespace Crunz\Logger;
 
 use Crunz\Application\Service\ConfigurationInterface;
+use Crunz\Application\Service\LoggerFactoryInterface;
+use Crunz\Clock\ClockInterface;
+use Crunz\Exception\CrunzException;
+use Crunz\Infrastructure\Psr\Logger\PsrStreamLoggerFactory;
 use Crunz\Task\Timezone;
-use Monolog\Logger as MonologLogger;
 
 class LoggerFactory
 {
     /** @var ConfigurationInterface */
     private $configuration;
+    /** @var LoggerFactoryInterface */
+    private $loggerFactory;
+    /** @var Timezone */
+    private $timezoneProvider;
+    /** @var ClockInterface */
+    private $clock;
+    /** @var ConsoleLoggerInterface */
+    private $consoleLogger;
 
     /**
      * @throws \Exception if the timezone supplied in configuration is not recognised as a valid timezone
@@ -19,41 +30,77 @@ class LoggerFactory
     public function __construct(
         ConfigurationInterface $configuration,
         Timezone $timezoneProvider,
-        ConsoleLoggerInterface $consoleLogger
+        ConsoleLoggerInterface $consoleLogger,
+        ClockInterface $clock
     ) {
         $this->configuration = $configuration;
-        $timezoneLog = $configuration->get('timezone_log');
+        $this->timezoneProvider = $timezoneProvider;
+        $this->clock = $clock;
+        $this->consoleLogger = $consoleLogger;
+    }
 
-        if ($timezoneLog) {
-            $timezone = $timezoneProvider->timezoneForComparisons();
-            $consoleLogger->veryVerbose("Timezone for '<info>timezone_log</info>': '<info>{$timezone->getName()}</info>'");
+    public function create(): Logger
+    {
+        $this->initializeLoggerFactory();
+        $configuration = $this->configuration;
+        $innerLogger = $this->loggerFactory
+            ->create($configuration)
+        ;
 
-            MonologLogger::setTimezone($timezone);
+        return new Logger($innerLogger);
+    }
+
+    private function initializeLoggerFactory(): void
+    {
+        if (null === $this->loggerFactory) {
+            $timezoneLog = $this->configuration
+                ->get('timezone_log')
+            ;
+
+            if ($timezoneLog) {
+                $timezone = $this->timezoneProvider
+                    ->timezoneForComparisons()
+                ;
+
+                $this->consoleLogger
+                    ->veryVerbose("Timezone for '<info>timezone_log</info>': '<info>{$timezone->getName()}</info>'")
+                ;
+            }
+
+            $this->loggerFactory = $this->createLoggerFactory(
+                $this->configuration,
+                $this->timezoneProvider,
+                $this->clock
+            );
         }
     }
 
-    /**
-     * @param array<string,string> $streams
-     *
-     * @return Logger
-     */
-    public function create(array $streams = [])
-    {
-        $logger = new Logger(new MonologLogger('crunz'), $this->configuration);
+    private function createLoggerFactory(
+        ConfigurationInterface $configuration,
+        Timezone $timezoneProvider,
+        ClockInterface $clock
+    ): LoggerFactoryInterface {
+        $params = [];
+        $loggerFactoryClass = $configuration->get('logger_factory');
 
-        // Adding stream for normal output
-        foreach ($streams as $stream => $file) {
-            if (!$file) {
-                continue;
-            }
+        $this->consoleLogger
+            ->veryVerbose("Class for '<info>logger_factory</info>': '<info>{$loggerFactoryClass}</info>'.")
+        ;
 
-            $logger->addStream(
-                $file,
-                $stream,
-                false
-            );
+        if (!\class_exists($loggerFactoryClass)) {
+            throw new CrunzException("Class '{$loggerFactoryClass}' does not exists.");
         }
 
-        return $logger;
+        $isPsrStreamLoggerFactory = \is_a(
+            $loggerFactoryClass,
+            PsrStreamLoggerFactory::class,
+            true
+        );
+        if ($isPsrStreamLoggerFactory) {
+            $params[] = $timezoneProvider;
+            $params[] = $clock;
+        }
+
+        return new $loggerFactoryClass(...$params);
     }
 }

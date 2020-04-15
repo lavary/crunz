@@ -6,6 +6,8 @@ use Crunz\Application\Cron\CronExpressionFactoryInterface;
 use Crunz\Application\Query\TaskInformation\TaskInformationHandler;
 use Crunz\Application\Service\ClosureSerializerInterface;
 use Crunz\Application\Service\ConfigurationInterface;
+use Crunz\Clock\Clock;
+use Crunz\Clock\ClockInterface;
 use Crunz\Configuration\Configuration;
 use Crunz\Configuration\ConfigurationParser;
 use Crunz\Configuration\ConfigurationParserInterface;
@@ -68,6 +70,7 @@ $simpleServices = [
     LoaderInterface::class => Loader::class,
     CronExpressionFactoryInterface::class => DragonmantankCronExpressionFactory::class,
     ClosureSerializerInterface::class => OpisClosureSerializer::class,
+    ClockInterface::class => Clock::class,
 ];
 
 /* @var ContainerBuilder $container */
@@ -183,6 +186,7 @@ $container
             new Reference(ConfigurationInterface::class),
             new Reference(Timezone::class),
             new Reference(ConsoleLoggerInterface::class),
+            new Reference(ClockInterface::class),
         ]
     )
 ;

@@ -28,11 +28,19 @@ final class TemporaryFile
             return;
         }
 
+        $streams = \get_resources('stream');
+        foreach ($streams as $stream) {
+            $uri = \stream_get_meta_data($stream)['uri'] ?? '';
+
+            if ($uri === $this->filePath) {
+                \fclose($stream);
+            }
+        }
+
         \unlink($this->filePath);
     }
 
-    /** @return string */
-    public function filePath()
+    public function filePath(): string
     {
         return $this->filePath;
     }
@@ -40,6 +48,28 @@ final class TemporaryFile
     /** @param int $mode */
     public function changePermissions($mode): void
     {
+        $this->checkFileExists();
+
         \chmod($this->filePath, $mode);
+    }
+
+    public function contents(): string
+    {
+        $this->checkFileExists();
+
+        $content = \file_get_contents($this->filePath);
+
+        if (false === $content) {
+            throw new CrunzException("Unable to read from temporary file '{$this->filePath}'.");
+        }
+
+        return $content;
+    }
+
+    private function checkFileExists(): void
+    {
+        if (!\file_exists($this->filePath)) {
+            throw new CrunzException("Temporary file '{$this->filePath}' no longer exists.");
+        }
     }
 }

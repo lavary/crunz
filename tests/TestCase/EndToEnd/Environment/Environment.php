@@ -13,6 +13,10 @@ use Symfony\Component\Yaml\Yaml;
 
 final class Environment
 {
+    private const DEFAULT_CONFIG = [
+        'timezone' => 'UTC',
+    ];
+
     /** @var string */
     private $rootDirectory = '';
     /** @var string[] */
@@ -38,7 +42,7 @@ final class Environment
     ) {
         $this->filesystem = $filesystem;
         $this->tasks = $tasks;
-        $this->config = $config;
+        $this->config = \array_merge(self::DEFAULT_CONFIG, $config);
         $this->tasksDirectory = $tasksDirectory->toString();
 
         $this->setUp();

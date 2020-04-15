@@ -7,35 +7,20 @@ namespace Crunz;
 use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\HttpClient\HttpClientInterface;
 use Crunz\Logger\ConsoleLoggerInterface;
+use Crunz\Logger\Logger;
 use Crunz\Logger\LoggerFactory;
 use Crunz\Pinger\PingableInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class EventRunner
 {
-    /**
-     * Schedule objects.
-     *
-     * @var Schedule[]
-     */
+    /** @var Schedule[] */
     protected $schedules = [];
-    /**
-     * Instance of the invoker class.
-     *
-     * @var \Crunz\Invoker
-     */
+    /** @var \Crunz\Invoker */
     protected $invoker;
-    /**
-     * The Logger.
-     *
-     * @var \Crunz\Logger\Logger
-     */
+    /** @var \Crunz\Logger\Logger|null */
     protected $logger;
-    /**
-     * The Mailer.
-     *
-     * @var \Crunz\Mailer
-     */
+    /** @var \Crunz\Mailer */
     protected $mailer;
     /** @var OutputInterface */
     private $output;
@@ -48,9 +33,6 @@ class EventRunner
     /** @var ConsoleLoggerInterface */
     private $consoleLogger;
 
-    /**
-     * Instantiate the event runner.
-     */
     public function __construct(
         Invoker $invoker,
         ConfigurationInterface $configuration,
@@ -59,16 +41,6 @@ class EventRunner
         HttpClientInterface $httpClient,
         ConsoleLoggerInterface $consoleLogger
     ) {
-        $outputLogFile = $configuration->get('output_log_file');
-        $errorLogFile = $configuration->get('errors_log_file');
-
-        $this->logger = $loggerFactory->create(
-            [
-                // Logging streams
-                'info' => $outputLogFile,
-                'error' => $errorLogFile,
-            ]
-        );
         $this->invoker = $invoker;
         $this->mailer = $mailer;
         $this->configuration = $configuration;
@@ -77,11 +49,7 @@ class EventRunner
         $this->consoleLogger = $consoleLogger;
     }
 
-    /**
-     * Handle an array of Schedule objects.
-     *
-     * @param Schedule[] $schedules
-     */
+    /** @param Schedule[] $schedules */
     public function handle(OutputInterface $output, array $schedules = []): void
     {
         $this->schedules = $schedules;
@@ -106,13 +74,12 @@ class EventRunner
         $this->manageStartedEvents();
     }
 
-    /**
-     * Run an event process.
-     *
-     * @param \Crunz\Event $event
-     */
     protected function start(Event $event): void
     {
+        $this->logger = $this->loggerFactory
+            ->create()
+        ;
+
         // if sendOutputTo or appendOutputTo have been specified
         if (!$event->nullOutput()) {
             // if sendOutputTo then truncate the log file if it exists
@@ -124,12 +91,7 @@ class EventRunner
                 }
             }
             // Create an instance of the Logger specific to the event
-            $event->logger = $this->loggerFactory->create(
-                [
-                    // Logging streams
-                    'info' => $event->output,
-                ]
-            );
+            $event->logger = $this->loggerFactory->create();
         }
 
         $this->consoleLogger
@@ -142,9 +104,6 @@ class EventRunner
         $event->start();
     }
 
-    /**
-     * Manage the running processes.
-     */
     protected function manageStartedEvents(): void
     {
         while ($this->schedules) {
@@ -214,8 +173,6 @@ class EventRunner
     }
 
     /**
-     * Invoke an array of callables.
-     *
      * @param \Closure[]         $callbacks
      * @param array<mixed,mixed> $parameters
      *
@@ -240,7 +197,9 @@ class EventRunner
         ;
 
         if ($logOutput) {
-            $this->logger->info($this->formatEventOutput($event));
+            $this->logger()
+                ->info($this->formatEventOutput($event))
+            ;
             $logged = true;
         }
         if (!$event->nullOutput()) {
@@ -262,11 +221,6 @@ class EventRunner
         }
     }
 
-    /**
-     * Handle errors.
-     *
-     * @param \Crunz\Event $event
-     */
     protected function handleError(Event $event): void
     {
         $logErrors = $this->configuration
@@ -277,7 +231,9 @@ class EventRunner
         ;
 
         if ($logErrors) {
-            $this->logger->error($this->formatEventError($event));
+            $this->logger()
+                ->error($this->formatEventError($event))
+            ;
         } else {
             $output = $event->wholeOutput();
 
@@ -307,13 +263,7 @@ class EventRunner
             . PHP_EOL;
     }
 
-    /**
-     * Format the event error message.
-     *
-     * @param \Crunz\Event $event
-     *
-     * @return string
-     */
+    /** @return string */
     protected function formatEventError(Event $event)
     {
         return $event->description
@@ -325,11 +275,7 @@ class EventRunner
             . PHP_EOL;
     }
 
-    /**
-     * Display content.
-     *
-     * @param string|null $output
-     */
+    /** @param string|null $output */
     protected function display($output): void
     {
         $this->output
@@ -361,5 +307,16 @@ class EventRunner
 
         $this->httpClient
             ->ping($schedule->getPingAfterUrl());
+    }
+
+    private function logger(): Logger
+    {
+        if (null === $this->logger) {
+            $this->logger = $this->loggerFactory
+                ->create()
+            ;
+        }
+
+        return $this->logger;
     }
 }
