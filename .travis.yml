@@ -24,6 +24,8 @@ env:
         - SYMFONY_VERSION="~v4.4.0" DEPENDENCIES="low"
         - SYMFONY_VERSION="~v5.0.0" PHPUNIT_BRIDGE_VERSION="~v5.0.0" DEPENDENCIES="high"
         - SYMFONY_VERSION="~v5.0.0" PHPUNIT_BRIDGE_VERSION="~v5.0.0" DEPENDENCIES="low"
+        - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="high"
+        - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="low"
     global:
         - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --no-suggest --prefer-dist"
         - PHPUNIT_BRIDGE_VERSION="~v4.4.0"
