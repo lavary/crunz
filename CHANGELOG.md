@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.2.0] - 2020-06-18
+
+### Added
+
+- [#287] Add `task:debug` command
+- [#233] Add option to ignore empty context in monolog, thanks to [@rrushton]
+- [#298] Add `logger_factory` config option
+
+### Removed
+
+- [#292] Drop Symfony 4.2 support
+
 ## [v2.1.0] - 2020-02-02
 
 ### Added
@@ -251,6 +263,9 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#298]: https://github.com/lavary/crunz/pull/298
+[#292]: https://github.com/lavary/crunz/pull/292
+[#287]: https://github.com/lavary/crunz/pull/287
 [#280]: https://github.com/lavary/crunz/pull/280
 [#274]: https://github.com/lavary/crunz/pull/274
 [#268]: https://github.com/lavary/crunz/pull/268
@@ -260,6 +275,7 @@ In `v2` this will result in exception.
 [#245]: https://github.com/lavary/crunz/pull/245
 [#243]: https://github.com/lavary/crunz/pull/243
 [#240]: https://github.com/lavary/crunz/pull/240
+[#233]: https://github.com/lavary/crunz/pull/233
 [#229]: https://github.com/lavary/crunz/pull/229
 [#225]: https://github.com/lavary/crunz/pull/225
 [#224]: https://github.com/lavary/crunz/pull/224
@@ -385,6 +401,7 @@ In `v2` this will result in exception.
 [v2.0.3]: https://github.com/lavary/crunz/compare/v2.0.2...v2.0.3
 [v2.0.4]: https://github.com/lavary/crunz/compare/v2.0.3...v2.0.4
 [v2.1.0]: https://github.com/lavary/crunz/compare/v2.0.4...v2.1.0
+[v2.2.0]: https://github.com/lavary/crunz/compare/v2.1.0...v2.2.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
@@ -401,3 +418,4 @@ In `v2` this will result in exception.
 [@FallDi]: https://github.com/FallDi
 [@SadeghPM]: https://github.com/SadeghPM
 [@mareksuscak]: https://github.com/mareksuscak
+[@rrushton]: https://github.com/rrushton
