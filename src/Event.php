@@ -1110,8 +1110,12 @@ class Event implements PingableInterface
         $closure = (new OpisClosureSerializer())->serialize($closure);
         $serializedClosure = \http_build_query([$closure]);
         $crunzRoot = CRUNZ_BIN;
-
-        return PHP_BINARY . " {$crunzRoot} closure:run {$serializedClosure}";
+        $phpBin = PHP_BINARY;
+        if (DIRECTORY_SEPARATOR === '\\') {
+            // For Windows, add quotes around path in case of spaces.
+            $phpBin = '"'.$phpBin.'"';
+        }
+        return "{$phpBin} {$crunzRoot} closure:run {$serializedClosure}";
     }
 
     /**
