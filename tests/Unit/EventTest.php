@@ -346,7 +346,12 @@ final class EventTest extends UnitTestCase
         if (!\defined('CRUNZ_BIN')) {
             \define('CRUNZ_BIN', __FILE__);
         }
-
+        
+        $phpBin = PHP_BINARY;
+        if ($this->isWindows()) {
+            $phpBin = '"'.$phpBin.'"';
+        }
+        
         $closure = function () {
             return 0;
         };
@@ -359,7 +364,7 @@ final class EventTest extends UnitTestCase
 
         $command = $event->buildCommand();
 
-        $this->assertSame(PHP_BINARY . " {$crunzBin} closure:run {$queryClosure}", $command);
+        $this->assertSame("{$phpBin} {$crunzBin} closure:run {$queryClosure}", $command);
     }
 
     /** @test */
