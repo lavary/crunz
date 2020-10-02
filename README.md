@@ -268,16 +268,6 @@ $task
 // ...
 ```
 
-The following task will be run on the second of the month at 20:00
-```php
-<?php
-// ...
-$task = $schedule->run(PHP_BINARY . ' datenight.php'); 
-$task
-    ->MonthlyOn(2, '20:00');
-// ...
-```
-
 ## Task Life Time
 
 In a crontab entry, we can not easily specify a task's lifetime (the period of time when the task is active). However, it's been made easy in Crunz:
