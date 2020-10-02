@@ -41,8 +41,7 @@ jobs:
 
 before_install:
     - phpenv config-rm xdebug.ini || return 0;
-    - composer self-update
-    - composer global require hirak/prestissimo -a
+    - composer self-update --2 --preview
 
 install:
     - php ./composer-install.php "$SYMFONY_VERSION" "$DEPENDENCIES" "$DEFAULT_COMPOSER_FLAGS" "$PHPUNIT_BRIDGE_VERSION"
