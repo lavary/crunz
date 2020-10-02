@@ -27,7 +27,7 @@ env:
         - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="high"
         - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="low"
     global:
-        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --no-suggest --prefer-dist"
+        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --prefer-dist"
         - PHPUNIT_BRIDGE_VERSION="~v4.4.0"
 
 jobs:
@@ -41,8 +41,7 @@ jobs:
 
 before_install:
     - phpenv config-rm xdebug.ini || return 0;
-    - composer self-update
-    - composer global require hirak/prestissimo -a
+    - composer self-update --2 --preview
 
 install:
     - php ./composer-install.php "$SYMFONY_VERSION" "$DEPENDENCIES" "$DEFAULT_COMPOSER_FLAGS" "$PHPUNIT_BRIDGE_VERSION"

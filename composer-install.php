@@ -9,56 +9,65 @@ if ('' === $version) {
 $dependenciesEnv = $_SERVER['argv'][2] ?? '';
 $defaultComposerFlags = $_SERVER['argv'][3] ?? '';
 $phpunitBridgeVersion = $_SERVER['argv'][4] ?? $version;
-
+$composerFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'composer.json';
 $ignoredPackages = [
     'symfony/error-handler',
     'symfony/phpunit-bridge',
 ];
+$changeVersion = static function (
+    array $packages
+) use (
+    $version,
+    $phpunitBridgeVersion,
+    $ignoredPackages
+): array {
+    foreach ($packages as $packageName => &$packageVersion) {
+        $isIgnored = \in_array(
+            $packageName,
+            $ignoredPackages,
+            true
+        );
+
+        if ($isIgnored) {
+            continue;
+        }
+
+        if (false === \mb_strpos($packageName, 'symfony/')) {
+            continue;
+        }
+
+        if ('symfony/phpunit-bridge' === $packageName) {
+            $packageVersion = $phpunitBridgeVersion;
+
+            continue;
+        }
+
+        $packageVersion = $version;
+    }
+
+    return $packages;
+};
+
 $composerJson = \json_decode(
-    \file_get_contents(
-        __DIR__ . DIRECTORY_SEPARATOR . 'composer.json'
-    ),
+    \file_get_contents($composerFilePath),
     true
 );
-$packages = \array_merge(
-    $composerJson['require'] ?? [],
-    $composerJson['require-dev'] ?? []
+$packages = $composerJson['require'] ?? [];
+$packagesDev = $composerJson['require-dev'] ?? [];
+$composerJson['require'] = $changeVersion($packages);
+$composerJson['require-dev'] = $changeVersion($packagesDev);
+
+\file_put_contents(
+    $composerFilePath,
+    \json_encode($composerJson)
 );
-$symfonyPackages = [];
 
-foreach ($packages as $packageName => $packageVersion) {
-    $isIgnored = \in_array(
-        $packageName,
-        $ignoredPackages,
-        true
-    );
-
-    if ($isIgnored) {
-        continue;
-    }
-
-    if (false === \mb_strpos($packageName, 'symfony/')) {
-        continue;
-    }
-
-    $symfonyPackages[] = $packageName;
-}
-
-$withVersion = \array_map(
-    static function (string $packageName) use ($version): string {
-        return "{$packageName}:{$version}";
-    },
-    $symfonyPackages
-);
-$withVersion[] = "symfony/phpunit-bridge:{$phpunitBridgeVersion}";
-
-$symfonyPackagesVersions = '"' . \implode('" "', $withVersion) . '"';
-$dependencies = 'high' === $dependenciesEnv
-    ? ''
-    : '--prefer-lowest'
-;
-
-$command = "composer req -o {$symfonyPackagesVersions} {$dependencies} {$defaultComposerFlags}";
-
-echo $command . PHP_EOL;
+$command = "composer install -o {$defaultComposerFlags}";
+echo $command, PHP_EOL;
 echo \shell_exec($command);
+
+if ('high' !== $dependenciesEnv) {
+    $updateCommand = "composer update -o --prefer-lowest {$defaultComposerFlags}";
+    echo $updateCommand, PHP_EOL;
+    echo \shell_exec($updateCommand);
+}
