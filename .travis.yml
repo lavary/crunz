@@ -27,7 +27,7 @@ env:
         - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="high"
         - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="low"
     global:
-        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --no-suggest --prefer-dist"
+        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --prefer-dist"
         - PHPUNIT_BRIDGE_VERSION="~v4.4.0"
 
 jobs:
