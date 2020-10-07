@@ -46,7 +46,7 @@ final class LoggerTest extends EndToEndTestCase
     ): void {
         $levelFormatted = \mb_strtoupper($level);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             "/^\[[0-9]{4}(-[0-9]{2}){2} [0-9]{2}(:[0-9]{2}){2}\] crunz\.{$levelFormatted}:.+?({$message})/",
             $logRecord
         );
