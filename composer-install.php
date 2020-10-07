@@ -10,10 +10,7 @@ $dependenciesEnv = $_SERVER['argv'][2] ?? '';
 $defaultComposerFlags = $_SERVER['argv'][3] ?? '';
 $phpunitBridgeVersion = $_SERVER['argv'][4] ?? $version;
 $composerFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'composer.json';
-$ignoredPackages = [
-    'symfony/error-handler',
-    'symfony/phpunit-bridge',
-];
+$ignoredPackages = ['symfony/error-handler'];
 $changeVersion = static function (
     array $packages
 ) use (
@@ -29,6 +26,12 @@ $changeVersion = static function (
         );
 
         if ($isIgnored) {
+            continue;
+        }
+
+        if (PHP_MAJOR_VERSION >= 8 && 'phpunit/phpunit' === $packageName) {
+            $packageVersion = '^9.4.0';
+
             continue;
         }
 
