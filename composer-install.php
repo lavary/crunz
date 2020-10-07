@@ -62,7 +62,7 @@ $composerJson['require-dev'] = $changeVersion($packagesDev);
 
 \file_put_contents(
     $composerFilePath,
-    \json_encode($composerJson)
+    \json_encode($composerJson, JSON_PRETTY_PRINT)
 );
 
 $command = "composer install -o {$defaultComposerFlags}";
