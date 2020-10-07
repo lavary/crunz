@@ -25,7 +25,7 @@
         "issues": "http://github.com/lavary/crunz/issues"
     },
     "require": {
-        "php": "^7.2",
+        "php": ">=7.2",
         "dragonmantank/cron-expression": "^2.0",
         "opis/closure": "^3.5",
         "swiftmailer/swiftmailer": "^6.0",
