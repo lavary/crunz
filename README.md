@@ -30,7 +30,27 @@ To install it:
 ```bash
 composer require lavary/crunz
 ```
-If the installation is successful, a command-line utility named **crunz** is symlinked to the `vendor/bin` directory of your project. 
+If the installation is successful, a command-line utility named **crunz** is symlinked to the `vendor/bin` directory of your project.
+
+## PHP 8 issues/limitations
+
+### Trick Composer to allow installation
+
+While Crunz itself is compatible with PHP 8, not all dependencies are, so Composer must be tricked to allow installation
+
+```shell script
+composer config platform.php 7.4.99
+```
+
+### Do not use primitive return types for Closures
+
+Package https://github.com/opis/closure do not support
+PHP 8 on `v3` branch and closures with primitive return types
+resolves to root namespace which throws exception on deserialization.
+
+### Still doesn't work
+
+Please add new bug at https://github.com/lavary/crunz/issues/new/choose
 
 ## How It Works?
 
