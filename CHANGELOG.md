@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.2.1] - 2020-10-08
+
+### Fixed
+
+- [#321] Add PHP8 support
+
 ## [v2.2.0] - 2020-06-18
 
 ### Added
@@ -263,6 +269,7 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#321]: https://github.com/lavary/crunz/pull/321
 [#298]: https://github.com/lavary/crunz/pull/298
 [#292]: https://github.com/lavary/crunz/pull/292
 [#287]: https://github.com/lavary/crunz/pull/287
@@ -402,6 +409,7 @@ In `v2` this will result in exception.
 [v2.0.4]: https://github.com/lavary/crunz/compare/v2.0.3...v2.0.4
 [v2.1.0]: https://github.com/lavary/crunz/compare/v2.0.4...v2.1.0
 [v2.2.0]: https://github.com/lavary/crunz/compare/v2.1.0...v2.2.0
+[v2.2.1]: https://github.com/lavary/crunz/compare/v2.2.0...v2.2.1
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
