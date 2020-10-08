@@ -65,12 +65,11 @@ $composerJson['require-dev'] = $changeVersion($packagesDev);
     \json_encode($composerJson, JSON_PRETTY_PRINT)
 );
 
-$command = "composer install -o {$defaultComposerFlags}";
+$preferLowest = '';
+if ('high' !== $dependenciesEnv) {
+    $preferLowest = '--prefer-lowest';
+}
+
+$command = \trim("composer update -o {$defaultComposerFlags} {$preferLowest}");
 echo $command, PHP_EOL;
 echo \shell_exec($command);
-
-if ('high' !== $dependenciesEnv) {
-    $updateCommand = "composer update -o --prefer-lowest {$defaultComposerFlags}";
-    echo $updateCommand, PHP_EOL;
-    echo \shell_exec($updateCommand);
-}
