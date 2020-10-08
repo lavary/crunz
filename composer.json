@@ -25,7 +25,7 @@
         "issues": "http://github.com/lavary/crunz/issues"
     },
     "require": {
-        "php": "^7.2",
+        "php": ">=7.2",
         "dragonmantank/cron-expression": "^2.0",
         "opis/closure": "^3.5",
         "swiftmailer/swiftmailer": "^6.0",
@@ -43,7 +43,7 @@
         "bamarni/composer-bin-plugin": "^1.2",
         "phpunit/phpunit": "^8.5.1",
         "symfony/error-handler": "^4.4 || ^5.0",
-        "symfony/phpunit-bridge": "^3.4.31 || ^4.3 || ^5.0"
+        "symfony/phpunit-bridge": "^3.4.40 || ^4.4.8 || ^5.0.8"
     },
     "autoload": {
         "psr-4": {

@@ -12,8 +12,8 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 
 |Version|Supported PHP versions|Linux build|Windows build|
 |---|---|---|---|
-|stable (v2.2.0)|![7.2+](https://img.shields.io/badge/php-%5E7.2-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v2.2.0.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
-|dev v2 (master/v2.x-dev)|![7.2+](https://img.shields.io/badge/php-%5E7.2-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|stable (v2.2.1)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v2.2.1.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
+|dev v2 (master/v2.x-dev)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 |dev v1.12.x (v1.12.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.12.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.12.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
 ## Roadmap
@@ -30,7 +30,27 @@ To install it:
 ```bash
 composer require lavary/crunz
 ```
-If the installation is successful, a command-line utility named **crunz** is symlinked to the `vendor/bin` directory of your project. 
+If the installation is successful, a command-line utility named **crunz** is symlinked to the `vendor/bin` directory of your project.
+
+## PHP 8 issues/limitations
+
+### Trick Composer to allow installation
+
+While Crunz itself is compatible with PHP 8, not all dependencies are, so Composer must be tricked to allow installation
+
+```shell script
+composer config platform.php 7.4.99
+```
+
+### Do not use primitive return types for Closures
+
+Package https://github.com/opis/closure do not support
+PHP 8 on `v3` branch and closures with primitive return types
+resolves to root namespace which throws exception on deserialization.
+
+### Still doesn't work
+
+Please add new bug at https://github.com/lavary/crunz/issues/new/choose
 
 ## How It Works?
 

@@ -9,9 +9,11 @@ $x = 153;
 $scheduler = new Schedule();
 $scheduler
     ->run(
-        function () use ($x): void {
+        function () use ($x): \stdClass {
             echo 'Closure output' . PHP_EOL;
             echo "Var: {$x}" . PHP_EOL;
+
+            return new stdClass();
         }
     )
     ->description('Closure with output')

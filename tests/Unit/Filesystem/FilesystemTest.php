@@ -7,9 +7,9 @@ namespace Crunz\Tests\Unit\Filesystem;
 use Crunz\Filesystem\Filesystem;
 use Crunz\Path\Path;
 use Crunz\Tests\TestCase\TemporaryFile;
-use PHPUnit\Framework\TestCase;
+use Crunz\Tests\TestCase\UnitTestCase;
 
-final class FilesystemTest extends TestCase
+final class FilesystemTest extends UnitTestCase
 {
     /** @test */
     public function cwdIsCorrect(): void
@@ -57,7 +57,7 @@ final class FilesystemTest extends TestCase
 
         $filesystem->removeDirectory($rootPath->toString());
 
-        $this->assertDirectoryNotExists($rootPath->toString());
+        $this->assertDirectoryDoesNotExist($rootPath->toString());
     }
 
     /** @test */

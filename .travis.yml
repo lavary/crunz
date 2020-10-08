@@ -13,22 +13,23 @@ php:
     - 7.2
     - 7.3
     - 7.4
+    - nightly
 
 env:
     matrix:
-        - SYMFONY_VERSION="^v3.4.5" PHPUNIT_BRIDGE_VERSION="^v3.4.31" DEPENDENCIES="high"
-        - SYMFONY_VERSION="^v3.4.5" PHPUNIT_BRIDGE_VERSION="^v3.4.31" DEPENDENCIES="low"
+        - SYMFONY_VERSION="^v3.4.5" PHPUNIT_BRIDGE_VERSION="^v3.4.40" DEPENDENCIES="high"
+        - SYMFONY_VERSION="^v3.4.5" PHPUNIT_BRIDGE_VERSION="^v3.4.40" DEPENDENCIES="low"
         - SYMFONY_VERSION="~v4.3.0" DEPENDENCIES="high"
         - SYMFONY_VERSION="~v4.3.0" DEPENDENCIES="low"
         - SYMFONY_VERSION="~v4.4.0" DEPENDENCIES="high"
         - SYMFONY_VERSION="~v4.4.0" DEPENDENCIES="low"
-        - SYMFONY_VERSION="~v5.0.0" PHPUNIT_BRIDGE_VERSION="~v5.0.0" DEPENDENCIES="high"
-        - SYMFONY_VERSION="~v5.0.0" PHPUNIT_BRIDGE_VERSION="~v5.0.0" DEPENDENCIES="low"
+        - SYMFONY_VERSION="~v5.0.0" PHPUNIT_BRIDGE_VERSION="~v5.0.8" DEPENDENCIES="high"
+        - SYMFONY_VERSION="~v5.0.0" PHPUNIT_BRIDGE_VERSION="~v5.0.8" DEPENDENCIES="low"
         - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="high"
         - SYMFONY_VERSION="~v5.1.0" DEPENDENCIES="low"
     global:
         - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress --prefer-dist"
-        - PHPUNIT_BRIDGE_VERSION="~v4.4.0"
+        - PHPUNIT_BRIDGE_VERSION="~v4.4.8"
 
 jobs:
     fast_finish: true
@@ -44,6 +45,9 @@ before_install:
     - composer self-update --2 --preview
 
 install:
+    - if [[ "$TRAVIS_PHP_VERSION" = 'nightly' ]]; then
+        composer config platform.php 7.4.99;
+      fi
     - php ./composer-install.php "$SYMFONY_VERSION" "$DEPENDENCIES" "$DEFAULT_COMPOSER_FLAGS" "$PHPUNIT_BRIDGE_VERSION"
     - composer show
     - if [[ "$STATIC_CHECKS" = '1' ]]; then
@@ -53,7 +57,6 @@ install:
 
 script:
     - if [[ "$STATIC_CHECKS" = '1' ]]; then
-        composer crunz:analyze;
-        composer phpstan:check;
+        composer crunz:analyze && composer phpstan:check;
       fi
     - vendor/bin/phpunit

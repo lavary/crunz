@@ -14,7 +14,7 @@ final class ClosureRunCommandTest extends UnitTestCase
     /** @dataProvider closureValueProvider */
     public function testReturnValueOfClosureIsOmitted(int $returnValue): void
     {
-        $closure = static function () use ($returnValue): int {
+        $closure = static function () use ($returnValue) {
             return $returnValue;
         };
         $command = $this->createCommand();

@@ -10,10 +10,7 @@ $dependenciesEnv = $_SERVER['argv'][2] ?? '';
 $defaultComposerFlags = $_SERVER['argv'][3] ?? '';
 $phpunitBridgeVersion = $_SERVER['argv'][4] ?? $version;
 $composerFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'composer.json';
-$ignoredPackages = [
-    'symfony/error-handler',
-    'symfony/phpunit-bridge',
-];
+$ignoredPackages = ['symfony/error-handler'];
 $changeVersion = static function (
     array $packages
 ) use (
@@ -29,6 +26,12 @@ $changeVersion = static function (
         );
 
         if ($isIgnored) {
+            continue;
+        }
+
+        if (PHP_MAJOR_VERSION >= 8 && 'phpunit/phpunit' === $packageName) {
+            $packageVersion = '^9.4.0';
+
             continue;
         }
 
@@ -59,15 +62,14 @@ $composerJson['require-dev'] = $changeVersion($packagesDev);
 
 \file_put_contents(
     $composerFilePath,
-    \json_encode($composerJson)
+    \json_encode($composerJson, JSON_PRETTY_PRINT)
 );
 
-$command = "composer install -o {$defaultComposerFlags}";
+$preferLowest = '';
+if ('high' !== $dependenciesEnv) {
+    $preferLowest = '--prefer-lowest';
+}
+
+$command = \trim("composer update -o {$defaultComposerFlags} {$preferLowest}");
 echo $command, PHP_EOL;
 echo \shell_exec($command);
-
-if ('high' !== $dependenciesEnv) {
-    $updateCommand = "composer update -o --prefer-lowest {$defaultComposerFlags}";
-    echo $updateCommand, PHP_EOL;
-    echo \shell_exec($updateCommand);
-}

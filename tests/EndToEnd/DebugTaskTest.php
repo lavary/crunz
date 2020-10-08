@@ -41,7 +41,10 @@ final class DebugTaskTest extends EndToEndTestCase
         for ($i = 1; $i <= 5; ++$i) {
             $key = "_{$i}";
             $this->assertArrayHasKey($key, $contentLines);
-            $this->assertRegExp('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:00 UTC$/', $contentLines[$key]);
+            $this->assertMatchesRegularExpression(
+                '/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:00 UTC$/',
+                $contentLines[$key]
+            );
         }
     }
 
