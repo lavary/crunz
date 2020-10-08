@@ -26,7 +26,7 @@ final class WrongTaskTest extends EndToEndTestCase
         $normalizedOutput = $this->normalizeProcessErrorOutput($process);
 
         $this->assertFalse($process->isSuccessful());
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             "@Task at path '.*WrongTasks\\.php' returned 'array', but 'C( ?)runz\\\\Schedule' instance is required\.@",
             $normalizedOutput
         );

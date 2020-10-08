@@ -188,30 +188,33 @@ final class Environment
 
         $projectDir = $this->filesystem
             ->projectRootDirectory();
-        $content = \json_encode(
-            [
-                'repositories' => [
-                    [
-                        'type' => 'path',
-                        'url' => $projectDir,
-                        'options' => [
-                            'symlink' => false,
-                        ],
+        $content = [
+            'repositories' => [
+                [
+                    'type' => 'path',
+                    'url' => $projectDir,
+                    'options' => [
+                        'symlink' => false,
                     ],
                 ],
-                'require' => [
-                    'lavary/crunz' => '*@dev',
-                ],
             ],
-            JSON_PRETTY_PRINT
-        );
+            'require' => [
+                'lavary/crunz' => '*@dev',
+            ],
+        ];
 
-        if (false === $content) {
+        if (PHP_MAJOR_VERSION >= 8) {
+            $content['config']['platform']['php'] = '7.4.99';
+        }
+
+        $contentJson = \json_encode($content, JSON_PRETTY_PRINT);
+        if (false === $contentJson) {
             throw new \RuntimeException("Unable to encode 'composer.json' content.");
         }
 
         $this->filesystem
-            ->dumpFile($composerJson->toString(), $content);
+            ->dumpFile($composerJson->toString(), $contentJson)
+        ;
     }
 
     private function composerInstall(): void

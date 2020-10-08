@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 
 abstract class EndToEndTestCase extends TestCase
 {
+    use PolyfillAssertTrait;
+
     /** @var FilesystemInterface */
     private $filesystem;
 

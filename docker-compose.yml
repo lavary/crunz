@@ -17,3 +17,20 @@ services:
         volumes:
             - .:/var/www/html
             - ./docker/php72/php.ini:/usr/local/etc/php/php.ini:ro
+
+    php80:
+        build:
+            context: ./docker/php80
+        working_dir: /var/www/html
+        environment:
+            CRUNZ_CONTAINER_DEBUG: 1
+        command: >
+            sh -c "
+                chown -R www-data:www-data /var/www/.composer \
+                && echo 'Logs from /var/log/php/error.log:' \
+                && touch /var/log/php/error.log \
+                && tail -f /var/log/php/error.log
+            "
+        volumes:
+            - .:/var/www/html
+            - ./docker/php80/php.ini:/usr/local/etc/php/php.ini:ro

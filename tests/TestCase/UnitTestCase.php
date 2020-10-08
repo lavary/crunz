@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 abstract class UnitTestCase extends TestCase
 {
+    use PolyfillAssertTrait;
+
     /** @var ClosureSerializerInterface|null */
     private $closureSerializer = null;
 
