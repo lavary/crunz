@@ -2,11 +2,9 @@ parameters:
     level: 8
     reportUnmatchedIgnoredErrors: false
     inferPrivatePropertyTypeFromConstructor: true
-    autoload_files:
-        - vendor-bin/phpstan/vendor/autoload.php
     ignoreErrors:
         -
-            message: '#Undefined variable: \$container#'
+            message: '#Variable \$container might not be defined#'
             path: config/services.php
         -
             message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)#'
@@ -31,6 +29,9 @@ parameters:
             message: '#Parameter \#1 \$command of class Symfony\\Component\\Process\\Process constructor expects#'
             path: src/Process/Process.php
         -
+            message: '#Call to an undefined method Symfony\\Component\\Process\\Process::inheritEnvironmentVariables#'
+            path: src/Process/Process.php
+        -
             message: '#setProcess\(\)#'
             path: tests/Unit/EventTest.php
         -
@@ -44,6 +45,6 @@ parameters:
             path: src/Infrastructure/Dragonmantank/CronExpression/DragonmantankCronExpression.php
 
 includes:
-    - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
-    - vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/rules.neon
-#    - vendor-bin/phpstan/vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor-bin/static-checks/vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor-bin/static-checks/vendor/phpstan/phpstan-phpunit/rules.neon
+#    - vendor-bin/static-checks/vendor/phpstan/phpstan-strict-rules/rules.neon

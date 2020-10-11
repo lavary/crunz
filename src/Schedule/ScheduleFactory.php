@@ -12,8 +12,6 @@ use Crunz\Task\TaskNumber;
 class ScheduleFactory
 {
     /**
-     * @param array<int,Schedule> $schedules
-     *
      * @return Schedule[]
      *
      * @throws TaskNotExistException

@@ -402,6 +402,10 @@ class Event implements PingableInterface
     public function on($date)
     {
         $parsedDate = \date_parse($date);
+        if (false === $parsedDate) {
+            $parsedDate = [];
+        }
+
         $segments = \array_intersect_key($parsedDate, $this->fieldsPosition);
 
         if ($parsedDate['year']) {
