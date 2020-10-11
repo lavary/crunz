@@ -51,8 +51,7 @@ install:
     - php ./composer-install.php "$SYMFONY_VERSION" "$DEPENDENCIES" "$DEFAULT_COMPOSER_FLAGS" "$PHPUNIT_BRIDGE_VERSION"
     - composer show
     - if [[ "$STATIC_CHECKS" = '1' ]]; then
-        travis_retry composer bin cs-fixer install -a --no-dev;
-        travis_retry composer bin phpstan install -a;
+        travis_retry composer bin static-checks install -a --no-dev $DEFAULT_COMPOSER_FLAGS;
       fi
 
 script:
