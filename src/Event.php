@@ -1255,12 +1255,17 @@ class Event implements PingableInterface
         return $store;
     }
 
-    /**
-     * @return string
-     */
-    private function lockKey()
+    private function lockKey(): string
     {
-        return 'crunz-' . \md5($this->buildCommand());
+        if ($this->isClosure()) {
+            $command = $this->closureSerializer()
+                ->closureCode($this->command)
+            ;
+        } else {
+            $command = $this->buildCommand();
+        }
+
+        return 'crunz-' . \md5($command);
     }
 
     private function checkLockFactory(): void
