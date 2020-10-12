@@ -1258,8 +1258,10 @@ class Event implements PingableInterface
     private function lockKey(): string
     {
         if ($this->isClosure()) {
+            /** @var \Closure $closure */
+            $closure = $this->command;
             $command = $this->closureSerializer()
-                ->closureCode($this->command)
+                ->closureCode($closure)
             ;
         } else {
             $command = $this->buildCommand();
