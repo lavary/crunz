@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Crunz\Infrastructure\Opis\Closure;
 
 use Crunz\Application\Service\ClosureSerializerInterface;
+use Opis\Closure\ReflectionClosure;
 use Opis\Closure\SerializableClosure;
 
 final class OpisClosureSerializer implements ClosureSerializerInterface
@@ -23,6 +24,13 @@ final class OpisClosureSerializer implements ClosureSerializerInterface
         $wrapper = $this->extractWrapper($serializedClosure);
 
         return $wrapper->getClosure();
+    }
+
+    public function closureCode(\Closure $closure): string
+    {
+        $reflector = new ReflectionClosure($closure);
+
+        return $reflector->getCode();
     }
 
     private function extractWrapper(string $serializedClosure): SerializableClosure

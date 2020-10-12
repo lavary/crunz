@@ -6,6 +6,7 @@ namespace Crunz;
 
 use Closure;
 use Cron\CronExpression;
+use Crunz\Application\Service\ClosureSerializerInterface;
 use Crunz\Clock\Clock;
 use Crunz\Clock\ClockInterface;
 use Crunz\Exception\NotImplementedException;
@@ -164,6 +165,8 @@ class Event implements PingableInterface
     private $preventOverlapping = false;
     /** @var ClockInterface */
     private static $clock;
+    /** @var ClosureSerializerInterface|null */
+    private static $closureSerializer = null;
 
     /**
      * The symfony lock factory that is used to acquire locks. If the value is null, but preventOverlapping = true
@@ -1111,7 +1114,9 @@ class Event implements PingableInterface
      */
     protected function serializeClosure(Closure $closure)
     {
-        $closure = (new OpisClosureSerializer())->serialize($closure);
+        $closure = $this->closureSerializer()
+            ->serialize($closure)
+        ;
         $serializedClosure = \http_build_query([$closure]);
         $crunzRoot = CRUNZ_BIN;
 
@@ -1250,12 +1255,19 @@ class Event implements PingableInterface
         return $store;
     }
 
-    /**
-     * @return string
-     */
-    private function lockKey()
+    private function lockKey(): string
     {
-        return 'crunz-' . \md5($this->buildCommand());
+        if ($this->isClosure()) {
+            /** @var \Closure $closure */
+            $closure = $this->command;
+            $command = $this->closureSerializer()
+                ->closureCode($closure)
+            ;
+        } else {
+            $command = $this->buildCommand();
+        }
+
+        return 'crunz-' . \md5($command);
     }
 
     private function checkLockFactory(): void
@@ -1288,6 +1300,15 @@ class Event implements PingableInterface
                 $segments
             )
         );
+    }
+
+    private function closureSerializer(): ClosureSerializerInterface
+    {
+        if (null === self::$closureSerializer) {
+            self::$closureSerializer = new OpisClosureSerializer();
+        }
+
+        return self::$closureSerializer;
     }
 
     private function isWindows(): bool
