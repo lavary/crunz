@@ -74,8 +74,11 @@ final class Environment
         $this->dumpConfig();
     }
 
-    public function runCrunzCommand(string $command, string $cwd = null): Process
-    {
+    public function runCrunzCommand(
+        string $command,
+        string $cwd = null,
+        bool $wait = true
+    ): Process {
         $cwd = !empty($cwd)
             ? $cwd
             : $this->rootDirectory()
@@ -112,7 +115,9 @@ final class Environment
         );
 
         $process->start();
-        $process->wait();
+        if ($wait) {
+            $process->wait();
+        }
 
         return $process;
     }

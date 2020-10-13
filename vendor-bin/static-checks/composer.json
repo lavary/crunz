@@ -1,5 +1,6 @@
 {
     "require": {
+        "friendsofphp/php-cs-fixer": "^2.12",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpstan/phpstan-strict-rules": "^0.12"
