@@ -45,9 +45,6 @@ before_install:
     - composer self-update --2 --preview
 
 install:
-    - if [[ "$TRAVIS_PHP_VERSION" = 'nightly' ]]; then
-        composer config platform.php 7.4.99;
-      fi
     - php ./composer-install.php "$SYMFONY_VERSION" "$DEPENDENCIES" "$DEFAULT_COMPOSER_FLAGS" "$PHPUNIT_BRIDGE_VERSION"
     - composer show
     - if [[ "$STATIC_CHECKS" = '1' ]]; then
