@@ -41,6 +41,9 @@ jobs:
               - DEPENDENCIES="high"
 
 before_install:
+    - if [ "$TRAVIS_PHP_VERSION" = 'nightly' ] && [ "$SYMFONY_VERSION" = '~v4.3.0' ]; then
+        exit 0;
+      fi
     - phpenv config-rm xdebug.ini || return 0;
     - composer self-update --2 --preview
 
