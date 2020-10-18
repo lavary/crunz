@@ -37,13 +37,13 @@ jobs:
               - PHPUNIT_BRIDGE_VERSION="~v4.4.8"
 
 before_install:
+    - if [ "$TRAVIS_PHP_VERSION" = 'nightly' ] && [ "$SYMFONY_VERSION" = '~v4.3.0' ]; then
+        exit 0;
+      fi
     - phpenv config-rm xdebug.ini || return 0;
     - composer self-update --2 --preview
 
 install:
-    - if [[ "$TRAVIS_PHP_VERSION" = 'nightly' ]]; then
-        composer config platform.php 7.4.99;
-      fi
     - php ./composer-install.php "$SYMFONY_VERSION" "$DEPENDENCIES" "$DEFAULT_COMPOSER_FLAGS" "$PHPUNIT_BRIDGE_VERSION"
     - composer show
     - if [[ "$STATIC_CHECKS" = '1' ]]; then
