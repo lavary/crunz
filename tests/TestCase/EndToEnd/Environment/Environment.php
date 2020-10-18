@@ -207,11 +207,6 @@ final class Environment
                 'lavary/crunz' => '*@dev',
             ],
         ];
-
-        if (PHP_MAJOR_VERSION >= 8) {
-            $content['config']['platform']['php'] = '7.4.99';
-        }
-
         $contentJson = \json_encode($content, JSON_PRETTY_PRINT);
         if (false === $contentJson) {
             throw new \RuntimeException("Unable to encode 'composer.json' content.");

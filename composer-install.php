@@ -29,12 +29,6 @@ $changeVersion = static function (
             continue;
         }
 
-        if (PHP_MAJOR_VERSION >= 8 && 'phpunit/phpunit' === $packageName) {
-            $packageVersion = '^9.4.0';
-
-            continue;
-        }
-
         if (false === \mb_strpos($packageName, 'symfony/')) {
             continue;
         }
