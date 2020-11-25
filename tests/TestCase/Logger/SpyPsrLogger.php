@@ -20,7 +20,7 @@ final class SpyPsrLogger extends AbstractLogger
         ];
     }
 
-    /** @var array<int,array> */
+    /** @return array<int,array> */
     public function getLogs(): array
     {
         return $this->logs;
