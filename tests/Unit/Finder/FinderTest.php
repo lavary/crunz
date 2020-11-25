@@ -15,6 +15,8 @@ final class FinderTest extends TestCase
     private $filesystem;
     /** @var Path */
     private $tasksDirectory;
+    /** @var Path */
+    private $fixtureDirectory;
 
     public function setUp(): void
     {
@@ -24,6 +26,14 @@ final class FinderTest extends TestCase
             $filesystem->tempDir(),
             '.crunz',
             'finder-test'
+        );
+        $this->filesystem->createDirectory($this->tasksDirectory->toString());
+        $this->fixtureDirectory = Path::fromStrings(
+            \dirname(__DIR__, 2),
+            'resources',
+            'fixtures',
+            'finder',
+            'direct'
         );
     }
 
@@ -80,6 +90,29 @@ final class FinderTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function findFilesInSymlinkedFolder(): void
+    {
+        if ($this->isWindows()) {
+            // Committed symlinks require extra steps to work on Windows
+            // https://stackoverflow.com/questions/5917249/git-symlinks-in-windows
+            $this->markTestSkipped('Required Unix-based OS.');
+        }
+
+        $fixtureDirectory = $this->fixtureDirectory;
+        $directFile = Path::fromStrings($fixtureDirectory->toString(), 'directHere.php')->toString();
+        $symlinkFileDestination = Path::fromStrings($fixtureDirectory->toString(), 'symlink', 'symlinkHere.php')->toString();
+
+        $finder = new Finder();
+        $foundFiles = $finder->find($fixtureDirectory, 'Here.php');
+
+        $this->assertCount(2, $foundFiles);
+        $this->assertArrayHasKey($directFile, $foundFiles);
+        $this->assertArrayHasKey($symlinkFileDestination, $foundFiles);
+    }
+
     private function createFiles(Path ...$files): void
     {
         $tasksDirectory = $this->tasksDirectory;
@@ -90,5 +123,10 @@ final class FinderTest extends TestCase
             $this->filesystem
                 ->dumpFile($path->toString(), $content);
         }
+    }
+
+    private function isWindows(): bool
+    {
+        return DIRECTORY_SEPARATOR === '\\';
     }
 }
