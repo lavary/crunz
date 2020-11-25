@@ -29,14 +29,17 @@ final class PsrStreamLoggerFactory implements LoggerFactoryInterface
             ->timezoneForComparisons()
         ;
 
-        return new PsrStreamLogger(
-            $timezone,
-            $this->clock,
-            $configuration->get('output_log_file'),
-            $configuration->get('errors_log_file'),
-            $configuration->get('log_ignore_empty_context'),
-            $configuration->get('timezone_log'),
-            $configuration->get('log_allow_line_breaks')
+        return new EnabledLoggerDecorator(
+            new PsrStreamLogger(
+                $timezone,
+                $this->clock,
+                $configuration->get('output_log_file'),
+                $configuration->get('errors_log_file'),
+                $configuration->get('log_ignore_empty_context'),
+                $configuration->get('timezone_log'),
+                $configuration->get('log_allow_line_breaks')
+            ),
+            $configuration
         );
     }
 }
