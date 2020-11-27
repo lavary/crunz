@@ -10,11 +10,11 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 [![Packagist](https://img.shields.io/packagist/dt/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz/stats)
 [![Packagist](https://img.shields.io/packagist/dm/lavary/crunz.svg?style=flat-square)](https://packagist.org/packages/lavary/crunz/stats)
 
-|Version|Supported PHP versions|Linux build|Windows build|
-|---|---|---|---|
-|stable (v2.2.2)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/v2.2.2.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|*Tag build not supported*
-|dev v2 (master/v2.x-dev)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/master.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
-|dev v1.12.x (v1.12.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![Build Status](https://img.shields.io/travis/lavary/crunz/1.12.x.svg?style=flat-square)](https://travis-ci.org/lavary/crunz)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.12.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|Version|Supported PHP versions|Windows build|
+|---|---|---|
+|stable (v2.2.2)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|*Tag build not supported*
+|dev v2 (master/v2.x-dev)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
+|dev v1.12.x (v1.12.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.12.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
 ## Roadmap
 |Version|Release date|Active support until|Bug support until|Status 
