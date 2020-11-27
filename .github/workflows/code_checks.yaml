@@ -60,8 +60,8 @@ jobs:
             matrix:
                 include:
                     - php: '7.3'
-                      symfony_version: "^v3.4.5"
-                      phpunit_bridge_version: "^v3.4.40"
+                      symfony_version: "~v4.4.0"
+                      phpunit_bridge_version: "~v4.4.8"
                       dependencies: "high"
 
         name: Static analysis
