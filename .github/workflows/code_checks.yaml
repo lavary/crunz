@@ -16,7 +16,6 @@ jobs:
                     - '7.3'
                     - '7.4'
                     - '8.0'
-                    - '8.1'
                 vars:
                     - symfony_version: "^v3.4.5"
                       phpunit_bridge_version: "^v3.4.40"
