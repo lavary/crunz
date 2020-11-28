@@ -23,6 +23,12 @@ jobs:
                     - symfony_version: "^v3.4.5"
                       phpunit_bridge_version: "^v3.4.40"
                       dependencies: "low"
+                    - symfony_version: "~v4.3.0"
+                      phpunit_bridge_version: "~v4.4.8"
+                      dependencies: "high"
+                    - symfony_version: "~v4.3.0"
+                      phpunit_bridge_version: "~v4.4.8"
+                      dependencies: "low"
                     - symfony_version: "~v4.4.0"
                       phpunit_bridge_version: "~v4.4.8"
                       dependencies: "high"
@@ -35,6 +41,17 @@ jobs:
                     - symfony_version: "~v5.1.0"
                       phpunit_bridge_version: "~v5.1.0"
                       dependencies: "low"
+                exclude:
+                    - php: 8.0
+                      vars:
+                        symfony_version: "~v4.3.0"
+                        phpunit_bridge_version: "~v4.4.8"
+                        dependencies: "high"
+                    - php: 8.0
+                      vars:
+                        symfony_version: "~v4.3.0"
+                        phpunit_bridge_version: "~v4.4.8"
+                        dependencies: "low"
 
         name: PHP ${{ matrix.php }} tests
         steps:
