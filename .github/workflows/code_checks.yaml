@@ -104,3 +104,4 @@ jobs:
             -   run: composer crunz:analyze
 
             -   run: composer phpstan:check
+
