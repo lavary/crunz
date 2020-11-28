@@ -75,7 +75,7 @@ jobs:
         strategy:
             matrix:
                 include:
-                    - php: '7.3'
+                    - php: '7.4'
                       symfony_version: "~v4.4.0"
                       phpunit_bridge_version: "~v4.4.8"
                       dependencies: "high"
