@@ -59,10 +59,10 @@ jobs:
                     coverage: none # disable xdebug, pcov
 
             -   uses: "actions/cache@v2"
-                    with:
-                        path: "~/.composer/cache"
-                        key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
-                        restore-keys: "php-${{ matrix.php }}-composer-locked-"
+                with:
+                    path: "~/.composer/cache"
+                    key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
+                    restore-keys: "php-${{ matrix.php }}-composer-locked-"
 
             -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.vars.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
 
@@ -90,10 +90,10 @@ jobs:
                     coverage: none # disable xdebug, pcov
 
             -   uses: "actions/cache@v2"
-                    with:
-                        path: "~/.composer/cache"
-                        key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
-                        restore-keys: "php-${{ matrix.php }}-composer-locked-"
+                with:
+                    path: "~/.composer/cache"
+                    key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
+                    restore-keys: "php-${{ matrix.php }}-composer-locked-"
 
             -   run: php ./composer-install.php "${{ matrix.symfony_version }}" "${{ matrix.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.phpunit_bridge_version }}"
 
