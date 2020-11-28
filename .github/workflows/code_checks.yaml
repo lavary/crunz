@@ -1,0 +1,85 @@
+name: Code_Checks
+
+on:
+    pull_request: ~
+    push:
+        branches:
+            - master
+
+jobs:
+    tests:
+        runs-on: ubuntu-18.04
+        strategy:
+            matrix:
+                php:
+                    - '7.2'
+                    - '7.3'
+                    - '7.4'
+                    - '8.0'
+                vars:
+                    - symfony_version: "^v3.4.5"
+                      phpunit_bridge_version: "^v3.4.40"
+                      dependencies: "high"
+                    - symfony_version: "^v3.4.5"
+                      phpunit_bridge_version: "^v3.4.40"
+                      dependencies: "low"
+                    - symfony_version: "~v4.4.0"
+                      phpunit_bridge_version: "~v4.4.8"
+                      dependencies: "high"
+                    - symfony_version: "~v4.4.0"
+                      phpunit_bridge_version: "~v4.4.8"
+                      dependencies: "low"
+                    - symfony_version: "~v5.1.0"
+                      phpunit_bridge_version: "~v5.1.0"
+                      dependencies: "high"
+                    - symfony_version: "~v5.1.0"
+                      phpunit_bridge_version: "~v5.1.0"
+                      dependencies: "low"
+
+        name: PHP ${{ matrix.php }} tests
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none # disable xdebug, pcov
+
+            -   run: composer --version
+
+            -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.vars.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
+
+            -   run: composer show
+
+            -   run: vendor/bin/phpunit
+
+    static_analysis:
+        runs-on: ubuntu-18.04
+        strategy:
+            matrix:
+                include:
+                    - php: '7.3'
+                      symfony_version: "~v4.4.0"
+                      phpunit_bridge_version: "~v4.4.8"
+                      dependencies: "high"
+
+        name: Static analysis
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none # disable xdebug, pcov
+
+            -   run: composer --version
+
+            -   run: php ./composer-install.php "${{ matrix.symfony_version }}" "${{ matrix.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.phpunit_bridge_version }}"
+
+            -   run: composer bin static-checks install -a --no-dev --no-interaction --no-progress --prefer-dist
+
+            -   run: composer show
+
+            -   run: composer crunz:analyze
+
+            -   run: composer phpstan:check
