@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.2.4] - 2020-12-18
+
+### Fixed
+
+- [#333] Include symlinks in Finder, thanks to [@iluuu1994]
+
 ## [v2.2.3] - 2020-11-29
 
 ### Fixed
@@ -282,6 +288,7 @@ In `v2` this will result in exception.
 - [#77] Fix high cpu usage
 
 [#334]: https://github.com/lavary/crunz/pull/334
+[#333]: https://github.com/lavary/crunz/pull/333
 [#326]: https://github.com/lavary/crunz/pull/326
 [#321]: https://github.com/lavary/crunz/pull/321
 [#298]: https://github.com/lavary/crunz/pull/298
@@ -426,6 +433,7 @@ In `v2` this will result in exception.
 [v2.2.1]: https://github.com/lavary/crunz/compare/v2.2.0...v2.2.1
 [v2.2.2]: https://github.com/lavary/crunz/compare/v2.2.1...v2.2.2
 [v2.2.3]: https://github.com/lavary/crunz/compare/v2.2.2...v2.2.3
+[v2.2.4]: https://github.com/lavary/crunz/compare/v2.2.3...v2.2.4
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
@@ -443,3 +451,4 @@ In `v2` this will result in exception.
 [@SadeghPM]: https://github.com/SadeghPM
 [@mareksuscak]: https://github.com/mareksuscak
 [@rrushton]: https://github.com/rrushton
+[@iluuu1994]: https://github.com/iluuu1994 
