@@ -14,7 +14,8 @@ final class Finder implements FinderInterface
     public function find(Path $directory, $suffix)
     {
         $quotedSuffix = \preg_quote($suffix, '/');
-        $directoryIterator = new \RecursiveDirectoryIterator($directory->toString());
+        $directoryIteratorFlags = \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
+        $directoryIterator = new \RecursiveDirectoryIterator($directory->toString(), $directoryIteratorFlags);
         $recursiveIterator = new \RecursiveIteratorIterator($directoryIterator);
 
         $regexIterator = new \RegexIterator(
