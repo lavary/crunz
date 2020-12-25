@@ -44,32 +44,6 @@ final class EventTest extends UnitTestCase
     /**
      * @group cronCompile
      */
-    public function testDynamicMethods(): void
-    {
-        $e = new Event($this->id, 'php foo');
-        $this->assertEquals('*/6 * * * *', $e->everySixMinutes()->getExpression());
-
-        $e = new Event($this->id, 'php bar');
-        $this->assertEquals('0 */12 * * *', $e->everyTwelveHours()->getExpression());
-
-        $e = new Event($this->id, 'php foo');
-        $this->assertEquals('*/35 * * * *', $e->everyThirtyFiveMinutes()->getExpression());
-
-        $e = new Event($this->id, 'php bar');
-        $this->assertEquals('*/578 * * * *', $e->everyFiveHundredSeventyEightMinutes()->getExpression());
-
-        $this->setClockNow(new \DateTimeImmutable('2018-10-23 11:33:18'));
-
-        $e = new Event($this->id, 'php foo');
-        $e->everyFiftyMinutes()->mondays();
-
-        $this->assertEquals('*/50 * * * 1', $e->getExpression());
-        $this->assertFalse($e->isDue(new \DateTimeZone('UTC')));
-    }
-
-    /**
-     * @group cronCompile
-     */
     public function testUnitMethods(): void
     {
         $e = new Event($this->id, 'php foo');
@@ -402,6 +376,65 @@ final class EventTest extends UnitTestCase
         }
 
         $this->assertPreventOverlapping(new SemaphoreStore());
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Method '%s' is deprecated since v2.3, use 'cron' method instead.
+     * @dataProvider deprecatedEveryProvider
+     */
+    public function test_most_every_methods_are_deprecated(string $method): void
+    {
+        // Arrange
+        $event = new Event($this->id, 'php -i');
+        /** @var callable $methodCall */
+        $methodCall = [$event, $method];
+        $methodCallClosure = \Closure::fromCallable($methodCall);
+
+        // Act
+        $methodCallClosure();
+    }
+
+    /** @dataProvider everyMethodProvider */
+    public function test_every_methods(string $method, string $expectedCronExpression): void
+    {
+        // Arrange
+        $event = new Event($this->id, 'php -i');
+        /** @var callable $methodCall */
+        $methodCall = [$event, $method];
+        $methodCallClosure = \Closure::fromCallable($methodCall);
+
+        // Act
+        $methodCallClosure();
+
+        // Assert
+        $this->assertSame($expectedCronExpression, $event->getExpression());
+    }
+
+    /** @return iterable<string,array> */
+    public function deprecatedEveryProvider(): iterable
+    {
+        yield 'every seven minutes' => ['everySevenMinutes'];
+        yield 'every five hours' => ['everyFiveHours'];
+        yield 'every two days' => ['everyTwoDays'];
+        yield 'every five months' => ['everyFiveMonths'];
+    }
+
+    /** @return iterable<string,array> */
+    public function everyMethodProvider(): iterable
+    {
+        yield 'every minute' => ['everyMinute', '* * * * *'];
+        yield 'every two minutes' => ['everyTwoMinutes', '*/2 * * * *'];
+        yield 'every three minutes' => ['everyThreeMinutes', '*/3 * * * *'];
+        yield 'every four minutes' => ['everyFourMinutes', '*/4 * * * *'];
+        yield 'every five minutes' => ['everyFiveMinutes', '*/5 * * * *'];
+        yield 'every ten minutes' => ['everyTenMinutes', '*/10 * * * *'];
+        yield 'every fifteen minutes' => ['everyFifteenMinutes', '*/15 * * * *'];
+        yield 'every thirty minutes' => ['everyThirtyMinutes', '*/30 * * * *'];
+        yield 'every two hours' => ['everyTwoHours', '0 */2 * * *'];
+        yield 'every three hours' => ['everyThreeHours', '0 */3 * * *'];
+        yield 'every four hours' => ['everyFourHours', '0 */4 * * *'];
+        yield 'every six hours' => ['everySixHours', '0 */6 * * *'];
     }
 
     /** @param StoreInterface|BlockingStoreInterface $store */

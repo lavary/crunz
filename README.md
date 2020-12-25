@@ -368,47 +368,6 @@ $task
 >(An easier to read alternative with a similar result ->weeklyOn(0,'13:30') to that shown in a previously example above)
 
 
-### Dynamic Methods
-
-Dynamic methods give us a wide variety of frequency options on the fly. We just need to follow this pattern:
-
-```text
-every[NumberInCamelCaseWords]Minute|Hour|Day|Months?
-```
-
-As we can see, the method should start with the word `every`, followed by a number in camel-case words, ending with one of these units of time: **minute, hour, day, and month**. 
-
-The `s` at the end is optional and it's just used for grammar's sake.
-
-With that said, the following methods are valid:
-
-* `everyFiveMinutes()`
-* `everyMinute()`
-* `everyHour()`     (same result as `hourly()`)
-* `everyTwelveHours()`
-* `everyMonth`      (same result as `monthly()`)
-* `everySixMonths()`
-* `everyFifteenDays()`
-* `everyFiveHundredThirtySevenMinutes()`
-* `everyThreeThousandAndFiveHundredFiftyNineMinutes()`
-* ...
-
-This is how it is used in a task file:
-
-```php
-<?php
-// ...
-
-$task = $schedule->run(PHP_BINARY . ' email.php');
-$task->everyTenDays();
-
-$task = $schedule->run(PHP_BINARY . ' some_other_stuff.php');
-$task->everyThirteenMinutes();
-// ...
-
-return $schedule;
-```
-
 ### The Classic Way
 
 We can also do the scheduling the old way, just like we do in a crontab file:

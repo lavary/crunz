@@ -25,13 +25,6 @@ use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\Lock\StoreInterface;
 
-/**
- * @method self everyMinute()      Run task every minute.
- * @method self everyFiveMinutes() Run task every five minutes.
- * @method self everyHour()        Run task every hour.
- * @method self everyDay()         Run task every day.
- * @method self everyMonth()       Run task every month.
- */
 class Event implements PingableInterface
 {
     use PingableTrait;
@@ -205,6 +198,8 @@ class Event implements PingableInterface
      */
     public function __call($methodName, $params)
     {
+        // @TODO remove this method after v3.0 release
+
         \preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);
 
         if (!\count($matches) || 'Zero' === $matches[1]) {
@@ -216,6 +211,11 @@ class Event implements PingableInterface
         if (!$amount) {
             throw new \BadMethodCallException();
         }
+
+        @\trigger_error(
+            "Method '{$methodName}' is deprecated since v2.3, use 'cron' method instead.",
+            \E_USER_DEPRECATED
+        );
 
         return $this->every(\mb_strtolower($matches[2]), $amount);
     }
@@ -1053,6 +1053,66 @@ class Event implements PingableInterface
         if ($lockRefreshNeeded) {
             $lock->refresh();
         }
+    }
+
+    public function everyMinute(): self
+    {
+        return $this->cron('* * * * *');
+    }
+
+    public function everyTwoMinutes(): self
+    {
+        return $this->cron('*/2 * * * *');
+    }
+
+    public function everyThreeMinutes(): self
+    {
+        return $this->cron('*/3 * * * *');
+    }
+
+    public function everyFourMinutes(): self
+    {
+        return $this->cron('*/4 * * * *');
+    }
+
+    public function everyFiveMinutes(): self
+    {
+        return $this->cron('*/5 * * * *');
+    }
+
+    public function everyTenMinutes(): self
+    {
+        return $this->cron('*/10 * * * *');
+    }
+
+    public function everyFifteenMinutes(): self
+    {
+        return $this->cron('*/15 * * * *');
+    }
+
+    public function everyThirtyMinutes(): self
+    {
+        return $this->cron('*/30 * * * *');
+    }
+
+    public function everyTwoHours(): self
+    {
+        return $this->cron('0 */2 * * *');
+    }
+
+    public function everyThreeHours(): self
+    {
+        return $this->cron('0 */3 * * *');
+    }
+
+    public function everyFourHours(): self
+    {
+        return $this->cron('0 */4 * * *');
+    }
+
+    public function everySixHours(): self
+    {
+        return $this->cron('0 */6 * * *');
     }
 
     /**
