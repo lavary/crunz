@@ -18,7 +18,6 @@ interface ConfigurationInterface
     /**
      * Set a parameter based on a key.
      *
-     * @param string $key
      * @param mixed $value
      */
     public function set(string $key, $value);

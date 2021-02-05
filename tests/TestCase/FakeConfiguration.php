@@ -55,7 +55,7 @@ final class FakeConfiguration implements ConfigurationInterface
     }
 
     /** {@inheritdoc} */
-    public function set(string $key, $value)
+    public function set(string $key, $value): void
     {
         $parts = \explode('.', $key);
 

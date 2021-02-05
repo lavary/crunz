@@ -56,12 +56,11 @@ final class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Set a parameter based on key/value
+     * Set a parameter based on key/value.
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param mixed $value
      */
-    public function set(string $key, $value)
+    public function set(string $key, $value): void
     {
         if (null === $this->config) {
             $this->config = $this->configurationParser
