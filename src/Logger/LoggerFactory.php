@@ -7,6 +7,7 @@ namespace Crunz\Logger;
 use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Application\Service\LoggerFactoryInterface;
 use Crunz\Clock\ClockInterface;
+use Crunz\Event;
 use Crunz\Exception\CrunzException;
 use Crunz\Infrastructure\Psr\Logger\PsrStreamLoggerFactory;
 use Crunz\Task\Timezone;
@@ -45,6 +46,18 @@ class LoggerFactory
         $configuration = $this->configuration;
         $innerLogger = $this->loggerFactory
             ->create($configuration)
+        ;
+
+        return new Logger($innerLogger);
+    }
+
+    public function createEvent(Event $event): Logger
+    {
+        $this->initializeLoggerFactory();
+        $eventConfiguration = clone $this->configuration;
+        $eventConfiguration->set('output_log_file', $event->output);
+        $innerLogger = $this->loggerFactory
+            ->create($eventConfiguration)
         ;
 
         return new Logger($innerLogger);

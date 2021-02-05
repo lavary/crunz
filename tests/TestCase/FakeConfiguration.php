@@ -54,6 +54,22 @@ final class FakeConfiguration implements ConfigurationInterface
         return $value;
     }
 
+    /** {@inheritdoc} */
+    public function set(string $key, $value)
+    {
+        $parts = \explode('.', $key);
+
+        if (\count($parts) > 1) {
+            if (\array_key_exists($parts[0], $this->config) && \is_array($this->config[$parts[0]])) {
+                $this->config[$parts[0]][$parts[1]] = $value;
+            } else {
+                $this->config[$parts[0]] = [$parts[1] => $value];
+            }
+        } else {
+            $this->config[$key] = $value;
+        }
+    }
+
     public function getSourcePath(): string
     {
         return (string) $this->get('source', 'tasks');

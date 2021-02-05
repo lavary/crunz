@@ -15,5 +15,13 @@ interface ConfigurationInterface
      */
     public function get(string $key, $default = null);
 
+    /**
+     * Set a parameter based on a key.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function set(string $key, $value);
+
     public function getSourcePath(): string;
 }
