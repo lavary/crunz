@@ -12,7 +12,7 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 
 |Version|Supported PHP versions|Windows build|
 |---|---|---|
-|stable (v2.2.4)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|*Tag build not supported*
+|stable (v2.3.0)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|*Tag build not supported*
 |dev v2 (master/v2.x-dev)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/master.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 |dev v1.12.x (v1.12.x-dev)|![5.6+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)|[![AppVeyor branch](https://img.shields.io/appveyor/ci/lavary/crunz/1.12.x.svg?style=flat-square)](https://ci.appveyor.com/project/lavary/crunz)
 
