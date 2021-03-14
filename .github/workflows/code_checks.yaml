@@ -53,6 +53,39 @@ jobs:
 
             -   run: vendor/bin/phpunit
 
+    windows-tests:
+        runs-on: windows-latest
+        strategy:
+            matrix:
+                php:
+                    - '7.2'
+                vars:
+                    - dependencies: "high"
+                      composerExtraFlags: ''
+                    - dependencies: "low"
+                      composerExtraFlags: '--prefer-lowest'
+
+        name: PHP ${{ matrix.php }} tests
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none # disable xdebug, pcov
+
+            -   uses: "actions/cache@v2"
+                with:
+                    path: "~/.composer/cache"
+                    key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
+                    restore-keys: "php-${{ matrix.php }}-composer-locked-"
+
+            -   run: composer update -a --prefer-dist -n ${{ matrix.vars.composerExtraFlags }}
+
+            -   run: composer show
+
+            -   run: vendor/bin/phpunit
+
     static_analysis:
         runs-on: ubuntu-18.04
         strategy:
