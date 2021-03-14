@@ -71,6 +71,7 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none # disable xdebug, pcov
+                    extensions: 'curl'
 
             -   uses: "actions/cache@v2"
                 with:
