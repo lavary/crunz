@@ -17,6 +17,7 @@ services:
         volumes:
             - .:/var/www/html
             - ./docker/php72/php.ini:/usr/local/etc/php/php.ini:ro
+        stop_grace_period: 1s
 
     php80:
         build:
@@ -34,3 +35,4 @@ services:
         volumes:
             - .:/var/www/html
             - ./docker/php80/php.ini:/usr/local/etc/php/php.ini:ro
+        stop_grace_period: 1s
