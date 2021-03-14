@@ -12,7 +12,7 @@ use Crunz\Tests\TestCase\UnitTestCase;
 final class FilesystemTest extends UnitTestCase
 {
     /** @test */
-    public function cwdIsCorrect(): void
+    public function cwd_is_correct(): void
     {
         $filesystem = new Filesystem();
 
@@ -23,7 +23,7 @@ final class FilesystemTest extends UnitTestCase
      * @dataProvider fileExistsProvider
      * @test
      */
-    public function fileExistsIsCorrect(string $path, bool $expectedExistence): void
+    public function file_exists_is_correct(string $path, bool $expectedExistence): void
     {
         $filesystem = new Filesystem();
 
@@ -31,7 +31,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function tempDirectoryReturnSystemTempDirectory(): void
+    public function temp_directory_return_system_temp_directory(): void
     {
         $filesystem = new Filesystem();
 
@@ -39,7 +39,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function removeDirectoryRemovesDirectoriesRecursively(): void
+    public function remove_directory_removes_directories_recursively(): void
     {
         $filesystem = new Filesystem();
 
@@ -61,7 +61,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function dumpFileWritesContentToFile(): void
+    public function dump_file_writes_content_to_file(): void
     {
         $content = 'Some content';
         $tempDir = \sys_get_temp_dir();
@@ -76,7 +76,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function createDirectoryCreatesDirectoryRecursive(): void
+    public function create_directory_creates_directory_recursive(): void
     {
         $tempDir = \sys_get_temp_dir();
         $rootDirectoryPath = Path::fromStrings($tempDir, 'crunz-test');
@@ -96,7 +96,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function copyFiles(): void
+    public function copy_files(): void
     {
         $content = 'Copy content';
         $tempDir = \sys_get_temp_dir();
@@ -116,7 +116,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function projectRootDirectory(): void
+    public function project_root_directory(): void
     {
         $filesystem = new Filesystem();
 
@@ -124,7 +124,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function readContentReturnFileContent(): void
+    public function read_content_return_file_content(): void
     {
         $filesystem = new Filesystem();
         $content = $filesystem->readContent(__FILE__);
@@ -133,7 +133,7 @@ final class FilesystemTest extends UnitTestCase
     }
 
     /** @test */
-    public function readContentThrowsExceptionWhenFileNotExists(): void
+    public function read_content_throws_exception_when_file_not_exists(): void
     {
         $path = Path::fromStrings(\sys_get_temp_dir(), 'wrong-file');
 

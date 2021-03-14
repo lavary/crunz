@@ -48,7 +48,7 @@ final class FinderTest extends TestCase
      * @test
      * @dataProvider tasksProvider
      */
-    public function findReturnsSplFileInfoCollection(string $suffix, Path ...$files): void
+    public function find_returns_spl_file_info_collection(string $suffix, Path ...$files): void
     {
         $this->createFiles(...$files);
         $tasksDirectory = $this->tasksDirectory;
@@ -93,7 +93,7 @@ final class FinderTest extends TestCase
     /**
      * @test
      */
-    public function findFilesInSymlinkedFolder(): void
+    public function find_files_in_symlinked_folder(): void
     {
         if ($this->isWindows()) {
             // Committed symlinks require extra steps to work on Windows

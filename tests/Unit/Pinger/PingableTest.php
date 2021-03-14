@@ -16,7 +16,7 @@ final class PingableTest extends TestCase
      * @param mixed $url
      * @dataProvider nonStringProvider
      */
-    public function beforeUrlMustBeString($url): void
+    public function before_url_must_be_string($url): void
     {
         $type = \gettype($url);
         $this->expectException(PingableException::class);
@@ -29,7 +29,7 @@ final class PingableTest extends TestCase
     /**
      * @test
      */
-    public function beforeUrlMustBeNonEmptyString(): void
+    public function before_url_must_be_non_empty_string(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('Url cannot be empty.');
@@ -41,7 +41,7 @@ final class PingableTest extends TestCase
     /**
      * @test
      */
-    public function afterUrlMustBeNonEmptyString(): void
+    public function after_url_must_be_non_empty_string(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('Url cannot be empty.');
@@ -56,7 +56,7 @@ final class PingableTest extends TestCase
      * @param mixed $url
      * @dataProvider nonStringProvider
      */
-    public function afterUrlMustBeString($url): void
+    public function after_url_must_be_string($url): void
     {
         $type = \gettype($url);
         $this->expectException(PingableException::class);
@@ -67,7 +67,7 @@ final class PingableTest extends TestCase
     }
 
     /** @test */
-    public function getPingBeforeWithoutUrlFails(): void
+    public function get_ping_before_without_url_fails(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('PingBeforeUrl is empty.');
@@ -77,7 +77,7 @@ final class PingableTest extends TestCase
     }
 
     /** @test */
-    public function getPingAfterWithoutUrlFails(): void
+    public function get_ping_after_without_url_fails(): void
     {
         $this->expectException(PingableException::class);
         $this->expectExceptionMessage('PingAfterUrl is empty.');

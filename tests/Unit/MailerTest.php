@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class MailerTest extends TestCase
 {
     /** @test */
-    public function usingMailTransportWillResultInException(): void
+    public function using_mail_transport_will_result_in_exception(): void
     {
         $this->expectException(MailerException::class);
         $this->expectExceptionMessage("'mail' transport is no longer supported, please use 'smtp' or 'sendmail' transport.");

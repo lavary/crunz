@@ -13,7 +13,7 @@ final class EnvFlagsTest extends TestCase
      * @test
      * @dataProvider statusProvider
      */
-    public function deprecationHandlerStatusIsCorrect(string $flagValue, bool $expectedEnabled): void
+    public function deprecation_handler_status_is_correct(string $flagValue, bool $expectedEnabled): void
     {
         \putenv(EnvFlags::DEPRECATION_HANDLER_FLAG . "={$flagValue}");
 
@@ -22,7 +22,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function deprecationHandlerCanBeDisabled(): void
+    public function deprecation_handler_can_be_disabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->disableDeprecationHandler();
@@ -31,7 +31,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function deprecationHandlerCanBeEnabled(): void
+    public function deprecation_handler_can_be_enabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->enableDeprecationHandler();
@@ -43,7 +43,7 @@ final class EnvFlagsTest extends TestCase
      * @test
      * @dataProvider containerDebugProvider
      */
-    public function containerDebugFlagIsCorrect(string $flagValue, bool $expectedEnabled): void
+    public function container_debug_flag_is_correct(string $flagValue, bool $expectedEnabled): void
     {
         \putenv(EnvFlags::CONTAINER_DEBUG_FLAG . "={$flagValue}");
 
@@ -52,7 +52,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function containerDebugCanBeDisabled(): void
+    public function container_debug_can_be_disabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->disableContainerDebug();
@@ -61,7 +61,7 @@ final class EnvFlagsTest extends TestCase
     }
 
     /** @test */
-    public function containerDebugCanBeEnabled(): void
+    public function container_debug_can_be_enabled(): void
     {
         $envFlags = new EnvFlags();
         $envFlags->enableContainerDebug();

@@ -23,7 +23,7 @@ class Application extends SymfonyApplication
     /**
      * List of commands to register.
      *
-     * @var array
+     * @var class-string[]
      */
     private const COMMANDS = [
         // This command starts the event runner (vendor/bin/crunz schedule:run)

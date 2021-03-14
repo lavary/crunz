@@ -34,6 +34,7 @@ return PhpCsFixer\Config::create()
         'php_unit_expectation' => true,
         'php_unit_mock' => true,
         'php_unit_namespaced' => true,
+        'php_unit_method_casing' => ['case' => 'snake_case'],
         'random_api_migration' => true,
         'strict_comparison' => true,
         'strict_param' => true,

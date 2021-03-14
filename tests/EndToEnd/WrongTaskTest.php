@@ -12,7 +12,7 @@ final class WrongTaskTest extends EndToEndTestCase
      * @test
      * @dataProvider scheduleInstanceProvider
      */
-    public function everyTaskMustReturnCrunzScheduleInstance(string $crunzCommand): void
+    public function every_task_must_return_crunz_schedule_instance(string $crunzCommand): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
         $envBuilder

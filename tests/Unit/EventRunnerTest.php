@@ -20,7 +20,7 @@ use Symfony\Component\Lock\StoreInterface;
 final class EventRunnerTest extends TestCase
 {
     /** @test */
-    public function urlIsPingedBefore(): void
+    public function url_is_pinged_before(): void
     {
         $url = 'https://ping-befo.re/';
         $output = $this->createMock(OutputInterface::class);
@@ -35,7 +35,7 @@ final class EventRunnerTest extends TestCase
     }
 
     /** @test */
-    public function urlIsPingedAfter(): void
+    public function url_is_pinged_after(): void
     {
         $url = 'https://ping-aft.er/';
         $output = $this->createMock(OutputInterface::class);
@@ -49,7 +49,7 @@ final class EventRunnerTest extends TestCase
         $eventRunner->handle($output, [$schedule]);
     }
 
-    public function testLockIsReleasedOnError(): void
+    public function test_lock_is_released_on_error(): void
     {
         $output = $this->createMock(OutputInterface::class);
 

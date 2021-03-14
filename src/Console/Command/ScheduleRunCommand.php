@@ -136,8 +136,8 @@ class ScheduleRunCommand extends Command
         );
         $schedules = \array_filter(
             $schedules,
-            static function (Schedule $schedule) {
-                return \count($schedule->events());
+            static function (Schedule $schedule): bool {
+                return \count($schedule->events()) > 0;
             }
         );
 

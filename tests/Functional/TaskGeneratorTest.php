@@ -39,7 +39,7 @@ class TaskGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function generateTaskFile(): void
+    public function generate_task_file(): void
     {
         $application = new Application('Crunz', '0.1.0-test.1');
         $command = $application->get('make:task');

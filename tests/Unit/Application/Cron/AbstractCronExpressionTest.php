@@ -15,7 +15,7 @@ abstract class AbstractCronExpressionTest extends TestCase
      * @param \DateTimeImmutable[] $expectedRunDates
      * @dataProvider multipleRunDatesProvider
      */
-    public function multipleRunDates(
+    public function multiple_run_dates(
         string $cronExpressionString,
         \DateTimeImmutable $now,
         int $total,

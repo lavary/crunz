@@ -16,7 +16,7 @@ class TaskNumberTest extends TestCase
      * @param mixed $value
      * @test
      */
-    public function canNotCreateTaskNumberWithNonStringValueByFromString($value): void
+    public function can_not_create_task_number_with_non_string_value_by_from_string($value): void
     {
         $this->expectException(WrongTaskNumberException::class);
         $this->expectExceptionMessage('Passed task number is not string.');
@@ -28,7 +28,7 @@ class TaskNumberTest extends TestCase
      * @test
      * @dataProvider nonNumericProvider
      */
-    public function taskNumberCanNotBeNonNumericString(string $value): void
+    public function task_number_can_not_be_non_numeric_string(string $value): void
     {
         $this->expectException(WrongTaskNumberException::class);
         $this->expectExceptionMessage("Task number '{$value}' is not numeric.");
@@ -40,7 +40,7 @@ class TaskNumberTest extends TestCase
      * @test
      * @dataProvider numericValueProvider
      */
-    public function taskNumberCanBeCreatedWithNumericStringValue(string $value, int $expectedNumber): void
+    public function task_number_can_be_created_with_numeric_string_value(string $value, int $expectedNumber): void
     {
         $taskNumber = TaskNumber::fromString($value);
 
@@ -48,7 +48,7 @@ class TaskNumberTest extends TestCase
     }
 
     /** @test */
-    public function arrayIndexIsOneStepLower(): void
+    public function array_index_is_one_step_lower(): void
     {
         $taskNumber = TaskNumber::fromString('14');
 

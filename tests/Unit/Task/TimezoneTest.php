@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 final class TimezoneTest extends TestCase
 {
     /** @test */
-    public function configuredTimezoneCannotBeEmpty(): void
+    public function configured_timezone_cannot_be_empty(): void
     {
         $this->expectException(EmptyTimezoneException::class);
 
