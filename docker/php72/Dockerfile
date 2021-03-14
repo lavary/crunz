@@ -1,4 +1,4 @@
-FROM php:7.2-cli-alpine
+FROM php:7.2.34-cli-alpine
 
 RUN apk add --no-cache \
         shadow \
