@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-    php72:
+    php74:
         build:
-            context: ./docker/php72
+            context: ./docker/php74
         working_dir: /var/www/html
         environment:
             CRUNZ_CONTAINER_DEBUG: 1
@@ -16,7 +16,7 @@ services:
             "
         volumes:
             - .:/var/www/html
-            - ./docker/php72/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./docker/php74/php.ini:/usr/local/etc/php/php.ini:ro
         stop_grace_period: 1s
 
     php80:
