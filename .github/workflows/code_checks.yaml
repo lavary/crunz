@@ -32,7 +32,7 @@ jobs:
                       phpunit_bridge_version: "~v5.1.0"
                       dependencies: "low"
 
-        name: PHP ${{ matrix.php }} tests
+        name: PHP ${{ matrix.php }} tests on Ubutnu
         steps:
             -   uses: actions/checkout@v2
 
@@ -65,7 +65,7 @@ jobs:
                     - dependencies: "low"
                       composerExtraFlags: '--prefer-lowest'
 
-        name: PHP ${{ matrix.php }} tests
+        name: PHP ${{ matrix.php }} tests on Windows
         steps:
             -   uses: actions/checkout@v2
 
