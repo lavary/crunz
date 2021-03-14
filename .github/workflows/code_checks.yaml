@@ -32,7 +32,7 @@ jobs:
                       phpunit_bridge_version: "~v5.1.0"
                       dependencies: "low"
 
-        name: PHP ${{ matrix.php }} tests
+        name: PHP ${{ matrix.php }} tests on Ubutnu
         steps:
             -   uses: actions/checkout@v2
 
@@ -48,6 +48,39 @@ jobs:
                     restore-keys: "php-${{ matrix.php }}-composer-locked-"
 
             -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.vars.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
+
+            -   run: composer show
+
+            -   run: vendor/bin/phpunit
+
+    windows-tests:
+        runs-on: windows-latest
+        strategy:
+            matrix:
+                php:
+                    - '7.2'
+                vars:
+                    - dependencies: "high"
+                      composerExtraFlags: ''
+                    - dependencies: "low"
+                      composerExtraFlags: '--prefer-lowest'
+
+        name: PHP ${{ matrix.php }} tests on Windows
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none # disable xdebug, pcov
+
+            -   uses: "actions/cache@v2"
+                with:
+                    path: "~/.composer/cache"
+                    key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
+                    restore-keys: "php-${{ matrix.php }}-composer-locked-"
+
+            -   run: composer update -a --prefer-dist -n ${{ matrix.vars.composerExtraFlags }}
 
             -   run: composer show
 
