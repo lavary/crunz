@@ -16,7 +16,7 @@ final class OutputFactoryTest extends TestCase
      * @test
      * @dataProvider inputProvider
      */
-    public function inputDefinesOutputVerbosity(InputInterface $input, int $expectedVerbosity): void
+    public function input_defines_output_verbosity(InputInterface $input, int $expectedVerbosity): void
     {
         $factory = new OutputFactory($input);
 

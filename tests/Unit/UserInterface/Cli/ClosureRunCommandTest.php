@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\NullOutput;
 final class ClosureRunCommandTest extends UnitTestCase
 {
     /** @dataProvider closureValueProvider */
-    public function testReturnValueOfClosureIsOmitted(int $returnValue): void
+    public function test_return_value_of_closure_is_omitted(int $returnValue): void
     {
         $closure = static function () use ($returnValue): int {
             return $returnValue;
@@ -28,7 +28,7 @@ final class ClosureRunCommandTest extends UnitTestCase
     }
 
     /** @test */
-    public function commandIsHidden(): void
+    public function command_is_hidden(): void
     {
         $command = $this->createCommand();
 

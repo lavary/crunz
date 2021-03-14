@@ -44,7 +44,7 @@ final class EventTest extends UnitTestCase
     /**
      * @group cronCompile
      */
-    public function testUnitMethods(): void
+    public function test_unit_methods(): void
     {
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('0 * * * *', $e->hourly()->getExpression());
@@ -74,7 +74,7 @@ final class EventTest extends UnitTestCase
     /**
      * @group cronCompile
      */
-    public function testLowLevelMethods(): void
+    public function test_low_level_methods(): void
     {
         $timezone = new \DateTimeZone('UTC');
 
@@ -107,7 +107,7 @@ final class EventTest extends UnitTestCase
     /**
      * @group cronCompile
      */
-    public function testWeekdayMethods(): void
+    public function test_weekday_methods(): void
     {
         $e = new Event($this->id, 'php qux');
         $this->assertEquals('* * * * 2', $e->tuesdays()->getExpression());
@@ -128,7 +128,7 @@ final class EventTest extends UnitTestCase
         $this->assertEquals('30 1 * * 2', $e->weeklyOn('2', '01:30')->getExpression());
     }
 
-    public function testCronLifeTime(): void
+    public function test_cron_life_time(): void
     {
         $timezone = new \DateTimeZone('UTC');
 
@@ -159,7 +159,7 @@ final class EventTest extends UnitTestCase
         ;
     }
 
-    public function testCronConditions(): void
+    public function test_cron_conditions(): void
     {
         $timezone = new \DateTimeZone('UTC');
 
@@ -177,7 +177,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function moreThanFivePartsInCronExpressionResultsInException(): void
+    public function more_than_five_parts_in_cron_expression_results_in_exception(): void
     {
         $this->expectException(TaskException::class);
         $this->expectExceptionMessage("Expression '* * * * * *' has more than five parts and this is not allowed.");
@@ -187,7 +187,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function callingSetProcessIsDeprecated(): void
+    public function calling_set_process_is_deprecated(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage("Method 'setProcess' is not supported.");
@@ -196,14 +196,14 @@ final class EventTest extends UnitTestCase
         $event->setProcess();
     }
 
-    public function testBuildCommand(): void
+    public function test_build_command(): void
     {
         $e = new Event($this->id, 'php -i');
 
         $this->assertSame('php -i', $e->buildCommand());
     }
 
-    public function testIsDue(): void
+    public function test_is_due(): void
     {
         $timezone = new \DateTimeZone('UTC');
         $this->setClockNow(new \DateTimeImmutable('2015-04-12 00:00:00', $timezone));
@@ -220,7 +220,7 @@ final class EventTest extends UnitTestCase
         $this->assertTrue($e->on('00:00 ' . \date('Y') . '-04-12')->isDue($timezone));
     }
 
-    public function testName(): void
+    public function test_name(): void
     {
         $e = new Event($this->id, 'php foo');
         $e->description('Testing Cron');
@@ -229,7 +229,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function inChangeWorkingDirectoryInBuildCommandOnWindows(): void
+    public function in_change_working_directory_in_build_command_on_windows(): void
     {
         if (!$this->isWindows()) {
             $this->markTestSkipped('Required Windows OS.');
@@ -244,7 +244,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function inChangeWorkingDirectoryInBuildCommandOnUnix(): void
+    public function in_change_working_directory_in_build_command_on_unix(): void
     {
         if ($this->isWindows()) {
             $this->markTestSkipped('Required Unix-based OS.');
@@ -258,7 +258,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function onDoNotRunTaskEveryMinute(): void
+    public function on_do_not_run_task_every_minute(): void
     {
         $event = new Event($this->id, 'php -i');
 
@@ -268,7 +268,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function settingUserPrependSudoToCommand(): void
+    public function setting_user_prepend_sudo_to_command(): void
     {
         if ($this->isWindows()) {
             $this->markTestSkipped('Required Unix-based OS.');
@@ -282,7 +282,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function customUserAndCwd(): void
+    public function custom_user_and_cwd(): void
     {
         if ($this->isWindows()) {
             $this->markTestSkipped('Required Unix-based OS.');
@@ -297,7 +297,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function notImplementedUserChangeOnWindows(): void
+    public function not_implemented_user_change_on_windows(): void
     {
         if (!$this->isWindows()) {
             $this->markTestSkipped('Required Windows OS.');
@@ -315,7 +315,7 @@ final class EventTest extends UnitTestCase
      * @test
      * @runInSeparateProcess
      */
-    public function closureCommandHaveFullBinaryPaths(): void
+    public function closure_command_have_full_binary_paths(): void
     {
         if (!\defined('CRUNZ_BIN')) {
             \define('CRUNZ_BIN', __FILE__);
@@ -337,7 +337,7 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function wholeOutputCatchesStdoutAndStderr(): void
+    public function whole_output_catches_stdout_and_stderr(): void
     {
         $command = "php -r \"echo 'Test output'; throw new \Exception('Exception output');\"";
         $event = new Event(\uniqid('c', true), $command);
@@ -363,13 +363,13 @@ final class EventTest extends UnitTestCase
     }
 
     /** @test */
-    public function taskWillPreventOverlappingWithDefaultStore(): void
+    public function task_will_prevent_overlapping_with_default_store(): void
     {
         $this->assertPreventOverlapping();
     }
 
     /** @test */
-    public function taskWillPreventOverlappingWithSemaphoreStore(): void
+    public function task_will_prevent_overlapping_with_semaphore_store(): void
     {
         if (!\extension_loaded('sysvsem')) {
             $this->markTestSkipped('Semaphore extension not installed.');

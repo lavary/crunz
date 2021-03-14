@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class StreamHttpClientTest extends TestCase
 {
     /** @test */
-    public function pingFailWithInvalidAddress(): void
+    public function ping_fail_with_invalid_address(): void
     {
         $expectedExceptionMessage = 'Ping failed with message: "fopen(http://www.wrong-address.tld): failed to open stream: php_network_getaddresses: getaddrinfo failed:';
         if (PHP_MAJOR_VERSION >= 8) {

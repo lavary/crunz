@@ -7,7 +7,7 @@ use Crunz\Schedule;
 $scheduler = new Schedule();
 $scheduler
     ->run(
-        function (): \stdClass {
+        function (): stdClass {
             \usleep(150 * 1000); // wait 150ms
 
             echo 'Done', PHP_EOL;

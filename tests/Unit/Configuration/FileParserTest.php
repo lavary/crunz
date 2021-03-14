@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 class FileParserTest extends TestCase
 {
     /** @test */
-    public function parseThrowsExceptionOnNonExistingFile(): void
+    public function parse_throws_exception_on_non_existing_file(): void
     {
         $filePath = '/path/to/wrong/file';
 
@@ -26,7 +26,7 @@ class FileParserTest extends TestCase
     }
 
     /** @test */
-    public function parseThrowsExceptionOnNonReadableFile(): void
+    public function parse_throws_exception_on_non_readable_file(): void
     {
         if ($this->isWindows()) {
             $this->markTestSkipped('Required Unix-based OS.');
@@ -44,7 +44,7 @@ class FileParserTest extends TestCase
     }
 
     /** @test */
-    public function parseReturnsParsedFileContent(): void
+    public function parse_returns_parsed_file_content(): void
     {
         $tempFile = new TemporaryFile();
         $filePath = $tempFile->filePath();

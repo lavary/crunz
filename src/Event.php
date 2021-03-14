@@ -241,7 +241,7 @@ class Event implements PingableInterface
      */
     public function nullOutput()
     {
-        return  'NUL' === $this->output || '/dev/null' === $this->output;
+        return 'NUL' === $this->output || '/dev/null' === $this->output;
     }
 
     /**
@@ -834,7 +834,7 @@ class Event implements PingableInterface
      *
      * @return $this
      */
-    public function before(\Closure $callback)
+    public function before(Closure $callback)
     {
         $this->beforeCallbacks[] = $callback;
 

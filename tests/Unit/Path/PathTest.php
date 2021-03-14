@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class PathTest extends TestCase
 {
     /** @test */
-    public function createRequiresAtLeastOnePath(): void
+    public function create_requires_at_least_one_path(): void
     {
         $this->expectException(CrunzException::class);
         $this->expectExceptionMessage('At least one part expected.');
@@ -20,7 +20,7 @@ final class PathTest extends TestCase
     }
 
     /** @test */
-    public function partsAreDelimitedByDirectorySeparator(): void
+    public function parts_are_delimited_by_directory_separator(): void
     {
         $parts = [
             'home',
@@ -37,7 +37,7 @@ final class PathTest extends TestCase
     }
 
     /** @test */
-    public function pathCanBeCreatedFromStrings(): void
+    public function path_can_be_created_from_strings(): void
     {
         $parts = [
             'home',
@@ -55,7 +55,7 @@ final class PathTest extends TestCase
     }
 
     /** @test */
-    public function doubledDirectorySeparatorIsNormalized(): void
+    public function doubled_directory_separator_is_normalized(): void
     {
         $parts = [
             'home' . DIRECTORY_SEPARATOR,

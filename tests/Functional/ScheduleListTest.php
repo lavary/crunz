@@ -11,7 +11,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class ScheduleListTest extends TestCase
 {
     /** @test */
-    public function showList(): void
+    public function show_list(): void
     {
         $application = new Application('Crunz', '0.1.0-test.1');
         $command = $application->get('schedule:list');

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 final class ConfigurationTest extends TestCase
 {
     /** @test */
-    public function getCanReturnPathSplitByDot(): void
+    public function get_can_return_path_split_by_dot(): void
     {
         $configuration = $this->createConfiguration(
             [
@@ -27,7 +27,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function getReturnDefaultValueIfPathNotExists(): void
+    public function get_return_default_value_if_path_not_exists(): void
     {
         $configuration = $this->createConfiguration();
 
@@ -36,7 +36,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function sourcePathIsRelativeToCwd(): void
+    public function source_path_is_relative_to_cwd(): void
     {
         $cwd = \sys_get_temp_dir();
         $sourcePath = Path::fromStrings('app', 'tasks');
@@ -47,7 +47,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function sourcePathFallbackToTasksDirectory(): void
+    public function source_path_fallback_to_tasks_directory(): void
     {
         $cwd = \sys_get_temp_dir();
         $expectedPath = Path::fromStrings($cwd, 'tasks');

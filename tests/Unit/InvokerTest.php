@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class InvokerTest extends TestCase
 {
     /** @test */
-    public function callExecutesClosure(): void
+    public function call_executes_closure(): void
     {
         $i = 1;
 
@@ -26,7 +26,7 @@ class InvokerTest extends TestCase
     }
 
     /** @test */
-    public function callExecutesClosureWithParams(): void
+    public function call_executes_closure_with_params(): void
     {
         $i = 1;
 
@@ -42,7 +42,7 @@ class InvokerTest extends TestCase
     }
 
     /** @test */
-    public function callCanCatchOutput(): void
+    public function call_can_catch_output(): void
     {
         $invoker = new Invoker();
         $result = $invoker->call(

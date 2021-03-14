@@ -10,7 +10,7 @@ use Crunz\Tests\TestCase\EndToEndTestCase;
 final class TasksSourceRecognitionTest extends EndToEndTestCase
 {
     /** @test */
-    public function searchTasksInCwd(): void
+    public function search_tasks_in_cwd(): void
     {
         $envBuilder = $this->createEnvironmentBuilder();
         $envBuilder->addTask('PhpVersionTasks');
@@ -27,7 +27,7 @@ final class TasksSourceRecognitionTest extends EndToEndTestCase
     }
 
     /** @test */
-    public function searchTasksInCwdWithConfig(): void
+    public function search_tasks_in_cwd_with_config(): void
     {
         $tasksPath = Path::fromStrings('app', 'tasks');
         $envBuilder = $this->createEnvironmentBuilder();

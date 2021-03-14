@@ -10,7 +10,7 @@ use Crunz\Tests\TestCase\EndToEndTestCase;
 final class ConfigRecognitionTest extends EndToEndTestCase
 {
     /** @test */
-    public function searchConfigInCwd(): void
+    public function search_config_in_cwd(): void
     {
         $tasksSource = Path::fromStrings('resources', 'tasks');
         $environmentBuilder = $this->createEnvironmentBuilder();
