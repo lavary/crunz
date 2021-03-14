@@ -18,7 +18,7 @@ class TaskGeneratorCommand extends Command
     /**
      * Default option values.
      *
-     * @var array
+     * @var array<string,string>
      */
     const DEFAULTS = [
         'frequency' => 'everyThirtyMinutes',
