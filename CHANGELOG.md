@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.3.0] - 2021-03-14
+
+### Deprecated
+
+- [#344] Deprecate most "Event::every*" methods
+
+### Removed
+
+- [#323] Drop Symfony 4.3 support
+- [#324] Drop Symfony 5.0 support
+
 ## [v2.2.4] - 2020-12-18
 
 ### Fixed
@@ -287,9 +298,12 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#344]: https://github.com/lavary/crunz/pull/344
 [#334]: https://github.com/lavary/crunz/pull/334
 [#333]: https://github.com/lavary/crunz/pull/333
 [#326]: https://github.com/lavary/crunz/pull/326
+[#324]: https://github.com/lavary/crunz/pull/324
+[#323]: https://github.com/lavary/crunz/pull/323
 [#321]: https://github.com/lavary/crunz/pull/321
 [#298]: https://github.com/lavary/crunz/pull/298
 [#292]: https://github.com/lavary/crunz/pull/292
@@ -434,6 +448,7 @@ In `v2` this will result in exception.
 [v2.2.2]: https://github.com/lavary/crunz/compare/v2.2.1...v2.2.2
 [v2.2.3]: https://github.com/lavary/crunz/compare/v2.2.2...v2.2.3
 [v2.2.4]: https://github.com/lavary/crunz/compare/v2.2.3...v2.2.4
+[v2.3.0]: https://github.com/lavary/crunz/compare/v2.2.4...v2.3.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
