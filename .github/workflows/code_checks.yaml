@@ -17,11 +17,11 @@ jobs:
                     - symfony_version: "~v4.4.0"
                       phpunit_bridge_version: "~v4.4.9"
                       dependencies: "low"
-                    - symfony_version: "~v5.1.0"
-                      phpunit_bridge_version: "~v5.1.0"
+                    - symfony_version: "~v5.2.0"
+                      phpunit_bridge_version: "~v5.2.0"
                       dependencies: "high"
-                    - symfony_version: "~v5.1.0"
-                      phpunit_bridge_version: "~v5.1.0"
+                    - symfony_version: "~v5.2.0"
+                      phpunit_bridge_version: "~v5.2.0"
                       dependencies: "low"
 
         name: PHP ${{ matrix.php }} tests on Ubutnu
