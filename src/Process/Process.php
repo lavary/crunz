@@ -9,8 +9,6 @@ use Symfony\Component\Process\Process as SymfonyProcess;
 /** @internal */
 final class Process
 {
-    /** @var bool */
-    private static $needsInheritEnvVars;
     /** @var SymfonyProcess|string[] */
     private $process;
 
@@ -92,28 +90,5 @@ final class Process
     {
         return $this->process
             ->getErrorOutput();
-    }
-
-    private static function needsInheritEnvVars(): bool
-    {
-        if (null === self::$needsInheritEnvVars) {
-            $methodName = 'inheritEnvironmentVariables';
-            $symfonyProcessReflection = new \ReflectionClass(SymfonyProcess::class);
-
-            if (!$symfonyProcessReflection->hasMethod($methodName)) {
-                self::$needsInheritEnvVars = false;
-            } else {
-                $inheritMethodReflection = $symfonyProcessReflection->getMethod($methodName);
-                $docs = $inheritMethodReflection->getDocComment();
-                $docs = false !== $docs
-                    ? $docs
-                    : ''
-                ;
-
-                self::$needsInheritEnvVars = false === \mb_strpos($docs, '@deprecated');
-            }
-        }
-
-        return self::$needsInheritEnvVars;
     }
 }
