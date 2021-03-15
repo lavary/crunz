@@ -18,18 +18,9 @@ final class Process
         $this->process = $process;
     }
 
-    /** @param string[]|string $command */
-    public static function fromStringCommand($command, ?string $cwd = null): self
+    public static function fromStringCommand(string $command, ?string $cwd = null): self
     {
-        if (\method_exists(SymfonyProcess::class, 'fromShellCommandline')) {
-            $process = SymfonyProcess::fromShellCommandline($command, $cwd);
-        } else {
-            $process = new SymfonyProcess($command, $cwd);
-        }
-
-        if (self::needsInheritEnvVars()) {
-            $process->inheritEnvironmentVariables(true);
-        }
+        $process = SymfonyProcess::fromShellCommandline($command, $cwd);
 
         return new self($process);
     }
