@@ -189,38 +189,6 @@ class Event implements PingableInterface
     }
 
     /**
-     * Handling dynamic frequency methods.
-     *
-     * @param string             $methodName
-     * @param array<mixed,mixed> $params
-     *
-     * @return self
-     */
-    public function __call($methodName, $params)
-    {
-        // @TODO remove this method after v3.0 release
-
-        \preg_match('/^every([A-Z][a-zA-Z]+)?(Minute|Hour|Day|Month)s?$/', $methodName, $matches);
-
-        if (!\count($matches) || 'Zero' === $matches[1]) {
-            throw new \BadMethodCallException("Method '{$methodName}' is not supported.");
-        }
-
-        $amount = !empty($matches[1]) ? $this->wordToNumber($this->splitCamel($matches[1])) : 1;
-
-        if (!$amount) {
-            throw new \BadMethodCallException();
-        }
-
-        @\trigger_error(
-            "Method '{$methodName}' is deprecated since v2.3, use 'cron' method instead.",
-            \E_USER_DEPRECATED
-        );
-
-        return $this->every(\mb_strtolower($matches[2]), $amount);
-    }
-
-    /**
      * Change the current working directory.
      *
      * @param string $directory
@@ -1348,20 +1316,6 @@ class Event implements PingableInterface
         return self::$clock;
     }
 
-    private function splitCamel(string $text): string
-    {
-        $pattern = '/(?<=[a-z])(?=[A-Z])/x';
-        /** @var string[] $segments */
-        $segments = \preg_split($pattern, $text);
-
-        return \mb_strtolower(
-            \implode(
-                ' ',
-                $segments
-            )
-        );
-    }
-
     private function closureSerializer(): ClosureSerializerInterface
     {
         if (null === self::$closureSerializer) {
@@ -1380,79 +1334,5 @@ class Event implements PingableInterface
         );
 
         return 'WIN' === $osCode;
-    }
-
-    private function wordToNumber(string $text): float
-    {
-        $data = \strtr(
-            $text,
-            [
-                'zero' => '0',
-                'a' => '1',
-                'one' => '1',
-                'two' => '2',
-                'three' => '3',
-                'four' => '4',
-                'five' => '5',
-                'six' => '6',
-                'seven' => '7',
-                'eight' => '8',
-                'nine' => '9',
-                'ten' => '10',
-                'eleven' => '11',
-                'twelve' => '12',
-                'thirteen' => '13',
-                'fourteen' => '14',
-                'fifteen' => '15',
-                'sixteen' => '16',
-                'seventeen' => '17',
-                'eighteen' => '18',
-                'nineteen' => '19',
-                'twenty' => '20',
-                'thirty' => '30',
-                'forty' => '40',
-                'fourty' => '40',
-                'fifty' => '50',
-                'sixty' => '60',
-                'seventy' => '70',
-                'eighty' => '80',
-                'ninety' => '90',
-                'hundred' => '100',
-                'thousand' => '1000',
-                'million' => '1000000',
-                'billion' => '1000000000',
-                'and' => '',
-            ]
-        );
-
-        /** @var string[] $matchedParts */
-        $matchedParts = \preg_split('/[\s-]+/', $data);
-        // Coerce all tokens to numbers
-        $parts = \array_map('floatval', $matchedParts);
-
-        $tmp = null;
-        $sum = 0;
-        $last = null;
-
-        foreach ($parts as $part) {
-            if (null !== $tmp) {
-                if ($tmp > $part) {
-                    if ($last >= 1000) {
-                        $sum += $tmp;
-                        $tmp = $part;
-                    } else {
-                        $tmp += $part;
-                    }
-                } else {
-                    $tmp *= $part;
-                }
-            } else {
-                $tmp = $part;
-            }
-
-            $last = $part;
-        }
-
-        return $sum + $tmp;
     }
 }

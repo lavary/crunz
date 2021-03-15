@@ -186,16 +186,6 @@ final class EventTest extends UnitTestCase
         $e->cron('* * * * * *');
     }
 
-    /** @test */
-    public function calling_set_process_is_deprecated(): void
-    {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage("Method 'setProcess' is not supported.");
-
-        $event = new Event(1, 'php foo -v');
-        $event->setProcess();
-    }
-
     public function test_build_command(): void
     {
         $e = new Event($this->id, 'php -i');
@@ -376,23 +366,6 @@ final class EventTest extends UnitTestCase
         }
 
         $this->assertPreventOverlapping(new SemaphoreStore());
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Method '%s' is deprecated since v2.3, use 'cron' method instead.
-     * @dataProvider deprecatedEveryProvider
-     */
-    public function test_most_every_methods_are_deprecated(string $method): void
-    {
-        // Arrange
-        $event = new Event($this->id, 'php -i');
-        /** @var callable $methodCall */
-        $methodCall = [$event, $method];
-        $methodCallClosure = \Closure::fromCallable($methodCall);
-
-        // Act
-        $methodCallClosure();
     }
 
     /** @dataProvider everyMethodProvider */
