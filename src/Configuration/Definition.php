@@ -14,13 +14,7 @@ class Definition implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('crunz');
 
-        if (\method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $rootNode = $treeBuilder->root('crunz');
-        }
-
+        $rootNode = $treeBuilder->getRootNode();
         $rootNode
 
             ->children()
