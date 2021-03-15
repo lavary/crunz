@@ -11,12 +11,6 @@ jobs:
                     - '7.4'
                     - '8.0'
                 vars:
-                    - symfony_version: "^v3.4.5"
-                      phpunit_bridge_version: "^v3.4.45"
-                      dependencies: "high"
-                    - symfony_version: "^v3.4.5"
-                      phpunit_bridge_version: "^v3.4.45"
-                      dependencies: "low"
                     - symfony_version: "~v4.4.0"
                       phpunit_bridge_version: "~v4.4.9"
                       dependencies: "high"
