@@ -165,7 +165,7 @@ class Event implements PingableInterface
      * The symfony lock factory that is used to acquire locks. If the value is null, but preventOverlapping = true
      * crunz falls back to filesystem locks.
      *
-     * @var Factory|null
+     * @var Factory|LockFactory|null
      */
     private $lockFactory;
     /** @var string[] */
