@@ -7,7 +7,6 @@ namespace Crunz\Logger;
 use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Application\Service\LoggerFactoryInterface;
 use Crunz\Clock\ClockInterface;
-use Crunz\Event;
 use Crunz\Exception\CrunzException;
 use Crunz\Infrastructure\Psr\Logger\PsrStreamLoggerFactory;
 use Crunz\Task\Timezone;

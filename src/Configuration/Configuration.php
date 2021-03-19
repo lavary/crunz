@@ -58,7 +58,6 @@ final class Configuration implements ConfigurationInterface
     /**
      * Set a parameter based on key/value.
      *
-     * @param string $key
      * @param mixed $value
      *
      * @return ConfigurationInterface
