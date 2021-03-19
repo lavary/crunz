@@ -55,19 +55,23 @@ final class FakeConfiguration implements ConfigurationInterface
     }
 
     /** {@inheritdoc} */
-    public function set(string $key, $value): void
+    public function withNewEntry(string $key, $value)
     {
+        $newConfiguration = clone $this;
+
         $parts = \explode('.', $key);
 
         if (\count($parts) > 1) {
-            if (\array_key_exists($parts[0], $this->config) && \is_array($this->config[$parts[0]])) {
-                $this->config[$parts[0]][$parts[1]] = $value;
+            if (\array_key_exists($parts[0], $newConfiguration->config) && \is_array($newConfiguration->config[$parts[0]])) {
+                $newConfiguration->config[$parts[0]][$parts[1]] = $value;
             } else {
-                $this->config[$parts[0]] = [$parts[1] => $value];
+                $newConfiguration->config[$parts[0]] = [$parts[1] => $value];
             }
         } else {
-            $this->config[$key] = $value;
+            $newConfiguration->config[$key] = $value;
         }
+
+        return $newConfiguration;
     }
 
     public function getSourcePath(): string

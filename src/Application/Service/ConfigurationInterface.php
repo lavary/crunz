@@ -18,9 +18,12 @@ interface ConfigurationInterface
     /**
      * Set a parameter based on a key.
      *
+     * @param string $key
      * @param mixed $value
+     *
+     * @return ConfigurationInterface
      */
-    public function set(string $key, $value): void;
+    public function withNewEntry(string $key, $value);
 
     public function getSourcePath(): string;
 }

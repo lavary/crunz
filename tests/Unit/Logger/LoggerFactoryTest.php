@@ -34,7 +34,7 @@ final class LoggerFactoryTest extends TestCase
         $e = new Event('1', 'php foo');
         $e->output = $tempFile->filePath();
 
-        $loggerFactory->createEvent($e);
+        $loggerFactory->createEvent($e->output);
 
         $this->expectNotToPerformAssertions();
     }

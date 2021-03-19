@@ -66,9 +66,9 @@ final class ConfigurationTest extends TestCase
         $keyName = 'test_key';
         $expectedValue = 'test_value';
 
-        $configuration->set($keyName, $expectedValue);
+        $newConfiguration = $configuration->withNewEntry($keyName, $expectedValue);
 
-        $this->assertSame($configuration->get($keyName), $expectedValue);
+        $this->assertSame($newConfiguration->get($keyName), $expectedValue);
     }
 
     /** @test */
@@ -82,8 +82,8 @@ final class ConfigurationTest extends TestCase
         $keyName = 'test_key';
         $expectedValue = 'test_value';
 
-        $configuration->set("{$arrayName}.{$keyName}", $expectedValue);
-        $expectedArray = $configuration->get($arrayName);
+        $newConfiguration = $configuration->withNewEntry("{$arrayName}.{$keyName}", $expectedValue);
+        $expectedArray = $newConfiguration->get($arrayName);
 
         $this->assertIsArray($expectedArray);
         $this->assertArrayHasKey($keyName, $expectedArray);

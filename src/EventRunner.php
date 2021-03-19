@@ -91,7 +91,7 @@ class EventRunner
                 }
             }
             // Create an instance of the Logger specific to the event
-            $event->logger = $this->loggerFactory->createEvent($event);
+            $event->logger = $this->loggerFactory->createEvent($event->output);
         }
 
         $this->consoleLogger

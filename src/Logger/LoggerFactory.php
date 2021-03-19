@@ -51,11 +51,10 @@ class LoggerFactory
         return new Logger($innerLogger);
     }
 
-    public function createEvent(Event $event): Logger
+    public function createEvent(string $output): Logger
     {
         $this->initializeLoggerFactory();
-        $eventConfiguration = clone $this->configuration;
-        $eventConfiguration->set('output_log_file', $event->output);
+        $eventConfiguration = $this->configuration->withNewEntry('output_log_file', $output);
         $innerLogger = $this->loggerFactory
             ->create($eventConfiguration)
         ;
