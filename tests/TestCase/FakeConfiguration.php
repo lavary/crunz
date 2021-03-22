@@ -55,7 +55,7 @@ final class FakeConfiguration implements ConfigurationInterface
     }
 
     /** {@inheritdoc} */
-    public function withNewEntry(string $key, $value)
+    public function withNewEntry(string $key, $value): ConfigurationInterface
     {
         $newConfiguration = clone $this;
 
