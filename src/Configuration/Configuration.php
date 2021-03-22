@@ -59,8 +59,6 @@ final class Configuration implements ConfigurationInterface
      * Set a parameter based on key/value.
      *
      * @param mixed $value
-     *
-     * @return ConfigurationInterface
      */
     public function withNewEntry(string $key, $value): ConfigurationInterface
     {

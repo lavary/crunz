@@ -19,8 +19,6 @@ interface ConfigurationInterface
      * Set a parameter based on a key.
      *
      * @param mixed $value
-     *
-     * @return ConfigurationInterface
      */
     public function withNewEntry(string $key, $value): ConfigurationInterface;
 
