@@ -57,7 +57,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function setConfigurationKeyValue(): void
+    public function set_configuration_key_value(): void
     {
         $cwd = \sys_get_temp_dir();
         $sourcePath = Path::fromStrings('app', 'tasks');
@@ -72,7 +72,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function setConfigurationKeyArray(): void
+    public function set_configuration_key_array(): void
     {
         $cwd = \sys_get_temp_dir();
         $sourcePath = Path::fromStrings('app', 'tasks');
