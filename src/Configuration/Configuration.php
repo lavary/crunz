@@ -62,7 +62,7 @@ final class Configuration implements ConfigurationInterface
      *
      * @return ConfigurationInterface
      */
-    public function withNewEntry(string $key, $value)
+    public function withNewEntry(string $key, $value): ConfigurationInterface
     {
         $newConfiguration = clone $this;
 

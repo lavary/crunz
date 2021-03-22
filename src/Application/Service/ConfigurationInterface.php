@@ -22,7 +22,7 @@ interface ConfigurationInterface
      *
      * @return ConfigurationInterface
      */
-    public function withNewEntry(string $key, $value);
+    public function withNewEntry(string $key, $value): ConfigurationInterface;
 
     public function getSourcePath(): string;
 }
