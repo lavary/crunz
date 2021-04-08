@@ -39,6 +39,33 @@ final class LoggerTest extends EndToEndTestCase
         );
     }
 
+    public function test_event_logging_override(): void
+    {
+        $envBuilder = $this->createEnvironmentBuilder()
+            ->addTask('CustomOutputTasks')
+            ->withConfig(
+                [
+                    'log_output' => true,
+                    'output_log_file' => 'main.log',
+                ]
+            )
+        ;
+        $environment = $envBuilder->createEnvironment();
+        $logPath = $environment->rootDirectory() . DIRECTORY_SEPARATOR;
+
+        $process = $environment->runCrunzCommand('schedule:run');
+
+        $this->assertEmpty($process->getOutput());
+
+        $this->assertFileDoesNotExist("$logPath/main.log");
+
+        $this->assertFileExists("$logPath/custom.log");
+        $this->assertStringContainsString(
+            'Usage: php',
+            file_get_contents("$logPath/custom.log")
+        );
+    }
+
     private function assertLogRecord(
         string $logRecord,
         string $level,
