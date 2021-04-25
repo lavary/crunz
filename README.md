@@ -12,7 +12,8 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 
 |Version|Supported PHP versions
 |---|---|
-|dev v3 (v3.0-dev)|![7.4+](https://img.shields.io/badge/php-%3E=7.4-blue.svg?style=flat-square)
+|dev v3 (v3.1-dev)|![7.4+](https://img.shields.io/badge/php-%3E=7.4-blue.svg?style=flat-square)
+|stable v3 (v3.0.0)|![7.4+](https://img.shields.io/badge/php-%3E=7.4-blue.svg?style=flat-square)
 |stable v2 (v2.3.0)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)
 |stable v1 (v1.12.4)|![5.6-7.0+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)
 
@@ -20,8 +21,8 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 |Version|Release date|Active support until|Bug support until|Status 
 |---|---|---|---|---|
 |v1.x|April 2016|April 2019|April 2020|End of life
-|v2.x|April 2019|April 2021|April 2022|Active development 
-|v3.x|April 2021|April 2023|April 2024|Not released
+|v2.x|April 2019|April 2021|April 2022|Bug support 
+|v3.x|April 2021|April 2023|April 2024|Active support
 
 ## Installation
 
