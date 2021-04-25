@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v3.0.0] - 2021-04-25
+
+### Changed
+
+- [#349] Require at least PHP v7.4
+- [#356] Require package "dragonmantank/cron-expression" at least "v3.1"
+
+### Removed
+
+- [#351] Drop Symfony v3.4 support
+- [#352] Drop Symfony v5.1 support
+- [#354] Remove most "Crunz\Event::every*" methods
+
 ## [v2.3.0] - 2021-03-14
 
 ### Deprecated
@@ -298,6 +311,11 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#356]: https://github.com/lavary/crunz/pull/356
+[#354]: https://github.com/lavary/crunz/pull/354
+[#352]: https://github.com/lavary/crunz/pull/352
+[#351]: https://github.com/lavary/crunz/pull/351
+[#349]: https://github.com/lavary/crunz/pull/349
 [#344]: https://github.com/lavary/crunz/pull/344
 [#334]: https://github.com/lavary/crunz/pull/334
 [#333]: https://github.com/lavary/crunz/pull/333
@@ -449,6 +467,7 @@ In `v2` this will result in exception.
 [v2.2.3]: https://github.com/lavary/crunz/compare/v2.2.2...v2.2.3
 [v2.2.4]: https://github.com/lavary/crunz/compare/v2.2.3...v2.2.4
 [v2.3.0]: https://github.com/lavary/crunz/compare/v2.2.4...v2.3.0
+[v3.0.0]: https://github.com/lavary/crunz/compare/v2.3.0...v3.0.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
