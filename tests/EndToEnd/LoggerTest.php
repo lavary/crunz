@@ -57,12 +57,12 @@ final class LoggerTest extends EndToEndTestCase
 
         $this->assertEmpty($process->getOutput());
 
-        $this->assertFileDoesNotExist("$logPath/main.log");
+        $this->assertFileDoesNotExist("{$logPath}/main.log");
 
-        $this->assertFileExists("$logPath/custom.log");
+        $this->assertFileExists("{$logPath}/custom.log");
         $this->assertStringContainsString(
             'Usage: php',
-            file_get_contents("$logPath/custom.log")
+            file_get_contents("{$logPath}/custom.log")
         );
     }
 

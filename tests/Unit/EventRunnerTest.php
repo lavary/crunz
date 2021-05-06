@@ -78,7 +78,7 @@ final class EventRunnerTest extends TestCase
         $output = $this->createMock(OutputInterface::class);
         $eventRunner->handle($output, [$schedule]);
     }
-    
+
     public function test_lock_is_released_on_error(): void
     {
         $output = $this->createMock(OutputInterface::class);
