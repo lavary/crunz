@@ -49,6 +49,36 @@ final class EventRunnerTest extends TestCase
         $eventRunner->handle($output, [$schedule]);
     }
 
+    public function test_event_logging_configuration(): void
+    {
+        $logTarget = 'event.log';
+
+        // create schedule with event that changes logging configuration
+        $schedule = new Schedule();
+        $schedule->run('php -v')
+            ->appendOutputTo($logTarget)
+        ;
+
+        // mock the LoggerFactory
+        $loggerFactory = $this->createMock(LoggerFactory::class);
+        $loggerFactory->expects($this->once())
+            ->method('createEvent')
+            ->with($logTarget);
+
+        // create an EventRunner to handle the Schedule
+        $eventRunner = new EventRunner(
+            $this->createMock(Invoker::class),
+            new FakeConfiguration(),
+            $this->createMock(Mailer::class),
+            $loggerFactory,
+            $this->createMock(HttpClientInterface::class),
+            $this->createMock(ConsoleLoggerInterface::class)
+        );
+
+        $output = $this->createMock(OutputInterface::class);
+        $eventRunner->handle($output, [$schedule]);
+    }
+    
     public function test_lock_is_released_on_error(): void
     {
         $output = $this->createMock(OutputInterface::class);
