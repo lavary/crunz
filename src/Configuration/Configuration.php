@@ -55,6 +55,35 @@ final class Configuration implements ConfigurationInterface
         return $value;
     }
 
+    /**
+     * Set a parameter based on key/value.
+     *
+     * @param mixed $value
+     */
+    public function withNewEntry(string $key, $value): ConfigurationInterface
+    {
+        $newConfiguration = clone $this;
+
+        if (null === $newConfiguration->config) {
+            $newConfiguration->config = $newConfiguration->configurationParser
+                ->parseConfig();
+        }
+
+        $parts = \explode('.', $key);
+
+        if (\count($parts) > 1) {
+            if (\array_key_exists($parts[0], $newConfiguration->config) && \is_array($newConfiguration->config[$parts[0]])) {
+                $newConfiguration->config[$parts[0]][$parts[1]] = $value;
+            } else {
+                $newConfiguration->config[$parts[0]] = [$parts[1] => $value];
+            }
+        } else {
+            $newConfiguration->config[$key] = $value;
+        }
+
+        return $newConfiguration;
+    }
+
     public function getSourcePath(): string
     {
         $sourcePath = Path::create(

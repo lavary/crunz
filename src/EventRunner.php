@@ -91,7 +91,7 @@ class EventRunner
                 }
             }
             // Create an instance of the Logger specific to the event
-            $event->logger = $this->loggerFactory->create();
+            $event->logger = $this->loggerFactory->createEvent($event->output);
         }
 
         $this->consoleLogger
@@ -196,16 +196,18 @@ class EventRunner
             ->get('log_output')
         ;
 
-        if ($logOutput) {
+        if (!$event->nullOutput()) {
+            $event->logger->info($this->formatEventOutput($event));
+            $logged = true;
+        }
+
+        if ($logOutput && !$logged) {
             $this->logger()
                 ->info($this->formatEventOutput($event))
             ;
             $logged = true;
         }
-        if (!$event->nullOutput()) {
-            $event->logger->info($this->formatEventOutput($event));
-            $logged = true;
-        }
+
         if (!$logged) {
             $this->display($event->getOutputStream());
         }
