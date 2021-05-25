@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v2.3.1] - 2021-05-25
+
+### Fixed
+
+- [#361] Log to specific event log file, thanks to [@drjayvee]
+
 ## [v2.3.0] - 2021-03-14
 
 ### Deprecated
@@ -298,6 +304,7 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#361]: https://github.com/lavary/crunz/pull/361
 [#344]: https://github.com/lavary/crunz/pull/344
 [#334]: https://github.com/lavary/crunz/pull/334
 [#333]: https://github.com/lavary/crunz/pull/333
@@ -449,6 +456,7 @@ In `v2` this will result in exception.
 [v2.2.3]: https://github.com/lavary/crunz/compare/v2.2.2...v2.2.3
 [v2.2.4]: https://github.com/lavary/crunz/compare/v2.2.3...v2.2.4
 [v2.3.0]: https://github.com/lavary/crunz/compare/v2.2.4...v2.3.0
+[v2.3.1]: https://github.com/lavary/crunz/compare/v2.3.0...v2.3.1
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
@@ -466,4 +474,5 @@ In `v2` this will result in exception.
 [@SadeghPM]: https://github.com/SadeghPM
 [@mareksuscak]: https://github.com/mareksuscak
 [@rrushton]: https://github.com/rrushton
-[@iluuu1994]: https://github.com/iluuu1994 
+[@iluuu1994]: https://github.com/iluuu1994
+[@drjayvee]: https://github.com/drjayvee
