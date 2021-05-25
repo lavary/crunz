@@ -56,6 +56,40 @@ final class ConfigurationTest extends TestCase
         $this->assertSame($expectedPath->toString(), $configuration->getSourcePath());
     }
 
+    /** @test */
+    public function set_configuration_key_value(): void
+    {
+        $cwd = \sys_get_temp_dir();
+        $sourcePath = Path::fromStrings('app', 'tasks');
+        $configuration = $this->createConfiguration(['source' => $sourcePath->toString()], $cwd);
+
+        $keyName = 'test_key';
+        $expectedValue = 'test_value';
+
+        $newConfiguration = $configuration->withNewEntry($keyName, $expectedValue);
+
+        $this->assertSame($newConfiguration->get($keyName), $expectedValue);
+    }
+
+    /** @test */
+    public function set_configuration_key_array(): void
+    {
+        $cwd = \sys_get_temp_dir();
+        $sourcePath = Path::fromStrings('app', 'tasks');
+        $configuration = $this->createConfiguration(['source' => $sourcePath->toString()], $cwd);
+
+        $arrayName = 'test_array';
+        $keyName = 'test_key';
+        $expectedValue = 'test_value';
+
+        $newConfiguration = $configuration->withNewEntry("{$arrayName}.{$keyName}", $expectedValue);
+        $expectedArray = $newConfiguration->get($arrayName);
+
+        $this->assertIsArray($expectedArray);
+        $this->assertArrayHasKey($keyName, $expectedArray);
+        $this->assertSame($expectedArray[$keyName], $expectedValue);
+    }
+
     /** @param array<string,string|array> $config */
     private function createConfiguration(array $config = [], string $cwd = ''): Configuration
     {
