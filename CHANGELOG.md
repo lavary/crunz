@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v3.0.1] - 2021-05-25
+
+### Fixed
+
+- [#361] Log to specific event log file, thanks to [@drjayvee]
+
 ## [v2.3.1] - 2021-05-25
 
 ### Fixed
@@ -475,7 +481,8 @@ In `v2` this will result in exception.
 [v2.2.4]: https://github.com/lavary/crunz/compare/v2.2.3...v2.2.4
 [v2.3.0]: https://github.com/lavary/crunz/compare/v2.2.4...v2.3.0
 [v2.3.1]: https://github.com/lavary/crunz/compare/v2.3.0...v2.3.1
-[v3.0.0]: https://github.com/lavary/crunz/compare/v2.3.0...v3.0.0
+[v3.0.0]: https://github.com/lavary/crunz/compare/v2.3.1...v3.0.0
+[v3.0.1]: https://github.com/lavary/crunz/compare/v3.0.0...v3.0.1
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
