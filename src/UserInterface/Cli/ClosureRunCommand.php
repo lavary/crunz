@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Crunz\UserInterface\Cli;
 
 use Crunz\Application\Service\ClosureSerializerInterface;
+use Crunz\Application\Service\ConfigurationInterface;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,8 +16,12 @@ class ClosureRunCommand extends SymfonyCommand
     /** @var ClosureSerializerInterface */
     private $closureSerializer;
 
-    public function __construct(ClosureSerializerInterface $closureSerializer)
+    /** @var ConfigurationInterface */
+    private $configuration;
+
+    public function __construct(ClosureSerializerInterface $closureSerializer, ConfigurationInterface $configuration)
     {
+        $this->configuration     = $configuration;
         $this->closureSerializer = $closureSerializer;
 
         parent::__construct();
@@ -47,6 +52,11 @@ class ClosureRunCommand extends SymfonyCommand
     /** {@inheritdoc} */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        $bootstrapFile = $this->configuration->get('bootstrap');
+        if ($bootstrapFile !== null) {
+            require_once $bootstrapFile;
+        }
+
         $args = [];
         /** @var string $closure */
         $closure = $input->getArgument('closure');

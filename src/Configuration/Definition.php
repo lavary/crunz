@@ -19,6 +19,10 @@ class Definition implements ConfigurationInterface
 
             ->children()
 
+                ->scalarNode('bootstrap')
+                    ->info('Bootstrap file to use for closures' . PHP_EOL)
+                ->end()
+
                 ->scalarNode('source')
                     ->cannotBeEmpty()
                     ->info('path to the tasks directory' . PHP_EOL)

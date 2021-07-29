@@ -1,5 +1,9 @@
 # Crunz Configuration Settings
 
+# A file to include before closure functions are run.
+# For example include your autoloader.
+bootstrap: ~
+
 # This option defines where the task files and
 # directories reside.
 # The path is relative to this config file.

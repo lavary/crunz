@@ -94,6 +94,7 @@ $container
     ->setArguments(
         [
             new Reference(ClosureSerializerInterface::class),
+            new Reference(ConfigurationInterface::class),
         ]
     )
     ->setPublic(true)
