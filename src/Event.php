@@ -356,6 +356,20 @@ class Event implements PingableInterface
     }
 
     /**
+     * Schedule the event to run hourly at a given minute (1~59).
+     *
+     * @param int $minute
+     */
+    public function hourlyAt($minute = 0): self
+    {
+        if ($minute < 0 && $minute > 59) {
+            return $this;
+        }
+
+        return $this->cron($minute.' * * * *');
+    }
+
+    /**
      * Schedule the event to run daily.
      */
     public function daily(): self
