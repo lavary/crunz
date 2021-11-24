@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v3.1.0] - 2021-11-24
+
+### Changed
+
+- [#385] Replace `Swiftmailer` with `symfony/mailer`
+
 ## [v3.0.1] - 2021-05-25
 
 ### Fixed
@@ -323,6 +329,7 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#385]: https://github.com/lavary/crunz/pull/385
 [#361]: https://github.com/lavary/crunz/pull/361
 [#356]: https://github.com/lavary/crunz/pull/356
 [#354]: https://github.com/lavary/crunz/pull/354
