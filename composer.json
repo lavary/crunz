@@ -28,12 +28,12 @@
         "php": ">=7.4",
         "dragonmantank/cron-expression": "^3.1",
         "opis/closure": "^3.5",
-        "swiftmailer/swiftmailer": "^6.0",
         "symfony/config": "^4.4 || ^5.2",
         "symfony/console": "^4.4 || ^5.2",
         "symfony/dependency-injection": "^4.4 || ^5.2",
         "symfony/filesystem": "^4.4 || ^5.2",
         "symfony/lock": "^4.4 || ^5.2",
+        "symfony/mailer": "^5.3",
         "symfony/process": "^4.4 || ^5.2",
         "symfony/yaml": "^4.4 || ^5.2"
     },
