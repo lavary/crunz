@@ -60,7 +60,7 @@ class ScheduleListCommand extends Command
      *
      * @throws WrongTaskInstanceException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->options = $input->getOptions();
         $this->arguments = $input->getArguments();

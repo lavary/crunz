@@ -89,7 +89,7 @@ class ScheduleRunCommand extends Command
      *
      * @throws WrongTaskInstanceException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->arguments = $input->getArguments();
         $this->options = $input->getOptions();

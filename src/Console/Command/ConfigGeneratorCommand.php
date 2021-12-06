@@ -51,7 +51,7 @@ final class ConfigGeneratorCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
         $cwd = $this->filesystem
