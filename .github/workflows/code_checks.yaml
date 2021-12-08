@@ -23,10 +23,10 @@ jobs:
                     - symfony_version: "~v5.2.0"
                       phpunit_bridge_version: "~v5.2.0"
                       dependencies: "low"
-                  -   symfony_version: "~v6.0.0"
+                    - symfony_version: "~v6.0.0"
                       phpunit_bridge_version: "~v6.0.0"
                       dependencies: "high"
-                  -   symfony_version: "~v6.0.0"
+                    - symfony_version: "~v6.0.0"
                       phpunit_bridge_version: "~v6.0.0"
                       dependencies: "low"
 
