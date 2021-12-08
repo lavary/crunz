@@ -3,13 +3,12 @@ name: Code_Checks
 on: [push, pull_request]
 
 jobs:
-    tests:
+    tests_php74:
         runs-on: ubuntu-18.04
         strategy:
             matrix:
                 php:
                     - '7.4'
-                    - '8.0'
                 vars:
                     - symfony_version: "~v4.4.0"
                       phpunit_bridge_version: "~v4.4.9"
@@ -23,12 +22,53 @@ jobs:
                     - symfony_version: "~v5.2.0"
                       phpunit_bridge_version: "~v5.2.0"
                       dependencies: "low"
-                    - symfony_version: "~v6.0.0"
-                      phpunit_bridge_version: "~v6.0.0"
-                      dependencies: "high"
-                    - symfony_version: "~v6.0.0"
-                      phpunit_bridge_version: "~v6.0.0"
-                      dependencies: "low"
+
+        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.vars.symfony_version }} tests on Ubuntu
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none # disable xdebug, pcov
+
+            -   uses: "actions/cache@v2"
+                with:
+                    path: "~/.composer/cache"
+                    key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
+                    restore-keys: "php-${{ matrix.php }}-composer-locked-"
+
+            -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.vars.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
+
+            -   run: composer show
+
+            -   run: vendor/bin/phpunit
+
+    tests_php80:
+        runs-on: ubuntu-18.04
+        strategy:
+            matrix:
+                php:
+                    - '8.0'
+                vars:
+                    -   symfony_version: "~v4.4.0"
+                        phpunit_bridge_version: "~v4.4.9"
+                        dependencies: "high"
+                    -   symfony_version: "~v4.4.0"
+                        phpunit_bridge_version: "~v4.4.9"
+                        dependencies: "low"
+                    -   symfony_version: "~v5.2.0"
+                        phpunit_bridge_version: "~v5.2.0"
+                        dependencies: "high"
+                    -   symfony_version: "~v5.2.0"
+                        phpunit_bridge_version: "~v5.2.0"
+                        dependencies: "low"
+                    -   symfony_version: "~v6.0.0"
+                        phpunit_bridge_version: "~v6.0.0"
+                        dependencies: "high"
+                    -   symfony_version: "~v6.0.0"
+                        phpunit_bridge_version: "~v6.0.0"
+                        dependencies: "low"
 
         name: PHP ${{ matrix.php }} / Symfony ${{ matrix.vars.symfony_version }} tests on Ubuntu
         steps:
