@@ -48,6 +48,9 @@ final class EventTest extends UnitTestCase
         $e = new Event($this->id, 'php foo');
         $this->assertEquals('0 * * * *', $e->hourly()->getExpression());
 
+        $e = new Event($this->id, 'php foo');
+        $this->assertEquals('30 * * * *', $e->hourlyAt(30)->getExpression());
+
         $e = new Event($this->id, 'php bar');
         $this->assertEquals('0 0 * * *', $e->daily()->getExpression());
 
