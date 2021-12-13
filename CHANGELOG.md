@@ -118,7 +118,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- [#251] Update PHPUnit to avoid PHP7.4 deprecations
+- [#251] Update PHPUnit to avoid PHP7.4 deprecations 
 
 ## [v1.12.2] - 2019-10-05
 
@@ -191,7 +191,7 @@ In `v2` this will result in exception.
 
 ### Deprecated
 
-- Relying on tasks' source/config file recognition related to Crunz bin
+- Relying on tasks' source/config file recognition related to Crunz bin 
 
 ## [v1.11.0-rc.1] - 2018-12-22
 
@@ -364,7 +364,7 @@ In `v2` this will result in exception.
 [#181]: https://github.com/lavary/crunz/pull/181
 [#180]: https://github.com/lavary/crunz/pull/180
 [#178]: https://github.com/lavary/crunz/pull/178
-[#173]: https://github.com/lavary/crunz/pull/173
+[#173]: https://github.com/lavary/crunz/pull/173  
 [#171]: https://github.com/lavary/crunz/pull/171
 [#166]: https://github.com/lavary/crunz/pull/166
 [#164]: https://github.com/lavary/crunz/pull/164
