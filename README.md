@@ -12,16 +12,16 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 
 |Version|Supported PHP versions
 |---|---|
-|dev v3 (v3.1-dev)|![7.4+](https://img.shields.io/badge/php-%3E=7.4-blue.svg?style=flat-square)
-|stable v3 (v3.0.1)|![7.4+](https://img.shields.io/badge/php-%3E=7.4-blue.svg?style=flat-square)
+|dev v3 (v3.2-dev)|![7.4+](https://img.shields.io/badge/php-%3E=7.4-blue.svg?style=flat-square)
+|stable v3 (v3.1.0)|![7.4+](https://img.shields.io/badge/php-%3E=7.4-blue.svg?style=flat-square)
 |stable v2 (v2.3.1)|![7.2+](https://img.shields.io/badge/php-%3E=7.2-blue.svg?style=flat-square)
 |stable v1 (v1.12.4)|![5.6-7.0+](https://img.shields.io/badge/php-%5E5.6%20%7C%7C%20%5E7.0-blue.svg?style=flat-square)
 
 ## Roadmap
-|Version|Release date|Active support until|Bug support until|Status
+|Version|Release date|Active support until|Bug support until|Status 
 |---|---|---|---|---|
 |v1.x|April 2016|April 2019|April 2020|End of life
-|v2.x|April 2019|April 2021|April 2022|Bug support
+|v2.x|April 2019|April 2021|April 2022|Bug support 
 |v3.x|April 2021|April 2023|April 2024|Active support
 
 ## Installation
@@ -35,7 +35,7 @@ If the installation is successful, a command-line utility named **crunz** is sym
 
 ## How It Works?
 
-The idea is very simple: instead of installing cron jobs in a crontab file, we define them in one or several PHP files, by using the Crunz interface.
+The idea is very simple: instead of installing cron jobs in a crontab file, we define them in one or several PHP files, by using the Crunz interface. 
 
 Here's a basic example:
 
@@ -46,7 +46,7 @@ Here's a basic example:
 use Crunz\Schedule;
 
 $schedule = new Schedule();
-$task = $schedule->run('cp project project-bk');
+$task = $schedule->run('cp project project-bk');       
 $task->daily();
 
 return $schedule;
@@ -64,12 +64,12 @@ The command `schedule:run` is responsible for collecting all the PHP task files 
 
 Task files resemble crontab files. Just like crontab files they can contain one or more tasks.
 
-Normally we create our task files in the `tasks/` directory within the project's root directory.
+Normally we create our task files in the `tasks/` directory within the project's root directory. 
 
 > By default, Crunz assumes all the task files reside in the `tasks/` directory within the project's root directory.
 
 There are two ways to specify the source directory: 1) Configuration file  2) As a parameter to the event runner command.
-
+ 
 We can explicitly set the source path by passing it to the event runner as a parameter:
 
 ```bash
@@ -95,7 +95,7 @@ use Crunz\Schedule;
 
 $schedule = new Schedule();
 
-$task = $schedule->run('cp project project-bk');
+$task = $schedule->run('cp project project-bk'); 
 $task
     ->daily()
     ->description('Create a backup of the project directory.');
@@ -103,10 +103,10 @@ $task
 // ...
 
 // IMPORTANT: You must return the schedule object
-return $schedule;
+return $schedule; 
 ```
 
-There are some conventions for creating a task file, which you need to follow. First of all, the filename should end with `Tasks.php` unless we change this via the configuration settings.
+There are some conventions for creating a task file, which you need to follow. First of all, the filename should end with `Tasks.php` unless we change this via the configuration settings.  
 
 In addition to that, we **must** return the instance of `Schedule` class at the end of each file, otherwise, all the tasks inside the file will be skipped by the event runner.
 
@@ -147,8 +147,8 @@ use Crunz\Schedule;
 $schedule = new Schedule();
 
 $x = 12;
-$task = $schedule->run(function() use ($x) {
-   // Do some cool stuff in here
+$task = $schedule->run(function() use ($x) { 
+   // Do some cool stuff in here 
 });
 
 $task
@@ -160,7 +160,7 @@ return $schedule;
 
 ## Frequency of Execution
 
-There are a variety of ways to specify **when** and **how often** a task should run. We can combine these methods together to get our desired frequencies.
+There are a variety of ways to specify **when** and **how often** a task should run. We can combine these methods together to get our desired frequencies. 
 
 ### Units of Time
 
@@ -173,7 +173,7 @@ The task below will run **daily at midnight** (start of the daily time period).
 ```php
 <?php
 // ...
-$task = $schedule->run(PHP_BINARY . ' backup.php');
+$task = $schedule->run(PHP_BINARY . ' backup.php');    
 $task->daily();
 // ...
 ```
@@ -195,12 +195,12 @@ To schedule a one-off tasks, you may use `on()` method like this:
 ```php
 <?php
 // ...
-$task = $schedule->run(PHP_BINARY . ' email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php'); 
 $task->on('13:30 2016-03-01');
 // ...
 ```
 
-The above task will run on the first of march 2016 at 01:30 pm.
+The above task will run on the first of march 2016 at 01:30 pm. 
 
 > `On()` accepts any date format parsed by PHP's [strtotime](http://php.net/manual/en/function.strtotime.php) function.
 
@@ -209,7 +209,7 @@ To specify the time of a task we use `at()` method:
 ```php
 <?php
 // ...
-$task = $schedule->run(PHP_BINARY . ' email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php'); 
 $task
     ->daily()
     ->at('13:30');
@@ -221,13 +221,13 @@ If we only pass a time to the `on()` method, it will have the same effect as usi
 ```php
 <?php
 // ...
-$task = $schedule->run(PHP_BINARY . ' email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');   
 $task
     ->daily()
     ->on('13:30');
-
+         
 // is the sames as
-$task = $schedule->run(PHP_BINARY . ' email.php');
+$task = $schedule->run(PHP_BINARY . ' email.php');       
 $task
     ->daily()
     ->at('13:30');
@@ -241,7 +241,7 @@ The following task will be run every hour at the 15th minute
 ```php
 <?php
 // ...
-$task = $schedule->run(PHP_BINARY . ' feedmecookie.php');
+$task = $schedule->run(PHP_BINARY . ' feedmecookie.php'); 
 $task
     ->hourlyAt('15');
 // ...
@@ -252,18 +252,18 @@ The following task will be run Monday at 13:30
 ```php
 <?php
 // ...
-$task = $schedule->run(PHP_BINARY . ' startofwork.php');
+$task = $schedule->run(PHP_BINARY . ' startofwork.php'); 
 $task
     ->weeklyOn(1,'13:30');
 // ...
 ```
->Sunday is considered day 0 of the week.
+>Sunday is considered day 0 of the week. 
 
 If we wished for the task to run on Tuesday (day 2 of the week) at 09:00 we would have used:
 ```php
 <?php
 // ...
-$task = $schedule->run(PHP_BINARY . ' startofwork.php');
+$task = $schedule->run(PHP_BINARY . ' startofwork.php'); 
 $task
     ->weeklyOn(2,'09:00');
 // ...
@@ -281,7 +281,7 @@ $task
     ->everyFiveMinutes()
     ->from('12:30 2016-03-04')
     ->to('04:55 2016-03-10');
- //
+ //       
 ```
 Or alternatively we can use the `between()` method to accomplish the same result:
 
@@ -293,7 +293,7 @@ $task
     ->everyFiveMinutes()
     ->between('12:30 2016-03-04', '04:55 2016-03-10');
 
- //
+ //       
 ```
 
 If we don't specify the date portion, the task will be active **every** day but only within the specified duration:
@@ -306,7 +306,7 @@ $task
      ->everyFiveMinutes()
      ->between('12:30', '04:55');
 
- //
+ //       
 ```
 
 The above task runs **every five minutes** between **12:30 pm** and **4:55 pm** every day.
@@ -326,14 +326,14 @@ $task
      ->hourly()
      ->between($startminute, $endminute);
 
- //
+ //       
 ```
 
 The above task runs **every hour** between **minutes 5 to 15**
 
 ### Weekdays
 
-Crunz also provides a set of methods which specify a certain day in the week.
+Crunz also provides a set of methods which specify a certain day in the week. 
 * `mondays()`
 * `tuesdays()`
 * ...
@@ -360,7 +360,7 @@ This is the correct way of using weekday methods:
 <?php
 // ...
 $task = $schedule->run(PHP_BINARY . ' startofwork.php');
-$task
+$task    
     ->mondays()
     ->at('13:30');
 
@@ -388,7 +388,7 @@ Crunz's methods are not limited to the ready-made methods explained. We can also
 <?php
 // ...
 $task = $schedule->run(PHP_BINARY . ' email.php');
-$task
+$task       
     ->minute(['1-30', 45, 55])
     ->hour('1-5', 7, 8)
     ->dayOfMonth(12, 15)
@@ -429,7 +429,7 @@ $task
         if ((bool) (time() % 2)) {
             return true;
         }
-
+        
         return false;
     });
 ```
@@ -449,11 +449,11 @@ $task
         if ((bool) (time() % 2)) {
             return true;
         }
-
-        return false;
+        
+        return false;  
     });
 
- //
+ //       
 ```
 
 We can use these methods **several** times for a single task. They are evaluated sequentially.
@@ -486,7 +486,7 @@ Crunz runs the scheduled events in parallel (in separate processes), so all the 
 
 If the execution of a task lasts until the next interval or even beyond that, we say that the same instances of a task are overlapping. In some cases, this is a not a problem. But there are times, when these tasks are modifying database data or files, which might cause unexpected behaviors, or even data loss.
 
-To prevent critical tasks from overlapping each other, Crunz provides a locking mechanism through `preventOverlapping()` method, which, ensures no task runs if the previous instance is already running.
+To prevent critical tasks from overlapping each other, Crunz provides a locking mechanism through `preventOverlapping()` method, which, ensures no task runs if the previous instance is already running. 
 
 ```php
 <?php
@@ -495,7 +495,7 @@ $task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
     ->preventOverlapping();
- //
+ //       
 ```
 
 By default, crunz uses file based locking (if no parameters are passed to `preventOverlapping`). For alternative lock mechanisms, crunz uses the [symfony/lock](https://symfony.com/doc/current/components/lock.html) component that provides lock mechanisms with various stores. To use this component, you can pass a store to the `preventOverlapping()` method. In the following example, the file based `FlockStore` is used to provide an alternative lock file path.
@@ -566,7 +566,7 @@ $task
     ->everyFiveMinutes()
     ->appendOutputTo('/var/log/crunz/emails.log');
 
- //
+ //       
 ```
 
 Method `appendOutputTo()` **appends** the output to the specified file. To override the log file with new data after each run, we use `saveOutputTo()` method.
@@ -646,18 +646,18 @@ final class MyEchoLoggerFactory implements LoggerFactoryInterface
                 $message,
                 array $context = array()
             ) {
-                echo "crunz.{$level}: {$message}";
+                echo "crunz.{$level}: {$message}";   
             }
         };
     }
 }
 ```
 
-then use this class name in config:
+then use this class name in config: 
 
 ```yaml
 # ./crunz.yml file
-
+ 
 logger_factory: 'Vendor\Package\MyEchoLoggerFactory'
 ```
 
@@ -679,16 +679,16 @@ $schedule = new Schedule();
 $task = $schedule->run(PHP_BINARY . ' email.php');
 $task
     ->everyFiveMinutes()
-    ->before(function() {
+    ->before(function() { 
         // Do something before the task runs
     })
-    ->before(function() {
+    ->before(function() { 
         // Do something else
     })
     ->after(function() {
         // After the task is run
     });
-
+ 
 $schedule
     ->before(function () {
        // Do something before all events
@@ -707,7 +707,7 @@ Post-execution callbacks are only called if the execution of the event has been 
 
 ## Other Useful Commands
 
-We've already used a few of `crunz` commands like `schedule:run` and `publish:config`.
+We've already used a few of `crunz` commands like `schedule:run` and `publish:config`. 
 
 To see all the valid options and arguments of `crunz`, we can run the following command:
 
@@ -746,7 +746,7 @@ vendor/bin/crunz schedule:run --task 1 --force
 
 ### Generating Tasks
 
-There is also a useful command named `make:task`, which generates a task file skeleton with all the defaults, so we won't have to write them from scratch. We can modify the output file later based on our requirements.
+There is also a useful command named `make:task`, which generates a task file skeleton with all the defaults, so we won't have to write them from scratch. We can modify the output file later based on our requirements. 
 
 For example, to create a task, which runs `/var/www/script.php` every hour on Mondays, we run the following command:
 
@@ -809,7 +809,7 @@ Above command should output something like this:
 
 ## Configuration
 
-There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one.
+There are a few configuration options provided by Crunz in YAML format. To modify the configuration settings, it is highly recommended to have your own copy of the configuration file, instead of modifying the original one. 
 
 To create a copy of the configuration file, first we need to publish the configuration file:
 
