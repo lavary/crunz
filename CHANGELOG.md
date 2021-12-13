@@ -6,12 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
-## [v3.1.0] - 2021-11-24
-
-### Changed
-
-- [#385] Replace `Swiftmailer` with `symfony/mailer`
-
 ## [v3.0.1] - 2021-05-25
 
 ### Fixed
@@ -124,7 +118,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- [#251] Update PHPUnit to avoid PHP7.4 deprecations 
+- [#251] Update PHPUnit to avoid PHP7.4 deprecations
 
 ## [v1.12.2] - 2019-10-05
 
@@ -197,7 +191,7 @@ In `v2` this will result in exception.
 
 ### Deprecated
 
-- Relying on tasks' source/config file recognition related to Crunz bin 
+- Relying on tasks' source/config file recognition related to Crunz bin
 
 ## [v1.11.0-rc.1] - 2018-12-22
 
@@ -329,7 +323,6 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
-[#385]: https://github.com/lavary/crunz/pull/385
 [#361]: https://github.com/lavary/crunz/pull/361
 [#356]: https://github.com/lavary/crunz/pull/356
 [#354]: https://github.com/lavary/crunz/pull/354
@@ -371,7 +364,7 @@ In `v2` this will result in exception.
 [#181]: https://github.com/lavary/crunz/pull/181
 [#180]: https://github.com/lavary/crunz/pull/180
 [#178]: https://github.com/lavary/crunz/pull/178
-[#173]: https://github.com/lavary/crunz/pull/173  
+[#173]: https://github.com/lavary/crunz/pull/173
 [#171]: https://github.com/lavary/crunz/pull/171
 [#166]: https://github.com/lavary/crunz/pull/166
 [#164]: https://github.com/lavary/crunz/pull/164
