@@ -22,6 +22,12 @@ jobs:
                     - symfony_version: "~v5.3.0"
                       phpunit_bridge_version: "~v5.3.0"
                       dependencies: "low"
+                    - symfony_version: "~v5.4.0"
+                      phpunit_bridge_version: "~v5.4.0"
+                      dependencies: "high"
+                    - symfony_version: "~v5.4.0"
+                      phpunit_bridge_version: "~v5.4.0"
+                      dependencies: "low"
 
         name: PHP ${{ matrix.php }} / Symfony ${{ matrix.vars.symfony_version }} tests on Ubuntu
         steps:
@@ -62,6 +68,12 @@ jobs:
                         dependencies: "high"
                     -   symfony_version: "~v5.3.0"
                         phpunit_bridge_version: "~v5.3.0"
+                        dependencies: "low"
+                    -   symfony_version: "~v5.4.0"
+                        phpunit_bridge_version: "~v5.4.0"
+                        dependencies: "high"
+                    -   symfony_version: "~v5.4.0"
+                        phpunit_bridge_version: "~v5.4.0"
                         dependencies: "low"
                     -   symfony_version: "~v6.0.0"
                         phpunit_bridge_version: "~v6.0.0"
