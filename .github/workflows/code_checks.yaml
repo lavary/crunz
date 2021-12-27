@@ -10,11 +10,11 @@ jobs:
                 php:
                     - '7.4'
                 vars:
-                    - symfony_version: "~v4.4.0"
-                      phpunit_bridge_version: "~v4.4.9"
+                    - symfony_version: "~v4.4.30"
+                      phpunit_bridge_version: "~v4.4.30"
                       dependencies: "high"
-                    - symfony_version: "~v4.4.0"
-                      phpunit_bridge_version: "~v4.4.9"
+                    - symfony_version: "~v4.4.30"
+                      phpunit_bridge_version: "~v4.4.30"
                       dependencies: "low"
                     - symfony_version: "~v5.4.0"
                       phpunit_bridge_version: "~v5.4.0"
@@ -52,11 +52,11 @@ jobs:
                     - '8.0'
                     - '8.1'
                 vars:
-                    -   symfony_version: "~v4.4.0"
-                        phpunit_bridge_version: "~v4.4.9"
+                    -   symfony_version: "~v4.4.30"
+                        phpunit_bridge_version: "~v4.4.30"
                         dependencies: "high"
-                    -   symfony_version: "~v4.4.0"
-                        phpunit_bridge_version: "~v4.4.9"
+                    -   symfony_version: "~v4.4.30"
+                        phpunit_bridge_version: "~v4.4.30"
                         dependencies: "low"
                     -   symfony_version: "~v5.4.0"
                         phpunit_bridge_version: "~v5.4.0"
@@ -132,8 +132,8 @@ jobs:
             matrix:
                 include:
                     - php: '7.4'
-                      symfony_version: "~v4.4.0"
-                      phpunit_bridge_version: "~v4.4.8"
+                      symfony_version: "~v4.4.30"
+                      phpunit_bridge_version: "~v4.4.30"
                       dependencies: "high"
 
         name: Static analysis
