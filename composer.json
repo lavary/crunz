@@ -41,7 +41,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "bamarni/composer-bin-plugin": "^1.2",
-        "phpunit/phpunit": "^9.5.2",
+        "phpunit/phpunit": "^9.5.5",
         "symfony/error-handler": "^4.4 || ^5.4 || ^6.0",
         "symfony/phpunit-bridge": "^4.4.8 || ^5.4.0 || ^6.0"
     },
