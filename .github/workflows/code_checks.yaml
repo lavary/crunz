@@ -14,26 +14,19 @@ jobs:
                 dependencies:
                     - 'low'
                     - 'high'
-                vars:
-                    - symfony_version: "~v4.4.30"
-                      phpunit_bridge_version: "~v4.4.30"
-                    - symfony_version: "~v5.4.0"
-                      phpunit_bridge_version: "~v5.4.0"
-                    - symfony_version: "~v6.0.0"
-                      phpunit_bridge_version: "~v6.0.0"
+                symfony_version:
+                    - "~v4.4.30"
+                    - "~v5.4.0"
+                    - "~v6.0.0"
                 exclude:
                     - php: '7.4'
                       dependencies: 'low'
-                      vars:
-                          symfony_version: "~v6.0.0"
-                          phpunit_bridge_version: "~v6.0.0"
+                      symfony_version: "~v6.0.0"
                     - php: '7.4'
                       dependencies: 'high'
-                      vars:
-                          symfony_version: "~v6.0.0"
-                          phpunit_bridge_version: "~v6.0.0"
+                      symfony_version: "~v6.0.0"
 
-        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.vars.symfony_version }} / deps '${{ matrix.dependencies }}' / Ubuntu
+        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.symfony_version }} / deps '${{ matrix.dependencies }}' / Ubuntu
         steps:
             -   uses: actions/checkout@v2
 
@@ -48,7 +41,7 @@ jobs:
                     key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
                     restore-keys: "php-${{ matrix.php }}-composer-locked-"
 
-            -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
+            -   run: php ./composer-install.php "${{ matrix.symfony_version }}" "${{ matrix.dependencies }}" "--no-interaction --no-progress --prefer-dist"
 
             -   run: composer show
 
@@ -95,7 +88,6 @@ jobs:
                 include:
                     - php: '7.4'
                       symfony_version: "~v4.4.30"
-                      phpunit_bridge_version: "~v4.4.30"
                       dependencies: "high"
 
         name: Static analysis
@@ -113,7 +105,7 @@ jobs:
                     key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
                     restore-keys: "php-${{ matrix.php }}-composer-locked-"
 
-            -   run: php ./composer-install.php "${{ matrix.symfony_version }}" "${{ matrix.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.phpunit_bridge_version }}"
+            -   run: php ./composer-install.php "${{ matrix.symfony_version }}" "${{ matrix.dependencies }}" "--no-interaction --no-progress --prefer-dist"
 
             -   run: composer bin static-checks install -a --no-dev --no-interaction --no-progress --prefer-dist
 

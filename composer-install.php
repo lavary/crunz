@@ -8,14 +8,12 @@ if ('' === $version) {
 
 $dependenciesEnv = $_SERVER['argv'][2] ?? '';
 $defaultComposerFlags = $_SERVER['argv'][3] ?? '';
-$phpunitBridgeVersion = $_SERVER['argv'][4] ?? $version;
 $composerFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'composer.json';
 $ignoredPackages = ['symfony/error-handler'];
 $changeVersion = static function (
     array $packages
 ) use (
     $version,
-    $phpunitBridgeVersion,
     $ignoredPackages
 ): array {
     foreach ($packages as $packageName => &$packageVersion) {
@@ -30,12 +28,6 @@ $changeVersion = static function (
         }
 
         if (false === \mb_strpos($packageName, 'symfony/')) {
-            continue;
-        }
-
-        if ('symfony/phpunit-bridge' === $packageName) {
-            $packageVersion = $phpunitBridgeVersion;
-
             continue;
         }
 
