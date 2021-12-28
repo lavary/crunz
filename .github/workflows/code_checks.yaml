@@ -3,75 +3,37 @@ name: Code_Checks
 on: [push, pull_request]
 
 jobs:
-    tests_php74:
+    tests:
         runs-on: ubuntu-18.04
         strategy:
             matrix:
                 php:
                     - '7.4'
-                vars:
-                    - symfony_version: "~v4.4.30"
-                      phpunit_bridge_version: "~v4.4.30"
-                      dependencies: "high"
-                    - symfony_version: "~v4.4.30"
-                      phpunit_bridge_version: "~v4.4.30"
-                      dependencies: "low"
-                    - symfony_version: "~v5.4.0"
-                      phpunit_bridge_version: "~v5.4.0"
-                      dependencies: "high"
-                    - symfony_version: "~v5.4.0"
-                      phpunit_bridge_version: "~v5.4.0"
-                      dependencies: "low"
-
-        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.vars.symfony_version }} tests on Ubuntu
-        steps:
-            -   uses: actions/checkout@v2
-
-            -   uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    coverage: none # disable xdebug, pcov
-
-            -   uses: "actions/cache@v2"
-                with:
-                    path: "~/.composer/cache"
-                    key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
-                    restore-keys: "php-${{ matrix.php }}-composer-locked-"
-
-            -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.vars.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
-
-            -   run: composer show
-
-            -   run: vendor/bin/phpunit
-
-    tests_php80:
-        runs-on: ubuntu-18.04
-        strategy:
-            matrix:
-                php:
                     - '8.0'
                     - '8.1'
+                dependencies:
+                    - 'low'
+                    - 'high'
                 vars:
-                    -   symfony_version: "~v4.4.30"
-                        phpunit_bridge_version: "~v4.4.30"
-                        dependencies: "high"
-                    -   symfony_version: "~v4.4.30"
-                        phpunit_bridge_version: "~v4.4.30"
-                        dependencies: "low"
-                    -   symfony_version: "~v5.4.0"
-                        phpunit_bridge_version: "~v5.4.0"
-                        dependencies: "high"
-                    -   symfony_version: "~v5.4.0"
-                        phpunit_bridge_version: "~v5.4.0"
-                        dependencies: "low"
-                    -   symfony_version: "~v6.0.0"
-                        phpunit_bridge_version: "~v6.0.0"
-                        dependencies: "high"
-                    -   symfony_version: "~v6.0.0"
-                        phpunit_bridge_version: "~v6.0.0"
-                        dependencies: "low"
+                    - symfony_version: "~v4.4.30"
+                      phpunit_bridge_version: "~v4.4.30"
+                    - symfony_version: "~v5.4.0"
+                      phpunit_bridge_version: "~v5.4.0"
+                    - symfony_version: "~v6.0.0"
+                      phpunit_bridge_version: "~v6.0.0"
+                exclude:
+                    - php: '7.4'
+                      dependencies: 'low'
+                      vars:
+                          symfony_version: "~v6.0.0"
+                          phpunit_bridge_version: "~v6.0.0"
+                    - php: '7.4'
+                      dependencies: 'high'
+                      vars:
+                          symfony_version: "~v6.0.0"
+                          phpunit_bridge_version: "~v6.0.0"
 
-        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.vars.symfony_version }} tests on Ubuntu
+        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.vars.symfony_version }} / deps '${{ matrix.dependencies }}' / Ubuntu
         steps:
             -   uses: actions/checkout@v2
 
@@ -86,7 +48,7 @@ jobs:
                     key: "php-${{ matrix.php }}-composer-locked-${{ hashFiles('composer.lock') }}"
                     restore-keys: "php-${{ matrix.php }}-composer-locked-"
 
-            -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.vars.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
+            -   run: php ./composer-install.php "${{ matrix.vars.symfony_version }}" "${{ matrix.dependencies }}" "--no-interaction --no-progress --prefer-dist" "${{ matrix.vars.phpunit_bridge_version }}"
 
             -   run: composer show
 
