@@ -219,7 +219,7 @@ final class Environment
 
     private function composerInstall(): void
     {
-        $process = $this->createProcess('composer install -q', $this->rootDirectory());
+        $process = $this->createProcess('composer install -q -n', $this->rootDirectory());
         $process->startAndWait();
 
         if (!$process->isSuccessful()) {
