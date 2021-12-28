@@ -39,6 +39,18 @@ $changeVersion = static function (
             continue;
         }
 
+        if ('symfony/filesystem' === $packageName && '~v4.4.30' === $version) {
+            $packageVersion = '~v4.4.27';
+
+            continue;
+        }
+
+        if ('symfony/mailer' === $packageName && '~v4.4.30' === $version) {
+            $packageVersion = '~v4.4.27';
+
+            continue;
+        }
+
         $packageVersion = $version;
     }
 
