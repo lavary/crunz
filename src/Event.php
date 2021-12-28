@@ -10,7 +10,7 @@ use Crunz\Application\Service\ClosureSerializerInterface;
 use Crunz\Clock\Clock;
 use Crunz\Clock\ClockInterface;
 use Crunz\Exception\NotImplementedException;
-use Crunz\Infrastructure\Opis\Closure\OpisClosureSerializer;
+use Crunz\Infrastructure\Laravel\LaravelClosureSerializer;
 use Crunz\Logger\Logger;
 use Crunz\Path\Path;
 use Crunz\Pinger\PingableInterface;
@@ -1319,7 +1319,7 @@ class Event implements PingableInterface
     private function closureSerializer(): ClosureSerializerInterface
     {
         if (null === self::$closureSerializer) {
-            self::$closureSerializer = new OpisClosureSerializer();
+            self::$closureSerializer = new LaravelClosureSerializer();
         }
 
         return self::$closureSerializer;

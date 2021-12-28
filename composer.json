@@ -27,7 +27,7 @@
     "require": {
         "php": ">=7.4",
         "dragonmantank/cron-expression": "^3.1",
-        "opis/closure": "^3.5",
+        "laravel/serializable-closure": "^1.0",
         "symfony/config": "^4.4 || ^5.3 || ^6.0",
         "symfony/console": "^4.4 || ^5.3 || ^6.0",
         "symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
@@ -61,7 +61,10 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true
+        }
     },
     "scripts": {
         "crunz:cs-fix": "@php vendor/bin/php-cs-fixer fix --diff -v --ansi",

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Crunz\Infrastructure\Opis\Closure;
+namespace Crunz\Infrastructure\Laravel;
 
 use Crunz\Application\Service\ClosureSerializerInterface;
-use Opis\Closure\ReflectionClosure;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\SerializableClosure;
+use Laravel\SerializableClosure\Support\ReflectionClosure;
 
-final class OpisClosureSerializer implements ClosureSerializerInterface
+final class LaravelClosureSerializer implements ClosureSerializerInterface
 {
     public function serialize(\Closure $closure): string
     {

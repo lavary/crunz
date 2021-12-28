@@ -28,7 +28,7 @@ use Crunz\HttpClient\HttpClientInterface;
 use Crunz\HttpClient\HttpClientLoggerDecorator;
 use Crunz\HttpClient\StreamHttpClient;
 use Crunz\Infrastructure\Dragonmantank\CronExpression\DragonmantankCronExpressionFactory;
-use Crunz\Infrastructure\Opis\Closure\OpisClosureSerializer;
+use Crunz\Infrastructure\Laravel\LaravelClosureSerializer;
 use Crunz\Invoker;
 use Crunz\Logger\ConsoleLogger;
 use Crunz\Logger\ConsoleLoggerInterface;
@@ -69,7 +69,7 @@ $simpleServices = [
     FinderInterface::class => Finder::class,
     LoaderInterface::class => Loader::class,
     CronExpressionFactoryInterface::class => DragonmantankCronExpressionFactory::class,
-    ClosureSerializerInterface::class => OpisClosureSerializer::class,
+    ClosureSerializerInterface::class => LaravelClosureSerializer::class,
     ClockInterface::class => Clock::class,
 ];
 

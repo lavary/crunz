@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Crunz\Tests\TestCase;
 
 use Crunz\Application\Service\ClosureSerializerInterface;
-use Crunz\Infrastructure\Opis\Closure\OpisClosureSerializer;
+use Crunz\Infrastructure\Laravel\LaravelClosureSerializer;
 use PHPUnit\Framework\TestCase;
 
 abstract class UnitTestCase extends TestCase
@@ -18,7 +18,7 @@ abstract class UnitTestCase extends TestCase
     public function createClosureSerializer(): ClosureSerializerInterface
     {
         if (null === $this->closureSerializer) {
-            $this->closureSerializer = new OpisClosureSerializer();
+            $this->closureSerializer = new LaravelClosureSerializer();
         }
 
         return $this->closureSerializer;
