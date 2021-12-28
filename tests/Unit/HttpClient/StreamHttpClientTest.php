@@ -13,7 +13,10 @@ final class StreamHttpClientTest extends TestCase
     /** @test */
     public function ping_fail_with_invalid_address(): void
     {
-        $expectedExceptionMessage = 'Ping failed with message: "fopen(http://www.wrong-address.tld): failed to open stream: php_network_getaddresses: getaddrinfo failed:';
+        // Arrange
+        $url = 'http://www.wrong-address.tld';
+        $client = new StreamHttpClient();
+        $expectedExceptionMessage = "Ping failed with message: \"fopen({$url}): failed to open stream";
         if (PHP_MAJOR_VERSION >= 8) {
             $expectedExceptionMessage = \str_replace(
                 'failed to open',
@@ -22,10 +25,11 @@ final class StreamHttpClientTest extends TestCase
             );
         }
 
+        // Expect
         $this->expectException(HttpClientException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $client = new StreamHttpClient();
+        // Act
         $client->ping('http://www.wrong-address.tld');
     }
 }
