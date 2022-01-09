@@ -67,5 +67,5 @@ if ($autoloadFileFound === false) {
     );
 }
 
-$application = new Crunz\Application('Crunz Command Line Interface', 'v3.2.0');
+$application = new Crunz\Application('Crunz Command Line Interface', 'v3.3-dev');
 $application->run();
