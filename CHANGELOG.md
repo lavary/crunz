@@ -490,6 +490,7 @@ In `v2` this will result in exception.
 [v2.3.1]: https://github.com/lavary/crunz/compare/v2.3.0...v2.3.1
 [v3.0.0]: https://github.com/lavary/crunz/compare/v2.3.1...v3.0.0
 [v3.0.1]: https://github.com/lavary/crunz/compare/v3.0.0...v3.0.1
+[v3.1.0]: https://github.com/lavary/crunz/compare/v3.0.1...v3.1.0
 [@vinkla]: https://github.com/vinkla
 [@timurbakarov]: https://github.com/timurbakarov
 [@radarhere]: https://github.com/radarhere
