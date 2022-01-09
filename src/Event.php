@@ -9,6 +9,7 @@ use Cron\CronExpression;
 use Crunz\Application\Service\ClosureSerializerInterface;
 use Crunz\Clock\Clock;
 use Crunz\Clock\ClockInterface;
+use Crunz\Exception\CrunzException;
 use Crunz\Exception\NotImplementedException;
 use Crunz\Infrastructure\Laravel\LaravelClosureSerializer;
 use Crunz\Logger\Logger;
@@ -352,7 +353,20 @@ class Event implements PingableInterface
      */
     public function hourly(): self
     {
-        return $this->cron('0 * * * *');
+        return $this->hourlyAt(0);
+    }
+
+    public function hourlyAt(int $minute): self
+    {
+        if ($minute < 0) {
+            throw new CrunzException("Minute cannot be lower than '0'.");
+        }
+
+        if ($minute > 59) {
+            throw new CrunzException("Minute cannot be greater than '59'.");
+        }
+
+        return $this->cron("{$minute} * * * *");
     }
 
     /**

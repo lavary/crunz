@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Crunz\Tests\Unit;
 
 use Crunz\Event;
+use Crunz\Exception\CrunzException;
 use Crunz\Task\TaskException;
+use Crunz\Tests\TestCase\Faker;
 use Crunz\Tests\TestCase\TestClock;
 use Crunz\Tests\TestCase\UnitTestCase;
 use Symfony\Component\Lock\BlockingStoreInterface;
@@ -383,6 +385,35 @@ final class EventTest extends UnitTestCase
         $this->assertSame($expectedCronExpression, $event->getExpression());
     }
 
+    public function test_hourly_at_with_valid_minute(): void
+    {
+        // Arrange
+        $event = $this->createEvent();
+        $minute = Faker::int(0, 59);
+
+        // Act
+        $event->hourlyAt($minute);
+
+        // Assert
+        $this->assertSame("{$minute} * * * *", $event->getExpression());
+    }
+
+    /** @dataProvider hourlyAtInvalidProvider */
+    public function test_hourly_at_with_invalid_minute(
+        int $minute,
+        string $expectedExceptionMessage
+    ): void {
+        // Arrange
+        $event = $this->createEvent();
+
+        // Expect
+        $this->expectException(CrunzException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
+
+        // Act
+        $event->hourlyAt($minute);
+    }
+
     /** @return iterable<string,array> */
     public function deprecatedEveryProvider(): iterable
     {
@@ -407,6 +438,20 @@ final class EventTest extends UnitTestCase
         yield 'every three hours' => ['everyThreeHours', '0 */3 * * *'];
         yield 'every four hours' => ['everyFourHours', '0 */4 * * *'];
         yield 'every six hours' => ['everySixHours', '0 */6 * * *'];
+    }
+
+    /** @return iterable<string,array> */
+    public function hourlyAtInvalidProvider(): iterable
+    {
+        yield 'minute below zero' => [
+            Faker::int(-100, -1),
+            "Minute cannot be lower than '0'.",
+        ];
+
+        yield 'minute above fifty nine' => [
+            Faker::int(60, 120),
+            "Minute cannot be greater than '59'.",
+        ];
     }
 
     private function assertPreventOverlapping(BlockingStoreInterface $store = null): void
@@ -442,5 +487,16 @@ final class EventTest extends UnitTestCase
     private function isWindows(): bool
     {
         return DIRECTORY_SEPARATOR === '\\';
+    }
+
+    private function createEvent(): Event
+    {
+        return new Event(
+            \uniqid(
+                'c',
+                true,
+            ),
+            'php -i',
+        );
     }
 }
