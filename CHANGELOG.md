@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## [v3.2.0] - 2022-01-09
+
+### Added
+
+- [#398] Add hourlyAt()
+- [#390] Symfony 6 Support, thanks to [@bashgeek]
+
+### Changed
+
+- [#396] Remove `opis/closure` and use `laravel/serializable-closure` instead
+
+### Removed
+
+- [#393] Drop Symfony 5.2 support
+- [#394] Drop Symfony 5.3 support
+
 ## [v3.1.0] - 2021-11-24
 
 ### Changed
@@ -329,6 +345,11 @@ In `v2` this will result in exception.
 
 - [#77] Fix high cpu usage
 
+[#398]: https://github.com/lavary/crunz/pull/398
+[#396]: https://github.com/lavary/crunz/pull/396
+[#394]: https://github.com/lavary/crunz/pull/394
+[#393]: https://github.com/lavary/crunz/pull/393
+[#390]: https://github.com/lavary/crunz/pull/390
 [#385]: https://github.com/lavary/crunz/pull/385
 [#361]: https://github.com/lavary/crunz/pull/361
 [#356]: https://github.com/lavary/crunz/pull/356
@@ -490,22 +511,25 @@ In `v2` this will result in exception.
 [v2.3.1]: https://github.com/lavary/crunz/compare/v2.3.0...v2.3.1
 [v3.0.0]: https://github.com/lavary/crunz/compare/v2.3.1...v3.0.0
 [v3.0.1]: https://github.com/lavary/crunz/compare/v3.0.0...v3.0.1
-[@vinkla]: https://github.com/vinkla
-[@timurbakarov]: https://github.com/timurbakarov
-[@radarhere]: https://github.com/radarhere
-[@mindcreations]: https://github.com/mindcreations
-[@m-hume]: https://github.com/m-hume
-[@jhoughtelin]: https://github.com/jhoughtelin
-[@erfan723]: https://github.com/erfan723
-[@digilist]: https://github.com/digilist
-[@codermarcel]: https://github.com/codermarcel
-[@arthurbarros]: https://github.com/arthurbarros
+[v3.1.0]: https://github.com/lavary/crunz/compare/v3.0.1...v3.1.0
+[v3.2.0]: https://github.com/lavary/crunz/compare/v3.1.0...v3.2.0
 [@andrewmy]: https://github.com/andrewmy
-[@TomasDuda]: https://github.com/TomasDuda
-[@PhilETaylor]: https://github.com/PhilETaylor
-[@FallDi]: https://github.com/FallDi
-[@SadeghPM]: https://github.com/SadeghPM
-[@mareksuscak]: https://github.com/mareksuscak
-[@rrushton]: https://github.com/rrushton
-[@iluuu1994]: https://github.com/iluuu1994
+[@arthurbarros]: https://github.com/arthurbarros
+[@bashgeek]: https://github.com/bashgeek
+[@codermarcel]: https://github.com/codermarcel
+[@digilist]: https://github.com/digilist
 [@drjayvee]: https://github.com/drjayvee
+[@erfan723]: https://github.com/erfan723
+[@FallDi]: https://github.com/FallDi
+[@iluuu1994]: https://github.com/iluuu1994
+[@jhoughtelin]: https://github.com/jhoughtelin
+[@m-hume]: https://github.com/m-hume
+[@mareksuscak]: https://github.com/mareksuscak
+[@mindcreations]: https://github.com/mindcreations
+[@PhilETaylor]: https://github.com/PhilETaylor
+[@radarhere]: https://github.com/radarhere
+[@rrushton]: https://github.com/rrushton
+[@SadeghPM]: https://github.com/SadeghPM
+[@timurbakarov]: https://github.com/timurbakarov
+[@TomasDuda]: https://github.com/TomasDuda
+[@vinkla]: https://github.com/vinkla
