@@ -6,10 +6,14 @@ namespace Crunz;
 
 use Crunz\Application\Service\ConfigurationInterface;
 use Crunz\Exception\MailerException;
+use Symfony\Component\Mailer\Mailer as SymfonyMailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class Mailer
 {
-    /** @var \Swift_Mailer|null */
+    /** @var SymfonyMailer|null */
     protected $mailer;
     /** @var ConfigurationInterface */
     private $configuration;
@@ -38,7 +42,7 @@ class Mailer
      *
      * @throws MailerException
      */
-    private function getMailer(): \Swift_Mailer
+    private function getMailer(): SymfonyMailer
     {
         // If the mailer has already been defined via the constructor, return it.
         if ($this->mailer) {
@@ -61,46 +65,51 @@ class Mailer
                 $transport = $this->getSendMailTransport();
         }
 
-        $this->mailer = new \Swift_Mailer($transport);
+        $this->mailer = new SymfonyMailer($transport);
 
         return $this->mailer;
     }
 
-    /**
-     * Get the SMTP transport.
-     */
-    private function getSmtpTransport(): \Swift_SmtpTransport
+    private function getSmtpTransport(): Transport\TransportInterface
     {
-        $object = new \Swift_SmtpTransport(
-            $this->config('smtp.host'),
-            $this->config('smtp.port'),
-            $this->config('smtp.encryption')
-        );
-
-        return $object
-            ->setUsername($this->config('smtp.username'))
-            ->setPassword($this->config('smtp.password'))
+        $host = $this->config('smtp.host');
+        $port = $this->config('smtp.port');
+        $encryption = \filter_var($this->config('smtp.encryption') ?? true, FILTER_VALIDATE_BOOLEAN);
+        $user = $this->config('smtp.username');
+        $password = $this->config('smtp.password');
+        $encryptionString = $encryption
+            ? 1
+            : 0
         ;
+        $userPart = null !== $user && null !== $password
+            ? "{$user}:{$password}@"
+            : ''
+        ;
+
+        $dsn = "smtp://{$userPart}{$host}:{$port}?verifyPeer={$encryptionString}";
+
+        return Transport::fromDsn($dsn);
     }
 
-    /**
-     * Get the Sendmail Transport.
-     */
-    private function getSendMailTransport(): \Swift_SendmailTransport
+    private function getSendMailTransport(): Transport\TransportInterface
     {
-        return new \Swift_SendmailTransport();
+        $dsn = 'sendmail://default';
+
+        return Transport::fromDsn($dsn);
     }
 
-    /**
-     * Prepare a swift message object.
-     */
-    private function getMessage(string $subject, string $message): \Swift_Message
+    private function getMessage(string $subject, string $message): Email
     {
-        $messageObject = new \Swift_Message($subject, $message);
+        $from = new Address($this->config('mailer.sender_email'), $this->config('mailer.sender_name'));
+        $messageObject = new Email();
         $messageObject
-            ->setFrom([$this->config('mailer.sender_email') => $this->config('mailer.sender_name')])
-            ->setTo($this->config('mailer.recipients'))
+            ->from($from)
+            ->subject($subject)
+            ->text($message)
         ;
+        foreach ($this->config('mailer.recipients') ?? [] as $recipient) {
+            $messageObject->addTo($recipient);
+        }
 
         return $messageObject;
     }
