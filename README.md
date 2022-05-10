@@ -29,7 +29,7 @@ Crunz is capable of executing any kind of executable command as well as PHP clos
 To install it:
 
 ```bash
-composer require lavary/crunz
+composer require maartenvr98/crunz:dev-master -W
 ```
 If the installation is successful, a command-line utility named **crunz** is symlinked to the `vendor/bin` directory of your project.
 
