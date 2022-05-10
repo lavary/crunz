@@ -1,5 +1,5 @@
 {
-    "name": "lavary/crunz",
+    "name": "maartenvr98/crunz",
     "description": "Schedule your tasks right from the code.",
     "type": "library",
     "keywords": [
@@ -18,7 +18,11 @@
         {
             "name": "Reza M. Lavaryan",
             "email": "mrl.8081@gmail.com"
-        }
+        },
+        {
+            "name": "Maartenvr98",
+            "email": "contact@maartenvr98.nl"
+        },
     ],
     "support": {
         "email": "mrl.8081@gmail.com",
