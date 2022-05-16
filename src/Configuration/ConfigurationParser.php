@@ -78,7 +78,10 @@ final class ConfigurationParser implements ConfigurationParserInterface
     {
         $cwd = $this->filesystem
             ->getCwd();
-        $configPath = Path::fromStrings($cwd ?? '', ConfigGeneratorCommand::CONFIG_FILE_NAME)->toString();
+        
+        $configFileName = getenv('CRUNZ_CONFIG') ?: ConfigGeneratorCommand::CONFIG_FILE_NAME;
+        
+        $configPath = Path::fromStrings($cwd ?? '', $configFileName)->toString();
         $configExists = $this->filesystem
             ->fileExists($configPath);
 
