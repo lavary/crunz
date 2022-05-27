@@ -1,3 +1,5 @@
+# Repo no longer maintained, please use Crunz from new repo: [https://github.com/crunzphp/crunz](https://github.com/crunzphp/crunz) - more info here: [https://github.com/lavary/crunz/issues/411](https://github.com/lavary/crunz/issues/411)
+
 # Crunz
 
 Install a cron job once and for all, manage the rest from the code.
